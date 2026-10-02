@@ -1,0 +1,36 @@
+# Critical review protocol
+
+Every major phase ends with an independent critical review before the next phase starts.
+Reviews are written as if by eight separate senior reviewers who did not do the work.
+They are deliberately adversarial: the goal is to find what is wrong, not to confirm what is right.
+
+## Reviewer panel
+
+| ID | Role | Core questions |
+|----|------|----------------|
+| A | Founder / Strategy | Is the problem painful enough? Why will people switch? What kills the business? What is the moat? Is this merely a feature? |
+| B | Product | Is the core loop obvious? Is there feature bloat? What prevents activation? Which assumptions are unvalidated? |
+| C | UX | Can a first-time user understand it immediately? Where is friction unnecessary? Where might users feel unsafe or confused? |
+| D | Engineering | Is this overengineered? Will the architecture survive growth? Where is technical debt being introduced? |
+| E | Security / Privacy | How could this leak personal data? How could this be abused? Are we collecting unnecessary information? |
+| F | Legal / Fairness | Could this enable discrimination? Is automated profiling excessive? Does the data model create avoidable legal risk? |
+| G | Growth / Marketplace | How does the first user get value with low liquidity? How do we solve chicken-and-egg? What creates repeat usage? |
+| H | Adversarial competitor | As Idealista / Immobiliare.it / a funded startup: what can be copied in 3 months? What is defensible? Which weakness would you exploit? |
+
+## Output format
+
+Each review file (`review-NN-<phase>.md`) contains, per reviewer:
+
+- **CRITICAL ISSUES** — must be resolved before the next phase.
+- **IMPORTANT ISSUES** — must be scheduled; may be resolved in a later phase if explicitly tracked.
+- **NICE-TO-HAVE IMPROVEMENTS** — recorded; not blocking.
+
+Followed by a **Resolution log**: for each critical issue, the decision, the change made (with file references), and the verification.
+
+Findings are concise. No hidden reasoning; conclusions and evidence only.
+
+## Review index
+
+| # | Phase reviewed | File | Status |
+|---|----------------|------|--------|
+| 01 | Research gate (Phases 1–4) | `review-01-research.md` | pending |
