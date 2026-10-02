@@ -1,5 +1,8 @@
 # 06 — Business models, unit economics and cold-start strategy
 
+> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. The [research gate](../reviews/review-01-research.md) has not passed.
+> **City correction:** the Milan-first sequence in §C.5 is retained as an earlier hypothesis; use Bologna as the provisional research location, not an approved launch decision.
+
 Reverse rental marketplace, Italy-first (tenants build profiles → landlords discover and invite → mutual match → chat → viewing → rental).
 
 | Field | Value |
@@ -214,10 +217,10 @@ Precedent of partnership-led seeding: HousingAnywhere + universities — **NOT F
 ### C.5 Sequencing recommendation: city → segment → channel
 
 1. **City:** one supply-constrained city first — Milan (rent pressure [S49]; brief's launch-city matrix in `05-market-opportunity-italy.md`). Constrain further to 2–3 districts (Chen: "groupings of a handful of people, with the right intent, in the right situation, at the right time" [S9]; Tavel's thimble [S10]). Note the Homeflow signal: a funded competitor launched September 2025 in Milan/Brescia/Bergamo with an opaque AI compatibility score [S48] — launching three cities at once is a "big bang" pattern Chen warns against (persona digest [S55]); our differentiation is explainable signals plus a tighter atomic network.
-2. **Segment:** supply = private landlords with 1–3 units plus 3–5 small agencies in those districts; demand = salaried relocators and graduate students with complete, verified dossiers. Target the Airbnb-style threshold: ~300 active landlord vacancies with ~100 "reviewed" (verified) ones before widening [S12] (HYPOTHESIS by analogy).
+2. **Segment:** supply = private landlords with 1–3 units plus 3–5 small agencies in those districts; demand = salaried relocators and graduate students with complete, verified dossiers. Do not adopt the Airbnb 300/100 analogy [S12] as a launch threshold; determine pilot capacity from local cohorts and observed outcomes (08 §4).
 3. **Channel (supply):** direct sales + landlord associations + condominium administrators (direct sales was the #1 lever for ~60% of marketplaces [S18]); Vettery-style 20-minute onboarding calls [S11]; founder-hosted landlord meetups [S12]; referrals with a modest activation bonus for landlords who bring landlords (Airbnb 10–15% of supply from referrals [S16]).
 4. **Channel (demand):** university/ESN/employer distribution of the free dossier; SEO on "dossier affitto / documenti per affittare"; the dossier's share link is itself a viral loop (every off-platform use advertises the product).
-5. **Flintstone the first matches:** manually curate shortlists for the first 50 vacancies (real work, not fake users [S56]); report "time-to-first-invitation" weekly.
+5. **Flintstone the first matches:** investigate a manually supported workflow only after mediation, privacy and recruitment review; no live shortlisting is authorised by this research [S56]; report "time-to-first-invitation" weekly.
 
 ---
 
@@ -232,9 +235,9 @@ Precedent of partnership-led seeding: HousingAnywhere + universities — **NOT F
 | Time-to-first-match | Median hours from vacancy post → first mutual match; from dossier completion → first invitation | Chen's atomic network must "stand on its own" [S9] |
 | Happy-match rate | % of mutual matches that progress to a viewing; % of viewings that progress to a signed lease | "Happy GMV" [S10] |
 | Activation (landlord) | Posted a vacancy with ≥1 verified applicant check used (tool use counts even with no network) | Single-player activation [S18] |
-| Activation (tenant) | Dossier ≥80% complete and verified identity + income | Profile completeness as the gate to being invited |
+| Activation (tenant) | Usable profile with required compatibility fields deliberately published; identity/income checks optional | Deliberate publication with required compatibility fields; optional evidence must not gate invitations |
 | Invitation acceptance | % of landlord invitations accepted by tenants within 72 h | Reverse-recruiting analog (Hired interview requests) [S37] |
-| Supply critical mass per district | ≥300 active vacancies with ≥100 verified landlords | Airbnb threshold analog [S12] |
+| Supply critical mass per district | No adopted threshold; the 300/100 analogy is not a validated Italian pilot requirement | Historical Airbnb analogy [S12], not a transferable target |
 | Paid-acquisition health | Months to contribution-margin break-even per landlord cohort | DoorDash metric [S16] |
 
 ### D.2 Benchmarks found
@@ -273,7 +276,7 @@ Precedent of partnership-led seeding: HousingAnywhere + universities — **NOT F
 ### E.1 MVP monetisation (months 0–9)
 
 - **Free core for both sides**: tenant dossier, landlord discovery, invitations, chat, viewing scheduling. Rationale: landlords are the scarce/hard side to be subsidised [S56][S18]; tenants are the abundant side and charging them to apply/be seen reproduces the MieterPlus backlash [S5] and risks the provvigione reading [S22].
-- **One paid line: verification credits for landlords, "bring your own applicants"** — a per-applicant verified check in the €15–25 bracket (HYPOTHESIS; brackets from Idealista IT €9.99 tenant certificate and OpenRent £30 landlord referencing [S7]), with N free credits per posted vacancy during the launch season and a published taper [S56]. This is single-player (works with zero liquidity), non-contingent on any letting (mediation-safe per [S22]), and tests WTP on the scarce side without suppressing supply.
+- **One paid line: verification credits for landlords, "bring your own applicants"** — a per-applicant verified check in the €15–25 bracket (HYPOTHESIS; brackets from Idealista IT €9.99 tenant certificate and OpenRent £30 landlord referencing [S7]), with N free credits per posted vacancy during the launch season and a published taper [S56]. This is single-player (works with zero liquidity), non-contingent on any letting (no mediation exemption established; legal classification remains open under 07 §11), and tests WTP on the scarce side without suppressing supply.
 - **Zero success fees, zero per-match fees, zero tenant fees.** Partner referrals for guarantee/insurance and contract registration may be wired in but generate no revenue target at MVP.
 - Liquidity impact: positive on supply (free listing + free tool), neutral on demand (free), and the dossier share link acts as off-platform distribution for tenants.
 
@@ -293,13 +296,13 @@ Precedent of partnership-led seeding: HousingAnywhere + universities — **NOT F
 
 | Risk | Evidence | Mitigation |
 |---|---|---|
-| **Intermediation licence (L. 39/1989)** triggered by any fee contingent on a letting, by "collecting or transmitting offers", or by negotiating terms | [S22][S23][S24] FACT-S | Flat, non-contingent fees only; no proposals/deposits handled; scheduling and messaging stay neutral; brokered services via licensed partners or a separate licensed entity (legal stream owns detail) |
+| **Intermediation licence (L. 39/1989)** triggered by any fee contingent on a letting, by "collecting or transmitting offers", or by negotiating terms | [S22][S23][S24] FACT-S | Assess the actual activity with Italian counsel; flat fees do not establish exemption. No success/per-match fees or payment/negotiation services are adopted (07 §11) |
 | **Pay-to-apply backlash / two-class tenants** | HideMieterPlus extension [S5]; paid auto-apply arms race [S7] | No tenant paywall on applying/being seen; publish fairness rules |
 | **Courted side not scarce → reverse mechanic loses its pitch** | Hired decline [S37] | Sell time/risk reduction to landlords; measure time-to-first-match, not "exclusive access" |
-| **Fairness/discrimination in invitation targeting** | Reply-probability gradients by desirability in dating markets [S33]; submarket partitioning [S34] | Explainable signals only; monitor invitation distribution across protected groups (legal stream: Art. 22 GDPR, anti-discrimination) |
+| **Fairness/discrimination in invitation targeting** | Reply-probability gradients by desirability in dating markets [S33]; submarket partitioning [S34] | Explainable signals only; test specified fairness invariants; protected-group monitoring requires a separately lawful research protocol (07 §3) |
 | **Free public competitor for the dossier** | DossierFacile displaced private vaults in France [S31] | If an Italian public dossier emerges, pivot to integration (Connect-style API) rather than competition |
 | **Subsidy rollback kills supply** | Chen: publish the taper [S56] | Announce free-period end dates at signup; convert to SaaS with grandfathering |
-| **Big-bang multi-city launch** | Homeflow launched 3 cities at once [S48]; Chen warns of "big bang failures" (persona digest [S55]) | One city, 2–3 districts, 300/100 threshold before expansion [S12] |
+| **Big-bang multi-city launch** | Homeflow launched 3 cities at once [S48]; Chen warns of "big bang failures" (persona digest [S55]) | One catchment as a research hypothesis; pilot and expansion thresholds require local outcome evidence, not the 300/100 analogy [S12] |
 | **Evidence gaps in this document** | §Research constraints | Run §H verification queue before any pricing or legal decision |
 
 ---

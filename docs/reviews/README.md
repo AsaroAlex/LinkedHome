@@ -33,4 +33,4 @@ Findings are concise. No hidden reasoning; conclusions and evidence only.
 
 | # | Phase reviewed | File | Status |
 |---|----------------|------|--------|
-| 01 | Research gate (Phases 1–4) | `review-01-research.md` | pending |
+| 01 | Research gate (Phases 1–4) | [review-01-research.md](review-01-research.md) | A–H single-agent assessment complete; gate BLOCKED (primary evidence and independent review pending) |

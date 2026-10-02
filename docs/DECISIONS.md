@@ -20,3 +20,7 @@ Format: **D-NNN — title** · date · status (`proposed` / `accepted` / `supers
 - **Decision:** The one-command bootstrap must work with either a native PostgreSQL or Docker Compose.
 - **Reason:** The build environment used for this project has no Docker daemon; contributor machines vary. Requiring Docker would make the "clone → configure → start" promise false for some developers.
 - **Result:** Bootstrap script will detect a reachable Postgres, otherwise try Compose, otherwise print precise instructions.
+
+## Research checkpoint — 2026-10-02
+
+D-001 remains in force. Research documents 01–10 and the single-agent A–H assessment in [review 01](reviews/review-01-research.md) are complete as documents; the research gate has **not passed**. Primary legal/market evidence and independent review remain outstanding. Bologna, pricing, providers and the technical stack are provisional research inputs, not approved product decisions. See [the synthesis](research/01-market-landscape.md) for reconciled conclusions.

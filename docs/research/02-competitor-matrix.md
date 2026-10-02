@@ -1,5 +1,7 @@
 # 02 — Reverse Rental Marketplace Competitor Matrix
 
+> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. The [research gate](../reviews/review-01-research.md) has not passed.
+
 **Research / access date:** 2026-10-02
 **Scope:** Direct "reverse rental marketplace" competitors (tenants publish profiles; landlords discover / invite them), plus adjacent products that must be classified so the team does not confuse them with true reverse marketplaces.
 **Author:** PropTech market analyst (LinkedHome project), fresh web research only — no training-knowledge claims are presented as fact.

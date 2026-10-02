@@ -1,91 +1,74 @@
-# PLAN.md — Execution Ledger
+# PLAN.md — Execution ledger
 
-> Project: reverse rental marketplace, Italy-first (working name: TBD after Phase 7 naming research).
-> Repository: `AsaroAlex/LinkedHome` — branch `claude/sweet-goldberg-5lwng7`.
-> Started: 2026-10-02. This file is the single source of truth for phase status.
->
-> Status legend: `TODO` · `IN PROGRESS` · `DONE` (verified) · `BLOCKED`
-> Nothing is marked DONE unless it has been run, tested, or reviewed as stated.
+> Project: Italy-first reverse rental marketplace; product name undecided.
+> Repository: `AsaroAlex/LinkedHome`; target remote branch `claude/sweet-goldberg-5lwng7`.
+> Updated: 2026-10-02. DONE means the stated check occurred; document completion does not imply evidence, legal, customer or software validation.
+
+## Current scope and gate
+
+The user requested **completion of research and review** for this continuation. Product thesis, branding, design and implementation remain subsequent work. The research documents are assembled and a single-agent A–H review is written; the **research gate is BLOCKED**, with two critical primary-evidence items unresolved. Independent peer review has not occurred. See [review 01](docs/reviews/review-01-research.md).
 
 ## Phase ledger
 
-| # | Phase | Status | Verified by |
-|---|-------|--------|-------------|
-| 0 | Environment / repository inspection | DONE | `git status`, tool version checks (see §0) |
-| 1 | Market research (international) | IN PROGRESS | — |
-| 2 | Competitor analysis | IN PROGRESS | — |
-| 3 | Italian-market analysis | IN PROGRESS | — |
-| 4 | Legal / privacy research | IN PROGRESS | — |
-| 5 | Product thesis | TODO | — |
-| 6 | Feature prioritisation | TODO | — |
-| 7 | Naming / branding | TODO | — |
+| # | Phase | Status | Evidence / remaining condition |
+|---|---|---|---|
+| 0 | Environment / repository inspection | DONE | Actual checkout, Git integrity/read access, runtime versions and document-only workflow checked |
+| 1 | International market research | BLOCKED — evidence verification | Dossiers 01/02/04/06 and source register assembled; current primary competitor checks blocked |
+| 2 | Competitor analysis | BLOCKED — evidence verification | Categories and identity gaps explicit; current product/traction claims unverified |
+| 3 | Italian-market analysis | BLOCKED — evidence verification | All 17 city totals and four weight scenarios checked; input evidence and launch hypothesis not validated |
+| 4 | Legal / privacy research | BLOCKED — evidence verification | 07 sections 0–17 complete, 21 official reading targets; current primary texts/counsel application outstanding |
+| — | Research review 01 | BLOCKED — approval pending | A–H perspectives and eight document fixes complete; R01-C1/C2 open; independent review pending |
+| 5 | Product thesis | TODO | Requires research-gate decision |
+| 6 | Feature prioritisation | TODO | Research opportunities are provisional |
+| 7 | Naming / branding | TODO | No name/domain/trademark clearance performed |
 | 8 | UX architecture | TODO | — |
 | 9 | Design system | TODO | — |
-| 10 | Technical ADR | TODO | — |
-| 11 | Repository scaffolding | TODO | — |
+| 10 | Technical ADR | TODO | Candidate stack only; registry metadata is not compatibility evidence |
+| 11 | Repository scaffolding | TODO | No application manifest, lockfile or source tree |
 | 12 | Database / domain model | TODO | — |
 | 13 | Authentication | TODO | — |
 | 14 | Tenant onboarding / profile | TODO | — |
 | 15 | Landlord / property flow | TODO | — |
-| 16 | Matching engine | TODO | — |
+| 16 | Matching engine | TODO | No opaque person score or ML matching |
 | 17 | Invitations / mutual matching | TODO | — |
 | 18 | Messaging | TODO | — |
-| 19 | Verification foundation | TODO | — |
+| 19 | Verification foundation | TODO | Providers, coverage, lawful processing and costs unresolved |
 | 20 | Trust / safety / admin | TODO | — |
-| 21 | Analytics | TODO | — |
-| 22 | Testing | TODO | — |
+| 21 | Analytics | TODO | Proposed research definitions are not live instrumentation |
+| 22 | Testing | TODO | No application runner exists |
 | 23 | Visual QA | TODO | — |
-| 24 | Security review | TODO | — |
+| 24 | Security review | TODO | Research risks are not an implementation security review |
 | 25 | Performance / accessibility review | TODO | — |
-| 26 | Documentation | TODO | — |
+| 26 | Documentation | TODO | Research documentation complete; application documentation not yet applicable |
 | 27 | Final adversarial review | TODO | — |
-| 28 | Fix all material issues | TODO | — |
+| 28 | Fix material issues | TODO | — |
 
-## §0 Environment inspection (DONE — 2026-10-02)
+## Environment evidence from this continuation
 
-**Decision:** Repository is empty (no commits, no files). Initialise from scratch on the designated branch.
+Checkout: `/workspace/LinkedHome`, platform-provided local branch `work`. Initial local HEAD and remote target branch both resolved to `9b0f42a6303cdb5f5176cc7cdbb06787665e859b`. Do not reset/switch the checkout simply because its local name differs. Each cloud task is already isolated; no Git worktree is needed unless explicitly requested.
 
-**Evidence:**
-- `git status` → "No commits yet", working tree contains only `.git/`.
-- Remote: `https://github.com/AsaroAlex/LinkedHome`.
+Observed tools: Git 2.52.0, Python 3.12.14, Node 24.19.0 and npm 11.9.0. The prior `/home/user/LinkedHome` environment and its PostgreSQL/browser/pnpm versions are historical and were not reproduced or required for a documentation-only workflow. No application services were started.
 
-**Toolchain available in the session container:**
+Saved cloud draft fields: `start_skill` and the custom network allowlist needed for source retrieval. No installation script or application secrets are required at this stage. Saving the draft does not publish a snapshot, apply runtime policy or prove a fresh task restores it.
 
-| Tool | Version | Note |
-|------|---------|------|
-| Node.js | 22.22.0 | LTS |
-| pnpm | 10.28.0 | preferred package manager |
-| npm / yarn / bun | 10.9.4 / 1.22.22 / 1.3.14 | available |
-| PostgreSQL | 16.14 (local cluster, started with `pg_ctlcluster`) | Docker daemon NOT running in this container → local dev must work without Docker |
-| Docker / Compose | 29.6.2 / v5.3.1 (CLI only) | Compose file will be provided for developers who have Docker |
-| Playwright Chromium | `/opt/pw-browsers/chromium-1194` | E2E + visual QA |
-| Python | 3.11.15 | scripts only |
-| Web research | WebSearch + WebFetch verified working | research date recorded in each doc |
+## Research artefacts and validation
 
-**Resulting constraints:**
-- One-command bootstrap must detect either a local Postgres or Docker Compose Postgres.
-- No paid infrastructure is provisioned. Deployment is documented, not executed.
+| Artefact | Result |
+|---|---|
+| 01 market landscape | Cross-dossier synthesis, evidence labels, city sensitivity and reconciled conclusions |
+| 02 competitors | Inherited evidence retained with current review notice |
+| 03 user problems | Inherited evidence retained; absence/search-scope and illustrative-number caveats |
+| 04 feature benchmark | Optional provider feasibility, no person score/ML, no automatic credit-report acceptance |
+| 05 Italian opportunity | Correct arithmetic; fee/language/legal-rule conflicts corrected; Bologna remains a hypothesis |
+| 06 business models | Mediation caveat, optional verification, cohort definitions and critical-mass correction |
+| 07 legal/privacy | Replaced unfinished, untraceable draft with complete topic coverage and explicit verification gaps |
+| 08 opportunities | Testable opportunities, disconfirming experiments, metric denominators and dependencies |
+| 09 source register | 566 namespaced records, 684 extracted URL strings, 17 reused URL strings |
+| 10 technology | Six current npm metadata spot checks; no broader compatibility or security claim |
+| Review 01 | Single-agent A–H assessment; eight document-level critical issues corrected; two external evidence blockers remain |
 
-## §1–4 Research gate (IN PROGRESS)
+All 17 published city totals agree with recomputation. Four alternative weighting scenarios agree with the original Bologna/Milan sensitivity values. Six npm metadata requests succeeded. Nine distinct legal/market URLs returned proxy 403; pages were not read. Local source-reference and Markdown-link checks accompany finalisation. No customer research, legal approval or software tests were fabricated.
 
-Research date: **2026-10-02**. Fan-out across parallel research streams, each writing into `docs/research/`:
+## Next useful action
 
-| Stream | Output | Status |
-|--------|--------|--------|
-| Direct reverse-rental competitors (Homeflow, MyTenant, Renter30, Want2Rent + discovered) | `02-competitor-matrix.md` | IN PROGRESS |
-| Traditional portals + user pain points | `03-user-pain-points.md` + portal section of `02` | IN PROGRESS |
-| Tenant screening / rental passport products | `04-feature-benchmark.md` | IN PROGRESS |
-| Italian market data + launch-city matrix | `05-market-opportunity-italy.md` | IN PROGRESS |
-| Business models + cross-industry matching patterns | `06-business-models.md`, part of `08` | IN PROGRESS |
-| Legal / privacy / fairness (GDPR, Art. 22, Garante, anti-discrimination, AI Act) | `07-legal-privacy-risks.md` | IN PROGRESS |
-| Synthesis: landscape, opportunities, sources | `01-market-landscape.md`, `08-product-opportunities.md`, `09-sources.md` | TODO (after streams) |
-| First independent critical review (Reviewers A–H) | `docs/reviews/review-01-research.md` | TODO |
-
-**Early signal (2026-10-02):** Homeflow (Brescia) launched September 2025 in Milan/Brescia/Bergamo with an AI "compatibility score" — an opaque numeric score is already in-market, which sharpens our explainable-signals differentiation. To be validated in stream 1.
-
-## Decisions log (short form — see `docs/DECISIONS.md` for full rationale)
-
-| Date | Decision | Reason |
-|------|----------|--------|
-| 2026-10-02 | Research gate before any product/branding/code | Mandated by brief; also the only way to not build on stale assumptions |
-| 2026-10-02 | Local dev must work without Docker | Docker daemon unavailable in the build container; developers' machines vary |
+Apply the saved domain changes in environment settings, then re-fetch the specific blocked sources in 09 §2.1. A failed request is not a request for a GitHub token; the native Git read already works. Complete R01-C1/C2 with exact current source content, periods and qualifications, update conclusions if contradicted, and obtain the intended independent review before recording a research-gate pass. Do not begin Phase 5 in this continuation.

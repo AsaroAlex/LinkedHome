@@ -1,5 +1,7 @@
 # 05 — Market opportunity: Italian long-term residential rentals and launch-city decision matrix
 
+> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. The [research gate](../reviews/review-01-research.md) has not passed.
+
 | | |
 |---|---|
 | **Project** | LinkedHome — reverse rental marketplace, Italy-first (PLAN.md Phase 3) |
@@ -255,7 +257,7 @@ Confidence: **H** = three or more retrieved city-specific facts; **M** = one or 
 | Bari | L | 3 | 3 | 4 | 1 | 2 | 4 | 3 | 4 | 2 | 3 | 3 | **2.91** |
 | Genoa | L | 2 | 2 | 3 | 1 | 2 | 3 — Zappyrent [S65] | 4 | 4 | 2 | 3 | 3 | **2.54** |
 
-Sensitivity (computed with `scratchpad/matrix.py`, weights renormalised in each scenario): halving the competition and CAC weights (i.e., assuming competition barely matters) gives Milan 3.73 vs Bologna 4.40; setting the student weight to zero gives Milan 3.33 vs Bologna 4.24; equal weights for all eleven criteria give Bologna 4.27, Padua 3.73, Milan 3.45; even a deliberately Milan-favouring scenario (young-professional, rent-pressure and availability weights doubled, competition and CAC removed) still gives Bologna 4.31 vs Milan 4.17. Bologna's lead survives every reweighting tested; the ranking is driven by the scores, not by the weights.
+Sensitivity (original scratchpad not present in this checkout; all totals and the scenarios below independently recomputed from this table on 2026-10-02, with weights renormalised in each scenario; see 01 §4): halving the competition and CAC weights (i.e., assuming competition barely matters) gives Milan 3.73 vs Bologna 4.40; setting the student weight to zero gives Milan 3.33 vs Bologna 4.24; equal weights for all eleven criteria give Bologna 4.27, Padua 3.73, Milan 3.45; even a deliberately Milan-favouring scenario (young-professional, rent-pressure and availability weights doubled, competition and CAC removed) still gives Bologna 4.31 vs Milan 4.17. Bologna's lead survives every reweighting tested; the ranking is driven by the scores, not by the weights.
 
 ### C3. Recommendation — single-city beachhead in Bologna, with Padua pre-wired as city two (Emilia–Veneto corridor), Milan deferred
 
@@ -292,8 +294,8 @@ Sensitivity (computed with `scratchpad/matrix.py`, weights renormalised in each 
 | Risk | Likelihood | Mitigation |
 |---|---|---|
 | Bologna rent correction (-7.7 % in 2025) signals demand softening, not just supply return | Medium | Track Idealista demand index quarterly; threshold to pause: index below national average for two quarters |
-| Market-size ceiling: Bologna's absolute volume limits GMV | High (certain) | Corridor expansion plan; pricing on landlord side (per match/success) not per-listing volume |
-| Fuorisede from other regions falling (-6 % in 2025 enrolments [S51]) | Medium | International students rising ("boom dall'estero") — product must be English-first from day one |
+| Market-size ceiling: Bologna's absolute volume limits GMV | High (certain) | Corridor expansion plan; investigate flat service pricing only after activity classification; no match/success fee recommendation |
+| Fuorisede from other regions falling (-6 % in 2025 enrolments [S51]) | Medium | International students rising ("boom dall'estero") — product remains Italian-first with English prepared; validate accessibility across languages |
 | Homeflow expands to Bologna before liquidity is reached | Medium | Speed; exclusive university/Comune partnerships; explainable-signals differentiation |
 | Regulatory: being deemed an unlicensed *mediatore* (L. 39/1989) if charging a success fee | Medium | Legal stream (doc 07) to decide fee structure (SaaS/subscription vs success fee) |
 | Anti-discrimination exposure of any matching score | High | Exclude protected attributes; explainability; audit logs (doc 07) |
@@ -306,10 +308,10 @@ Sensitivity (computed with `scratchpad/matrix.py`, weights renormalised in each 
 1. **Woo landlords first, everywhere except Milan.** 87 % of leased units belong to private individuals, the modal landlord owns one flat, and their stated blocker is arrears fear and recovery time (28 % experienced delays, 8 % morosità; 8 M homes kept empty) [S5][S33]. Onboarding must be concierge-grade: photo/listing done for them, contract type selector (4+4 / 3+2 / transitorio / studenti), cedolare simulator, concordato attestation link, RLI registration reminder (30-day rule).
 2. **The tenant profile is the asset; sell its *verifiability*, not a score.** Landlords in Milan already check finances (65 %) but almost never get a guarantee (11 %) [S58]. Give them structured, explainable evidence (income band, contract type, employer category, references, deposit readiness, guarantor availability) rather than a single opaque number — this is both the differentiation vs Homeflow and the anti-discrimination safeguard (UNAR: Arab-name applicants get 35 % fewer replies [S56]).
 3. **Design for high turnover.** 4+4 contracts are shrinking; transitory (28.9 %), concordato (24.8 %) and student contracts grow [S8]. Tenant permanence is ~26 months [S33]. Re-matching events are frequent — the product should retain both sides across moves (tenant profile persists; landlord relists in one click).
-4. **Price against the agency fee, not against the portal.** Market custom is one month's rent + VAT from each side [S62]; on a €680 average rent (Bologna/Padua will be €600-900 for 1-2 beds — ASSUMPTION) the landlord's alternative costs €830 per let. A per-match fee well below that, or a monthly subscription, is credible; a Zappyrent-style 8 %/month only makes sense bundled with a guarantee.
+4. **Price against the agency fee, not against the portal.** Market custom is one month's rent + VAT from each side [S62]; on a €680 average rent (Bologna/Padua will be €600-900 for 1-2 beds — ASSUMPTION) the landlord's alternative costs €830 per let. This comparison is a pricing hypothesis, not willingness-to-pay evidence. No per-match/success fee is recommended; assess any flat service fee and regulated guarantee activity separately (07 §11).
 5. **Guarantee partnerships as a phase-2 lever.** Only 14-20 % of contracts carry a fideiussione [S58]; a guarantee/insurance partner (not building it in-house) converts the screening signal into cash certainty, especially in Turin/Rome/Naples where eviction intensity is 9-16/1,000 [S35].
 6. **Student-season operations.** In Bologna and Padua, demand peaks August-October; supply must be pre-loaded in June-July. The Unibo *Sportello affitti* and Comune Piano per l'Abitare are the distribution channels to approach [S53][S55].
-7. **Compliance primitives in the core model:** CIN field (so short-let units are excluded from long-term matching), contract-type enum per L. 431/98, deposit ≤ 3 months validation, cedolare flag, and a discrimination-safe attribute schema (no nationality/religion/family status in matching features).
+7. **Legal requirements to investigate before modelling:** distinguish long-term and short-let rules; do not require CIN for all long-term homes. Verify contract, deposit and registration rules for the actual service. Exclude prohibited matching attributes and assess remaining proxy risks; no schema alone is discrimination-safe.
 8. **Milan later, via a segment.** When entering Milan, lead with expat/relocation tenants (21 % foreign residents, English-speaking, poorly served by agencies and by Homeflow's Italian-first UX — HYPOTHESIS) rather than head-on.
 
 ---

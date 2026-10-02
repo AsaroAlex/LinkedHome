@@ -1,5 +1,8 @@
 # 03 — Traditional rental portals and user pain points (tenant + landlord)
 
+> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. The [research gate](../reviews/review-01-research.md) has not passed.
+> **Method correction:** “NOT FOUND (not searched)” in the inherited limitations means **NOT RESEARCHED**, not evidence of absence. Illustrative job-to-be-done numbers are not validated population rates.
+
 > Research stream 2 of the research gate (see `PLAN.md` §1–4). Feeds `02-competitor-matrix.md` (portal section), `05-market-opportunity-italy.md`, `08-product-opportunities.md`.
 
 ## 1. Header

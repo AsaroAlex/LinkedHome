@@ -1,5 +1,7 @@
 # 10 — Technology Landscape (input for the stack ADR)
 
+> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. The [research gate](../reviews/review-01-research.md) has not passed.
+
 **Research / access date for every source:** 2026-10-02
 **Author role:** Senior full-stack architect + DevOps (LinkedHome research track)
 **Status:** Draft v1 — evidence-based; every unverifiable item is marked
