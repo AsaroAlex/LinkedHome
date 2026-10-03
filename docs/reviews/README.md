@@ -36,3 +36,5 @@ Findings are concise. No hidden reasoning; conclusions and evidence only.
 | 01 | Research gate (Phases 1–4) | [review-01-research.md](review-01-research.md) | Historical single-agent checkpoint; superseded by review 02 |
 
 | 02 | Independent research A–H plus A/F follow-up | [review-02-independent-research.md](review-02-independent-research.md) | PASS for internal synthetic development; real-user launch gates remain |
+
+| 03 | Product/design/architecture A–H | [review-03-product-design-architecture.md](review-03-product-design-architecture.md) | PASS local synthetic implementation; contracts adopted |
