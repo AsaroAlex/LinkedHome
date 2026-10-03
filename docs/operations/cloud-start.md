@@ -46,7 +46,7 @@ Eseguire in sequenza. Per E2E fermare prima il proprio servizio e liberare3000; 
 
 Il 2026-10-03: frozen install, bootstrap ripetuto, build,71 test unitari/integrati,10 scenari browser, avvio/dev/riavvio e richieste funzionali riusciti. Dati applicativi preservati:5 utenti,2 profili,1 immobile,3 migrazioni. Evidenze e limiti in `docs/operations/validation.md`; risultati precedenti non sostituiscono i controlli necessari per nuove modifiche.
 
-Questa configurazione è una bozza salvata: non pubblica lo snapshot e non dimostra un ripristino su nuovo task. I commit dell’implementazione sono locali; il branch remoto non è stato aggiornato. Il ripristino di commit locali non pubblicati non è garantito dalla piattaforma: non risolvere con reset o push non richiesti. La pubblicazione/ripresa effettiva va verificata separatamente. Conservare rete e credenziali piattaforma esistenti; usare HTTPS Git già autenticato senza estrarre token.
+Questa configurazione è una bozza salvata: non pubblica lo snapshot e non dimostra un ripristino su nuovo task. Il push autorizzato ha pubblicato implementazione e documentazione nel branch `claude/sweet-goldberg-5lwng7`. La bozza usa l’esatto SHA verificato sul remoto. I sorgenti sono recuperabili da GitHub indipendentemente dallo snapshot; dati locali e processi restano separati. Non eseguire reset o ulteriori push automatici non richiesti. La pubblicazione/ripresa effettiva va verificata separatamente. Conservare rete e credenziali piattaforma esistenti; usare HTTPS Git già autenticato senza estrarre token.
 
 
 ## Verifiche aggiuntive di completamento

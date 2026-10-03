@@ -2,7 +2,7 @@
 
 Aggiornato il 2026-10-03. Repository `/workspace/LinkedHome`, branch locale `work`, riferimento remoto richiesto `claude/sweet-goldberg-5lwng7`. L’utente ha autorizzato **«Esegui tutto il piano del repository»**, incluse revisioni indipendenti A–H. Le fasi 0–28 sono **completate per il perimetro locale con dati sintetici** adottato in PLAN e nel contratto delle funzionalità.
 
-Preservare questo checkout isolato: niente reset, switch, worktree, pull automatici o perdita dei dati ignorati. Nessun push, PR, deploy pubblico, servizio a pagamento o contatto esterno è stato effettuato.
+Preservare questo checkout isolato: niente reset, switch, worktree, pull automatici o perdita dei dati ignorati. L’utente ha autorizzato il push su `claude/sweet-goldberg-5lwng7`, eseguito e verificato il 2026-10-03. Nessuna PR, deploy pubblico, servizio a pagamento o contatto esterno.
 
 ## Risultato
 
@@ -36,7 +36,7 @@ Node24.19.0, npm11.9.0, PostgreSQL18.4, Chromium151.0.7922.173 in `/usr/bin/chro
 
 Bozza salvata e riletta con successo (revisioni delle istruzioni 4–5; leggere la revisione corrente nella configurazione): install_script completo identico a `scripts/cloud-install.sh`, start_skill in `docs/operations/cloud-start.md`. Conservati i 12 domini personalizzati e il preset package_managers; nessun segreto esterno richiesto. Le vecchie istruzioni che descrivevano un repository soltanto documentale sono sostituite.
 
-Salvare la bozza non pubblica lo snapshot né valida il ripristino in un nuovo task. I commit sono locali e il remoto non è aggiornato; il ripristino dei commit locali non pubblicati non è garantito dalla piattaforma. Non aggirare questo limite con reset o push non richiesti. Nessun nuovo task ripristinato o CI remota è stato verificato.
+Salvare la bozza non pubblica lo snapshot né valida il ripristino in un nuovo task. I commit dell’implementazione e delle evidenze sono ora pubblicati nel branch remoto autorizzato: i sorgenti si possono recuperare da GitHub anche senza uno snapshot cloud. La bozza registra l’esatto HEAD verificato. Preservare dati locali e non eseguire reset o push aggiuntivi non richiesti. Nessun nuovo task ripristinato o CI remota è stato verificato.
 
 ## Contratti da mantenere
 
@@ -49,7 +49,7 @@ Salvare la bozza non pubblica lo snapshot né valida il ripristino in un nuovo t
 
 ## Commit e lavoro successivo
 
-`a5d4e80`: consolidamento ricerca; `d47a214`: evidenze/revisione indipendente; `c0180de`: prodotto/design/ADR; `0185593`: MVP e suite di test. Evidenze finali, stato e configurazione sono nel commit documentale successivo. Nessun push.
+`a5d4e80`: consolidamento ricerca; `d47a214`: evidenze/revisione indipendente; `c0180de`: prodotto/design/ADR; `0185593`: MVP e suite di test. Evidenze finali, stato e configurazione sono nei commit successivi. Il push autorizzato pubblica questa cronologia su `claude/sweet-goldberg-5lwng7`.
 
 Non rimangono fasi locali aperte o approvazioni pendenti. Per un futuro rilascio reale seguire `docs/operations/release-checklist.md`: ricerca utenti, consulenza aggiornata, ruoli/informative/DPIA, provider, operazioni e supporto, infrastruttura/restore, retention, naming e misure su coorti. Non inventare questi risultati né considerarli verificati dalla demo.
 
@@ -65,6 +65,11 @@ Per rendere attivo uno snapshot cloud rimane un’operazione dell’interfaccia 
 
 ## Allineamento finale del repository nella configurazione cloud
 
-Censita completamente `/workspace`: un solo checkout Git, `AsaroAlex/LinkedHome`, host `github.com`, percorso relativo `LinkedHome`; nessun worktree, submodule o checkout sovrapposto. Il campo repositories viene allineato al commit locale completo verificato dopo questo aggiornamento documentale, preservando anche i commit non pubblicati. Il salvataggio finale mantiene install_script, rete e credenziali esistenti. La revisione corrente e il relativo SHA sono verificati rileggendo la bozza, senza ulteriori commit che ne cambino il riferimento.
+Censita completamente `/workspace`: un solo checkout Git, `AsaroAlex/LinkedHome`, host `github.com`, percorso relativo `LinkedHome`; nessun worktree, submodule o checkout sovrapposto. Il campo repositories viene allineato al commit locale completo verificato dopo questo aggiornamento documentale, preservando la cronologia completa, ora pubblicata sul branch autorizzato. Il salvataggio finale mantiene install_script, rete e credenziali esistenti. La revisione corrente e il relativo SHA sono verificati rileggendo la bozza, senza ulteriori commit che ne cambino il riferimento.
 
 La pubblicazione dello snapshot resta un’operazione del prodotto chiamata Review and Publish: non esiste un tool disponibile che possa eseguirla in questa chat. Il checkout non viene sostituito con un vecchio commit remoto per aggirare il limite di ripristino dei commit locali.
+
+
+## Push autorizzato da mobile
+
+Alla richiesta «pusha no?» è stato eseguito un push ordinario (senza force) su `origin/claude/sweet-goldberg-5lwng7`. Il remoto iniziale `9b0f42a` era un antenato del lavoro locale; il primo push ha pubblicato `5c78b05`. Questo aggiornamento documentale viene pubblicato nello stesso branch e il relativo SHA viene confrontato con `git ls-remote`. Nessuna PR o modifica al branch principale. L’implementazione è quindi recuperabile da GitHub; la pubblicazione dello snapshot cloud è un’operazione distinta e non serve per conservare il codice.

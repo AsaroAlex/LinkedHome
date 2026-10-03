@@ -20,7 +20,7 @@ The adopted local scope in [PLAN](../../PLAN.md) is implemented and verified wit
 
 Runtime: Node24.19.0, npm11.9.0, native PostgreSQL18.4 (embedded-postgres18.4.0-beta.17), Chromium151.0.7922.173, non-root Linux x64. Only loopback3000/55432 remained listening after dev shutdown; dev API3001 stopped. The interactive npm wrapper returns interruption status on Ctrl+C; no application error dump or leftover active dev listener was observed.
 
-The exact reusable install script is [cloud-install.sh](../../scripts/cloud-install.sh); [cloud-start.md](cloud-start.md) contains the saved startup instructions. Cloud draft persistence is recorded in PROJECT_STATE. Saving a draft does not publish, restore or execute it. Local-only commits are not guaranteed to restore into another task; no push was performed to work around that limitation.
+The exact reusable install script is [cloud-install.sh](../../scripts/cloud-install.sh); [cloud-start.md](cloud-start.md) contains the saved startup instructions. Cloud draft persistence is recorded in PROJECT_STATE. Saving a draft does not publish, restore or execute it. Following explicit user authorization, the complete commit history was pushed normally to `claude/sweet-goldberg-5lwng7` and its remote SHA verified. Source recovery no longer depends on retaining unpublished local commits; cloud snapshot publication/restoration remains a separate unexecuted operation.
 
 ## Coverage and regressions
 
