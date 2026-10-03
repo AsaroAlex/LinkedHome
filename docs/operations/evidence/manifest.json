@@ -7,6 +7,10 @@
       "sha256": "d167d01aa99f89d9032294ac334f06587c970fcbd7779a2a1c7b8d9fd6dae0ee",
       "bytes": 96003
     },
+    "clean-install.json": {
+      "sha256": "0b7ad394cc4440fec02df6b19c5c04a9d10569d463bf54a4352703b7e8ee31c0",
+      "bytes": 838
+    },
     "dependency-audit.json": {
       "sha256": "20bd8c9ab1844df61617736e21b8821b09d2eaaeda5ce083cd6b5ce490611e5c",
       "bytes": 375
@@ -30,6 +34,10 @@
     "profile-desktop.png": {
       "sha256": "8e317758ef12615ea204ecbf6e76d13083211b34763606bd7ddd605885553fb4",
       "bytes": 124116
+    },
+    "recovery.json": {
+      "sha256": "d81696dae8fee99834949f0e4e86db424d1831df4eb823474f1a5900c10c02c8",
+      "bytes": 852
     },
     "staff-desktop.png": {
       "sha256": "990f6e85312a52fe284cc351ffda24002733c9326c1e91d4323c842228e62a1a",

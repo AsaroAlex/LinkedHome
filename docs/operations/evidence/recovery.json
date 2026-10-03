@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-10-03T16:56:06.886Z",
+  "scope": "Local logical backup restored into a separate disposable database on the same PostgreSQL instance; not production disaster recovery or cloud snapshot restoration.",
+  "dump_client": "pg_dump (PostgreSQL) 18.6 (Debian 18.6-3)",
+  "source_database": "soglia",
+  "table_counts": {
+    "appeals": 0,
+    "audit_log": 0,
+    "auth_tokens": 0,
+    "blocks": 0,
+    "events": 0,
+    "invitations": 0,
+    "messages": 0,
+    "profiles": 2,
+    "properties": 1,
+    "reports": 0,
+    "schema_migrations": 3,
+    "sessions": 0,
+    "users": 5,
+    "verification_checks": 0
+  },
+  "all_table_values_and_sequences_equal": true,
+  "migration_ledger_valid": true,
+  "restored_login_property_discovery_export_passed": true,
+  "source_unchanged": true,
+  "disposable_database_and_secret_files_removed": true
+}

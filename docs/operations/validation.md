@@ -56,3 +56,14 @@ Test budgets were LCP<5s, CLS<0.1 and resource transfer<500kB. Transfer is the s
 Eight independent implementation reviewers and eight final reviewers inspected the work; the coordinator made the fixes and ran tests. [Review04](../reviews/review-04-implementation.md) and [review05](../reviews/review-05-final.md) record findings and resolutions. No critical or material local-scope issue remains identified by that panel.
 
 CI configuration exists but no remote CI run is claimed. No public deploy, real email/identity/income integration, penetration test, production restore drill, full English translation, market-demand study, exposure-fairness validation, legal/naming clearance or production retention scheduler has been completed. Their owners and evidence requirements remain in the [release checklist](release-checklist.md).
+
+
+## Completion follow-up: clean installation and logical recovery
+
+On 2026-10-03 a fresh `git archive` of commit `de15065` was extracted into a temporary directory without node_modules, dist, database files or credentials. Frozen installation, bootstrap, build and actual startup all passed. Health, HTML/JS, login, owned properties, compatible discovery, dashboard and logout succeeded using newly generated accounts. The temporary service was stopped and the original application restarted. [Clean-install evidence](evidence/clean-install.json).
+
+A consistent custom-format `pg_dump` snapshot of the original local database was restored using `pg_restore --exit-on-error --single-transaction` into a newly created disposable database. All 14 public tables and sequence values matched; the migration ledger passed validation. The restored application passed login, property/discovery and own-data export checks. The original database remained unchanged. The disposable database, dump and password file were removed. [Recovery evidence](evidence/recovery.json).
+
+PostgreSQL client18.6 was downloaded through APT using the signed Debian unstable repository metadata and extracted without a system upgrade; it is compatible with server major18. No artifact-signature or checksum checks were disabled. The recovered seed contains5 users,2 profiles,1 property and3 migration records; contact/report tables are empty in this fixture. This proves local logical recovery of that fixture, not a production disaster-recovery exercise or cloud snapshot restore.
+
+The cloud platform's publication/reconnection step is owned by the product interface. The available tools save/read configuration drafts and cannot publish a snapshot or start a restored task. The prepared environment is ready for that platform step; no further chat approval or credential is required for the completed local workflow.

@@ -47,3 +47,10 @@ Eseguire in sequenza. Per E2E fermare prima il proprio servizio e liberare3000; 
 Il 2026-10-03: frozen install, bootstrap ripetuto, build,71 test unitari/integrati,10 scenari browser, avvio/dev/riavvio e richieste funzionali riusciti. Dati applicativi preservati:5 utenti,2 profili,1 immobile,3 migrazioni. Evidenze e limiti in `docs/operations/validation.md`; risultati precedenti non sostituiscono i controlli necessari per nuove modifiche.
 
 Questa configurazione è una bozza salvata: non pubblica lo snapshot e non dimostra un ripristino su nuovo task. I commit dell’implementazione sono locali; il branch remoto non è stato aggiornato. Il ripristino di commit locali non pubblicati non è garantito dalla piattaforma: non risolvere con reset o push non richiesti. La pubblicazione/ripresa effettiva va verificata separatamente. Conservare rete e credenziali piattaforma esistenti; usare HTTPS Git già autenticato senza estrarre token.
+
+
+## Verifiche aggiuntive di completamento
+
+Il 2026-10-03 anche un export pulito dei sorgenti, senza dipendenze, dati o credenziali preesistenti, ha superato installazione, bootstrap, build, avvio e richieste funzionali. Un backup logico PostgreSQL è stato ripristinato in un database separato: tutte le tabelle/sequenze coincidevano, login/discovery/export funzionavano e il database originale è rimasto invariato. I dati temporanei sensibili sono stati rimossi. Evidenze in `docs/operations/evidence/clean-install.json` e `recovery.json`.
+
+Queste prove si svolgono sulla macchina corrente: non equivalgono alla pubblicazione o al ripristino di uno snapshot cloud. La pubblicazione dell’ambiente avviene attraverso l’interfaccia del prodotto, dopo il salvataggio della configurazione; gli strumenti di questa chat non espongono tale operazione. Non occorre chiedere un’altra approvazione in chat. Dopo un’effettiva pubblicazione, verificare il nuovo ambiente e riavviare i servizi seguendo queste istruzioni.
