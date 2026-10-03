@@ -1,0 +1,124 @@
+# Requires Docker Compose >= 2.30 (raw env_file support).
+# Put the runtime env file outside this repository and pass it via --env-file.
+name: linkedhome
+
+x-image: &image
+  image: linkedhome:${LINKEDHOME_IMAGE_TAG:-local}
+  build:
+    context: ..
+    dockerfile: Dockerfile
+
+x-db-environment: &db-environment
+  APP_ENV: ${APP_ENV:-staging}
+  APP_ORIGIN: https://${DOMAIN:?Set DOMAIN in the external environment file}
+  DATABASE_URL: postgresql://linkedhome:${POSTGRES_PASSWORD:?Set a hex POSTGRES_PASSWORD}@db:5432/linkedhome
+
+services:
+  db:
+    image: postgres:18-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: linkedhome
+      POSTGRES_USER: linkedhome
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a hex POSTGRES_PASSWORD}
+    volumes:
+      # PostgreSQL 18 stores versioned clusters below /var/lib/postgresql.
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - database
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U linkedhome -d linkedhome"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  migrate:
+    <<: *image
+    restart: "no"
+    command: ["npm", "run", "db:migrate"]
+    environment: *db-environment
+    networks:
+      - database
+    depends_on:
+      db:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp:mode=1777
+
+  app:
+    <<: *image
+    restart: unless-stopped
+    init: true
+    env_file:
+      - path: ${LINKEDHOME_ENV_FILE:?Set an absolute LINKEDHOME_ENV_FILE outside the repository}
+        format: raw
+    environment:
+      <<: *db-environment
+      HOST: 0.0.0.0
+      PORT: "3000"
+      MAIL_TRANSPORT: smtp
+      # Only the dedicated Caddy container may supply client forwarding headers.
+      TRUST_PROXY: 172.30.0.2/32
+    networks:
+      - database
+      - proxy
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    read_only: true
+    tmpfs:
+      - /tmp:mode=1777
+    security_opt:
+      - no-new-privileges:true
+
+  proxy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL:?Set an operational ACME_EMAIL}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      proxy:
+        ipv4_address: 172.30.0.2
+    depends_on:
+      app:
+        condition: service_healthy
+
+  maintenance:
+    <<: *image
+    profiles: ["operations"]
+    restart: "no"
+    command: ["npm", "run", "maintenance"]
+    environment: *db-environment
+    networks:
+      - database
+    depends_on:
+      db:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp:mode=1777
+
+networks:
+  database:
+    internal: true
+  proxy:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:

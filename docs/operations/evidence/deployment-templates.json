@@ -1,0 +1,47 @@
+{
+  "verified_at_utc": "2026-10-03T19:33:07Z",
+  "scope": "Static deployment-template validation only. No services created, containers started, database lifecycle run, or email sent.",
+  "schema": {
+    "source_url": "https://render.com/schema/render.yaml.json",
+    "retrieval": "Exa web fetch; parsed JSON normalized into a local schema snapshot",
+    "snapshot": "docs/operations/evidence/render-blueprint.schema.json",
+    "sha256": "107a1ac2efd47fa7d1d244ac8a960adeb076072643b07a42eb0ac8d083454dac",
+    "hash_scope": "Exact bytes of the normalized local snapshot; not an HTTP response-byte hash",
+    "validator": "Python jsonschema.validate with PyYAML safe_load"
+  },
+  "render_blueprint": {
+    "path": "render.yaml",
+    "status": "PASS",
+    "repeat_from_repository_root": "python -c 'import json,yaml,jsonschema; jsonschema.validate(yaml.safe_load(open(\"render.yaml\")),json.load(open(\"docs/operations/evidence/render-blueprint.schema.json\")))'"
+  },
+  "compose": {
+    "path": "deploy/compose.yaml",
+    "status": "PASS",
+    "validator": "Docker Compose v2.40.3",
+    "fixture_path": "/tmp/linkedhome-compose-check.env",
+    "fixture_kind": "External disposable fixture with fake values; contains no real credentials",
+    "repeat_from_repository_root": "docker compose --env-file /tmp/linkedhome-compose-check.env -f deploy/compose.yaml config --quiet",
+    "topology_status": "PASS",
+    "topology_checks": {
+      "database_not_published": true,
+      "application_not_published": true,
+      "trusted_proxy_matches_caddy_address": true,
+      "database_network_internal": true,
+      "application_waits_for_successful_migrations": true,
+      "proxy_waits_for_healthy_application": true,
+      "maintenance_has_no_smtp_password": true,
+      "application_requires_smtp": true
+    },
+    "topology_method": "Parsed config --format json with the operations profile; checks ran without printing environment values"
+  },
+  "docker_build": {
+    "status": "NOT_TESTED",
+    "reason": "Managed task user cannot access unix:///var/run/docker.sock (operation not permitted). No daemon recovery or build attempted."
+  },
+  "external_https_and_caddy_certificate": {
+    "status": "NOT_TESTED"
+  },
+  "notes": [
+    "Schema and Compose validation do not establish container runtime correctness, SMTP inbox delivery, production readiness, load capacity, backup recovery or provider provisioning."
+  ]
+}

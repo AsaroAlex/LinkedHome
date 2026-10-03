@@ -1,6 +1,6 @@
-# Execution ledger — LinkedHome / Soglia
+# Execution ledger — LinkedHome / Doorluma
 
-Updated 2026-10-03. User instruction: **execute all repository phases**. The original52-section brief is absent from the checkout; this ledger and the adopted feature contract define the reviewable local scope. Working name Soglia is not cleared for public use.
+Updated 2026-10-03. User instruction: **execute all repository phases**. The original52-section brief is absent from the checkout; this ledger and the adopted feature contract define the reviewable local scope. Doorluma supersedes the original working name Soglia after the authorized domain search; domain purchase and trademark clearance remain open.
 
 Research passed an independent bounded gate for synthetic local development. Production deployment, live provider integrations, outside studies and legal/brand clearance are separate [release gates](docs/operations/release-checklist.md).
 
@@ -13,7 +13,7 @@ Research passed an independent bounded gate for synthetic local development. Pro
 | 4 | Legal/privacy research | DONE for desk scope — inspected primary baseline, no deployment clearance; review02 |
 | 5 | Product thesis | DONE — docs/product/01; independently reviewed |
 | 6 | Priorities | DONE — docs/product/02 acceptance contract; external features deferred explicitly |
-| 7 | Naming/branding | DONE as working name — Soglia centralized; no availability/clearance claim |
+| 7 | Naming/branding | DONE — Doorluma centralized; domain availability research completed in the subsequent authorized scope, purchase and trademark clearance pending |
 | 8 | UX architecture | DONE — docs/design/01, review03 |
 | 9 | Design system | DONE — docs/design/02 and implemented responsive CSS |
 | 10 | Technical ADR | DONE — Fastify/React/TypeScript/PostgreSQL; review03 and amendments |
@@ -49,6 +49,44 @@ All phases0–28 are complete for the adopted local synthetic scope. Run instruc
 
 Completion follow-up: clean-source install/start and isolated PostgreSQL logical recovery passed; see operations/validation. Platform snapshot publication remains an interface action unavailable through the current tools, not an unfinished repository implementation phase.
 
+## Authorized continuation — integrations and deployment preparation
+
+On 2026-10-03 the user selected **«Integrazioni reali e preparazione del deploy»** and asked **«Ricerca e dammi la migliore opzione»**. This extends the completed local scope; it does not establish a real-user release.
+
+| Work | Status / evidence |
+|---|---|
+| Hosting/email/domain comparison | DONE — ADR0002 recommends Render Frankfurt, Brevo SMTP and OVHcloud for a future Italian domain; official sources, prices and residency limits recorded |
+| Real transactional transport | DONE — authenticated SMTP465/587, verified TLS, bounded/aborted connections, no deployed local fallback; 33 mail tests including controlled live protocol servers |
+| Deployment boundary and UI | DONE — explicit environment, HTTPS origin/external DB/SMTP validation, Secure Host cookies including deletion, narrow proxy trust, liveness/readiness and safe public runtime config; mailbox wording follows configuration |
+| Deployable source configuration | DONE for preparation — non-root Docker, Render staging/DB/migrate/preflight/daily-maintenance Blueprint and Compose/Caddy alternative; templates unapplied |
+| Verification | DONE — build, 136 unit/integration/SMTP tests and 14 browser scenarios; npm audit0 known vulnerabilities; production-only dependency runtime smoke passed with synthetic external PostgreSQL and unchanged application counts |
+| Independent technical review | DONE — review06; missing Docker brand module, Secure cookie deletion and SMTP deadline cancellation corrected |
+
+The default local environment remains synthetic and Docker-free. No real SMTP credentials, verified domain, paid service or public deploy exists. Docker schema/configuration and production-dependency startup were checked, but actual image build/run could not be checked because the environment does not permit access to its Docker socket. Render ingress/rate-limit trust, live email delivery, hosted backup/restore, monitoring and real-user release gates remain target-environment work. Exact follow-on evidence is in operations/validation and deployment.md.
+
+The existing remote/cloud configuration references the earlier published commit. This continuation is saved in the local checkout; additional remote publication is not claimed.
+
+## Authorized continuation — domain research and naming
+
+The user requested autonomous selection of an available domain and the resulting repository changes. **Doorluma / doorluma.com** is selected; optional `doorluma.it` is also offered for new registration. [Naming evidence](docs/product/03-naming.md) distinguishes registry availability, registrar offers and bounded collision research. Public branding and deployment guidance are updated; persistent technical identifiers are unchanged. No domain purchase, verified sender, custom-origin activation or additional push is implied. Verification results are recorded in operations/validation.
+
+## Authorized continuation — saved rental UX integration
+
+The user requested the UX work saved in `codex/rental-ux-save-20261003` at `504a809d7795d340cb639adad60a059c5fba1d40`, while retaining the newer Doorluma/domain/deployment work. The shared checkout already contained the exact saved UX source; integration adopts those files in the current branch and extends the existing verification commands, without replacing the newer project snapshot.
+
+| Work | Status / evidence |
+|---|---|
+| Home, signup, guided dashboard, FAQ and chat starters | DONE — saved UX source preserved; role-aware guidance, actual account-state progress, editable explicit-send drafts |
+| Test integration | DONE — `test:e2e:experience` included in `npm run check` and CI definition; no new dependencies |
+| Integrated verification | DONE — build/typecheck,136 backend tests,14 existing browser scenarios and11 mocked-API experience scenarios passed sequentially; four mail-runtime scenarios shared between browser suites |
+| Preservation and visual review | DONE — Doorluma/domain/server/deploy files unchanged, synthetic application counts retained, desktop/mobile screenshots inspected; [evidence](docs/operations/evidence/rental-ux-integration.json) |
+
+This continuation is saved locally. Remote CI, a further push and a public deployment were not performed.
+
 ## Nuovo incarico: UX e reddito facoltativo — 2026-10-03
 
 Implementata l’estensione richiesta localmente: ricerca mirata, audit browser, confronto A/B/C, anteprima/condivisione per destinatario, revoca/contestazione/scadenza e miglioramenti al percorso principale. `npm run check` PASS (96 unit/API, 15 browser); dettaglio e limiti in [income-validation](docs/operations/income-validation.md). Nessun provider reale, upload finanziario, pagamento, deploy o push. Le fasi storiche restano il ledger originario; questo incarico ne estende lo scope locale senza considerare chiusi i gate reali.
+
+## Integrazione e pubblicazione richieste
+
+Il lavoro reddito `f4cf518` è unito alla storia remota Doorluma/UX/SMTP fino a `65f38ee` mediante merge nel checkout corrente. Verifica integrata completata: build/typecheck, 161 test backend, 19 scenari browser core/reddito/mail e 11 esperienza/mail, tutti passati; quattro scenari mail ripetuti. Review07 e [evidenza](docs/operations/evidence/income-integration.json) registrano correzioni runtime, fixture e marchio. Il branch da pubblicare è quello esistente `claude/sweet-goldberg-5lwng7`; `work` è il nome locale del checkout. Dati e credenziali locali restano preservati e ignorati; nessun deploy o provider reale attivato.

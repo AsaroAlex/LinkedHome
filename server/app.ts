@@ -6,7 +6,10 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
 import { type DB, tx, lockUsers } from "./db.js";
-import { appOrigin, production } from "./config.js";
+import {
+  readRuntimeConfiguration,
+  type RuntimeConfiguration,
+} from "./config.js";
 import {
   token,
   digest,
@@ -23,7 +26,7 @@ import {
   requireThat,
   verificationState,
 } from "./domain.js";
-import { localMail } from "./mail.js";
+import { sendMail } from "./mail.js";
 import type { PoolClient } from "pg";
 import {
   demoIncomeResult,
@@ -41,7 +44,6 @@ declare module "fastify" {
 }
 const uuid = z.string().uuid();
 const password = z.string().min(12).max(128);
-const cookieName = production ? "__Host-soglia" : "soglia";
 const actor = (
   r: FastifyRequest,
   options: {
@@ -133,16 +135,25 @@ export async function buildApp(
   db: DB,
   options: {
     origin?: string;
-    mail?: typeof localMail;
+    mail?: typeof sendMail;
+    runtime?: RuntimeConfiguration;
     limits?: boolean;
     serveStatic?: boolean;
     incomeDemo?: boolean;
   } = {},
 ) {
-  const app = Fastify({ logger: false, bodyLimit: 16384, trustProxy: false });
-  const origin = options.origin || appOrigin;
-  const mail = options.mail || localMail;
-  const incomeDemoAvailable = !production && options.incomeDemo !== false;
+  const runtime = options.runtime || readRuntimeConfiguration();
+  const secure = runtime.environment !== "local";
+  const cookieName = secure ? "__Host-soglia" : "soglia";
+  const app = Fastify({
+    logger: false,
+    bodyLimit: 16384,
+    trustProxy: runtime.trustedProxies,
+  });
+  const origin = options.origin || runtime.origin;
+  const mail = options.mail || sendMail;
+  const incomeDemoAvailable =
+    runtime.environment === "local" && options.incomeDemo !== false;
   await app.register(cookie);
   await app.register(rateLimit, {
     max: options.limits === false ? 100000 : 180,
@@ -158,11 +169,7 @@ export async function buildApp(
       "Content-Security-Policy",
       "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
     );
-    if (production)
-      reply.header(
-        "Strict-Transport-Security",
-        "max-age=31536000; includeSubDomains",
-      );
+    if (secure) reply.header("Strict-Transport-Security", "max-age=31536000");
     if (r.url.startsWith("/api")) reply.header("Cache-Control", "no-store");
     if (["POST", "PUT", "PATCH", "DELETE"].includes(r.method)) {
       if (r.headers.origin !== origin)
@@ -222,7 +229,7 @@ export async function buildApp(
     );
     reply.setCookie(cookieName, secret, {
       httpOnly: true,
-      secure: production,
+      secure,
       sameSite: "strict",
       path: "/",
       maxAge: 7 * 86400,
@@ -252,8 +259,13 @@ export async function buildApp(
   };
   app.get("/api/health", async () => {
     await db.query("SELECT 1");
-    return { ok: true, environment: production ? "production" : "local" };
+    return { ok: true, environment: runtime.environment };
   });
+  app.get("/api/live", async () => ({ ok: true }));
+  app.get("/api/config", async () => ({
+    environment: runtime.environment,
+    mailTransport: runtime.mailTransport,
+  }));
   app.get("/api/session", async (r) => ({ user: r.actor }));
   app.post("/api/auth/register", { config: authLimit }, async (r, reply) => {
     const input = z
@@ -325,7 +337,12 @@ export async function buildApp(
       await db.query("DELETE FROM sessions WHERE token_hash=$1", [
         digest(r.cookies[cookieName]),
       ]);
-    reply.clearCookie(cookieName, { path: "/" });
+    reply.clearCookie(cookieName, {
+      path: "/",
+      secure,
+      httpOnly: true,
+      sameSite: "strict",
+    });
     return { ok: true };
   });
   app.post("/api/auth/resend", { config: authLimit }, async (r) => {
@@ -352,14 +369,22 @@ export async function buildApp(
       "SELECT id,email FROM users WHERE email=$1",
       [email],
     );
-    if (rows[0])
-      await tx(db, async (c) => {
-        await lockUsers(c, [rows[0].id]);
-        const fresh = await c.query("SELECT id,email FROM users WHERE id=$1", [
-          rows[0].id,
-        ]);
-        if (fresh.rows[0]) await issue(c, fresh.rows[0], "reset");
-      });
+    if (rows[0]) {
+      try {
+        await tx(db, async (c) => {
+          await lockUsers(c, [rows[0].id]);
+          const fresh = await c.query(
+            "SELECT id,email FROM users WHERE id=$1",
+            [rows[0].id],
+          );
+          if (fresh.rows[0]) await issue(c, fresh.rows[0], "reset");
+        });
+      } catch {
+        // Preserve the same recovery response during provider outages; never
+        // expose whether an address exists or log recipients/tokens.
+        console.error("Password recovery delivery unavailable.");
+      }
+    }
     return { ok: true };
   });
   for (const purpose of ["verify", "reset"] as const)
@@ -406,7 +431,12 @@ export async function buildApp(
               "DELETE FROM auth_tokens WHERE user_id=$1 AND purpose='reset'",
               [id],
             );
-            reply.clearCookie(cookieName, { path: "/" });
+            reply.clearCookie(cookieName, {
+              path: "/",
+              secure,
+              httpOnly: true,
+              sameSite: "strict",
+            });
           }
         });
         return { ok: true };
@@ -1434,7 +1464,12 @@ export async function buildApp(
       await c.query("DELETE FROM users WHERE id=$1", [u.id]);
       await event(c, "account_deleted");
     });
-    reply.clearCookie(cookieName, { path: "/" });
+    reply.clearCookie(cookieName, {
+      path: "/",
+      secure,
+      httpOnly: true,
+      sameSite: "strict",
+    });
     return { ok: true };
   });
   app.get("/api/staff/reports", async (r) => {

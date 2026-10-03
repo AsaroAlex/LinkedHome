@@ -38,3 +38,6 @@ Findings are concise. No hidden reasoning; conclusions and evidence only.
 | 03 | Product/design/architecture A–H | [review-03-product-design-architecture.md](review-03-product-design-architecture.md) | PASS local synthetic implementation; contracts adopted |
 | 04 | Implementation A–H, phases11–21 | [review-04-implementation.md](review-04-implementation.md) | Resolved; final evidence in review05 |
 | 05 | Final independent A–H, phases22–28 | [review-05-final.md](review-05-final.md) | PASS for the adopted local synthetic scope |
+| 06 | Independent engineering/security review of SMTP and deployment preparation | [review-06-deployment-preparation.md](review-06-deployment-preparation.md) | Identified runtime/cookie/timeout defects resolved; target-environment release checks remain |
+| 06 income | Independent review of optional private synthetic income attestations | [review-06-income.md](review-06-income.md) | PASS for local synthetic scope; preview/consent race resolved |
+| 07 | Integration of income, Doorluma, saved UX and mail/runtime preparation | [review-07-income-integration.md](review-07-income-integration.md) | PASS for local integrated scope; build, 161 backend tests and both browser suites passed |

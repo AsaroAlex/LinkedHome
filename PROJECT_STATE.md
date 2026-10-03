@@ -6,7 +6,7 @@ Preservare questo checkout isolato: niente reset, switch, worktree, pull automat
 
 ## Risultato
 
-Dossier di ricerca consolidato e verificato nei limiti dichiarati, seguito da prodotto, naming provvisorio **Soglia**, UX, design e architettura. Implementato un monolite TypeScript/Fastify/React/Vite con PostgreSQL nativo, senza Docker obbligatorio. Il nome non ha clearance; italiano completo, struttura locale EN preparata senza traduzione completa.
+Dossier di ricerca consolidato e verificato nei limiti dichiarati, seguito da prodotto, naming iniziale **Soglia**, sostituito con **Doorluma** dopo la ricerca dominio autorizzata, UX, design e architettura. Implementato un monolite TypeScript/Fastify/React/Vite con PostgreSQL nativo, senza Docker obbligatorio. Il nome non ha clearance; italiano completo, struttura locale EN preparata senza traduzione completa.
 
 Funzionano bootstrap/migrazioni/seed, autenticazione e conferma/reset con messaggi locali, ruoli tenant/landlord/both e staff separato, profili privati/pubblicati, immobili, compatibilità spiegata, inviti con revisioni e snapshot, chat paginata, blocchi/segnalazioni, moderazione/sospensione/ricorso, export/cancellazione e conteggi locali. Nessun documento reale, pagamento, punteggio persona, ML o provider identità/reddito. La posta locale non prova il controllo di una vera casella.
 
@@ -55,6 +55,20 @@ Non rimangono fasi locali aperte o approvazioni pendenti. Per un futuro rilascio
 
 Il brief integrale originario di 52 sezioni non è nel checkout: PLAN e il contratto adottato delimitano il lavoro verificabile. La ricerca conserva le distinzioni fra fonti lette, bloccate e ipotesi: 566 riferimenti bibliografici non equivalgono a 566 fonti verificate. Non ricominciare la ricerca o chiedere nuove approvazioni per correzioni già autorizzate.
 
+## Ripresa autorizzata: integrazioni reali e preparazione deploy
+
+Nel nuovo task del 2026-10-03 l'utente ha scelto **«Integrazioni reali e preparazione del deploy»** e alla domanda sui servizi ha risposto **«Ricerca e dammi la migliore opzione»**. Il perimetro locale precedente è completo; questo è il lavoro successivo autorizzato.
+
+Scelta raccomandata: **Render Frankfurt + Brevo SMTP**; per un futuro dominio italiano **OVHcloud**. Confronto e fonti in `docs/adr/0002-deployment-providers.md`. Budget esemplificativo hosting circa $30/mese per operatore singolo, $55 con Render Pro, più email (Brevo Free per staging entro300/giorno o Starter da$9), dominio, imposte e consumo eccedente. La ricerca dominio successiva e la preferenza per un nome inglese/europeo hanno selezionato Doorluma / doorluma.com, disponibile in nuova registrazione secondo Dominiofaidate e senza record nel RDAP ufficiale il 2026-10-03; nessun acquisto o clearance del marchio.
+
+Implementati adapter SMTP reale con TLS465/STARTTLS587, configurazione local/staging/production, originHTTPS/DBesterno/SMTP obbligatori fuori locale, cookieSecureHost e relativa cancellazione, proxy fidati solo per IP/CIDR espliciti, `/api/live`, `/api/health` con queryDB e `/api/config` senza segreti. La UI distingue posta locale/SMTP e ambiente di test. Sono preparati `Dockerfile`, `render.yaml`, Compose/Caddy e `npm run deploy:check` (connessione DB/schema e autenticazione SMTP, senza invio); `--config-only` controlla soltanto la configurazione.
+
+Verificati build, **136 test unitari/integrati/SMTP**, **14 scenari browser**, audit npm0 vulnerabilità note; test SMTP usano esclusivamente server loopback controllati e certificati di test. Runtime con sole dipendenze di produzione avviato in copia temporanea con PostgreSQL sintetico esterno, senza embedded-postgres o seed; health/frontend/config/HSTSheader funzionano e gli stessi5 utenti/2 profili/1 immobile/3 migrazioni sono preservati. Revisione tecnica indipendente06 ha portato alle correzioni dell'import brand nel Docker runtime, cancellazione cookieSecure e reale interruzione socket al timeoutSMTP.
+
+Template Render validato con schema ufficiale e Compose validato con fixture falsa; **build/run Docker non verificati**, socket non accessibile all'utente del task. Nessuna credenziale/provider/account reale, acquisto dominio, servizio a pagamento o deploy pubblico attivato. La configurazione SMTP è implementata ma **la consegna a caselle reali non è provata**. Su Render `TRUST_PROXY=false` può aggregare utenti sotto l'IP del load balancer: ottenere topologia/IP fidati e provare header contraffatti prima del traffico reale. SMTP è sincrono, senza coda durevole; risposta recovery generica non prova indistinguibilità temporale. Backup/restore/monitoraggio/retention nell'hosting e i gate legali/prodotto rimangono da verificare.
+
+Le evidenze sono in `docs/operations/validation.md`, `evidence/deployment-runtime.json`, `deployment-templates.json` e nella review06. Il vecchio push e la bozza cloud si riferiscono alla fase precedente: non presumere che contengano questa continuazione. Non resettare/switchare il checkout né creare worktree. Nessun push ulteriore o PR è stato eseguito in questa ripresa.
+
 
 ## Completamento successivo alla richiesta «Completa»
 
@@ -74,6 +88,28 @@ La pubblicazione dello snapshot resta un’operazione del prodotto chiamata Revi
 
 Alla richiesta «pusha no?» è stato eseguito un push ordinario (senza force) su `origin/claude/sweet-goldberg-5lwng7`. Il remoto iniziale `9b0f42a` era un antenato del lavoro locale; il primo push ha pubblicato `5c78b05`. Questo aggiornamento documentale viene pubblicato nello stesso branch e il relativo SHA viene confrontato con `git ls-remote`. Nessuna PR o modifica al branch principale. L’implementazione è quindi recuperabile da GitHub; la pubblicazione dello snapshot cloud è un’operazione distinta e non serve per conservare il codice.
 
+## Ripresa autorizzata: brand internazionale Doorluma e dominio
+
+L'utente ha richiesto ricerca autonoma di un dominio disponibile e modifica del repository, preferenza per un nome inglese/europeo e infine «Ricerca il miglior nome per il brand». Scelta finale: **Doorluma**, otto lettere, radice inglese “door” e finale coniato che evoca luce/calore. Payoff italiano: **Affitti che iniziano da un invito.** Domini: **doorluma.com** principale; `.eu` e `.it` facoltativi. Interfaccia ancora italiana e perimetro iniziale Italy-first: nessuna espansione internazionale verificata.
+
+Il registrar conferma nuova registrazione per tutti e tre i domini; il RDAP ufficiale `.com`404 conferma assenza di record. Dominiofaidate quota il `.com` a €13,99+IVA/anno anche al rinnovo. Disponibilità/prezzi sono temporanei, senza prenotazione. La ricerca bounded non ha trovato uso esatto Doorluma nel campione; documenta rischi di pronuncia, dettatura e vicinanza al settore porte/illuminazione, senza clearance del marchio o test con utenti. Confronto con Doorliva, NestInvite, Abituno e fonti in `docs/product/03-naming.md`; prove dei domini e ricerche precedenti in `docs/operations/evidence/domain-research.json`. Gandi403 nell'ultimo passaggio è documentato e non aggirato; le prove Gandi precedenti riguardano i candidati precedenti.
+
+Marchio aggiornato in UI, titolo/descrizione HTML, email, log e nome export `doorluma-dati.json`. `docs/operations/domain-setup.md` e gli esempi commentati preparano origin, DNS e mittente dopo acquisto e verifica. Repository LinkedHome, package, database, cookie, sessioni e dati persistenti mantengono gli identificatori tecnici precedenti; nessuna nuova migrazione. Nessun acquisto, DNS reale, mittente attivato, deploy pubblico o push aggiuntivo. Header mobile corretto per consentire nomi più lunghi senza nascondere accesso/registrazione.
+
+Nel checkout sono apparse anche modifiche UX indipendenti (`experience`): vengono preservate e non incluse nel commit del naming. Verifiche sullo snapshot dei soli sorgenti di questa modifica, evidenze e limiti in `docs/operations/validation.md` e `evidence/doorluma-validation.json`.
+
+Verifica finale Doorluma: bootstrap isolato, build/typecheck, **136 test su6 file** e **14 scenari browser** passati; schermate desktop/390px/320px ispezionate, startup/health/metadati verificati. Header320px senza overflow, entrambi controlli visibili. Revisione indipendente senza finding materiale residuo nel perimetro naming. Commit locale, senza push; le modifiche UX indipendenti restano nel checkout.
+
+## Ripresa autorizzata: integrazione dei miglioramenti UX salvati
+
+L'utente ha richiesto di integrare `AsaroAlex/LinkedHome`, ramo `codex/rental-ux-save-20261003`, commit `504a809d7795d340cb639adad60a059c5fba1d40`, conservando marchio, dominio e deploy più recenti. Il confronto iniziale ha trovato i sorgenti UX già identici al commit salvato nel workspace condiviso. Sono stati adottati nel ramo corrente senza sostituire il checkout o applicare l'intero vecchio snapshot; i documenti più recenti di Doorluma sono conservati.
+
+Integrati home con percorsi per ruolo, registrazione guidata, dashboard con prossimi passi basati sullo stato effettivo, FAQ e risposte rapide modificabili in chat. Le risposte richiedono invio esplicito; gli errori conservano la bozza e il cambio contatto la isola. La suite dedicata è ora disponibile con `npm run test:e2e:experience`, inclusa in `npm run check` e nella definizione CI.
+
+Verifica dell'intero checkout integrato: build/typecheck, **136 test su6 file**, **14 scenari nella suite browser esistente** e **11 nella suite UX con API simulate**, tutti passati. Quattro scenari mail-runtime sono condivisi dalle due suite browser. Controlli axe/responsive configurati passati; schermate home desktop/mobile e chat mobile ispezionate. Revisione tecnica indipendente senza finding P1/P2 residuo nel perimetro UX. Evidenze in `docs/operations/evidence/rental-ux-integration.json` e `docs/operations/validation.md`.
+
+App locale compilata riavviata, health200 e metadati Doorluma verificati; database applicativo invariato nei conteggi:5 utenti,2 profili,1 immobile,3 migrazioni. Nessuna nuova dipendenza, modifica a database/cookie/server/SMTP/template deploy o attivazione dominio. Integrazione salvata con commit locale; nessun push, CI remota o deploy pubblico eseguito per questa richiesta.
+
 ## Estensione UX e attestazione reddituale facoltativa — 2026-10-03
 
 Il nuovo brief autorizza ricerca, audit e implementazione dell’estensione reddito: i precedenti rinvii riguardano l’emissione reale, non il flusso locale ora implementato. Scelta A: attestazione privata riutilizzabile, condivisione distinta per esatta anteprima e invito/destinatario; niente reddito/badge in discovery o modifica compatibilità/ranking. Migrazione 004 crea osservazioni immutabili sintetiche e grant, con scadenza/revoca/contestazione/sostituzione/contatto applicati lato server. Emissione reale: 503, nessun upload, provider o garanzia. Le categorie dipendenti/autonomi/variabili e gli esiti sono fixture server esplicite, non verifiche di persone reali.
@@ -85,3 +121,11 @@ Risolti i principali problemi UX dell’audit: pubblicazione di preferenze non s
 ## Consolidamento e pulizia richiesti
 
 L’estensione UX/reddito e le evidenze sono consolidate nel branch locale `work`. Rimossi i report browser generati e lo script temporaneo di QA; conservati database, credenziali locali ignorate, dipendenze, build funzionante ed evidenze permanenti. Manifest degli screenshot completato e fonti di ricerca collegate. Nessun reset, cambio checkout, push o deploy. I controlli funzionali precedenti restano validi: questa pulizia non modifica il comportamento del codice.
+
+## Integrazione e visibilità del branch
+
+Alla segnalazione «Non vedo quel branch» è stato verificato che `work` era solo locale e che il branch GitHub del progetto `claude/sweet-goldberg-5lwng7` era avanzato a `65f38ee`. Il risultato unisce tale storia con `f4cf518`, preservando Doorluma, la nuova UX e SMTP/runtime/deploy insieme al flusso reddito. Nessun reset, cambio checkout, nuovo worktree o force push. Il nome locale rimane `work`; il target di pubblicazione resta il branch remoto esistente.
+
+Build/typecheck, **161 test backend su 7 file**, **19 scenari browser core/reddito/mail** e **11 esperienza/mail** passati in sequenza (26 scenari browser distinti). Review07 ed evidence/income-integration.json descrivono i limiti. Il simulatore reddito è limitato all'ambiente locale della singola istanza; staging/produzione rifiutano anche una richiesta esplicita di abilitarlo. Nuove emissioni sintetiche usano il nome Doorluma; le osservazioni storiche restano immutabili.
+
+App compilata riavviata su loopback3000; health/config200 e titolo Doorluma verificati. Letture del database applicativo:16 utenti,7 profili,4 immobili,4 migrazioni, inclusi i dati sintetici dell'audit precedente; nessun seed o reset eseguito in questa integrazione. Credenziali e dati locali ignorati sono conservati; i report temporanei sono rimossi dopo il salvataggio delle evidenze. La pubblicazione Git non attiva hosting, dominio, provider reddito o invii SMTP esterni; nessuna CI remota è dichiarata.

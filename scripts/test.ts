@@ -1,9 +1,14 @@
 import { spawn } from "node:child_process";
 import { startDatabase } from "./database.js";
-import { localConfig, databaseUrl } from "../server/config.js";
-if (process.env.DATABASE_URL)
+import { localConfig, databaseUrl, deployed } from "../server/config.js";
+if (
+  process.env.DATABASE_URL ||
+  deployed ||
+  (process.env.APP_ENV && process.env.APP_ENV !== "local") ||
+  (process.env.MAIL_TRANSPORT && process.env.MAIL_TRANSPORT !== "local")
+)
   throw new Error(
-    "Tests will not use DATABASE_URL. Unset it to use the isolated local soglia_test database.",
+    "Tests require local mail, APP_ENV=local and no DATABASE_URL; use the isolated generated soglia_test database.",
   );
 localConfig();
 const db = await startDatabase();

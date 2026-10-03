@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { api, dateLabel, useLoad } from "./api";
+import { brand } from "./brand";
 
 export const incomeLabels: Record<string, string> = {
   not_requested: "Non richiesta",
@@ -106,7 +107,7 @@ export function IncomeSummary({ value }: { value: any }) {
         </div>
         <div>
           <dt>Emittente</dt>
-          <dd>{value.provider || "Simulatore locale Soglia"}</dd>
+          <dd>{value.provider || `Simulatore locale ${brand.name}`}</dd>
         </div>
         <div>
           <dt>Fonte e controllo</dt>

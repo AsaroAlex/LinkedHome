@@ -3,14 +3,45 @@ import {
   useRef,
   useState,
   useId,
+  createContext,
+  useContext,
   type FormEvent,
   type ReactNode,
 } from "react";
 import { api, useLoad, formValues, dateLabel, ApiError } from "./api";
 import { brand, statuses, reasonLabels } from "./brand";
+import {
+  RoleGuide,
+  ProductFAQ,
+  RoleSelection,
+  PasswordField,
+  NextSteps,
+  quickReplies,
+} from "./experience";
 import { cities } from "../server/domain";
 import type { User } from "../server/auth";
 import { IncomeWorkspace, InvitationIncome } from "./Income";
+type RuntimeConfig = {
+  environment: "local" | "staging" | "production";
+  mailTransport: "local" | "smtp";
+};
+const RuntimeContext = createContext<RuntimeConfig | null>(null);
+function validRuntime(value: unknown): RuntimeConfig | null {
+  if (!value || typeof value !== "object") return null;
+  const config = value as Partial<RuntimeConfig>;
+  return ["local", "staging", "production"].includes(
+    config.environment || "",
+  ) && ["local", "smtp"].includes(config.mailTransport || "")
+    ? (config as RuntimeConfig)
+    : null;
+}
+function verificationInstructions(runtime: RuntimeConfig | null) {
+  if (runtime?.mailTransport === "local")
+    return "Il link è nel messaggio locale disponibile all’operatore. Nessuna email viene inviata: questa conferma non prova il controllo di una casella reale, l’identità o il reddito.";
+  if (runtime?.mailTransport === "smtp")
+    return "Apri il link di conferma dalla tua casella email. Controlla anche la cartella spam. La conferma riguarda l’indirizzo email, non l’identità o il reddito.";
+  return "Apri un link di conferma valido per confermare l’indirizzo. Questa conferma non verifica l’identità o il reddito.";
+}
 const initialDay = () =>
   new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10);
 function go(path: string) {
@@ -253,6 +284,8 @@ function useAction() {
 }
 
 export function App() {
+  const config = useLoad<unknown>("/config"),
+    runtime = validRuntime(config.data);
   const [path, setPath] = useState(location.pathname),
     [user, setUser] = useState<User | null>(null),
     [ready, setReady] = useState(false),
@@ -316,13 +349,19 @@ export function App() {
     "/account/reset",
   ].includes(path);
   return (
-    <>
+    <RuntimeContext.Provider value={runtime}>
       <a className="skip-link" href="#main">
         Vai al contenuto
       </a>
-      <div className="environment">
-        Ambiente dimostrativo · dati sintetici · nessun annuncio reale
-      </div>
+      {runtime?.environment === "local" ? (
+        <div className="environment">
+          Ambiente dimostrativo · dati sintetici · nessun annuncio reale
+        </div>
+      ) : runtime?.environment === "staging" ? (
+        <div className="environment">
+          Ambiente di test · non usare dati o documenti reali
+        </div>
+      ) : null}
       <header className="header">
         <div className="header-inner">
           <Link to="/" className="logo">
@@ -345,7 +384,7 @@ export function App() {
                 </Link>
                 <Link to="/login">Accedi</Link>
                 <Link to="/register" className="button small">
-                  Inizia qui <Arrow />
+                  Crea account <Arrow />
                 </Link>
               </>
             )}
@@ -439,7 +478,7 @@ export function App() {
         ) : path === "/safeguards" ? (
           <Safeguards />
         ) : path === "/login" || path === "/register" ? (
-          <Auth register={path === "/register"} refresh={refresh} />
+          <Auth key={path} register={path === "/register"} refresh={refresh} />
         ) : path === "/forgot" || path.startsWith("/account/") ? (
           <Recovery key={path} path={path} refresh={refresh} />
         ) : path === "/dashboard" ? (
@@ -453,7 +492,7 @@ export function App() {
         ) : path === "/invitations" ? (
           <InvitationsPage user={user!} />
         ) : path.startsWith("/conversations/") ? (
-          <Conversation id={path.split("/")[2]} user={user!} />
+          <Conversation key={path} id={path.split("/")[2]} user={user!} />
         ) : path === "/verification" ? (
           <VerificationPage user={user!} />
         ) : path === "/settings" ? (
@@ -462,7 +501,7 @@ export function App() {
           <Staff key={path} path={path} user={user!} />
         ) : (
           <>
-            <PageHeading eyebrow="404" title="Questa porta non si apre." />
+            <PageHeading eyebrow="404" title="Pagina non trovata" />
             <Link to="/dashboard" className="button">
               Torna al tuo spazio
             </Link>
@@ -475,14 +514,20 @@ export function App() {
             <Mark />
             {brand.name}.
           </Link>
-          <p>Più chiarezza. Il tuo prossimo inizio.</p>
+          <p>Profili, immobili e inviti. Il primo contatto parte da qui.</p>
         </div>
         <div>
           <Link to="/safeguards">Controllo e trasparenza</Link>
-          <p>Prototipo locale · nome di lavoro</p>
+          <p>
+            {runtime?.environment === "local"
+              ? "Prototipo locale · nome di lavoro"
+              : runtime?.environment === "staging"
+                ? "Ambiente di test · nome di lavoro"
+                : "Nome di lavoro"}
+          </p>
         </div>
       </footer>
-    </>
+    </RuntimeContext.Provider>
   );
 }
 function Landing() {
@@ -491,8 +536,8 @@ function Landing() {
       <section className="hero container">
         <div className="hero-copy">
           <span className="eyebrow">
-            <span className="tiny-line" /> Affittare, con un altro punto di
-            vista
+            <span className="tiny-line" /> LA TUA RICERCA, GLI INVITI DEI
+            PROPRIETARI
           </span>
           <h1 tabIndex={-1}>
             La prossima casa
@@ -500,15 +545,15 @@ function Landing() {
             comincia <em>da te.</em>
           </h1>
           <p className="hero-description">
-            Racconta cosa cerchi. Lascia che siano i proprietari a invitarti.
-            Scegli tu con chi iniziare una conversazione.
+            Indica dove vuoi vivere, il budget e quando vuoi trasferirti. Ricevi
+            inviti per immobili compatibili e scegli con chi parlare.
           </p>
           <div className="actions">
             <Link to="/register" className="button">
               Cerco casa <Arrow />
             </Link>
-            <Link to="/register?role=landlord" className="text-link">
-              Offro un immobile <span aria-hidden="true">→</span>
+            <Link to="/register?role=landlord" className="button secondary">
+              Voglio affittare <span aria-hidden="true">→</span>
             </Link>
           </div>
           <div className="hero-note">
@@ -516,9 +561,9 @@ function Landing() {
               ✳
             </span>
             <span>
-              Il tuo profilo, le tue scelte.
+              Profilo privato fino alla pubblicazione.
               <br />
-              <strong>Nessun costo per ricevere inviti.</strong>
+              <strong>Il nome è visibile solo dopo un invito accettato.</strong>
             </span>
           </div>
         </div>
@@ -563,12 +608,14 @@ function Landing() {
             </span>
             <div>
               <span className="mini-label">IL PRIMO PASSO</span>
-              <strong>Un invito che ti somiglia.</strong>
-              <small>Tu decidi se aprire la conversazione.</small>
+              <strong>Un immobile compatibile con la tua ricerca.</strong>
+              <small>
+                Leggi i dettagli e scegli se parlare con il proprietario.
+              </small>
             </div>
           </div>
           <span className="visual-caption">
-            Meno rincorse, più incontri pertinenti.
+            Esempio illustrativo · nessuna offerta reale
           </span>
         </div>
       </section>
@@ -581,40 +628,7 @@ function Landing() {
           <span>Condivisione sotto controllo</span>
         </div>
       </section>
-      <section className="container how">
-        <div className="section-heading">
-          <span className="eyebrow">COME FUNZIONA</span>
-          <h2>Tre passi. Una nuova possibilità.</h2>
-          <p>
-            Un modo più semplice di iniziare, da entrambi i lati della porta.
-          </p>
-        </div>
-        <div className="steps">
-          {[
-            [
-              "01",
-              "Prepara il tuo profilo",
-              "Città, budget, tempi e persone. Parti dalle cose che contano e pubblica solo quando sei pronto.",
-            ],
-            [
-              "02",
-              "Ricevi un invito pertinente",
-              "Un proprietario vede le preferenze compatibili con il suo immobile e ti invita a parlarne.",
-            ],
-            [
-              "03",
-              "Apri la conversazione",
-              "Leggi l’offerta, scegli se accettare e inizia a conoscere chi c’è dall’altra parte.",
-            ],
-          ].map(([n, t, d]) => (
-            <article key={n}>
-              <span className="step-number">{n}</span>
-              <h3>{t}</h3>
-              <p>{d}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <RoleGuide />
       <section className="container trust-section">
         <div>
           <span className="eyebrow">
@@ -641,15 +655,17 @@ function Landing() {
           </Link>
         </div>
       </section>
+      <ProductFAQ />
     </>
   );
 }
 function Safeguards() {
+  const runtime = useContext(RuntimeContext);
   return (
     <>
       <PageHeading
         eyebrow="Come funziona"
-        title="Chiarezza, prima del primo messaggio."
+        title="Come funzionano profili e inviti"
       >
         Tu scegli quando renderti visibile e con chi parlare.
       </PageHeading>
@@ -691,24 +707,43 @@ function Safeguards() {
         </p>
         <h2>Verifiche e segnalazioni</h2>
         <p>
-          In un servizio reale, confermare un’email può indicare il controllo di
-          quell’indirizzo. Qui il link è generato localmente e nessuna email
-          viene inviata. I servizi di verifica d’identità e reddito non sono
-          disponibili in questo prototipo. L’autorizzazione a offrire un
-          immobile è autodichiarata.
+          {verificationInstructions(runtime)} I servizi di verifica d’identità e
+          reddito non sono disponibili. L’autorizzazione a offrire un immobile è
+          autodichiarata.
         </p>
         <p>
           Una segnalazione rende visibili agli operatori la tua identità di
           account, l’invito, il motivo e l’eventuale messaggio selezionato. Non
           apre l’intera conversazione.
         </p>
-        <h2>Una dimostrazione locale</h2>
-        <p>
-          Questo ambiente contiene esempi sintetici: non caricare dati o
-          documenti reali. Non è un servizio aperto al pubblico. Prima del
-          lancio serviranno un titolare operativo, assistenza e condizioni e
-          informative definitive.
-        </p>
+        {runtime?.environment === "local" ? (
+          <>
+            <h2>Una dimostrazione locale</h2>
+            <p>
+              Questo ambiente contiene esempi sintetici: non caricare dati o
+              documenti reali. Non è un servizio aperto al pubblico. Prima del
+              lancio serviranno un titolare operativo, assistenza e condizioni e
+              informative definitive.
+            </p>
+          </>
+        ) : runtime?.environment === "staging" ? (
+          <>
+            <h2>Un ambiente di test</h2>
+            <p>
+              Usa questo ambiente per provare il servizio con dati di esempio.
+              Non caricare dati o documenti reali.
+            </p>
+          </>
+        ) : (
+          <>
+            <h2>Il controllo resta tuo</h2>
+            <p>
+              Pubblica solo le preferenze e gli immobili che vuoi condividere.
+              Non inserire documenti, credenziali bancarie o dati finanziari nei
+              messaggi. Non gestiamo pagamenti o contratti di affitto.
+            </p>
+          </>
+        )}
         <Link to="/register" className="button">
           Crea il tuo spazio
         </Link>
@@ -736,15 +771,15 @@ function Auth({
   return (
     <div className="auth-layout">
       <div className="auth-intro">
-        <span className="eyebrow">IL TUO PROSSIMO INIZIO</span>
+        <span className="eyebrow">IL TUO ACCOUNT</span>
         <h1 tabIndex={-1}>
           {register
-            ? "Facciamo spazio\nal tuo progetto."
-            : "Bentornato\nnel tuo spazio."}
+            ? "Inizia la ricerca.\nO trova il tuo inquilino."
+            : "Bentornato.\nRiprendi da qui."}
         </h1>
         <p>
           {register
-            ? "Cerchi casa, offri un immobile o entrambe le cose? Comincia da qui."
+            ? "Scegli come usare la piattaforma. Dopo la registrazione potrai preparare il profilo o aggiungere un immobile."
             : "Riprendi le conversazioni e ritrova le tue preferenze."}
         </p>
         <div className="auth-art" aria-hidden="true">
@@ -762,32 +797,19 @@ function Auth({
           <Field name="display_name" label="Come vuoi essere chiamato?" />
         )}
         <Field name="email" label="Email" type="email" />
-        <Field
-          name="password"
-          label="Password"
-          type="password"
-          autoComplete={register ? "new-password" : "current-password"}
-        />
+        <PasswordField register={register} />
         {register && (
           <>
             <p className="field-hint">
               Almeno 12 caratteri. Il nome può essere uno pseudonimo.
             </p>
-            <Field name="role" label="Il tuo progetto">
-              <select
-                name="role"
-                defaultValue={
-                  new URLSearchParams(location.search).get("role") ===
-                  "landlord"
-                    ? "landlord"
-                    : "tenant"
-                }
-              >
-                <option value="tenant">Cerco casa</option>
-                <option value="landlord">Offro un immobile</option>
-                <option value="both">Entrambe le cose</option>
-              </select>
-            </Field>
+            <RoleSelection
+              defaultRole={
+                new URLSearchParams(location.search).get("role") === "landlord"
+                  ? "landlord"
+                  : "tenant"
+              }
+            />
             <p className="small-copy">
               Il profilo sarà privato finché non scegli di pubblicarlo.{" "}
               <Link to="/safeguards">Leggi cosa condividi.</Link>
@@ -824,7 +846,8 @@ function Recovery({
   path: string;
   refresh: () => Promise<void>;
 }) {
-  const a = useAction();
+  const a = useAction(),
+    runtime = useContext(RuntimeContext);
   const [secret] = useState(() =>
     /^[a-f0-9]{64}$/.test(location.hash.slice(1)) ? location.hash.slice(1) : "",
   );
@@ -850,10 +873,18 @@ function Recovery({
         await refresh();
       },
       verify
-        ? "Conferma locale completata. Puoi esplorare pubblicazione e inviti sintetici."
+        ? runtime?.mailTransport === "local"
+          ? "Conferma locale completata. Puoi continuare nel tuo spazio."
+          : runtime?.mailTransport === "smtp"
+            ? "Email confermata. Puoi continuare nel tuo spazio."
+            : "Conferma completata. Puoi continuare nel tuo spazio."
         : reset
           ? "Password aggiornata. Accedi con la nuova password."
-          : "Se l’indirizzo è registrato, le istruzioni sono nel messaggio locale disponibile all’operatore. Nessuna email viene inviata.",
+          : runtime?.mailTransport === "local"
+            ? "Se l’indirizzo è registrato, le istruzioni sono nel messaggio locale disponibile all’operatore. Nessuna email viene inviata."
+            : runtime?.mailTransport === "smtp"
+              ? "Se l’indirizzo è registrato, controlla la tua casella email e la cartella spam per le istruzioni di recupero."
+              : "Se l’indirizzo è registrato, la richiesta di recupero è stata ricevuta.",
     );
   }
   return (
@@ -891,11 +922,7 @@ function Recovery({
         ) : (
           <>
             {verify ? (
-              <p>
-                In questa demo confermi un link generato localmente. Nessuna
-                email viene inviata e non è verificato il controllo di una
-                casella reale.
-              </p>
+              <p>{verificationInstructions(runtime)}</p>
             ) : (
               <Field
                 name={reset ? "password" : "email"}
@@ -920,7 +947,9 @@ function Recovery({
             </button>
             {(verify || reset) && !secret && (
               <p role="alert">
-                Apri il link completo del messaggio locale.{" "}
+                {runtime?.mailTransport === "local"
+                  ? "Apri il link completo del messaggio locale."
+                  : "Apri il link completo di conferma o recupero."}{" "}
                 <Link to="/forgot">Richiedi un nuovo recupero</Link> oppure{" "}
                 <Link to="/verification">reinvia la conferma</Link>.
               </p>
@@ -932,7 +961,8 @@ function Recovery({
   );
 }
 function Dashboard({ user }: { user: User }) {
-  const inv = useLoad("/dashboard");
+  const inv = useLoad("/dashboard"),
+    runtime = useContext(RuntimeContext);
   const pending = inv.data?.pending ?? "—",
     accepted = inv.data?.accepted ?? "—";
   return (
@@ -941,14 +971,17 @@ function Dashboard({ user }: { user: User }) {
         eyebrow="IL TUO SPAZIO"
         title={`Ciao, ${user.display_name}.`}
       >
-        Un passo alla volta, verso il tuo prossimo incontro.
+        Gestisci la tua ricerca, gli immobili e le conversazioni da un unico
+        posto.
       </PageHeading>
       {!user.email_verified && (
         <div className="alert">
           <strong>Conferma la tua email per pubblicare e contattare.</strong>{" "}
+          {verificationInstructions(runtime)}{" "}
           <Link to="/verification">Vai alle verifiche →</Link>
         </div>
       )}
+      <NextSteps role={user.role} verified={user.email_verified} />
       <div className="dashboard-stats">
         <div>
           <span className="stat-number">{pending}</span>
@@ -972,31 +1005,23 @@ function Dashboard({ user }: { user: User }) {
         {user.role !== "landlord" && (
           <article className="feature-card">
             <span className="eyebrow">CERCO CASA</span>
-            <h2>
-              Una casa che incontra
-              <br />
-              le tue preferenze.
-            </h2>
+            <h2>Il tuo profilo di ricerca</h2>
             <p>
-              Racconta cosa cerchi. Il tuo nome resta privato prima di un invito
-              accettato.
+              Aggiorna città, budget e date. Pubblica le preferenze per ricevere
+              inviti; mettile in pausa quando vuoi interrompere la ricerca.
             </p>
             <Link to="/profile" className="button">
-              Prepara il tuo profilo <Arrow />
+              Gestisci il tuo profilo <Arrow />
             </Link>
           </article>
         )}
         {user.role !== "tenant" && (
           <article className="feature-card warm">
             <span className="eyebrow">OFFRO UN IMMOBILE</span>
-            <h2>
-              Incontra chi cerca
-              <br />
-              proprio quello spazio.
-            </h2>
+            <h2>I tuoi immobili</h2>
             <p>
-              Pubblica le caratteristiche dell’immobile e scopri preferenze
-              compatibili.
+              Aggiungi o modifica gli immobili. Mantieni aggiornata la
+              disponibilità per continuare a invitare profili compatibili.
             </p>
             <Link to="/properties" className="button">
               I tuoi immobili <Arrow />
@@ -1005,11 +1030,7 @@ function Dashboard({ user }: { user: User }) {
         )}
         <article className="panel">
           <span className="eyebrow">DA UN INVITO A UN INCONTRO</span>
-          <h2>
-            La conversazione
-            <br />
-            inizia con una scelta.
-          </h2>
+          <h2>Inviti e conversazioni</h2>
           <p>
             Leggi gli inviti, controlla i dettagli e decidi se iniziare a
             parlare.
@@ -1057,8 +1078,9 @@ function ProfilePage() {
   }
   return (
     <>
-      <PageHeading eyebrow="CERCO CASA" title="Partiamo da ciò che cerchi.">
-        Poche preferenze concrete. Nessun punteggio su di te.
+      <PageHeading eyebrow="CERCO CASA" title="Il tuo profilo di ricerca">
+        Salva le preferenze e controlla l’anteprima. Poi pubblicale per ricevere
+        inviti pertinenti.
       </PageHeading>
       <ErrorBox text={a.error} />
       {a.message && <Notice>{a.message}</Notice>}
@@ -1130,14 +1152,14 @@ function ProfilePage() {
         </form>
         <aside className="panel preview">
           <span className="eyebrow">PRIMA DI PUBBLICARE</span>
-          <h2>
-            Questo è ciò
-            <br />
-            che condividi.
-          </h2>
+          <h2>Anteprima delle preferenze</h2>
           <p>
             Città, budget, ingresso, durata e numero di persone saranno visibili
             ai proprietari autenticati con un immobile pertinente.
+          </p>
+          <p className="small-copy">
+            L’anteprima mostra le ultime preferenze salvate. Salva le modifiche
+            prima di pubblicarle.
           </p>
           <p>
             <strong>
@@ -1231,6 +1253,11 @@ function PropertyForm({
   return (
     <form ref={formRef} className="panel" onSubmit={save}>
       <h2>{property ? "Modifica immobile" : "Descrivi il tuo immobile"}</h2>
+      <p>
+        {property
+          ? "Le modifiche annullano gli inviti in attesa. Le conversazioni aperte conservano i dettagli dell’offerta originale."
+          : "Salva l’immobile come bozza privata. Potrai controllare i dettagli prima di pubblicarlo."}
+      </p>
       <ErrorBox text={a.error} />
       <Field name="title" label="Titolo" value={property?.title} />
       <div className="form-grid">
@@ -1362,10 +1389,7 @@ function PropertiesPage() {
   }
   return (
     <>
-      <PageHeading
-        eyebrow="OFFRO UN IMMOBILE"
-        title="Ogni spazio, una possibilità."
-      >
+      <PageHeading eyebrow="OFFRO UN IMMOBILE" title="I tuoi immobili">
         Pubblica dettagli chiari. Riconferma la disponibilità almeno ogni 30
         giorni.
       </PageHeading>
@@ -1404,8 +1428,11 @@ function PropertiesPage() {
           {!l.data && !l.error ? (
             <Loading />
           ) : l.data?.properties.length === 0 ? (
-            <Empty title="La tua prima porta da aprire">
-              <p>Aggiungi un immobile per scoprire preferenze compatibili.</p>
+            <Empty title="Non hai ancora aggiunto immobili">
+              <p>
+                Inizia con città, costo e disponibilità. Dopo la pubblicazione
+                potrai invitare i profili compatibili.
+              </p>
             </Empty>
           ) : (
             <div className="two-grid">
@@ -1579,10 +1606,11 @@ function DiscoverPage() {
   return (
     <>
       <PageHeading
-        eyebrow="INCONTRI POSSIBILI"
-        title="Le preferenze incontrano il tuo spazio."
+        eyebrow="TROVA IL TUO INQUILINO"
+        title="Profili compatibili con il tuo immobile"
       >
-        Criteri chiari, nessuna classifica delle persone.
+        Scegli un immobile, confronta le preferenze e invia un invito per
+        iniziare a parlare.
       </PageHeading>
       <ErrorBox text={properties.error || l.error || a.error} />
       {a.message && <Notice>{a.message}</Notice>}
@@ -1645,7 +1673,7 @@ function DiscoverPage() {
           {!l.data && !l.error ? (
             <Loading />
           ) : l.data?.profiles.length === 0 ? (
-            <Empty title="Qui c’è spazio per il prossimo incontro">
+            <Empty title="Nessun nuovo profilo compatibile">
               <p>
                 Nessun nuovo profilo compatibile in questa pagina. Potresti aver
                 già invitato i profili disponibili.
@@ -1802,11 +1830,9 @@ function InvitationsPage({ user }: { user: User }) {
   }
   return (
     <>
-      <PageHeading
-        eyebrow="IL PRIMO CONTATTO"
-        title="Da qui può nascere qualcosa."
-      >
-        Ogni invito riguarda un immobile preciso. Scegli con calma.
+      <PageHeading eyebrow="IL PRIMO CONTATTO" title="Inviti e messaggi">
+        Controlla i dettagli dell’immobile prima di rispondere. Accettare un
+        invito apre la chat e non ti impegna ad affittare.
       </PageHeading>
       <HistoryPager
         page={page}
@@ -1828,7 +1854,9 @@ function InvitationsPage({ user }: { user: User }) {
             to={user.role === "landlord" ? "/discover" : "/profile"}
             className="button"
           >
-            Il prossimo passo
+            {user.role === "landlord"
+              ? "Scopri profili compatibili"
+              : "Controlla il tuo profilo"}
           </Link>
         </Empty>
       ) : (
@@ -1972,12 +2000,14 @@ function InvitationsPage({ user }: { user: User }) {
   );
 }
 function Conversation({ id, user }: { id: string; user: User }) {
-  const [before, setBefore] = useState(""),
+  const runtime = useContext(RuntimeContext),
+    [before, setBefore] = useState(""),
     l = useLoad(`/conversations/${id}${before ? `?before=${before}` : ""}`),
     inv = useLoad(`/invitations/${id}`),
     a = useAction(),
     [report, setReport] = useState<string | null>(null),
-    form = useRef<HTMLFormElement>(null);
+    form = useRef<HTMLFormElement>(null),
+    [draft, setDraft] = useState("");
   const info = inv.data?.invitation;
   async function send(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -1985,6 +2015,7 @@ function Conversation({ id, user }: { id: string; user: User }) {
     await a.run(async () => {
       await api(`/conversations/${id}/messages`, "POST", v);
       form.current?.reset();
+      setDraft("");
       setBefore("");
       l.reload();
     }, "Messaggio inviato.");
@@ -2072,16 +2103,50 @@ function Conversation({ id, user }: { id: string; user: User }) {
           </div>
           {l.data?.status === "accepted" ? (
             <form className="composer" onSubmit={send} ref={form}>
+              <fieldset className="quick-replies">
+                <legend>
+                  Un punto di partenza: modifica il testo prima di inviare.
+                </legend>
+                <div>
+                  {quickReplies[
+                    info?.tenant_id === user.id ? "tenant" : "landlord"
+                  ].map(([label, text]) => (
+                    <button
+                      key={label}
+                      type="button"
+                      disabled={
+                        !info ||
+                        a.busy ||
+                        draft.length + text.length + (draft ? 2 : 0) > 2000
+                      }
+                      onClick={() => {
+                        setDraft((current) =>
+                          current ? `${current}\n\n${text}` : text,
+                        );
+                        form.current
+                          ?.querySelector<HTMLTextAreaElement>("textarea")
+                          ?.focus();
+                      }}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
               <label className="field">
                 <span>Il tuo messaggio</span>
                 <textarea
                   name="body"
                   maxLength={2000}
                   required
+                  disabled={a.busy}
                   rows={3}
                   placeholder="Ciao, grazie per l’invito…"
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
                 />
               </label>
+              <p className="message-count">{draft.length} / 2.000 caratteri</p>
               <button className="button" disabled={a.busy}>
                 Invia messaggio →
               </button>
@@ -2094,15 +2159,35 @@ function Conversation({ id, user }: { id: string; user: User }) {
           {a.message && <Notice>{a.message}</Notice>}
         </section>
         <aside className="panel chat-aside">
+          {info && (
+            <div className="chat-property">
+              <span className="eyebrow">L’IMMOBILE DELL’INVITO</span>
+              <strong>{info.property.title}</strong>
+              <p>
+                {info.property.city} · {info.property.area}
+              </p>
+              <p>€{info.property.rent} / mese, spese obbligatorie incluse</p>
+              <p>
+                Dal {dateLabel(info.property.available_from)} ·{" "}
+                {info.property.min_months}–{info.property.max_months} mesi
+              </p>
+              {info.property_changed && (
+                <p>
+                  I dettagli attuali sono cambiati. Qui vedi l’offerta
+                  dell’invito: chiarite le nuove condizioni in chat.
+                </p>
+              )}
+            </div>
+          )}
           <span className="eyebrow">IL CONTROLLO RESTA TUO</span>
-          <h2>
-            Sentiti libero
-            <br />
-            di fermarti.
-          </h2>
+          <h2>Gestisci il contatto</h2>
           <p>
-            Non condividere documenti, credenziali bancarie o denaro qui. Questo
-            spazio è una dimostrazione locale.
+            Non condividere documenti, credenziali bancarie o denaro qui.{" "}
+            {runtime?.environment === "local"
+              ? "Questo spazio è una dimostrazione locale."
+              : runtime?.environment === "staging"
+                ? "Questo è un ambiente di test: usa solo dati di esempio."
+                : "Puoi segnalare un messaggio o bloccare un contatto."}
           </p>
           <button
             className="button secondary full"
@@ -2152,15 +2237,13 @@ function Conversation({ id, user }: { id: string; user: User }) {
 }
 function VerificationPage({ user }: { user: User }) {
   const l = useLoad("/verification"),
-    a = useAction();
+    a = useAction(),
+    runtime = useContext(RuntimeContext);
   if (!l.data && !l.error) return <Loading />;
   if (l.error)
     return (
       <>
-        <PageHeading
-          eyebrow="TRASPARENZA"
-          title="Ogni verifica ha un significato."
-        />
+        <PageHeading eyebrow="IL TUO ACCOUNT" title="Email e verifiche" />
         <ErrorBox text={l.error} />
         <button className="button secondary" onClick={l.reload}>
           Riprova a caricare
@@ -2169,11 +2252,9 @@ function VerificationPage({ user }: { user: User }) {
     );
   return (
     <>
-      <PageHeading
-        eyebrow="TRASPARENZA"
-        title="Ogni verifica ha un significato."
-      >
-        Una conferma precisa, mai un giudizio sulla persona.
+      <PageHeading eyebrow="IL TUO ACCOUNT" title="Email e verifiche">
+        Conferma l’email per pubblicare e contattare. Controlla qui quali
+        verifiche sono disponibili e cosa attestano.
       </PageHeading>
       <ErrorBox text={l.error || a.error} />
       {a.message && <Notice>{a.message}</Notice>}
@@ -2181,15 +2262,10 @@ function VerificationPage({ user }: { user: User }) {
         <article className="panel">
           <span className="eyebrow">IL TUO INDIRIZZO</span>
           <h2>
-            Conferma locale{" "}
-            {l.data?.email_verified ? "completata" : "da completare"}
+            {runtime?.mailTransport === "local" ? "Conferma locale" : "Email"}{" "}
+            {l.data?.email_verified ? "confermata" : "da confermare"}
           </h2>
-          <p>
-            In questo ambiente il link è generato in un messaggio locale per
-            l’operatore. Nessuna email viene inviata: questa conferma
-            dimostrativa non prova il controllo di una casella reale, l’identità
-            o il reddito.
-          </p>
+          <p>{verificationInstructions(runtime)}</p>
           {!l.data?.email_verified && (
             <button
               className="button"
@@ -2197,7 +2273,11 @@ function VerificationPage({ user }: { user: User }) {
               onClick={() =>
                 a.run(
                   () => api("/auth/resend", "POST"),
-                  "Nuovo messaggio di conferma preparato.",
+                  runtime?.mailTransport === "local"
+                    ? "Nuovo messaggio di conferma preparato per l’operatore locale. Nessuna email viene inviata."
+                    : runtime?.mailTransport === "smtp"
+                      ? "Richiesta ricevuta. Controlla la tua casella email e la cartella spam per il link di conferma."
+                      : "Richiesta di conferma ricevuta.",
                 )
               }
             >
@@ -2276,7 +2356,7 @@ function Settings({
       );
       const link = document.createElement("a");
       link.href = url;
-      link.download = "soglia-dati.json";
+      link.download = `${brand.slug}-dati.json`;
       link.click();
       URL.revokeObjectURL(url);
     }, "Esportazione preparata. Conserva il file in un luogo sicuro.");
@@ -2369,9 +2449,9 @@ function Settings({
             Rimuove profilo, immobili, messaggi inviati e conversazioni
             collegate. Le altre persone potrebbero non vederle più. Non revoca
             copie già scaricate. Le segnalazioni di altre persone conservano il
-            solo contesto selezionato. Nella demo l’operatore elimina i casi più
-            vecchi di 30 giorni tramite la pulizia periodica; la cancellazione
-            non è automatica.
+            solo contesto selezionato. L’operatore elimina i casi più vecchi di
+            30 giorni tramite la pulizia periodica; la cancellazione non è
+            automatica.
           </p>
           {deleting ? (
             <form onSubmit={remove}>
@@ -2395,7 +2475,8 @@ function Settings({
   );
 }
 function Staff({ path, user }: { path: string; user: User }) {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(0),
+    runtime = useContext(RuntimeContext);
   const isUsers = path === "/staff/users",
     analytics = path === "/staff/analytics",
     allowed =
@@ -2459,8 +2540,12 @@ function Staff({ path, user }: { path: string; user: User }) {
       ) : analytics && l.data ? (
         <>
           <p className="disclosure">
-            Conteggi del workflow locale con dati sintetici. Non misurano
-            domanda, liquidità o risultati di mercato.
+            {runtime?.environment === "local"
+              ? "Conteggi del workflow locale con dati sintetici."
+              : runtime?.environment === "staging"
+                ? "Conteggi dell’attività nell’ambiente di test."
+                : "Conteggi dell’attività nell’ambiente corrente."}{" "}
+            Non misurano domanda, liquidità o risultati di mercato.
           </p>
           <div className="three-grid">
             {[
@@ -2663,7 +2748,8 @@ function HistoryPager({
   ) : null;
 }
 function Suspended({ user }: { user: User }) {
-  const a = useAction();
+  const a = useAction(),
+    runtime = useContext(RuntimeContext);
   return (
     <>
       <PageHeading
@@ -2679,9 +2765,11 @@ function Suspended({ user }: { user: User }) {
           Riferimento account: {user.id}.
         </p>
         <p>
-          In questo ambiente dimostrativo la richiesta è registrata per
-          l’operatore locale. Non è attivo un servizio di assistenza per utenti
-          reali.
+          {runtime?.environment === "local"
+            ? "In questo ambiente dimostrativo la richiesta è registrata per l’operatore locale. Non è attivo un servizio di assistenza per utenti reali."
+            : runtime?.environment === "staging"
+              ? "La richiesta è registrata per l’operatore dell’ambiente di test."
+              : "La richiesta è registrata per gli operatori autorizzati. Puoi consultare i tuoi dati dalla pagina Account."}
         </p>
         <ErrorBox text={a.error} />
         {a.message && <Notice>{a.message}</Notice>}
@@ -2691,7 +2779,9 @@ function Suspended({ user }: { user: User }) {
             const reason = String(formValues(e.currentTarget).reason);
             void a.run(
               () => api("/account/appeal", "POST", { reason }),
-              "Richiesta di revisione registrata per l’amministratore locale.",
+              runtime?.environment === "local"
+                ? "Richiesta di revisione registrata per l’amministratore locale."
+                : "Richiesta di revisione registrata per gli operatori autorizzati.",
             );
           }}
         >

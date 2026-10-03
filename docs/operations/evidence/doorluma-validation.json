@@ -1,0 +1,71 @@
+{
+  "checked_at_utc": "2026-10-03T20:34:19.463317+00:00",
+  "scope": "Doorluma brand/domain preparation; isolated snapshot of staged source changes, excluding concurrent UX changes",
+  "base_commit": "b769c79",
+  "tested_source_tree": "50ba8c6c056919a46f226d957c5caba8ba028a66",
+  "dependencies": "Existing pinned node_modules reused; no new install or dependency changes",
+  "checks": {
+    "local_bootstrap": {
+      "command": "npm run bootstrap",
+      "outcome": "PASS",
+      "database": "new isolated synthetic fixture; original application data not used"
+    },
+    "build": {
+      "command": "npm run build",
+      "outcome": "PASS",
+      "typescript": "PASS",
+      "vite": "PASS"
+    },
+    "unit_integration_smtp": {
+      "command": "npm test",
+      "outcome": "PASS",
+      "files": 6,
+      "tests": 136,
+      "duration_seconds": 15.04,
+      "external_mail_sent": false
+    },
+    "browser": {
+      "command": "npm run test:e2e",
+      "outcome": "PASS",
+      "scenarios": 14,
+      "duration_seconds": 22.0,
+      "export_filename": "doorluma-dati.json",
+      "accessibility_responsive": "existing configured checks passed"
+    },
+    "visual_review": {
+      "outcome": "PASS",
+      "screenshots": [
+        "doorluma-landing-desktop.png",
+        "doorluma-landing-mobile.png",
+        "doorluma-landing-320.png"
+      ],
+      "finding": "Brand fits desktop/mobile; narrow header keeps access and registration visible"
+    },
+    "runtime": {
+      "outcome": "PASS",
+      "health_ok": true,
+      "startup_log": "Doorluma HTTP service ready (local).",
+      "mobile_probe": {
+        "width": 320,
+        "scrollWidth": 320,
+        "title": "Doorluma \u2014 Affitti che iniziano da un invito.",
+        "robots": "noindex,nofollow",
+        "brand": "Doorluma."
+      }
+    },
+    "independent_review": {
+      "outcome": "No material finding remaining in the staged naming/domain scope; concurrent UX excluded"
+    }
+  },
+  "persistent_identifiers": "Database/cookies/session identifiers and migration files unchanged",
+  "not_performed": [
+    "domain purchase",
+    "live DNS configuration",
+    "sender verification",
+    "custom domain activation",
+    "trademark clearance",
+    "naming study with users",
+    "public deployment",
+    "additional push"
+  ]
+}

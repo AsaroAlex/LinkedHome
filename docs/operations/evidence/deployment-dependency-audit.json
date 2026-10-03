@@ -1,0 +1,24 @@
+{
+  "verified_at": "2026-10-03",
+  "auditReportVersion": 2,
+  "vulnerabilities": {},
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "dependencies": {
+      "prod": 93,
+      "dev": 104,
+      "optional": 82,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 224
+    }
+  },
+  "scope": "npm audit of updated lockfile; registry-known advisories, not a security certification"
+}

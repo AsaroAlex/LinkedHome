@@ -19,29 +19,33 @@
     "test": "tsx scripts/test.ts",
     "test:unit": "vitest run tests/domain.test.ts",
     "test:e2e": "playwright test",
-    "check": "npm run build && npm test && npm run test:e2e"
+    "test:e2e:experience": "playwright test --config=playwright.experience.config.ts",
+    "check": "npm run build && npm test && npm run test:e2e && npm run test:e2e:experience",
+    "deploy:check": "tsx scripts/deploy-check.ts"
   },
   "dependencies": {
     "@fastify/cookie": "11.1.2",
     "@fastify/rate-limit": "11.2.0",
     "@fastify/static": "10.1.5",
     "fastify": "5.12.5",
+    "nodemailer": "10.0.14",
     "pg": "8.23.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "tsx": "4.23.15",
     "zod": "4.6.5"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
     "@playwright/test": "1.63.0",
     "@types/node": "26.6.4",
+    "@types/nodemailer": "8.0.2",
     "@types/pg": "8.23.1",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.1",
     "embedded-postgres": "18.4.0-beta.17",
     "prettier": "3.9.9",
-    "tsx": "4.23.15",
     "typescript": "7.0.2",
     "vite": "8.3.2",
     "vitest": "5.0.3"

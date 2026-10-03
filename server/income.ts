@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { Problem } from "./domain.js";
+import { brand } from "../src/brand.js";
 
 export type IncomeStatus =
   | "not_requested"
@@ -78,7 +79,7 @@ export function demoIncomeResult(
           : scenario === "error"
             ? "FAILED"
             : "VERIFIED",
-    provider: "Simulatore locale Soglia · dati sintetici",
+    provider: `Simulatore locale ${brand.name} · dati sintetici`,
     provider_reference: `local-synthetic:${randomUUID()}`,
     synthetic: true,
     category,

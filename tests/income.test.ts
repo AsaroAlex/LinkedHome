@@ -4,6 +4,8 @@ import { buildApp } from "../server/app";
 import { makePool } from "../server/db";
 import { migrate } from "../scripts/migrate";
 import { digest, hashPassword, token } from "../server/auth";
+import type { RuntimeConfiguration } from "../server/config";
+import { brand } from "../src/brand";
 import {
   demoIncomeResult,
   incomeStatus,
@@ -21,11 +23,21 @@ if (
   throw new Error("Refusing income tests outside isolated local soglia_test.");
 const db = makePool(url);
 const origin = "http://127.0.0.1:3000";
-const app = await buildApp(db, { origin, limits: false, serveStatic: false });
-const disabledDemoApp = await buildApp(db, {
+const runtime: RuntimeConfiguration = {
+  environment: "local",
   origin,
+  mailTransport: "local",
+  trustedProxies: false,
+};
+const appOptions = {
+  runtime,
   limits: false,
   serveStatic: false,
+  mail: async () => {},
+};
+const app = await buildApp(db, appOptions);
+const disabledDemoApp = await buildApp(db, {
+  ...appOptions,
   incomeDemo: false,
 });
 const pwd = "Synthetic-income-only-passphrase";
@@ -208,6 +220,57 @@ describe("income source and private state", () => {
         authorization_reference: "synthetic-only",
       }),
     ).rejects.toMatchObject({ statusCode: 503, code: "provider_unavailable" });
+    for (const environment of ["staging", "production"] as const) {
+      const deployedOrigin = `https://${environment}.example.test`;
+      const deployedApp = await buildApp(db, {
+        ...appOptions,
+        runtime: {
+          ...runtime,
+          environment,
+          origin: deployedOrigin,
+          mailTransport: "smtp",
+        },
+        incomeDemo: true,
+      });
+      const deployedRequest = (
+        method: "GET" | "POST",
+        path: string,
+        payload?: object,
+      ) =>
+        deployedApp.inject({
+          method,
+          url: `/api${path}`,
+          headers: {
+            origin: deployedOrigin,
+            "content-type": "application/json",
+            cookie: tenant.cookie.replace(/^soglia=/, "__Host-soglia="),
+          },
+          payload,
+        });
+      try {
+        const state = await deployedRequest("GET", "/income");
+        expect(state.statusCode).toBe(200);
+        expect(state.json()).toMatchObject({
+          provider_available: false,
+          demo_available: false,
+          status: "not_requested",
+        });
+        const simulated = await deployedRequest("POST", "/income/demo", {
+          scenario: "completed",
+        });
+        expect(simulated.statusCode).toBe(503);
+        expect(simulated.json().code).toBe("provider_unavailable");
+        const real = await deployedRequest("POST", "/income/checks", {});
+        expect(real.statusCode).toBe(503);
+        expect(real.json().code).toBe("provider_unavailable");
+      } finally {
+        await deployedApp.close();
+      }
+    }
+    expect(
+      (await db.query("SELECT id FROM verification_checks WHERE kind='income'"))
+        .rows,
+    ).toEqual([]);
   });
   it.each([
     ["pending", "pending"],
@@ -222,7 +285,7 @@ describe("income source and private state", () => {
       expect(observation).toMatchObject({
         status: expected,
         synthetic: true,
-        provider: "Simulatore locale Soglia · dati sintetici",
+        provider: `Simulatore locale ${brand.name} · dati sintetici`,
         scope: "observed_net_income",
       });
       expect(new Date(observation.period_to).getTime()).toBeLessThan(
