@@ -90,3 +90,14 @@ Implementata l’estensione richiesta localmente: ricerca mirata, audit browser,
 ## Integrazione e pubblicazione richieste
 
 Il lavoro reddito `f4cf518` è unito alla storia remota Doorluma/UX/SMTP fino a `65f38ee` mediante merge nel checkout corrente. Verifica integrata completata: build/typecheck, 161 test backend, 19 scenari browser core/reddito/mail e 11 esperienza/mail, tutti passati; quattro scenari mail ripetuti. Review07 e [evidenza](docs/operations/evidence/income-integration.json) registrano correzioni runtime, fixture e marchio. Il branch da pubblicare è quello esistente `claude/sweet-goldberg-5lwng7`; `work` è il nome locale del checkout. Dati e credenziali locali restano preservati e ignorati; nessun deploy o provider reale attivato.
+
+## Ricerca economica e pull richiesto — 2026-10-03
+
+La richiesta di massimizzare redditività e contenere spesa è seguita da «Fai pull e unisci il lavoro». Eseguito pull ordinario fast-forward da `6d4805c` a `9db6a9c` su `origin/claude/sweet-goldberg-5lwng7`, mantenendo il checkout locale `work`. Nessun conflitto o sostituzione della storia.
+
+- [x] Ricerca ampliata su concorrenza, clienti, alternative gratuite, distribuzione, provider e partner.
+- [x] Due modelli riproducibili a 12/24 mesi con coorti, ore founder, costi iniziali, cassa, scenari e sensibilità; audit numerici indipendenti.
+- [x] [Sintesi economica](docs/research/12-sustainable-economics.md), [allegati](docs/research/economics-2026-10-03/README.md) e [review08](docs/reviews/review-08-economics.md) integrati nel repository.
+- [x] Verifica nuova del codice ottenuto dal pull: build/typecheck, 161 backend, 19 browser core/reddito/mail e 11 esperienza/mail, 26 scenari distinti. Evidenza in [pull-economics-integration](docs/operations/evidence/pull-economics-integration.json).
+
+La prima offerta da provare è un'installazione 790 € con manutenzione facoltativa, D-007 proposto. Nessuna vendita/intervista/campagna/acquisto o implementazione del pivot è effettuata. La ricerca reddituale e il flusso sintetico già implementati restano distinti dalla validazione economica. I comandi di test preservano dati e credenziali applicativi; gli esiti del controllo di avvio/migrazione sono registrati nell'evidenza dedicata.

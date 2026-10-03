@@ -1,0 +1,352 @@
+{
+  "as_of": "2026-10-03",
+  "legend": {
+    "H": "ipotizzato; da validare, non forecast",
+    "V": "verificato dalla fonte ufficiale indicata"
+  },
+  "general": {
+    "founder_hour_eur": {
+      "value": 30,
+      "status": "H"
+    },
+    "founder_cap_hours_month": {
+      "value": 160,
+      "status": "H"
+    },
+    "management_hours_month": {
+      "value": 12,
+      "status": "H",
+      "note": "Perimetro limitato; esclude tutte le ore di vendita/installazione/supporto già variabili. Stress40h."
+    },
+    "contractor_hour_eur": {
+      "value": 35,
+      "status": "H"
+    },
+    "setup_spread_months": {
+      "value": 3,
+      "status": "H"
+    },
+    "fixed_compliance_eur_month": {
+      "value": 100,
+      "status": "H",
+      "note": "Budget ipotetico per configurazione a dati minimi; non parere né preventivo."
+    },
+    "fixed_infrastructure_eur_month": {
+      "value": 50,
+      "status": "H"
+    },
+    "fixed_admin_eur_month": {
+      "value": 100,
+      "status": "H"
+    },
+    "entries_customer_month": {
+      "value": 100,
+      "status": "H",
+      "note": "Volume medio assunto SOLO su clienti serviti/ospitati o nuova installazione in garanzia; non volume osservato."
+    },
+    "exception_rate": {
+      "value": 0.05,
+      "status": "H",
+      "note": "H tecnica: errori di workflow da risolvere, NON selezione, lettura documenti o colloqui. Agenzia gestisce candidati/domande. 5% non proviene da dati osservati."
+    },
+    "minutes_per_exception": {
+      "value": 4,
+      "status": "H"
+    },
+    "warranty_support_hours_new_customer": {
+      "value": 0.25,
+      "status": "H",
+      "note": "G/H: garanzia primo mese; oltre0.25h è contata anche la gestione eccezioni. Nuove installazioni in manutenzione non duplicate."
+    },
+    "maintenance_attach": {
+      "value": 0.6,
+      "status": "H",
+      "note": "G/H: acquisto facoltativo del mantenimento, nessuna conversione implicita."
+    },
+    "support_hours_active_customer_month": {
+      "value": 0.25,
+      "status": "H"
+    },
+    "tool_cost_serviced_customer_month": {
+      "value": 3,
+      "status": "H",
+      "note": "Host/costi di servizio Soglia solo su Fattivi e su G/Hmanutenzione o primo mese garanzia. Le licenze CRM/form/tool di proprietà dell'agenzia sono a suo carico."
+    },
+    "partner_revenue_share": {
+      "value": 0.3,
+      "status": "H",
+      "note": "Nessun accordo né preventivo: quota su ricavi setup/manutenzione al netto sconti e rimborsi."
+    },
+    "installed_customers_per_partner": {
+      "value": 5,
+      "status": "H",
+      "note": "Nuovi partner solo al superamento del cumulato5 installazioni/partner; capacità ripartita, niente riaddebito del setup partner ogni mese."
+    },
+    "partner_enable_hours": {
+      "value": 8,
+      "status": "H"
+    },
+    "partner_sales_hours": {
+      "value": 5,
+      "status": "H"
+    },
+    "partner_acquisition_cash_eur": {
+      "value": 50,
+      "status": "H"
+    },
+    "partner_support_hours_month": {
+      "value": 0.5,
+      "status": "H",
+      "note": "Per tutti i partner abilitati, anche senza manutenzioni correnti; nessuna prova di produttività o ritenzione."
+    },
+    "renter_acquisition_cash_eur": {
+      "value": 0,
+      "status": "H",
+      "note": "Candidati dell'agenzia; nessun marketplace o acquisizione Soglia. Inserimento/invito self-service dell'agenzia, eccezioni incluse."
+    },
+    "vat_hypothesis": {
+      "value": 0.22,
+      "status": "H"
+    },
+    "stripe_percent": {
+      "value": 0.015,
+      "status": "V",
+      "source": "https://stripe.com/it/pricing",
+      "as_of": "2026-10-03"
+    },
+    "stripe_fixed_eur": {
+      "value": 0.25,
+      "status": "V",
+      "source": "https://stripe.com/it/pricing",
+      "as_of": "2026-10-03"
+    },
+    "reserve_months_fixed_cash": {
+      "value": 3,
+      "status": "H"
+    },
+    "minimum_reserve_eur": {
+      "value": 1000,
+      "status": "H"
+    }
+  },
+  "offers": {
+    "F": {
+      "name": "MicroSaaS diretto",
+      "setup_price_net_eur": {
+        "value": 149,
+        "status": "H"
+      },
+      "monthly_price_net_eur": {
+        "value": 49,
+        "status": "H"
+      },
+      "startup_cash_eur": {
+        "value": 3000,
+        "status": "H"
+      },
+      "startup_founder_hours": {
+        "value": 100,
+        "status": "H"
+      },
+      "delivery_hours_new_customer": {
+        "value": 2,
+        "status": "H"
+      },
+      "sales_hours_new_customer": {
+        "value": 3,
+        "status": "H"
+      },
+      "customer_cash_cac_eur": {
+        "value": 40,
+        "status": "H"
+      }
+    },
+    "G": {
+      "name": "Installazione a perimetro fisso negli strumenti dell'agenzia",
+      "setup_price_net_eur": {
+        "value": 490,
+        "status": "H"
+      },
+      "monthly_price_net_eur": {
+        "value": 49,
+        "status": "H"
+      },
+      "startup_cash_eur": {
+        "value": 2500,
+        "status": "H"
+      },
+      "startup_founder_hours": {
+        "value": 40,
+        "status": "H"
+      },
+      "delivery_hours_new_customer": {
+        "value": 4,
+        "status": "H"
+      },
+      "sales_hours_new_customer": {
+        "value": 3,
+        "status": "H"
+      },
+      "customer_cash_cac_eur": {
+        "value": 40,
+        "status": "H"
+      }
+    },
+    "H": {
+      "name": "Stessa installazione tramite web agency indipendenti",
+      "setup_price_net_eur": {
+        "value": 490,
+        "status": "H"
+      },
+      "monthly_price_net_eur": {
+        "value": 49,
+        "status": "H"
+      },
+      "startup_cash_eur": {
+        "value": 2500,
+        "status": "H"
+      },
+      "startup_founder_hours": {
+        "value": 40,
+        "status": "H"
+      },
+      "delivery_hours_new_customer": {
+        "value": 3,
+        "status": "H"
+      },
+      "sales_hours_new_customer": {
+        "value": 1,
+        "status": "H"
+      },
+      "customer_cash_cac_eur": {
+        "value": 15,
+        "status": "H"
+      }
+    }
+  },
+  "scenarios": {
+    "prudente": {
+      "new_installed_customers_points": {
+        "value": [
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            6,
+            1
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            18,
+            2
+          ],
+          [
+            24,
+            2
+          ]
+        ],
+        "status": "H",
+        "note": "Installazioni pagate consegnate, uguali tra offerte; non lead/interesse."
+      },
+      "monthly_logo_churn": {
+        "value": 0.08,
+        "status": "H"
+      },
+      "discount": {
+        "value": 0.1,
+        "status": "H"
+      },
+      "refund_rate": {
+        "value": 0.05,
+        "status": "H"
+      }
+    },
+    "centrale": {
+      "new_installed_customers_points": {
+        "value": [
+          [
+            1,
+            1
+          ],
+          [
+            6,
+            2
+          ],
+          [
+            12,
+            3
+          ],
+          [
+            18,
+            4
+          ],
+          [
+            24,
+            5
+          ]
+        ],
+        "status": "H",
+        "note": "Cohort matched F/G/H; 24.5installazioni anno1,73.5in24mesi; nessuna domanda validata."
+      },
+      "monthly_logo_churn": {
+        "value": 0.05,
+        "status": "H"
+      },
+      "discount": {
+        "value": 0.05,
+        "status": "H"
+      },
+      "refund_rate": {
+        "value": 0.03,
+        "status": "H"
+      }
+    },
+    "favorevole": {
+      "new_installed_customers_points": {
+        "value": [
+          [
+            1,
+            1
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            12,
+            5
+          ],
+          [
+            18,
+            7
+          ],
+          [
+            24,
+            9
+          ]
+        ],
+        "status": "H"
+      },
+      "monthly_logo_churn": {
+        "value": 0.03,
+        "status": "H"
+      },
+      "discount": {
+        "value": 0.02,
+        "status": "H"
+      },
+      "refund_rate": {
+        "value": 0.015,
+        "status": "H"
+      }
+    }
+  }
+}

@@ -41,3 +41,4 @@ Findings are concise. No hidden reasoning; conclusions and evidence only.
 | 06 | Independent engineering/security review of SMTP and deployment preparation | [review-06-deployment-preparation.md](review-06-deployment-preparation.md) | Identified runtime/cookie/timeout defects resolved; target-environment release checks remain |
 | 06 income | Independent review of optional private synthetic income attestations | [review-06-income.md](review-06-income.md) | PASS for local synthetic scope; preview/consent race resolved |
 | 07 | Integration of income, Doorluma, saved UX and mail/runtime preparation | [review-07-income-integration.md](review-07-income-integration.md) | PASS for local integrated scope; build, 161 backend tests and both browser suites passed |
+| 08 | Economics: role-based critique and independent numerical audits | [review-08-economics.md](review-08-economics.md) | PASS for inspectable research; commercial hypotheses and real-user gates remain open |

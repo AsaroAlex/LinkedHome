@@ -1,0 +1,59 @@
+{
+  "checks": 4573,
+  "errors": [],
+  "passed": true,
+  "central_D_unit": {
+    "revenue_net_per_practice": 91.2285,
+    "provider_per_practice": 14.45964,
+    "payment_per_practice": 1.971115,
+    "recurring_delivery_hours": 1.06875,
+    "recurring_contribution_before_acquisition": 42.53524499999999,
+    "new_payer_acquisition_and_activation_economic": 130.5,
+    "first_practice_after_acquisition": -87.96475500000001,
+    "first_three_practices_cumulative_before_fixed": -2.8942650000000327,
+    "payback_practices_ceiling": 4,
+    "annual_logo_retention": 0.5403600876626367,
+    "break_even_active_clients": 45.820294,
+    "break_even_stationary_residual": 1.2912029433209682e-05
+  },
+  "central_D_horizons": [
+    {
+      "model": "D",
+      "scenario": "centrale",
+      "horizon": 12,
+      "new_paying_clients": 24.5,
+      "active_paying_clients_exit": 19.777107978508212,
+      "practices": 114.23494840834384,
+      "revenue_net": 10421.482990870594,
+      "operating_cash": 2386.6695514537882,
+      "operating_economic": -18138.238481888737,
+      "project_economic_after_setup": -26538.238481888737,
+      "cumulative_cash_after_setup": -613.3304485462124,
+      "founder_hours_including_setup": 864.1636011114175,
+      "contractor_hours": 0.0,
+      "founder_economic_earnings_per_hour": -0.7097388130643275,
+      "cash_requirement_with_reserve": 5475.4663900939695,
+      "cash_requirement_30d_with_reserve": 6120.26719822224,
+      "cash_requirement_with_founder_draws": 34295.049055571486
+    },
+    {
+      "model": "D",
+      "scenario": "centrale",
+      "horizon": 24,
+      "new_paying_clients": 73.5,
+      "active_paying_clients_exit": 49.15462675985558,
+      "practices": 536.0620915627436,
+      "revenue_net": 48904.14052013175,
+      "operating_cash": 26984.023210564188,
+      "operating_economic": -26390.217600166277,
+      "project_economic_after_setup": -34790.217600166274,
+      "cumulative_cash_after_setup": 23984.02321056419,
+      "founder_hours_including_setup": 1959.1413603576823,
+      "contractor_hours": 0.0,
+      "founder_economic_earnings_per_hour": 12.242109577118725,
+      "cash_requirement_with_reserve": 5475.4663900939695,
+      "cash_requirement_30d_with_reserve": 6120.26719822224,
+      "cash_requirement_with_founder_draws": 45975.77826162988
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+model,scenario,break_even_active_clients,break_even_practices_month,break_even_practices_year,break_even_revenue_year,founder_hours_month,contractor_hours_month
+B,prudente,,,,,,
+B,centrale,,,,,,
+B,favorevole,322.450049,166.8679,2002.414802,56054.999245,102.033343,0.0
+D,prudente,,,,,,
+D,centrale,45.820294,45.820294,549.843524,50161.399902,96.645338,0.0
+D,favorevole,13.539228,26.672279,320.067344,30587.139739,58.781278,0.0
+E,prudente,53.98039,26.990195,323.88234,54553.121883,99.378429,0.0
+E,centrale,28.615503,28.615503,343.386037,37338.767495,66.433571,0.0
+E,favorevole,18.230269,30.991458,371.897495,30683.313105,54.269743,0.0

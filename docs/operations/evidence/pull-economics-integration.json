@@ -1,0 +1,218 @@
+{
+  "recorded_at_utc": "2026-10-03T22:33:26.997448+00:00",
+  "repository": "/workspace/LinkedHome",
+  "source_commit": "9db6a9cc80706049a39be6c56ee42ecdfbabe379",
+  "scope": "New local integration verification after fast-forward pull, followed by authorized incremental local migration and compiled runtime probes; no application source change by verifier.",
+  "runtime": {
+    "node": "24.19.0",
+    "npm": "11.9.0"
+  },
+  "install": {
+    "command": "npm ci",
+    "exit_code": 0
+  },
+  "check": {
+    "command": "npm run check",
+    "exit_code": 0,
+    "build": {
+      "passed": true,
+      "transformed_modules": 117,
+      "js_kb": 393.82,
+      "js_gzip_kb": 116.59,
+      "css_kb": 27.94,
+      "css_gzip_kb": 7.0
+    },
+    "backend": {
+      "files_passed": 7,
+      "tests_passed": 161,
+      "duration_seconds": 16.28
+    },
+    "browser_core_income_mail": {
+      "tests_passed": 19,
+      "duration_seconds": 33.9
+    },
+    "browser_experience_mail": {
+      "tests_passed": 11,
+      "duration_seconds": 12.7
+    },
+    "browser_distinct_scenarios": 26,
+    "browser_repeated_mail_scenarios": 4
+  },
+  "preservation": {
+    "original_data_tables_compared": 13,
+    "all_original_data_table_counts_and_aggregate_row_fingerprints_identical": true,
+    "original_three_migration_records_identical": true,
+    "expected_ledger_new_records": 1,
+    "local_config_and_demo_credential_files_identical": true,
+    "current_application_public_table_count": 16,
+    "application_counts": {
+      "users": 5,
+      "profiles": 2,
+      "properties": 1,
+      "schema_migrations": 4
+    },
+    "new_tables": {
+      "income_attestations": 0,
+      "income_shares": 0
+    },
+    "runtime_probes_left_all_tables_unchanged": true,
+    "application_snapshot_queries_read_only": true
+  },
+  "test_database_names": [
+    "soglia_test",
+    "soglia_e2e"
+  ],
+  "listeners_on_3000_3017_55432_after_checks": false,
+  "failures": [],
+  "nonblocking_warnings": [
+    "Node NO_COLOR/FORCE_COLOR warning"
+  ],
+  "not_executed": [
+    "Application bootstrap or seed",
+    "External SMTP sends",
+    "Real income-provider or payment integration",
+    "Public deployment",
+    "Remote CI",
+    "Git push"
+  ],
+  "limitations": [
+    "Browser tests use synthetic data and configured Chromium checks, not real-user usability/accessibility certification.",
+    "Passing local tests does not establish provider delivery, commercial validation, production readiness or security certification."
+  ],
+  "log_path": "docs/operations/evidence/pull-economics-check.log",
+  "initial_verification": {
+    "recorded_at_utc": "2026-10-03T22:28:26.242424+00:00",
+    "repository": "/workspace/LinkedHome",
+    "source_commit": "9db6a9cc80706049a39be6c56ee42ecdfbabe379",
+    "scope": "New local integration verification after the parent fast-forward pull; no application source change by verifier.",
+    "runtime": {
+      "node": "24.19.0",
+      "npm": "11.9.0"
+    },
+    "install": {
+      "command": "npm ci",
+      "exit_code": 0
+    },
+    "check": {
+      "command": "npm run check",
+      "exit_code": 0,
+      "build": {
+        "passed": true,
+        "transformed_modules": 117,
+        "js_kb": 393.82,
+        "js_gzip_kb": 116.59,
+        "css_kb": 27.94,
+        "css_gzip_kb": 7.0
+      },
+      "backend": {
+        "files_passed": 7,
+        "tests_passed": 161,
+        "duration_seconds": 16.28
+      },
+      "browser_core_income_mail": {
+        "tests_passed": 19,
+        "duration_seconds": 33.9
+      },
+      "browser_experience_mail": {
+        "tests_passed": 11,
+        "duration_seconds": 12.7
+      },
+      "browser_distinct_scenarios": 26,
+      "browser_repeated_mail_scenarios": 4
+    },
+    "preservation": {
+      "application_public_tables_compared": 14,
+      "all_application_table_counts_and_aggregate_row_fingerprints_identical": true,
+      "local_config_and_demo_credential_files_identical": true,
+      "application_counts": {
+        "users": 5,
+        "profiles": 2,
+        "properties": 1,
+        "schema_migrations": 3
+      },
+      "application_snapshot_queries_read_only": true
+    },
+    "test_database_names": [
+      "soglia_test",
+      "soglia_e2e"
+    ],
+    "listeners_on_3000_3017_55432_after_checks": false,
+    "failures": [],
+    "nonblocking_warnings": [
+      "Node NO_COLOR/FORCE_COLOR warning"
+    ],
+    "not_executed": [
+      "Application migration 004",
+      "Application bootstrap or seed",
+      "External SMTP sends",
+      "Real income-provider or payment integration",
+      "Public deployment",
+      "Remote CI",
+      "Git push"
+    ],
+    "limitations": [
+      "Application DB remained at three migrations; local application startup needs migration 004 before use of the pulled income extension.",
+      "Browser tests use synthetic data and configured Chromium checks, not real-user usability/accessibility certification.",
+      "Passing local tests does not establish provider delivery, commercial validation, production readiness or security certification."
+    ],
+    "log_path": "docs/operations/evidence/pull-economics-check.log"
+  },
+  "application_migration": {
+    "command": "npm run db:migrate",
+    "exit_code": 0,
+    "target": {
+      "db": "soglia",
+      "host": "127.0.0.1",
+      "port": 55432
+    },
+    "applied": "004_income_attestations.sql",
+    "migration_names": [
+      "001_core.sql",
+      "002_cases_and_appeals.sql",
+      "003_invitation_offer.sql",
+      "004_income_attestations.sql"
+    ],
+    "preflight_constraints_reviewed": true,
+    "verification_checks_and_events_empty_before_migration": true,
+    "schema_behavior": "Adds two tables, a column/default and trigger; replaces two CHECK constraints with expanded allowed values and adds a compatible kind/state CHECK; no data/table/column deletion.",
+    "no_bootstrap_seed_reset": true
+  },
+  "local_runtime": {
+    "command": "npm start",
+    "ready": true,
+    "probes": {
+      "/api/health": {
+        "status": 200,
+        "safe_body": {
+          "ok": true,
+          "environment": "local"
+        }
+      },
+      "/api/config": {
+        "status": 200,
+        "safe_body": {
+          "environment": "local",
+          "mailTransport": "local"
+        }
+      },
+      "/": {
+        "status": 200,
+        "title": "Doorluma \u2014 Affitti che iniziano da un invito",
+        "robots_noindex_nofollow": true,
+        "script_count": 1,
+        "script_statuses": [
+          200
+        ]
+      }
+    },
+    "final_process_state": "Application and database stopped with SIGINT, matching initial stopped state.",
+    "npm_interactive_wrapper_sigint_exit_code": 1,
+    "application_error_dump_observed": false,
+    "local_startup_migrates_automatically": true,
+    "external_startup_applies_migrations": false
+  },
+  "additional_evidence_paths": [
+    "docs/operations/evidence/pull-economics-migration.json",
+    "docs/operations/evidence/pull-economics-runtime.json"
+  ]
+}

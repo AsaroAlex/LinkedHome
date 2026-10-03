@@ -1,0 +1,22 @@
+{
+  "target": {
+    "db": "soglia",
+    "host": "127.0.0.1",
+    "port": 55432
+  },
+  "all_13_original_application_tables_counts_and_rows_unchanged": true,
+  "original_three_migration_records_unchanged": true,
+  "local_files_unchanged": true,
+  "new_tables": {
+    "income_attestations": 0,
+    "income_shares": 0
+  },
+  "migration_names": [
+    "001_core.sql",
+    "002_cases_and_appeals.sql",
+    "003_invitation_offer.sql",
+    "004_income_attestations.sql"
+  ],
+  "schema_migration_count": 4,
+  "runtime_probes_left_all_tables_unchanged": true
+}
