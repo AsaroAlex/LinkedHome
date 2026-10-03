@@ -10,6 +10,14 @@ import {
 } from "react";
 import { api, useLoad, formValues, dateLabel, ApiError } from "./api";
 import { brand, statuses, reasonLabels } from "./brand";
+import {
+  RoleGuide,
+  ProductFAQ,
+  RoleSelection,
+  PasswordField,
+  NextSteps,
+  quickReplies,
+} from "./experience";
 import { cities } from "../server/domain";
 import type { User } from "../server/auth";
 type RuntimeConfig = {
@@ -366,7 +374,7 @@ export function App() {
                 </Link>
                 <Link to="/login">Accedi</Link>
                 <Link to="/register" className="button small">
-                  Inizia qui <Arrow />
+                  Crea account <Arrow />
                 </Link>
               </>
             )}
@@ -460,7 +468,7 @@ export function App() {
         ) : path === "/safeguards" ? (
           <Safeguards />
         ) : path === "/login" || path === "/register" ? (
-          <Auth register={path === "/register"} refresh={refresh} />
+          <Auth key={path} register={path === "/register"} refresh={refresh} />
         ) : path === "/forgot" || path.startsWith("/account/") ? (
           <Recovery key={path} path={path} refresh={refresh} />
         ) : path === "/dashboard" ? (
@@ -474,7 +482,7 @@ export function App() {
         ) : path === "/invitations" ? (
           <InvitationsPage user={user!} />
         ) : path.startsWith("/conversations/") ? (
-          <Conversation id={path.split("/")[2]} user={user!} />
+          <Conversation key={path} id={path.split("/")[2]} user={user!} />
         ) : path === "/verification" ? (
           <VerificationPage />
         ) : path === "/settings" ? (
@@ -483,7 +491,7 @@ export function App() {
           <Staff key={path} path={path} user={user!} />
         ) : (
           <>
-            <PageHeading eyebrow="404" title="Questa porta non si apre." />
+            <PageHeading eyebrow="404" title="Pagina non trovata" />
             <Link to="/dashboard" className="button">
               Torna al tuo spazio
             </Link>
@@ -496,7 +504,7 @@ export function App() {
             <Mark />
             {brand.name}.
           </Link>
-          <p>Più chiarezza. Il tuo prossimo inizio.</p>
+          <p>Profili, immobili e inviti. Il primo contatto parte da qui.</p>
         </div>
         <div>
           <Link to="/safeguards">Controllo e trasparenza</Link>
@@ -518,8 +526,8 @@ function Landing() {
       <section className="hero container">
         <div className="hero-copy">
           <span className="eyebrow">
-            <span className="tiny-line" /> Affittare, con un altro punto di
-            vista
+            <span className="tiny-line" /> LA TUA RICERCA, GLI INVITI DEI
+            PROPRIETARI
           </span>
           <h1 tabIndex={-1}>
             La prossima casa
@@ -527,15 +535,15 @@ function Landing() {
             comincia <em>da te.</em>
           </h1>
           <p className="hero-description">
-            Racconta cosa cerchi. Lascia che siano i proprietari a invitarti.
-            Scegli tu con chi iniziare una conversazione.
+            Indica dove vuoi vivere, il budget e quando vuoi trasferirti. Ricevi
+            inviti per immobili compatibili e scegli con chi parlare.
           </p>
           <div className="actions">
             <Link to="/register" className="button">
               Cerco casa <Arrow />
             </Link>
-            <Link to="/register?role=landlord" className="text-link">
-              Offro un immobile <span aria-hidden="true">→</span>
+            <Link to="/register?role=landlord" className="button secondary">
+              Voglio affittare <span aria-hidden="true">→</span>
             </Link>
           </div>
           <div className="hero-note">
@@ -543,9 +551,9 @@ function Landing() {
               ✳
             </span>
             <span>
-              Il tuo profilo, le tue scelte.
+              Profilo privato fino alla pubblicazione.
               <br />
-              <strong>Nessun costo per ricevere inviti.</strong>
+              <strong>Il nome è visibile solo dopo un invito accettato.</strong>
             </span>
           </div>
         </div>
@@ -590,12 +598,14 @@ function Landing() {
             </span>
             <div>
               <span className="mini-label">IL PRIMO PASSO</span>
-              <strong>Un invito che ti somiglia.</strong>
-              <small>Tu decidi se aprire la conversazione.</small>
+              <strong>Un immobile compatibile con la tua ricerca.</strong>
+              <small>
+                Leggi i dettagli e scegli se parlare con il proprietario.
+              </small>
             </div>
           </div>
           <span className="visual-caption">
-            Meno rincorse, più incontri pertinenti.
+            Esempio illustrativo · nessuna offerta reale
           </span>
         </div>
       </section>
@@ -608,40 +618,7 @@ function Landing() {
           <span>Condivisione sotto controllo</span>
         </div>
       </section>
-      <section className="container how">
-        <div className="section-heading">
-          <span className="eyebrow">COME FUNZIONA</span>
-          <h2>Tre passi. Una nuova possibilità.</h2>
-          <p>
-            Un modo più semplice di iniziare, da entrambi i lati della porta.
-          </p>
-        </div>
-        <div className="steps">
-          {[
-            [
-              "01",
-              "Prepara il tuo profilo",
-              "Città, budget, tempi e persone. Parti dalle cose che contano e pubblica solo quando sei pronto.",
-            ],
-            [
-              "02",
-              "Ricevi un invito pertinente",
-              "Un proprietario vede le preferenze compatibili con il suo immobile e ti invita a parlarne.",
-            ],
-            [
-              "03",
-              "Apri la conversazione",
-              "Leggi l’offerta, scegli se accettare e inizia a conoscere chi c’è dall’altra parte.",
-            ],
-          ].map(([n, t, d]) => (
-            <article key={n}>
-              <span className="step-number">{n}</span>
-              <h3>{t}</h3>
-              <p>{d}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <RoleGuide />
       <section className="container trust-section">
         <div>
           <span className="eyebrow">
@@ -668,6 +645,7 @@ function Landing() {
           </Link>
         </div>
       </section>
+      <ProductFAQ />
     </>
   );
 }
@@ -677,7 +655,7 @@ function Safeguards() {
     <>
       <PageHeading
         eyebrow="Come funziona"
-        title="Chiarezza, prima del primo messaggio."
+        title="Come funzionano profili e inviti"
       >
         Tu scegli quando renderti visibile e con chi parlare.
       </PageHeading>
@@ -783,15 +761,15 @@ function Auth({
   return (
     <div className="auth-layout">
       <div className="auth-intro">
-        <span className="eyebrow">IL TUO PROSSIMO INIZIO</span>
+        <span className="eyebrow">IL TUO ACCOUNT</span>
         <h1 tabIndex={-1}>
           {register
-            ? "Facciamo spazio\nal tuo progetto."
-            : "Bentornato\nnel tuo spazio."}
+            ? "Inizia la ricerca.\nO trova il tuo inquilino."
+            : "Bentornato.\nRiprendi da qui."}
         </h1>
         <p>
           {register
-            ? "Cerchi casa, offri un immobile o entrambe le cose? Comincia da qui."
+            ? "Scegli come usare la piattaforma. Dopo la registrazione potrai preparare il profilo o aggiungere un immobile."
             : "Riprendi le conversazioni e ritrova le tue preferenze."}
         </p>
         <div className="auth-art" aria-hidden="true">
@@ -809,32 +787,19 @@ function Auth({
           <Field name="display_name" label="Come vuoi essere chiamato?" />
         )}
         <Field name="email" label="Email" type="email" />
-        <Field
-          name="password"
-          label="Password"
-          type="password"
-          autoComplete={register ? "new-password" : "current-password"}
-        />
+        <PasswordField register={register} />
         {register && (
           <>
             <p className="field-hint">
               Almeno 12 caratteri. Il nome può essere uno pseudonimo.
             </p>
-            <Field name="role" label="Il tuo progetto">
-              <select
-                name="role"
-                defaultValue={
-                  new URLSearchParams(location.search).get("role") ===
-                  "landlord"
-                    ? "landlord"
-                    : "tenant"
-                }
-              >
-                <option value="tenant">Cerco casa</option>
-                <option value="landlord">Offro un immobile</option>
-                <option value="both">Entrambe le cose</option>
-              </select>
-            </Field>
+            <RoleSelection
+              defaultRole={
+                new URLSearchParams(location.search).get("role") === "landlord"
+                  ? "landlord"
+                  : "tenant"
+              }
+            />
             <p className="small-copy">
               Il profilo sarà privato finché non scegli di pubblicarlo.{" "}
               <Link to="/safeguards">Leggi cosa condividi.</Link>
@@ -985,7 +950,8 @@ function Dashboard({ user }: { user: User }) {
         eyebrow="IL TUO SPAZIO"
         title={`Ciao, ${user.display_name}.`}
       >
-        Un passo alla volta, verso il tuo prossimo incontro.
+        Gestisci la tua ricerca, gli immobili e le conversazioni da un unico
+        posto.
       </PageHeading>
       {!user.email_verified && (
         <div className="alert">
@@ -994,6 +960,7 @@ function Dashboard({ user }: { user: User }) {
           <Link to="/verification">Vai alle verifiche →</Link>
         </div>
       )}
+      <NextSteps role={user.role} verified={user.email_verified} />
       <div className="dashboard-stats">
         <div>
           <span className="stat-number">{pending}</span>
@@ -1017,31 +984,23 @@ function Dashboard({ user }: { user: User }) {
         {user.role !== "landlord" && (
           <article className="feature-card">
             <span className="eyebrow">CERCO CASA</span>
-            <h2>
-              Una casa che incontra
-              <br />
-              le tue preferenze.
-            </h2>
+            <h2>Il tuo profilo di ricerca</h2>
             <p>
-              Racconta cosa cerchi. Il tuo nome resta privato prima di un invito
-              accettato.
+              Aggiorna città, budget e date. Pubblica le preferenze per ricevere
+              inviti; mettile in pausa quando vuoi interrompere la ricerca.
             </p>
             <Link to="/profile" className="button">
-              Prepara il tuo profilo <Arrow />
+              Gestisci il tuo profilo <Arrow />
             </Link>
           </article>
         )}
         {user.role !== "tenant" && (
           <article className="feature-card warm">
             <span className="eyebrow">OFFRO UN IMMOBILE</span>
-            <h2>
-              Incontra chi cerca
-              <br />
-              proprio quello spazio.
-            </h2>
+            <h2>I tuoi immobili</h2>
             <p>
-              Pubblica le caratteristiche dell’immobile e scopri preferenze
-              compatibili.
+              Aggiungi o modifica gli immobili. Mantieni aggiornata la
+              disponibilità per continuare a invitare profili compatibili.
             </p>
             <Link to="/properties" className="button">
               I tuoi immobili <Arrow />
@@ -1050,11 +1009,7 @@ function Dashboard({ user }: { user: User }) {
         )}
         <article className="panel">
           <span className="eyebrow">DA UN INVITO A UN INCONTRO</span>
-          <h2>
-            La conversazione
-            <br />
-            inizia con una scelta.
-          </h2>
+          <h2>Inviti e conversazioni</h2>
           <p>
             Leggi gli inviti, controlla i dettagli e decidi se iniziare a
             parlare.
@@ -1099,8 +1054,9 @@ function ProfilePage() {
   }
   return (
     <>
-      <PageHeading eyebrow="CERCO CASA" title="Partiamo da ciò che cerchi.">
-        Poche preferenze concrete. Nessun punteggio su di te.
+      <PageHeading eyebrow="CERCO CASA" title="Il tuo profilo di ricerca">
+        Salva le preferenze e controlla l’anteprima. Poi pubblicale per ricevere
+        inviti pertinenti.
       </PageHeading>
       <ErrorBox text={a.error} />
       {a.message && <Notice>{a.message}</Notice>}
@@ -1153,14 +1109,14 @@ function ProfilePage() {
         </form>
         <aside className="panel preview">
           <span className="eyebrow">PRIMA DI PUBBLICARE</span>
-          <h2>
-            Questo è ciò
-            <br />
-            che condividi.
-          </h2>
+          <h2>Anteprima delle preferenze</h2>
           <p>
             Città, budget, ingresso, durata e numero di persone saranno visibili
             ai proprietari autenticati con un immobile pertinente.
+          </p>
+          <p className="small-copy">
+            L’anteprima mostra le ultime preferenze salvate. Salva le modifiche
+            prima di pubblicarle.
           </p>
           <p>
             <strong>
@@ -1244,6 +1200,11 @@ function PropertyForm({
   return (
     <form ref={formRef} className="panel" onSubmit={save}>
       <h2>{property ? "Modifica immobile" : "Descrivi il tuo immobile"}</h2>
+      <p>
+        {property
+          ? "Le modifiche annullano gli inviti in attesa. Le conversazioni aperte conservano i dettagli dell’offerta originale."
+          : "Salva l’immobile come bozza privata. Potrai controllare i dettagli prima di pubblicarlo."}
+      </p>
       <ErrorBox text={a.error} />
       <Field name="title" label="Titolo" value={property?.title} />
       <div className="form-grid">
@@ -1364,10 +1325,7 @@ function PropertiesPage() {
   }
   return (
     <>
-      <PageHeading
-        eyebrow="OFFRO UN IMMOBILE"
-        title="Ogni spazio, una possibilità."
-      >
+      <PageHeading eyebrow="OFFRO UN IMMOBILE" title="I tuoi immobili">
         Pubblica dettagli chiari. Riconferma la disponibilità almeno ogni 30
         giorni.
       </PageHeading>
@@ -1394,8 +1352,11 @@ function PropertiesPage() {
           {!l.data && !l.error ? (
             <Loading />
           ) : l.data?.properties.length === 0 ? (
-            <Empty title="La tua prima porta da aprire">
-              <p>Aggiungi un immobile per scoprire preferenze compatibili.</p>
+            <Empty title="Non hai ancora aggiunto immobili">
+              <p>
+                Inizia con città, costo e disponibilità. Dopo la pubblicazione
+                potrai invitare i profili compatibili.
+              </p>
             </Empty>
           ) : (
             <div className="two-grid">
@@ -1503,10 +1464,11 @@ function DiscoverPage() {
   return (
     <>
       <PageHeading
-        eyebrow="INCONTRI POSSIBILI"
-        title="Le preferenze incontrano il tuo spazio."
+        eyebrow="TROVA IL TUO INQUILINO"
+        title="Profili compatibili con il tuo immobile"
       >
-        Criteri chiari, nessuna classifica delle persone.
+        Scegli un immobile, confronta le preferenze e invia un invito per
+        iniziare a parlare.
       </PageHeading>
       <ErrorBox text={properties.error || l.error || a.error} />
       {a.message && <Notice>{a.message}</Notice>}
@@ -1554,7 +1516,7 @@ function DiscoverPage() {
           {!l.data && !l.error ? (
             <Loading />
           ) : l.data?.profiles.length === 0 ? (
-            <Empty title="Qui c’è spazio per il prossimo incontro">
+            <Empty title="Nessun nuovo profilo compatibile">
               <p>
                 Nessun nuovo profilo compatibile in questa pagina. Potresti aver
                 già invitato i profili disponibili.
@@ -1709,11 +1671,9 @@ function InvitationsPage({ user }: { user: User }) {
   }
   return (
     <>
-      <PageHeading
-        eyebrow="IL PRIMO CONTATTO"
-        title="Da qui può nascere qualcosa."
-      >
-        Ogni invito riguarda un immobile preciso. Scegli con calma.
+      <PageHeading eyebrow="IL PRIMO CONTATTO" title="Inviti e messaggi">
+        Controlla i dettagli dell’immobile prima di rispondere. Accettare un
+        invito apre la chat e non ti impegna ad affittare.
       </PageHeading>
       <HistoryPager
         page={page}
@@ -1735,7 +1695,9 @@ function InvitationsPage({ user }: { user: User }) {
             to={user.role === "landlord" ? "/discover" : "/profile"}
             className="button"
           >
-            Il prossimo passo
+            {user.role === "landlord"
+              ? "Scopri profili compatibili"
+              : "Controlla il tuo profilo"}
           </Link>
         </Empty>
       ) : (
@@ -1877,7 +1839,8 @@ function Conversation({ id, user }: { id: string; user: User }) {
     inv = useLoad(`/invitations/${id}`),
     a = useAction(),
     [report, setReport] = useState<string | null>(null),
-    form = useRef<HTMLFormElement>(null);
+    form = useRef<HTMLFormElement>(null),
+    [draft, setDraft] = useState("");
   const info = inv.data?.invitation;
   async function send(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -1885,6 +1848,7 @@ function Conversation({ id, user }: { id: string; user: User }) {
     await a.run(async () => {
       await api(`/conversations/${id}/messages`, "POST", v);
       form.current?.reset();
+      setDraft("");
       setBefore("");
       l.reload();
     }, "Messaggio inviato.");
@@ -1902,7 +1866,7 @@ function Conversation({ id, user }: { id: string; user: User }) {
       >
         {info?.property.title}
       </PageHeading>
-      <ErrorBox text={l.error || a.error} />
+      <ErrorBox text={l.error || inv.error || a.error} />
       <div className="chat-layout">
         <section className="panel chat">
           <div className="panel-title">
@@ -1972,16 +1936,50 @@ function Conversation({ id, user }: { id: string; user: User }) {
           </div>
           {l.data?.status === "accepted" ? (
             <form className="composer" onSubmit={send} ref={form}>
+              <fieldset className="quick-replies">
+                <legend>
+                  Un punto di partenza: modifica il testo prima di inviare.
+                </legend>
+                <div>
+                  {quickReplies[
+                    info?.tenant_id === user.id ? "tenant" : "landlord"
+                  ].map(([label, text]) => (
+                    <button
+                      key={label}
+                      type="button"
+                      disabled={
+                        !info ||
+                        a.busy ||
+                        draft.length + text.length + (draft ? 2 : 0) > 2000
+                      }
+                      onClick={() => {
+                        setDraft((current) =>
+                          current ? `${current}\n\n${text}` : text,
+                        );
+                        form.current
+                          ?.querySelector<HTMLTextAreaElement>("textarea")
+                          ?.focus();
+                      }}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
               <label className="field">
                 <span>Il tuo messaggio</span>
                 <textarea
                   name="body"
                   maxLength={2000}
                   required
+                  disabled={a.busy}
                   rows={3}
                   placeholder="Ciao, grazie per l’invito…"
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
                 />
               </label>
+              <p className="message-count">{draft.length} / 2.000 caratteri</p>
               <button className="button" disabled={a.busy}>
                 Invia messaggio →
               </button>
@@ -1994,12 +1992,28 @@ function Conversation({ id, user }: { id: string; user: User }) {
           {a.message && <Notice>{a.message}</Notice>}
         </section>
         <aside className="panel chat-aside">
+          {info && (
+            <div className="chat-property">
+              <span className="eyebrow">L’IMMOBILE DELL’INVITO</span>
+              <strong>{info.property.title}</strong>
+              <p>
+                {info.property.city} · {info.property.area}
+              </p>
+              <p>€{info.property.rent} / mese, spese obbligatorie incluse</p>
+              <p>
+                Dal {dateLabel(info.property.available_from)} ·{" "}
+                {info.property.min_months}–{info.property.max_months} mesi
+              </p>
+              {info.property_changed && (
+                <p>
+                  I dettagli attuali sono cambiati. Qui vedi l’offerta
+                  dell’invito: chiarite le nuove condizioni in chat.
+                </p>
+              )}
+            </div>
+          )}
           <span className="eyebrow">IL CONTROLLO RESTA TUO</span>
-          <h2>
-            Sentiti libero
-            <br />
-            di fermarti.
-          </h2>
+          <h2>Gestisci il contatto</h2>
           <p>
             Non condividere documenti, credenziali bancarie o denaro qui.{" "}
             {runtime?.environment === "local"
@@ -2052,11 +2066,9 @@ function VerificationPage() {
     runtime = useContext(RuntimeContext);
   return (
     <>
-      <PageHeading
-        eyebrow="TRASPARENZA"
-        title="Ogni verifica ha un significato."
-      >
-        Una conferma precisa, mai un giudizio sulla persona.
+      <PageHeading eyebrow="IL TUO ACCOUNT" title="Email e verifiche">
+        Conferma l’email per pubblicare e contattare. Controlla qui quali
+        verifiche sono disponibili e cosa attestano.
       </PageHeading>
       <ErrorBox text={l.error || a.error} />
       {a.message && <Notice>{a.message}</Notice>}

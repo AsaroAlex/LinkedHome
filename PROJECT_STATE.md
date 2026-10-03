@@ -99,3 +99,13 @@ Marchio aggiornato in UI, titolo/descrizione HTML, email, log e nome export `doo
 Nel checkout sono apparse anche modifiche UX indipendenti (`experience`): vengono preservate e non incluse nel commit del naming. Verifiche sullo snapshot dei soli sorgenti di questa modifica, evidenze e limiti in `docs/operations/validation.md` e `evidence/doorluma-validation.json`.
 
 Verifica finale Doorluma: bootstrap isolato, build/typecheck, **136 test su6 file** e **14 scenari browser** passati; schermate desktop/390px/320px ispezionate, startup/health/metadati verificati. Header320px senza overflow, entrambi controlli visibili. Revisione indipendente senza finding materiale residuo nel perimetro naming. Commit locale, senza push; le modifiche UX indipendenti restano nel checkout.
+
+## Ripresa autorizzata: integrazione dei miglioramenti UX salvati
+
+L'utente ha richiesto di integrare `AsaroAlex/LinkedHome`, ramo `codex/rental-ux-save-20261003`, commit `504a809d7795d340cb639adad60a059c5fba1d40`, conservando marchio, dominio e deploy più recenti. Il confronto iniziale ha trovato i sorgenti UX già identici al commit salvato nel workspace condiviso. Sono stati adottati nel ramo corrente senza sostituire il checkout o applicare l'intero vecchio snapshot; i documenti più recenti di Doorluma sono conservati.
+
+Integrati home con percorsi per ruolo, registrazione guidata, dashboard con prossimi passi basati sullo stato effettivo, FAQ e risposte rapide modificabili in chat. Le risposte richiedono invio esplicito; gli errori conservano la bozza e il cambio contatto la isola. La suite dedicata è ora disponibile con `npm run test:e2e:experience`, inclusa in `npm run check` e nella definizione CI.
+
+Verifica dell'intero checkout integrato: build/typecheck, **136 test su6 file**, **14 scenari nella suite browser esistente** e **11 nella suite UX con API simulate**, tutti passati. Quattro scenari mail-runtime sono condivisi dalle due suite browser. Controlli axe/responsive configurati passati; schermate home desktop/mobile e chat mobile ispezionate. Revisione tecnica indipendente senza finding P1/P2 residuo nel perimetro UX. Evidenze in `docs/operations/evidence/rental-ux-integration.json` e `docs/operations/validation.md`.
+
+App locale compilata riavviata, health200 e metadati Doorluma verificati; database applicativo invariato nei conteggi:5 utenti,2 profili,1 immobile,3 migrazioni. Nessuna nuova dipendenza, modifica a database/cookie/server/SMTP/template deploy o attivazione dominio. Integrazione salvata con commit locale; nessun push, CI remota o deploy pubblico eseguito per questa richiesta.

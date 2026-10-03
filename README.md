@@ -31,10 +31,13 @@ SMTP uses verified TLS on ports465/587 with bounded connection deadlines. The UI
 npm run build
 npm test
 npm run test:e2e
+npm run test:e2e:experience
 npm audit
 ```
 
 Integration tests use only the generated local `soglia_test` database; browser tests manage `soglia_e2e`, start their own server and need port3000 free. Neither suite resets the application database. Chromium is needed: the cloud uses `/usr/bin/chromium`; set `CHROMIUM_PATH` if necessary or install the browser with `npx playwright install chromium`. See [validation evidence](docs/operations/validation.md) for the actual tested outcomes and limits. CI instructions are provided but are not claimed to have run remotely.
+
+The experience suite serves the built frontend on loopback3017 with mocked APIs and no PostgreSQL connection. It covers role selection, guided account setup, FAQ and editable chat starters. `npm run check` runs build, backend tests and both browser suites sequentially.
 
 ## What is implemented
 

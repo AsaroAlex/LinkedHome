@@ -104,3 +104,26 @@ Concurrent UX edits appeared in the shared checkout during this task. Validation
 Bootstrap and TypeScript/Vite passed; `npm test` passed **136 tests across six files** (15.04s); `npm run test:e2e` passed **14 scenarios** (22.0s), including the renamed download and configured accessibility/responsive checks. Local startup printed Doorluma and database health passed. A separate320px browser probe measured **scrollWidth320px / viewport320px**, with both access and registration visible; served HTML had the Doorluma title/payoff and `noindex,nofollow`. Desktop,390px and320px screenshots were inspected: [desktop](evidence/doorluma-landing-desktop.png), [mobile](evidence/doorluma-landing-mobile.png), [narrow mobile](evidence/doorluma-landing-320.png). [Validation record](evidence/doorluma-validation.json).
 
 The earlier NestInvite candidate exposed header overflow at320px; the header now wraps and places controls on a separate row at narrow widths. Independent review found no remaining material issue in this naming/domain scope. Database/cookie/session identifiers and migration files are unchanged. Future origins and sender addresses remain commented examples or documentation. No purchase, verified sender, DNS change, public deploy, trademark clearance or additional remote publication occurred.
+
+## Continuation: integration of the saved rental UX
+
+The user requested the home, registration, guided dashboard, FAQ and chat work from `AsaroAlex/LinkedHome`, branch `codex/rental-ux-save-20261003`, commit `504a809d7795d340cb639adad60a059c5fba1d40`. On entry, the UX implementation, dedicated Playwright configuration, tests and benchmark already matched the saved commit byte for byte in the shared checkout. The current brand commit was `deb3afd`; its newer project-state and validation records were retained. The integration adopts the UX delta rather than replacing the newer naming/deployment snapshot.
+
+`npm run check` now includes `npm run test:e2e:experience` after the existing database-backed checks, and the CI definition includes the same command. No dependency or lockfile change was needed. The complete command was executed against the integrated checkout, sequentially, on 2026-10-03:
+
+| Check | Observed outcome |
+|---|---|
+| Build | Strict TypeScript and Vite passed;116 modules; JS375.73kB raw/112.01kB gzip, CSS25.24kB raw/6.50kB gzip |
+| Backend/unit/integration/SMTP | **136 passed across6 files**,15.31s; controlled loopback SMTP only, no external delivery |
+| Existing browser suite | **14 passed**,22.8s;10 application workflows with synthetic PostgreSQL plus4 mocked runtime/mail scenarios |
+| Experience browser suite | **11 passed**,14.3s;7 role/signup/progress/FAQ/draft scenarios plus the same4 mocked runtime/mail scenarios; built frontend on loopback3017, no PostgreSQL connection |
+| Accessibility/responsive | Configured axe WCAG2A/AA and2.1AA checks and overflow checks down to320px passed on sampled pages |
+| Visual inspection | Home desktop/mobile and chat mobile inspected; retained [desktop](evidence/rental-ux-landing-desktop.png), [mobile](evidence/rental-ux-landing-mobile.png), [chat](evidence/rental-ux-chat-mobile.png) |
+| Independent technical review | No concrete P1/P2 finding remaining in the focused UX review; draft isolation, error preservation, explicit sending and account-state progress checked |
+| Local runtime | Compiled app restarted; health200, local runtime config, Doorluma HTML title and `noindex,nofollow` confirmed |
+| Application data | Read-only counts remain5 users,2 profiles,1 property,3 migration records; only dedicated test databases used by suites |
+| Preservation | Brand module, HTML metadata, naming/domain records, server, migrations, SMTP, Docker/Render/Compose/Caddy and environment examples unchanged relative to `deb3afd` |
+
+The browser counts include four mail-runtime scenarios twice; they are not25 distinct scenarios. [Structured evidence](evidence/rental-ux-integration.json) records provenance and scope. The updated [local performance measurement](evidence/rental-ux-performance.json) observed desktopLCP248ms/CLS0.0225 and throttled mobileLCP2,368ms/CLS0.0345,402,761bytes transferred; these are synthetic Chromium measurements, not field performance or a usability study.
+
+The earlier naming validation remains a historical result for its isolated source tree; this continuation validates the combined UX and current Doorluma source. The dedicated experience fixtures establish frontend behavior, not live provider delivery or production deployment. No further push, remote CI execution, domain purchase, public rollout or change to the existing release gates is claimed.

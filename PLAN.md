@@ -69,3 +69,16 @@ The existing remote/cloud configuration references the earlier published commit.
 ## Authorized continuation — domain research and naming
 
 The user requested autonomous selection of an available domain and the resulting repository changes. **Doorluma / doorluma.com** is selected; optional `doorluma.it` is also offered for new registration. [Naming evidence](docs/product/03-naming.md) distinguishes registry availability, registrar offers and bounded collision research. Public branding and deployment guidance are updated; persistent technical identifiers are unchanged. No domain purchase, verified sender, custom-origin activation or additional push is implied. Verification results are recorded in operations/validation.
+
+## Authorized continuation — saved rental UX integration
+
+The user requested the UX work saved in `codex/rental-ux-save-20261003` at `504a809d7795d340cb639adad60a059c5fba1d40`, while retaining the newer Doorluma/domain/deployment work. The shared checkout already contained the exact saved UX source; integration adopts those files in the current branch and extends the existing verification commands, without replacing the newer project snapshot.
+
+| Work | Status / evidence |
+|---|---|
+| Home, signup, guided dashboard, FAQ and chat starters | DONE — saved UX source preserved; role-aware guidance, actual account-state progress, editable explicit-send drafts |
+| Test integration | DONE — `test:e2e:experience` included in `npm run check` and CI definition; no new dependencies |
+| Integrated verification | DONE — build/typecheck,136 backend tests,14 existing browser scenarios and11 mocked-API experience scenarios passed sequentially; four mail-runtime scenarios shared between browser suites |
+| Preservation and visual review | DONE — Doorluma/domain/server/deploy files unchanged, synthetic application counts retained, desktop/mobile screenshots inspected; [evidence](docs/operations/evidence/rental-ux-integration.json) |
+
+This continuation is saved locally. Remote CI, a further push and a public deployment were not performed.
