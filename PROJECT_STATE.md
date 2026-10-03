@@ -1,6 +1,6 @@
 # PROJECT STATE
 
-Aggiornato il 2026-10-04. Repository `/workspace/LinkedHome`, branch locale `work`, riferimento remoto richiesto `claude/sweet-goldberg-5lwng7`. Marchio corrente: **LinkedHome**, scelto esplicitamente dall'utente dopo il pull a `9db6a9c`; vedere l'ultima continuazione e D-007. L’utente ha autorizzato **«Esegui tutto il piano del repository»**, incluse revisioni indipendenti A–H. Le fasi 0–28 sono **completate per il perimetro locale con dati sintetici** adottato in PLAN e nel contratto delle funzionalità.
+Aggiornato il 2026-10-04. Repository `/workspace/LinkedHome`, branch locale e remoto `claude/sweet-goldberg-5lwng7`, anche branch predefinito GitHub. Marchio corrente: **LinkedHome**, scelto esplicitamente dall'utente dopo il pull a `9db6a9c`; vedere la continuazione naming e D-007. L’utente ha autorizzato **«Esegui tutto il piano del repository»**, incluse revisioni indipendenti A–H. Le fasi 0–28 sono **completate per il perimetro locale con dati sintetici** adottato in PLAN e nel contratto delle funzionalità.
 
 Preservare questo checkout isolato: niente reset, switch, worktree, pull automatici o perdita dei dati ignorati. L’utente ha autorizzato il push su `claude/sweet-goldberg-5lwng7`, eseguito e verificato il 2026-10-03. Nessuna PR, deploy pubblico, servizio a pagamento o contatto esterno.
 
@@ -137,3 +137,9 @@ Dopo «Fai pull e unisci il lavoro», eseguito un pull fast-forward da `65f38ee`
 Dominio futuro proposto: **linkedhome.eu**, con `.it` facoltativo; entrambi disponibili nel controllo nominale del registrar del 4 ottobre, mentre `.com` è registrato. Nessun acquisto o configurazione DNS/origin/mittente effettiva. Linkhome e Linkedhomes sono usi immobiliari vicini documentati; l'approvazione del nome non è una clearance legale. [Naming corrente](docs/product/03-naming.md), [dominio](docs/operations/domain-setup.md) e [D-007](docs/DECISIONS.md) conservano decisione, fonti e limiti.
 
 `npm run check` passato in sequenza: build/typecheck, **161 test backend su7 file**, **19 scenari browser applicativi** e **11 esperienza/mail**; quattro scenari mail ripetuti,26 distinti. Nome e controlli di accesso verificati visivamente a1440px,390px e320px senza overflow. [Verifica corrente](docs/operations/validation.md) e [evidenza LinkedHome](docs/operations/evidence/linkedhome-validation.json) registrano risultati e limiti. Nessun seed/reset del database applicativo, invio esterno, deploy o ulteriore push.
+
+## Unione e pulizia dei branch — 2026-10-04
+
+Alla richiesta «Unisci, mergia e pulisci i branch» sono state controllate tutte le refs locali/remoto e le PR aperte. La storia reddito, SMTP, Doorluma e UX è già unita in `9db6a9c`; incluso con fast-forward anche l'aggiornamento LinkedHome `25d02c6`, senza perdita di commit o conflitti. `git fetch --prune` completa la pulizia delle refs: sul remoto esiste soltanto il branch predefinito `claude/sweet-goldberg-5lwng7`, senza PR aperte. Nessun branch con lavoro residuo da eliminare.
+
+Il branch locale `work` è stato rinominato `claude/sweet-goldberg-5lwng7`, mantenendo lo stesso checkout e upstream. Un unico branch locale e remoto, nessun reset/switch/force push, dati e credenziali ignorati preservati. Build/typecheck e 33 test email rieseguiti con successo dopo il fast-forward; la suite completa 161/19/11 sul commit naming è registrata nell'evidenza LinkedHome precedente, senza attribuirla a questa nuova esecuzione. Il presente aggiornamento documentale viene pubblicato nello stesso branch; nessun codice applicativo aggiunto dalla pulizia.
