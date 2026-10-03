@@ -1,8 +1,8 @@
-# Validation — 2026-10-03
+# Validation — updated 2026-10-04
 
 The adopted local scope in [PLAN](../../PLAN.md) is implemented and verified with synthetic data. These results establish a usable local MVP, not commercial validation or public deployment readiness.
 
-The original completion evidence below is retained as history. The newer authorized SMTP/deployment work and its current checks are recorded in the continuation section at the end of this document.
+The earlier completion evidence below retains its original names and dates. The latest user-authorized LinkedHome brand changes and checks are recorded in the final continuation section.
 
 ## Executed checks
 
@@ -127,3 +127,21 @@ The user requested the home, registration, guided dashboard, FAQ and chat work f
 The browser counts include four mail-runtime scenarios twice; they are not25 distinct scenarios. [Structured evidence](evidence/rental-ux-integration.json) records provenance and scope. The updated [local performance measurement](evidence/rental-ux-performance.json) observed desktopLCP248ms/CLS0.0225 and throttled mobileLCP2,368ms/CLS0.0345,402,761bytes transferred; these are synthetic Chromium measurements, not field performance or a usability study.
 
 The earlier naming validation remains a historical result for its isolated source tree; this continuation validates the combined UX and current Doorluma source. The dedicated experience fixtures establish frontend behavior, not live provider delivery or production deployment. No further push, remote CI execution, domain purchase, public rollout or change to the existing release gates is claimed.
+
+## Continuation: LinkedHome selected by the user — 2026-10-04
+
+After the requested fast-forward pull to `9db6a9cc80706049a39be6c56ee42ecdfbabe379`, the user selected **LinkedHome** and requested the necessary repository changes. The central name and slug now drive the UI, email, service log, newly issued synthetic income observations and export downloads; static HTML metadata and current domain/deployment guidance are aligned. Existing immutable observations and earlier validation/domain evidence retain their original names. No migration or active origin/sender change was made.
+
+`npm run check` passed against the updated source on 2026-10-04 CEST, running the database-owning suites sequentially:
+
+| Check | Observed outcome |
+|---|---|
+| Build | Strict TypeScript and Vite passed; 117 modules; JS393.83kB raw/116.59kB gzip, CSS27.94kB raw/7.00kB gzip |
+| Backend/unit/integration/SMTP | **161 passed across7 files**,17.42s; includes LinkedHome mail sender and new synthetic issuer expectations; controlled loopback mail only |
+| Application browser suite | **19 passed**,34.5s; includes the `linkedhome-dati.json` download and synthetic income workflows |
+| Experience browser suite | **11 passed**,12.9s; role guide, signup, progress, draft/chat and mocked mail/runtime scenarios |
+| Responsive and visual | Built frontend inspected at1440px,390px and320px; matching viewport/scroll widths, visible access/registration controls and correct header/footer name, title, description and `noindex,nofollow` |
+
+Four mail/runtime scenarios run in both browser configurations: the total is **26 distinct browser scenarios**, not30. Existing configured axe and overflow checks passed on the sampled screens. The separate visual probe used a loopback frontend preview with mocked local configuration and an unauthenticated session; it did not connect to PostgreSQL or test a deployed service. Screenshots: [desktop](evidence/linkedhome-landing-desktop.png), [mobile](evidence/linkedhome-landing-mobile.png), [320px](evidence/linkedhome-landing-320.png). [Structured validation evidence](evidence/linkedhome-validation.json) records the scope and source hashes.
+
+Focused independent static review found no remaining branding or documentation-provenance defects; the [historical naming archive](../product/03-naming-doorluma-2026-10-03.md) preserves the earlier comparison. Technical database/session/package identifiers are preserved; no application seed or reset was performed. Future `linkedhome.eu` origins and sender addresses remain documentation or commented examples. The [current domain evidence](evidence/linkedhome-domain-research.json) distinguishes available `.eu`/`.it` from registered `.com`. This continuation does not establish trademark clearance, live SMTP delivery, public TLS, deployment or remote CI; no purchase, DNS/provider activation or further push occurred.

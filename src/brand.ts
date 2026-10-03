@@ -1,6 +1,6 @@
 export const brand = {
-  name: "Doorluma",
-  slug: "doorluma",
+  name: "LinkedHome",
+  slug: "linkedhome",
   tagline: "Affitti che iniziano da un invito.",
   defaultLocale: "it-IT",
   supportedLocales: ["it-IT"],

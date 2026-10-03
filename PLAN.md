@@ -1,6 +1,6 @@
-# Execution ledger — LinkedHome / Doorluma
+# Execution ledger — LinkedHome
 
-Updated 2026-10-03. User instruction: **execute all repository phases**. The original52-section brief is absent from the checkout; this ledger and the adopted feature contract define the reviewable local scope. Doorluma supersedes the original working name Soglia after the authorized domain search; domain purchase and trademark clearance remain open.
+Updated 2026-10-04. User instruction: **execute all repository phases**, followed by the explicit selection of **LinkedHome** and authorization for the necessary repository changes. The original52-section brief is absent from the checkout; this ledger and the adopted feature contract define the reviewable local scope. LinkedHome supersedes Doorluma as the product name; domain purchase and trademark clearance remain open. Earlier continuation sections retain their historical names and validation results.
 
 Research passed an independent bounded gate for synthetic local development. Production deployment, live provider integrations, outside studies and legal/brand clearance are separate [release gates](docs/operations/release-checklist.md).
 
@@ -13,7 +13,7 @@ Research passed an independent bounded gate for synthetic local development. Pro
 | 4 | Legal/privacy research | DONE for desk scope — inspected primary baseline, no deployment clearance; review02 |
 | 5 | Product thesis | DONE — docs/product/01; independently reviewed |
 | 6 | Priorities | DONE — docs/product/02 acceptance contract; external features deferred explicitly |
-| 7 | Naming/branding | DONE — Doorluma centralized; domain availability research completed in the subsequent authorized scope, purchase and trademark clearance pending |
+| 7 | Naming/branding | DONE — LinkedHome selected by the user; centralized brand and future `.eu` guidance updated and verified; purchase and trademark clearance pending |
 | 8 | UX architecture | DONE — docs/design/01, review03 |
 | 9 | Design system | DONE — docs/design/02 and implemented responsive CSS |
 | 10 | Technical ADR | DONE — Fastify/React/TypeScript/PostgreSQL; review03 and amendments |
@@ -90,3 +90,7 @@ Implementata l’estensione richiesta localmente: ricerca mirata, audit browser,
 ## Integrazione e pubblicazione richieste
 
 Il lavoro reddito `f4cf518` è unito alla storia remota Doorluma/UX/SMTP fino a `65f38ee` mediante merge nel checkout corrente. Verifica integrata completata: build/typecheck, 161 test backend, 19 scenari browser core/reddito/mail e 11 esperienza/mail, tutti passati; quattro scenari mail ripetuti. Review07 e [evidenza](docs/operations/evidence/income-integration.json) registrano correzioni runtime, fixture e marchio. Il branch da pubblicare è quello esistente `claude/sweet-goldberg-5lwng7`; `work` è il nome locale del checkout. Dati e credenziali locali restano preservati e ignorati; nessun deploy o provider reale attivato.
+
+## Authorized continuation — LinkedHome branding, 2026-10-04
+
+Following an explicit user-requested pull, the checkout contains the integrated UX, SMTP and synthetic income history at `9db6a9c`. The user then selected LinkedHome and requested the necessary changes. The product name/slug, HTML metadata, existing mail/export expectations and current product/deployment guidance are updated. [D-007](docs/DECISIONS.md) records the decision; [current domain evidence](docs/operations/evidence/linkedhome-domain-research.json) distinguishes available `.eu`/`.it` from registered `.com` and documents nearby names. Older evidence and immutable synthetic observations retain the names they actually recorded. `npm run check` passed: build/typecheck,161 backend tests,19 application browser scenarios and11 experience scenarios, with4 mail scenarios repeated. Desktop,390px and320px visual checks passed. [Validation](docs/operations/validation.md) records this continuation; no purchase, deployment or further push occurred.
