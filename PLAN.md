@@ -32,7 +32,7 @@ Research passed an independent bounded gate for synthetic local development. Pro
 | 23 | Visual QA | DONE — final desktop/mobile screenshots inspected and retained in operations/evidence |
 | 24 | Security | DONE for local scope — independent E/F review, fixes and dependency audit with 0 known vulnerabilities |
 | 25 | Performance/accessibility | DONE — axe/keyboard/narrow-screen checks; measured desktop LCP244ms, throttled mobile2252ms, CLS0 |
-| 26 | Documentation | DONE — README, demo, operations, evidence and tested cloud install/start instructions; draft revision5 saved |
+| 26 | Documentation | DONE — README, demo, operations, evidence and tested cloud install/start instructions; install/start draft saved and repository membership aligned to the verified final local HEAD |
 | 27 | Final adversarial review | DONE — eight independent final reviewers; review05 PASS for local synthetic scope |
 | 28 | Fix material issues | DONE — material findings corrected and regressions passed; external release gates remain separate |
 
@@ -40,7 +40,7 @@ Research passed an independent bounded gate for synthetic local development. Pro
 
 Local commits: `a5d4e80` research consolidation; `d47a214` independent research corrections; `c0180de` reviewed product/design/ADR; `0185593` implemented and tested local MVP. Final evidence is committed separately in this history. No push or PR was created. Remote target remains only `claude/sweet-goldberg-5lwng7`; never reset/switch the platform checkout or create a worktree unless explicitly requested.
 
-Only generated local data: `.local/` and credentials remain ignored. Test DBs are `soglia_test` and `soglia_e2e`, distinct from `soglia`. Do not run database-owning lifecycle commands concurrently. The tested cloud install/start instructions are saved in draft revision5. Saving is not publication or validation of a restored new task; restoration of unpublished local-only commits is not guaranteed.
+Only generated local data: `.local/` and credentials remain ignored. Test DBs are `soglia_test` and `soglia_e2e`, distinct from `soglia`. Do not run database-owning lifecycle commands concurrently. The tested cloud install/start instructions are saved in the configuration draft. Saving is not publication or validation of a restored new task; restoration of unpublished local-only commits is not guaranteed.
 
 ## Completion and follow-on scope
 

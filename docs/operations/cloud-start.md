@@ -54,3 +54,8 @@ Questa configurazione è una bozza salvata: non pubblica lo snapshot e non dimos
 Il 2026-10-03 anche un export pulito dei sorgenti, senza dipendenze, dati o credenziali preesistenti, ha superato installazione, bootstrap, build, avvio e richieste funzionali. Un backup logico PostgreSQL è stato ripristinato in un database separato: tutte le tabelle/sequenze coincidevano, login/discovery/export funzionavano e il database originale è rimasto invariato. I dati temporanei sensibili sono stati rimossi. Evidenze in `docs/operations/evidence/clean-install.json` e `recovery.json`.
 
 Queste prove si svolgono sulla macchina corrente: non equivalgono alla pubblicazione o al ripristino di uno snapshot cloud. La pubblicazione dell’ambiente avviene attraverso l’interfaccia del prodotto, dopo il salvataggio della configurazione; gli strumenti di questa chat non espongono tale operazione. Non occorre chiedere un’altra approvazione in chat. Dopo un’effettiva pubblicazione, verificare il nuovo ambiente e riavviare i servizi seguendo queste istruzioni.
+
+
+## Repository salvato
+
+La configurazione registra `AsaroAlex/LinkedHome` su `github.com`, con mount_path `LinkedHome` e il SHA completo dell’HEAD locale verificato al salvataggio finale. Il riferimento comprende i commit locali dell’implementazione. Non cambiarlo al vecchio branch remoto per rendere possibile un ripristino: preservare il lavoro corrente. Per attivare lo snapshot usare Review and Publish nell’interfaccia del prodotto; questa operazione non è disponibile attraverso i tool della chat.

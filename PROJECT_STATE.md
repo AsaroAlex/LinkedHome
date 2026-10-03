@@ -34,7 +34,7 @@ Node24.19.0, npm11.9.0, PostgreSQL18.4, Chromium151.0.7922.173 in `/usr/bin/chro
 
 ## Configurazione cloud
 
-Bozza salvata e riletta con successo, **revisione 5**: install_script completo identico a `scripts/cloud-install.sh`, start_skill in `docs/operations/cloud-start.md`. Conservati i 12 domini personalizzati e il preset package_managers; nessun segreto esterno richiesto. Le vecchie istruzioni che descrivevano un repository soltanto documentale sono sostituite.
+Bozza salvata e riletta con successo (revisioni delle istruzioni 4–5; leggere la revisione corrente nella configurazione): install_script completo identico a `scripts/cloud-install.sh`, start_skill in `docs/operations/cloud-start.md`. Conservati i 12 domini personalizzati e il preset package_managers; nessun segreto esterno richiesto. Le vecchie istruzioni che descrivevano un repository soltanto documentale sono sostituite.
 
 Salvare la bozza non pubblica lo snapshot né valida il ripristino in un nuovo task. I commit sono locali e il remoto non è aggiornato; il ripristino dei commit locali non pubblicati non è garantito dalla piattaforma. Non aggirare questo limite con reset o push non richiesti. Nessun nuovo task ripristinato o CI remota è stato verificato.
 
@@ -61,3 +61,10 @@ Il brief integrale originario di 52 sezioni non è nel checkout: PLAN e il contr
 Verificate installazione e avvio da export pulito di `de15065`, senza riuso di dipendenze/database/credenziali, e un backup/ripristino PostgreSQL reale in database usa e getta. Tutte le 14 tabelle e le sequenze coincidevano; login/discovery/export sul ripristinato riusciti. Database originale invariato e file/database temporanei sensibili rimossi. Evidenze in `docs/operations/evidence/clean-install.json` e `recovery.json`; il primo è una prova sulla stessa macchina, non un nuovo task.
 
 Per rendere attivo uno snapshot cloud rimane un’operazione dell’interfaccia della piattaforma: pubblicazione e riconnessione. Gli strumenti disponibili salvano/leggono bozze, non pubblicano né creano un task ripristinato. Non manca un’approvazione da ripetere in chat. Le istruzioni aggiornate documentano esplicitamente questo confine operativo. Nessun deploy pubblico o push implicito effettuato.
+
+
+## Allineamento finale del repository nella configurazione cloud
+
+Censita completamente `/workspace`: un solo checkout Git, `AsaroAlex/LinkedHome`, host `github.com`, percorso relativo `LinkedHome`; nessun worktree, submodule o checkout sovrapposto. Il campo repositories viene allineato al commit locale completo verificato dopo questo aggiornamento documentale, preservando anche i commit non pubblicati. Il salvataggio finale mantiene install_script, rete e credenziali esistenti. La revisione corrente e il relativo SHA sono verificati rileggendo la bozza, senza ulteriori commit che ne cambino il riferimento.
+
+La pubblicazione dello snapshot resta un’operazione del prodotto chiamata Review and Publish: non esiste un tool disponibile che possa eseguirla in questa chat. Il checkout non viene sostituito con un vecchio commit remoto per aggirare il limite di ripristino dei commit locali.
