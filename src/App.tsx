@@ -3,6 +3,8 @@ import {
   useRef,
   useState,
   useId,
+  createContext,
+  useContext,
   type FormEvent,
   type ReactNode,
 } from "react";
@@ -10,6 +12,27 @@ import { api, useLoad, formValues, dateLabel, ApiError } from "./api";
 import { brand, statuses, reasonLabels } from "./brand";
 import { cities } from "../server/domain";
 import type { User } from "../server/auth";
+type RuntimeConfig = {
+  environment: "local" | "staging" | "production";
+  mailTransport: "local" | "smtp";
+};
+const RuntimeContext = createContext<RuntimeConfig | null>(null);
+function validRuntime(value: unknown): RuntimeConfig | null {
+  if (!value || typeof value !== "object") return null;
+  const config = value as Partial<RuntimeConfig>;
+  return ["local", "staging", "production"].includes(
+    config.environment || "",
+  ) && ["local", "smtp"].includes(config.mailTransport || "")
+    ? (config as RuntimeConfig)
+    : null;
+}
+function verificationInstructions(runtime: RuntimeConfig | null) {
+  if (runtime?.mailTransport === "local")
+    return "Il link è nel messaggio locale disponibile all’operatore. Nessuna email viene inviata: questa conferma non prova il controllo di una casella reale, l’identità o il reddito.";
+  if (runtime?.mailTransport === "smtp")
+    return "Apri il link di conferma dalla tua casella email. Controlla anche la cartella spam. La conferma riguarda l’indirizzo email, non l’identità o il reddito.";
+  return "Apri un link di conferma valido per confermare l’indirizzo. Questa conferma non verifica l’identità o il reddito.";
+}
 const initialDay = () =>
   new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10);
 function go(path: string) {
@@ -244,6 +267,8 @@ function useAction() {
 }
 
 export function App() {
+  const config = useLoad<unknown>("/config"),
+    runtime = validRuntime(config.data);
   const [path, setPath] = useState(location.pathname),
     [user, setUser] = useState<User | null>(null),
     [ready, setReady] = useState(false),
@@ -306,13 +331,19 @@ export function App() {
     "/account/reset",
   ].includes(path);
   return (
-    <>
+    <RuntimeContext.Provider value={runtime}>
       <a className="skip-link" href="#main">
         Vai al contenuto
       </a>
-      <div className="environment">
-        Ambiente dimostrativo · dati sintetici · nessun annuncio reale
-      </div>
+      {runtime?.environment === "local" ? (
+        <div className="environment">
+          Ambiente dimostrativo · dati sintetici · nessun annuncio reale
+        </div>
+      ) : runtime?.environment === "staging" ? (
+        <div className="environment">
+          Ambiente di test · non usare dati o documenti reali
+        </div>
+      ) : null}
       <header className="header">
         <div className="header-inner">
           <Link to="/" className="logo">
@@ -469,10 +500,16 @@ export function App() {
         </div>
         <div>
           <Link to="/safeguards">Controllo e trasparenza</Link>
-          <p>Prototipo locale · nome di lavoro</p>
+          <p>
+            {runtime?.environment === "local"
+              ? "Prototipo locale · nome di lavoro"
+              : runtime?.environment === "staging"
+                ? "Ambiente di test · nome di lavoro"
+                : "Nome di lavoro"}
+          </p>
         </div>
       </footer>
-    </>
+    </RuntimeContext.Provider>
   );
 }
 function Landing() {
@@ -635,6 +672,7 @@ function Landing() {
   );
 }
 function Safeguards() {
+  const runtime = useContext(RuntimeContext);
   return (
     <>
       <PageHeading
@@ -681,24 +719,43 @@ function Safeguards() {
         </p>
         <h2>Verifiche e segnalazioni</h2>
         <p>
-          In un servizio reale, confermare un’email può indicare il controllo di
-          quell’indirizzo. Qui il link è generato localmente e nessuna email
-          viene inviata. I servizi di verifica d’identità e reddito non sono
-          disponibili in questo prototipo. L’autorizzazione a offrire un
-          immobile è autodichiarata.
+          {verificationInstructions(runtime)} I servizi di verifica d’identità e
+          reddito non sono disponibili. L’autorizzazione a offrire un immobile è
+          autodichiarata.
         </p>
         <p>
           Una segnalazione rende visibili agli operatori la tua identità di
           account, l’invito, il motivo e l’eventuale messaggio selezionato. Non
           apre l’intera conversazione.
         </p>
-        <h2>Una dimostrazione locale</h2>
-        <p>
-          Questo ambiente contiene esempi sintetici: non caricare dati o
-          documenti reali. Non è un servizio aperto al pubblico. Prima del
-          lancio serviranno un titolare operativo, assistenza e condizioni e
-          informative definitive.
-        </p>
+        {runtime?.environment === "local" ? (
+          <>
+            <h2>Una dimostrazione locale</h2>
+            <p>
+              Questo ambiente contiene esempi sintetici: non caricare dati o
+              documenti reali. Non è un servizio aperto al pubblico. Prima del
+              lancio serviranno un titolare operativo, assistenza e condizioni e
+              informative definitive.
+            </p>
+          </>
+        ) : runtime?.environment === "staging" ? (
+          <>
+            <h2>Un ambiente di test</h2>
+            <p>
+              Usa questo ambiente per provare il servizio con dati di esempio.
+              Non caricare dati o documenti reali.
+            </p>
+          </>
+        ) : (
+          <>
+            <h2>Il controllo resta tuo</h2>
+            <p>
+              Pubblica solo le preferenze e gli immobili che vuoi condividere.
+              Non inserire documenti, credenziali bancarie o dati finanziari nei
+              messaggi. Non gestiamo pagamenti o contratti di affitto.
+            </p>
+          </>
+        )}
         <Link to="/register" className="button">
           Crea il tuo spazio
         </Link>
@@ -814,7 +871,8 @@ function Recovery({
   path: string;
   refresh: () => Promise<void>;
 }) {
-  const a = useAction();
+  const a = useAction(),
+    runtime = useContext(RuntimeContext);
   const [secret] = useState(() =>
     /^[a-f0-9]{64}$/.test(location.hash.slice(1)) ? location.hash.slice(1) : "",
   );
@@ -840,10 +898,18 @@ function Recovery({
         await refresh();
       },
       verify
-        ? "Conferma locale completata. Puoi esplorare pubblicazione e inviti sintetici."
+        ? runtime?.mailTransport === "local"
+          ? "Conferma locale completata. Puoi continuare nel tuo spazio."
+          : runtime?.mailTransport === "smtp"
+            ? "Email confermata. Puoi continuare nel tuo spazio."
+            : "Conferma completata. Puoi continuare nel tuo spazio."
         : reset
           ? "Password aggiornata. Accedi con la nuova password."
-          : "Se l’indirizzo è registrato, le istruzioni sono nel messaggio locale disponibile all’operatore. Nessuna email viene inviata.",
+          : runtime?.mailTransport === "local"
+            ? "Se l’indirizzo è registrato, le istruzioni sono nel messaggio locale disponibile all’operatore. Nessuna email viene inviata."
+            : runtime?.mailTransport === "smtp"
+              ? "Se l’indirizzo è registrato, controlla la tua casella email e la cartella spam per le istruzioni di recupero."
+              : "Se l’indirizzo è registrato, la richiesta di recupero è stata ricevuta.",
     );
   }
   return (
@@ -870,11 +936,7 @@ function Recovery({
         ) : (
           <>
             {verify ? (
-              <p>
-                In questa demo confermi un link generato localmente. Nessuna
-                email viene inviata e non è verificato il controllo di una
-                casella reale.
-              </p>
+              <p>{verificationInstructions(runtime)}</p>
             ) : (
               <Field
                 name={reset ? "password" : "email"}
@@ -899,7 +961,9 @@ function Recovery({
             </button>
             {(verify || reset) && !secret && (
               <p role="alert">
-                Apri il link completo del messaggio locale.{" "}
+                {runtime?.mailTransport === "local"
+                  ? "Apri il link completo del messaggio locale."
+                  : "Apri il link completo di conferma o recupero."}{" "}
                 <Link to="/forgot">Richiedi un nuovo recupero</Link> oppure{" "}
                 <Link to="/verification">reinvia la conferma</Link>.
               </p>
@@ -911,7 +975,8 @@ function Recovery({
   );
 }
 function Dashboard({ user }: { user: User }) {
-  const inv = useLoad("/dashboard");
+  const inv = useLoad("/dashboard"),
+    runtime = useContext(RuntimeContext);
   const pending = inv.data?.pending ?? "—",
     accepted = inv.data?.accepted ?? "—";
   return (
@@ -925,6 +990,7 @@ function Dashboard({ user }: { user: User }) {
       {!user.email_verified && (
         <div className="alert">
           <strong>Conferma la tua email per pubblicare e contattare.</strong>{" "}
+          {verificationInstructions(runtime)}{" "}
           <Link to="/verification">Vai alle verifiche →</Link>
         </div>
       )}
@@ -1805,7 +1871,8 @@ function InvitationsPage({ user }: { user: User }) {
   );
 }
 function Conversation({ id, user }: { id: string; user: User }) {
-  const [before, setBefore] = useState(""),
+  const runtime = useContext(RuntimeContext),
+    [before, setBefore] = useState(""),
     l = useLoad(`/conversations/${id}${before ? `?before=${before}` : ""}`),
     inv = useLoad(`/invitations/${id}`),
     a = useAction(),
@@ -1934,8 +2001,12 @@ function Conversation({ id, user }: { id: string; user: User }) {
             di fermarti.
           </h2>
           <p>
-            Non condividere documenti, credenziali bancarie o denaro qui. Questo
-            spazio è una dimostrazione locale.
+            Non condividere documenti, credenziali bancarie o denaro qui.{" "}
+            {runtime?.environment === "local"
+              ? "Questo spazio è una dimostrazione locale."
+              : runtime?.environment === "staging"
+                ? "Questo è un ambiente di test: usa solo dati di esempio."
+                : "Puoi segnalare un messaggio o bloccare un contatto."}
           </p>
           <button
             className="button secondary full"
@@ -1977,7 +2048,8 @@ function Conversation({ id, user }: { id: string; user: User }) {
 }
 function VerificationPage() {
   const l = useLoad("/verification"),
-    a = useAction();
+    a = useAction(),
+    runtime = useContext(RuntimeContext);
   return (
     <>
       <PageHeading
@@ -1992,15 +2064,10 @@ function VerificationPage() {
         <article className="panel">
           <span className="eyebrow">IL TUO INDIRIZZO</span>
           <h2>
-            Conferma locale{" "}
+            {runtime?.mailTransport === "local" ? "Conferma locale" : "Email"}{" "}
             {l.data?.email_verified ? "confermata" : "da confermare"}
           </h2>
-          <p>
-            In questo ambiente il link è generato in un messaggio locale per
-            l’operatore. Nessuna email viene inviata: questa conferma
-            dimostrativa non prova il controllo di una casella reale, l’identità
-            o il reddito.
-          </p>
+          <p>{verificationInstructions(runtime)}</p>
           {!l.data?.email_verified && (
             <button
               className="button"
@@ -2008,7 +2075,11 @@ function VerificationPage() {
               onClick={() =>
                 a.run(
                   () => api("/auth/resend", "POST"),
-                  "Nuovo messaggio di conferma preparato.",
+                  runtime?.mailTransport === "local"
+                    ? "Nuovo messaggio di conferma preparato per l’operatore locale. Nessuna email viene inviata."
+                    : runtime?.mailTransport === "smtp"
+                      ? "Richiesta ricevuta. Controlla la tua casella email e la cartella spam per il link di conferma."
+                      : "Richiesta di conferma ricevuta.",
                 )
               }
             >
@@ -2179,9 +2250,9 @@ function Settings({
             Rimuove profilo, immobili, messaggi inviati e conversazioni
             collegate. Le altre persone potrebbero non vederle più. Non revoca
             copie già scaricate. Le segnalazioni di altre persone conservano il
-            solo contesto selezionato. Nella demo l’operatore elimina i casi più
-            vecchi di 30 giorni tramite la pulizia periodica; la cancellazione
-            non è automatica.
+            solo contesto selezionato. L’operatore elimina i casi più vecchi di
+            30 giorni tramite la pulizia periodica; la cancellazione non è
+            automatica.
           </p>
           {deleting ? (
             <form onSubmit={remove}>
@@ -2205,7 +2276,8 @@ function Settings({
   );
 }
 function Staff({ path, user }: { path: string; user: User }) {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(0),
+    runtime = useContext(RuntimeContext);
   const isUsers = path === "/staff/users",
     analytics = path === "/staff/analytics",
     allowed =
@@ -2269,8 +2341,12 @@ function Staff({ path, user }: { path: string; user: User }) {
       ) : analytics && l.data ? (
         <>
           <p className="disclosure">
-            Conteggi del workflow locale con dati sintetici. Non misurano
-            domanda, liquidità o risultati di mercato.
+            {runtime?.environment === "local"
+              ? "Conteggi del workflow locale con dati sintetici."
+              : runtime?.environment === "staging"
+                ? "Conteggi dell’attività nell’ambiente di test."
+                : "Conteggi dell’attività nell’ambiente corrente."}{" "}
+            Non misurano domanda, liquidità o risultati di mercato.
           </p>
           <div className="three-grid">
             {[
@@ -2473,7 +2549,8 @@ function HistoryPager({
   ) : null;
 }
 function Suspended({ user }: { user: User }) {
-  const a = useAction();
+  const a = useAction(),
+    runtime = useContext(RuntimeContext);
   return (
     <>
       <PageHeading
@@ -2489,9 +2566,11 @@ function Suspended({ user }: { user: User }) {
           Riferimento account: {user.id}.
         </p>
         <p>
-          In questo ambiente dimostrativo la richiesta è registrata per
-          l’operatore locale. Non è attivo un servizio di assistenza per utenti
-          reali.
+          {runtime?.environment === "local"
+            ? "In questo ambiente dimostrativo la richiesta è registrata per l’operatore locale. Non è attivo un servizio di assistenza per utenti reali."
+            : runtime?.environment === "staging"
+              ? "La richiesta è registrata per l’operatore dell’ambiente di test."
+              : "La richiesta è registrata per gli operatori autorizzati. Puoi consultare i tuoi dati dalla pagina Account."}
         </p>
         <ErrorBox text={a.error} />
         {a.message && <Notice>{a.message}</Notice>}
@@ -2501,7 +2580,9 @@ function Suspended({ user }: { user: User }) {
             const reason = String(formValues(e.currentTarget).reason);
             void a.run(
               () => api("/account/appeal", "POST", { reason }),
-              "Richiesta di revisione registrata per l’amministratore locale.",
+              runtime?.environment === "local"
+                ? "Richiesta di revisione registrata per l’amministratore locale."
+                : "Richiesta di revisione registrata per gli operatori autorizzati.",
             );
           }}
         >

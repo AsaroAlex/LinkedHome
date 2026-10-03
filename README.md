@@ -1,6 +1,6 @@
 # Soglia · LinkedHome
 
-A working local prototype of an Italy-first reverse rental marketplace: publish preferences, discover compatible profiles for a property, invite, accept and converse. Built with TypeScript, React, Fastify and real PostgreSQL. **Synthetic data only; public deployment is deliberately disabled.** Soglia is a replaceable working name, without trademark/domain clearance.
+A prototype of an Italy-first reverse rental marketplace: publish preferences, discover compatible profiles for a property, invite, accept and converse. Built with TypeScript, React, Fastify and real PostgreSQL. Local development uses synthetic data; external PostgreSQL, authenticated SMTP and staging deployment templates are prepared. Real-user release conditions remain open. Soglia is a replaceable working name, without trademark/domain clearance.
 
 ## Run locally
 
@@ -17,6 +17,14 @@ Bootstrap creates an ignored `.local/` directory with a random PostgreSQL passwo
 
 Email messages are local files under `.local/mail/`, not deliveries to real addresses. Read the intended synthetic account's message locally to use its confirmation/reset link. There is no HTTP mailbox endpoint. Real identity/income providers, document uploads, payments and guarantees are unavailable.
 
+## Prepare a hosted beta
+
+The recommended combination is **Render Frankfurt + Brevo SMTP**. The [provider decision](docs/adr/0002-deployment-providers.md) compares alternatives and current prices; budget roughly $30/month for one operator or $55 with Render Pro, plus email, domain, taxes and usage beyond the baseline.
+
+[Deployment instructions](docs/operations/deployment.md) cover the staging [Render Blueprint](render.yaml), non-root [Docker image](Dockerfile) and portable [Compose/Caddy configuration](deploy/compose.yaml). No services have been provisioned. Staging/production startup requires HTTPS `APP_ORIGIN`, external `DATABASE_URL` and valid SMTP settings. There is no automatic demo seeding or migration of external databases at web startup. After configuring secrets, run migrations explicitly, then `npm run deploy:check`; it checks database/schema and SMTP authentication without sending email. `npm run deploy:check -- --config-only` validates configuration only.
+
+SMTP uses verified TLS on ports465/587 with bounded connection deadlines. The UI displays mailbox instructions when SMTP is configured and local-file instructions in the default demo. Verify actual inbox delivery, DNS, backups/restore, maintenance and trusted ingress in the target environment before real-user use. Identity/income checks and payment processing remain unavailable.
+
 ## Validate
 
 ```bash
@@ -30,7 +38,7 @@ Integration tests use only the generated local `soglia_test` database; browser t
 
 ## What is implemented
 
-- Tenant, landlord and both-role accounts; operator-provisioned admin/moderator, sessions, local confirmation/reset and restricted suspended-account access.
+- Tenant, landlord and both-role accounts; operator-provisioned admin/moderator, sessions, local or SMTP confirmation/reset and restricted suspended-account access.
 - Private-by-default profiles, deliberate publication/pause, owned properties,30-day availability reconfirmation.
 - Explained compatibility on city, total monthly cost, dates, duration and occupancy; pseudonymous discovery with stable cursor pagination.
 - Revision-bound invitations, immutable offered property snapshot, mutual conversations and paginated history.

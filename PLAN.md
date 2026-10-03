@@ -48,3 +48,20 @@ All phases0–28 are complete for the adopted local synthetic scope. Run instruc
 
 
 Completion follow-up: clean-source install/start and isolated PostgreSQL logical recovery passed; see operations/validation. Platform snapshot publication remains an interface action unavailable through the current tools, not an unfinished repository implementation phase.
+
+## Authorized continuation — integrations and deployment preparation
+
+On 2026-10-03 the user selected **«Integrazioni reali e preparazione del deploy»** and asked **«Ricerca e dammi la migliore opzione»**. This extends the completed local scope; it does not establish a real-user release.
+
+| Work | Status / evidence |
+|---|---|
+| Hosting/email/domain comparison | DONE — ADR0002 recommends Render Frankfurt, Brevo SMTP and OVHcloud for a future Italian domain; official sources, prices and residency limits recorded |
+| Real transactional transport | DONE — authenticated SMTP465/587, verified TLS, bounded/aborted connections, no deployed local fallback; 33 mail tests including controlled live protocol servers |
+| Deployment boundary and UI | DONE — explicit environment, HTTPS origin/external DB/SMTP validation, Secure Host cookies including deletion, narrow proxy trust, liveness/readiness and safe public runtime config; mailbox wording follows configuration |
+| Deployable source configuration | DONE for preparation — non-root Docker, Render staging/DB/migrate/preflight/daily-maintenance Blueprint and Compose/Caddy alternative; templates unapplied |
+| Verification | DONE — build, 136 unit/integration/SMTP tests and 14 browser scenarios; npm audit0 known vulnerabilities; production-only dependency runtime smoke passed with synthetic external PostgreSQL and unchanged application counts |
+| Independent technical review | DONE — review06; missing Docker brand module, Secure cookie deletion and SMTP deadline cancellation corrected |
+
+The default local environment remains synthetic and Docker-free. No real SMTP credentials, verified domain, paid service or public deploy exists. Docker schema/configuration and production-dependency startup were checked, but actual image build/run could not be checked because the environment does not permit access to its Docker socket. Render ingress/rate-limit trust, live email delivery, hosted backup/restore, monitoring and real-user release gates remain target-environment work. Exact follow-on evidence is in operations/validation and deployment.md.
+
+The existing remote/cloud configuration references the earlier published commit. This continuation is saved in the local checkout; additional remote publication is not claimed.

@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-03T19:29:14.129Z",
+  "scope": "Same-host production-dependency runtime with synthetic external PostgreSQL; not a Docker build or hosted deploy",
+  "production_dependencies_only": true,
+  "configuration_preflight": "PASS; SMTP credentials are placeholders, no remote connection attempted",
+  "runtime_http": "PASS: live database health, frontend, liveness, safe runtime config and staging HSTS header",
+  "application_counts_unchanged": {
+    "users": 5,
+    "profiles": 2,
+    "properties": 1,
+    "migrations": 3
+  },
+  "real_smtp_delivery": "NOT TESTED",
+  "external_https_ingress": "NOT TESTED"
+}

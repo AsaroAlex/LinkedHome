@@ -2,6 +2,8 @@
 
 The adopted local scope in [PLAN](../../PLAN.md) is implemented and verified with synthetic data. These results establish a usable local MVP, not commercial validation or public deployment readiness.
 
+The original completion evidence below is retained as history. The newer authorized SMTP/deployment work and its current checks are recorded in the continuation section at the end of this document.
+
 ## Executed checks
 
 | Check | Observed outcome |
@@ -67,3 +69,28 @@ A consistent custom-format `pg_dump` snapshot of the original local database was
 PostgreSQL client18.6 was downloaded through APT using the signed Debian unstable repository metadata and extracted without a system upgrade; it is compatible with server major18. No artifact-signature or checksum checks were disabled. The recovered seed contains5 users,2 profiles,1 property and3 migration records; contact/report tables are empty in this fixture. This proves local logical recovery of that fixture, not a production disaster-recovery exercise or cloud snapshot restore.
 
 The cloud platform's publication/reconnection step is owned by the product interface. The available tools save/read configuration drafts and cannot publish a snapshot or start a restored task. The prepared environment is ready for that platform step; no further chat approval or credential is required for the completed local workflow.
+
+## Continuation: real transport and deployment preparation
+
+On 2026-10-03 the user selected real integrations and deployment preparation and requested a researched provider recommendation. [ADR0002](../adr/0002-deployment-providers.md) recommends Render Frankfurt, Brevo SMTP and OVHcloud for a future Italian domain. [Deployment instructions](deployment.md) describe the concrete staging templates; none was applied to a provider.
+
+| Current check | Observed outcome |
+|---|---|
+| Frozen dependency installation | Updated lockfile installed successfully; nodemailer runtime and types added, tsx moved into runtime dependencies |
+| Local bootstrap | Existing synthetic application records preserved; no remote destination used |
+| Build | Strict TypeScript and Vite passed; JS366.34kB raw/108.92kB gzip, CSS21.84kB raw/5.85kB gzip |
+| Unit/integration/SMTP | **136 passed across6 files**,15.29s: domain20, API50, migration recovery1, configuration26, deployment HTTP6, mail33 |
+| SMTP protocol | Controlled loopback STARTTLS/SMTPS servers and test CA; authentication, accepted/refused recipient, refused certificate/auth and effective socket termination on deadline checked; no real recipient or provider used |
+| Deployment HTTP | Secure Host-cookie creation and logout/reset/delete expiry attributes, exact origin checks, safe config response, trusted/untrusted forwarding and database-readiness failure checked |
+| Browser | **14 passed**,20.7s after final cookie fixes: previous10 workflows plus4 mocked runtime/email scenarios, without external sends |
+| Production-only runtime | `npm ci --omit=dev` in a temporary copy; no embedded database, bootstrap/seed or local state. Actual staging startup with external synthetic PostgreSQL passed frontend/health/live/config/HSTS-header probes; [runtime evidence](evidence/deployment-runtime.json) |
+| Data preservation | Production-runtime probe observed unchanged counts:5 users,2 profiles,1 property,3 migration records; app DB was read only in that probe |
+| Render/Compose | Official Render JSON Schema and Compose `config --quiet`/topology checks passed using fake fixture values; [template evidence](evidence/deployment-templates.json) and [schema snapshot](evidence/render-blueprint.schema.json) |
+| Dependencies | npm audit **0 known vulnerabilities**,224 dependency records; [updated audit](evidence/deployment-dependency-audit.json) |
+| Independent review | [Review06](../reviews/review-06-deployment-preparation.md): missing runtime brand module, cookie expiry and SMTP socket deadline findings corrected; no further material finding identified in its focused scope |
+
+New [performance measurements](evidence/deployment-performance.json) use the same bounded Chromium setup, not field data: desktopLCP228ms/CLS0.0225; mobile4×CPU,200kB/s,80ms LCP2,264ms/CLS0.0345,389,975bytes of resource transfer. The new async runtime banner adds a small layout shift; the previous CLS0 result does not describe this revision. Axe/keyboard/responsive checks included in the browser suite passed within their configured scope.
+
+The runtime smoke test occurred on this machine with a private HTTP listener; asserting an HSTS response header does not verify public TLS. Docker image build/run and certificate issuance were **not tested** because the environment's Docker socket was inaccessible. No SMTP provider credentials, domain, service account, paid resource, actual inbox delivery, public rollout or remote CI result exists for this continuation. No further push or cloud-draft update is claimed. Actual target checks for Render ingress trust/rate limits, provider delivery/quota, monitoring, maintenance execution and backup/restore remain open alongside the real-user release checklist.
+
+SMTP token issuance remains synchronous, without a durable queue. Generic password-recovery status/body and rollback behavior are verified, but timing indistinguishability and provider acceptance-to-inbox delivery are not established. The source is prepared for the next configured staging verification, not declared production-ready.

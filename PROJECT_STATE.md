@@ -55,6 +55,20 @@ Non rimangono fasi locali aperte o approvazioni pendenti. Per un futuro rilascio
 
 Il brief integrale originario di 52 sezioni non è nel checkout: PLAN e il contratto adottato delimitano il lavoro verificabile. La ricerca conserva le distinzioni fra fonti lette, bloccate e ipotesi: 566 riferimenti bibliografici non equivalgono a 566 fonti verificate. Non ricominciare la ricerca o chiedere nuove approvazioni per correzioni già autorizzate.
 
+## Ripresa autorizzata: integrazioni reali e preparazione deploy
+
+Nel nuovo task del 2026-10-03 l'utente ha scelto **«Integrazioni reali e preparazione del deploy»** e alla domanda sui servizi ha risposto **«Ricerca e dammi la migliore opzione»**. Il perimetro locale precedente è completo; questo è il lavoro successivo autorizzato.
+
+Scelta raccomandata: **Render Frankfurt + Brevo SMTP**; per un futuro dominio italiano **OVHcloud**. Confronto e fonti in `docs/adr/0002-deployment-providers.md`. Budget esemplificativo hosting circa $30/mese per operatore singolo, $55 con Render Pro, più email (Brevo Free per staging entro300/giorno o Starter da$9), dominio, imposte e consumo eccedente. Non è stata verificata la disponibilità di nomi o marchi.
+
+Implementati adapter SMTP reale con TLS465/STARTTLS587, configurazione local/staging/production, originHTTPS/DBesterno/SMTP obbligatori fuori locale, cookieSecureHost e relativa cancellazione, proxy fidati solo per IP/CIDR espliciti, `/api/live`, `/api/health` con queryDB e `/api/config` senza segreti. La UI distingue posta locale/SMTP e ambiente di test. Sono preparati `Dockerfile`, `render.yaml`, Compose/Caddy e `npm run deploy:check` (connessione DB/schema e autenticazione SMTP, senza invio); `--config-only` controlla soltanto la configurazione.
+
+Verificati build, **136 test unitari/integrati/SMTP**, **14 scenari browser**, audit npm0 vulnerabilità note; test SMTP usano esclusivamente server loopback controllati e certificati di test. Runtime con sole dipendenze di produzione avviato in copia temporanea con PostgreSQL sintetico esterno, senza embedded-postgres o seed; health/frontend/config/HSTSheader funzionano e gli stessi5 utenti/2 profili/1 immobile/3 migrazioni sono preservati. Revisione tecnica indipendente06 ha portato alle correzioni dell'import brand nel Docker runtime, cancellazione cookieSecure e reale interruzione socket al timeoutSMTP.
+
+Template Render validato con schema ufficiale e Compose validato con fixture falsa; **build/run Docker non verificati**, socket non accessibile all'utente del task. Nessuna credenziale/provider/account reale, acquisto dominio, servizio a pagamento o deploy pubblico attivato. La configurazione SMTP è implementata ma **la consegna a caselle reali non è provata**. Su Render `TRUST_PROXY=false` può aggregare utenti sotto l'IP del load balancer: ottenere topologia/IP fidati e provare header contraffatti prima del traffico reale. SMTP è sincrono, senza coda durevole; risposta recovery generica non prova indistinguibilità temporale. Backup/restore/monitoraggio/retention nell'hosting e i gate legali/prodotto rimangono da verificare.
+
+Le evidenze sono in `docs/operations/validation.md`, `evidence/deployment-runtime.json`, `deployment-templates.json` e nella review06. Il vecchio push e la bozza cloud si riferiscono alla fase precedente: non presumere che contengano questa continuazione. Non resettare/switchare il checkout né creare worktree. Nessun push ulteriore o PR è stato eseguito in questa ripresa.
+
 
 ## Completamento successivo alla richiesta «Completa»
 

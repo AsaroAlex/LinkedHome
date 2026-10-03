@@ -40,3 +40,10 @@ D-001 remains in force. Research documents 01–10 and the single-agent A–H as
 - **Evidence:** Independent product/implementation/final panels (reviews03–05),71 unit/integration tests,10 browser scenarios, actual install/start/dev/restart checks and recorded visual/performance evidence.
 - **Result:** Phases0–28 complete for the adopted local scope. D-002's Docker-free requirement is met by native embedded PostgreSQL; the earlier proposed Compose fallback is superseded by the tested explicit local/external modes. Tests use isolated databases and preserve the application seed. Suspended users retain recovery/rights/appeal access. Report cleanup is manual, never promised as a hard retention maximum.
 - **Boundary:** [Release gates](operations/release-checklist.md) remain outstanding. No public deployment, outside messaging, paid services or unrequested push/PR. Cloud draft saving does not verify fresh-task restoration of local-only commits.
+
+## D-005 — Prepare real transport and hosted staging
+
+- **Date:** 2026-10-03 · **Status:** accepted for implementation/preparation; provider choice recommended
+- **Decision:** Following the user's selected scope «Integrazioni reali e preparazione del deploy» and request «Ricerca e dammi la migliore opzione», add authenticated SMTP, explicit local/staging/production runtime configuration, secure-cookie/proxy boundaries and deployment templates. Prefer Render Frankfurt, Brevo SMTP and OVHcloud for a future Italian domain; [ADR0002](adr/0002-deployment-providers.md) records alternatives, sources, costs and limits.
+- **Result:** Real SMTP transport is implemented and tested against controlled loopback servers; staging templates include external PostgreSQL, explicit migrations/preflight, HTTPS and maintenance. Default local development remains synthetic and Docker-free.
+- **Boundary:** No provider credentials, domain purchase, paid resource, public deployment or real email delivery is claimed. The release checklist still applies; Render ingress, delivery, backup/restore and live operations require verification on the selected target.
