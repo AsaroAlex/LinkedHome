@@ -1,0 +1,123 @@
+{
+  "recorded_at_utc": "2026-10-03T22:52:06.530119+00:00",
+  "repository": "/workspace/LinkedHome",
+  "source_provenance": {
+    "local_parent": "78e04918f0e16d8e646bf00eaa4f165c2ab6e60a",
+    "merged_remote_parent": "cfc849f26ceb43d3ab6c7b78f9970441825711c7",
+    "head_when_recorded": "78e04918f0e16d8e646bf00eaa4f165c2ab6e60a",
+    "validated_state": "Resolved merged checkout before merge commit; no unmerged files.",
+    "current_brand": "LinkedHome"
+  },
+  "runtime": {
+    "node": "24.19.0",
+    "npm": "11.9.0"
+  },
+  "install": {
+    "repeated": false,
+    "reason": "package.json and package-lock.json unchanged; existing frozen-installed dependencies reused."
+  },
+  "check": {
+    "command": "npm run check",
+    "exit_code": 0,
+    "build": {
+      "passed": true,
+      "transformed_modules": 117,
+      "js_kb": 393.83,
+      "js_gzip_kb": 116.59,
+      "css_kb": 27.94,
+      "css_gzip_kb": 7.0
+    },
+    "backend": {
+      "files_passed": 7,
+      "tests_passed": 161,
+      "duration_seconds": 16.74
+    },
+    "browser_core_income_mail": {
+      "tests_passed": 19,
+      "duration_seconds": 34.9
+    },
+    "browser_experience_mail": {
+      "tests_passed": 11,
+      "duration_seconds": 12.9
+    },
+    "browser_distinct_scenarios": 26,
+    "browser_repeated_mail_scenarios": 4
+  },
+  "preservation": {
+    "target": {
+      "db": "soglia",
+      "host": "127.0.0.1",
+      "port": 55432
+    },
+    "application_public_tables_compared": 16,
+    "all_application_table_counts_and_aggregate_row_fingerprints_identical": true,
+    "local_config_and_demo_credential_files_identical": true,
+    "application_counts": {
+      "users": 5,
+      "profiles": 2,
+      "properties": 1,
+      "schema_migrations": 4,
+      "income_attestations": 0,
+      "income_shares": 0
+    },
+    "migration_names": [
+      "001_core.sql",
+      "002_cases_and_appeals.sql",
+      "003_invitation_offer.sql",
+      "004_income_attestations.sql"
+    ],
+    "application_snapshot_queries_read_only": true
+  },
+  "local_runtime": {
+    "command": "npm start",
+    "ready": true,
+    "environment": "local",
+    "mail_transport": "local",
+    "probes": {
+      "/api/health": {
+        "status": 200,
+        "safe_body": {
+          "ok": true,
+          "environment": "local"
+        }
+      },
+      "/api/config": {
+        "status": 200,
+        "safe_body": {
+          "environment": "local",
+          "mailTransport": "local"
+        }
+      },
+      "/": {
+        "status": 200,
+        "title": "LinkedHome \u2014 Affitti che iniziano da un invito",
+        "robots_noindex_nofollow": true,
+        "script_count": 1,
+        "script_statuses": [
+          200
+        ]
+      }
+    },
+    "final_process_state": "Stopped with SIGINT; no listeners on 3000/3017/55432, matching initial state.",
+    "npm_interactive_wrapper_sigint_exit_code": 1,
+    "application_error_dump_observed": false
+  },
+  "failures": [],
+  "nonblocking_warnings": [
+    "Node NO_COLOR/FORCE_COLOR warning"
+  ],
+  "not_executed": [
+    "Application bootstrap or seed/reset",
+    "New application schema migration",
+    "External SMTP sends",
+    "Real income-provider or payment integration",
+    "Public deployment",
+    "Remote CI",
+    "Git mutations or branch deletion by verifier"
+  ],
+  "limitations": [
+    "Only local resolved source checkout and synthetic fixtures were verified; tests do not establish production readiness, commercial validation, full accessibility certification or actual provider delivery.",
+    "Branch ancestry, commit, push and branch cleanup are performed and verified separately by the parent."
+  ],
+  "log_path": "docs/operations/evidence/branch-merge-check.log"
+}

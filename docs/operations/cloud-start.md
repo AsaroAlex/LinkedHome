@@ -1,8 +1,10 @@
-# Avvio di LinkedHome / Doorluma nell’ambiente cloud
+# Avvio di LinkedHome nell’ambiente cloud
 
 Usa `/workspace/LinkedHome`, checkout isolato già fornito dalla piattaforma. Preserva modifiche, dati ignorati e commit locali. Non creare worktree, non fare reset, switch, pull o push automatici. Il branch locale `work` può differire dal riferimento remoto richiesto `claude/sweet-goldberg-5lwng7` senza essere un errore. Nessuna PR senza richiesta.
 
 Leggi eventuali AGENTS.md applicabili, `PROJECT_STATE.md`, `PLAN.md` e `README.md`. Il piano autorizzato comprende ricerca e MVP locale completo; il lavoro successivo autorizzato prepara integrazioni reali e deploy. Lo stack implementato è TypeScript/Fastify/React/Vite/PostgreSQL. Le revisioni indipendenti locali sono nei file review02–05. SMTP reale e template staging sono implementati; account, dominio, credenziali e infrastruttura remota non sono stati provisionati. Segui [deployment.md](deployment.md) per quel percorso, mantenendo locale il default di questa macchina.
+
+Il brand approvato dall'utente è **LinkedHome**. Il dominio principale futuro proposto è `linkedhome.eu`, `.it` facoltativo; `linkedhome.com` è già registrato e non è in attesa di nuova registrazione. Nessun dominio acquistato o origin/mittente SMTP reale modificato. La clearance del marchio resta aperta, comprese le vicinanze Linkhome e Linkedhomes: seguire [domain-setup.md](domain-setup.md) e i [controlli del 4 ottobre 2026 alle 00:17 CEST](evidence/linkedhome-domain-research.json). Evidenze e risultati delle precedenti scelte di nome conservano nomi e date originali.
 
 ## Installazione
 

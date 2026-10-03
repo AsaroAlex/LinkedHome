@@ -1,6 +1,6 @@
-# Execution ledger — LinkedHome / Doorluma
+# Execution ledger — LinkedHome
 
-Updated 2026-10-03. User instruction: **execute all repository phases**. The original52-section brief is absent from the checkout; this ledger and the adopted feature contract define the reviewable local scope. Doorluma supersedes the original working name Soglia after the authorized domain search; domain purchase and trademark clearance remain open.
+Updated 2026-10-04. User instruction: **execute all repository phases**, followed by the explicit selection of **LinkedHome** and authorization for the necessary repository changes. The original52-section brief is absent from the checkout; this ledger and the adopted feature contract define the reviewable local scope. LinkedHome supersedes Doorluma as the product name; domain purchase and trademark clearance remain open. Earlier continuation sections retain their historical names and validation results.
 
 Research passed an independent bounded gate for synthetic local development. Production deployment, live provider integrations, outside studies and legal/brand clearance are separate [release gates](docs/operations/release-checklist.md).
 
@@ -13,7 +13,7 @@ Research passed an independent bounded gate for synthetic local development. Pro
 | 4 | Legal/privacy research | DONE for desk scope — inspected primary baseline, no deployment clearance; review02 |
 | 5 | Product thesis | DONE — docs/product/01; independently reviewed |
 | 6 | Priorities | DONE — docs/product/02 acceptance contract; external features deferred explicitly |
-| 7 | Naming/branding | DONE — Doorluma centralized; domain availability research completed in the subsequent authorized scope, purchase and trademark clearance pending |
+| 7 | Naming/branding | DONE — LinkedHome selected by the user; centralized brand and future `.eu` guidance updated and verified; purchase and trademark clearance pending |
 | 8 | UX architecture | DONE — docs/design/01, review03 |
 | 9 | Design system | DONE — docs/design/02 and implemented responsive CSS |
 | 10 | Technical ADR | DONE — Fastify/React/TypeScript/PostgreSQL; review03 and amendments |
@@ -100,8 +100,12 @@ La richiesta di massimizzare redditività e contenere spesa è seguita da «Fai 
 - [x] [Sintesi economica](docs/research/12-sustainable-economics.md), [allegati](docs/research/economics-2026-10-03/README.md) e [review08](docs/reviews/review-08-economics.md) integrati nel repository.
 - [x] Verifica nuova del codice ottenuto dal pull: build/typecheck, 161 backend, 19 browser core/reddito/mail e 11 esperienza/mail, 26 scenari distinti. Evidenza in [pull-economics-integration](docs/operations/evidence/pull-economics-integration.json).
 
-La prima offerta da provare è un'installazione 790 € con manutenzione facoltativa, D-007 proposto. Nessuna vendita/intervista/campagna/acquisto o implementazione del pivot è effettuata. La ricerca reddituale e il flusso sintetico già implementati restano distinti dalla validazione economica. I comandi di test preservano dati e credenziali applicativi; gli esiti del controllo di avvio/migrazione sono registrati nell'evidenza dedicata.
+La prima offerta da provare è un'installazione 790 € con manutenzione facoltativa, D-008 proposto. Nessuna vendita/intervista/campagna/acquisto o implementazione del pivot è effettuata. La ricerca reddituale e il flusso sintetico già implementati restano distinti dalla validazione economica. I comandi di test preservano dati e credenziali applicativi; gli esiti del controllo di avvio/migrazione sono registrati nell'evidenza dedicata.
+
+## Authorized continuation — LinkedHome branding, 2026-10-04
+
+Following an explicit user-requested pull, the checkout contains the integrated UX, SMTP and synthetic income history at `9db6a9c`. The user then selected LinkedHome and requested the necessary changes. The product name/slug, HTML metadata, existing mail/export expectations and current product/deployment guidance are updated. [D-007](docs/DECISIONS.md) records the decision; [current domain evidence](docs/operations/evidence/linkedhome-domain-research.json) distinguishes available `.eu`/`.it` from registered `.com` and documents nearby names. Older evidence and immutable synthetic observations retain the names they actually recorded. `npm run check` passed: build/typecheck,161 backend tests,19 application browser scenarios and11 experience scenarios, with4 mail scenarios repeated. Desktop,390px and320px visual checks passed. [Validation](docs/operations/validation.md) records this continuation; no purchase, deployment or further push occurred.
 
 ## Pubblicazione e pulizia dei branch richieste — 2026-10-04
 
-Alla richiesta «Unisci, mergia e pulisci i branch», inventario completo: un solo ramo remoto/default `claude/sweet-goldberg-5lwng7`, un solo locale `work`, nessuna PR aperta. Il lavoro economico `3658f8a` segue la storia già unificata `9db6a9c`: pubblicazione ordinaria fast-forward sul ramo esistente. Nessun branch aggiuntivo da cancellare. I test e audit precedenti restano applicabili perché i sorgenti dell'app e dei modelli non cambiano.
+Alla richiesta «Unisci, mergia e pulisci i branch», inventario completo: un solo ramo remoto/default `claude/sweet-goldberg-5lwng7`, un solo locale `work`, nessuna PR aperta. Il remoto è avanzato durante il push a `25d02c6`, con il naming LinkedHome. Integrato tramite merge insieme alla ricerca `3658f8a`; risolti i conflitti documentali, con D-007 naming e D-008 proposta economica. Nessun branch aggiuntivo da cancellare. Nuova verifica del codice integrato in [branch-merge-validation](docs/operations/branch-merge-validation.md); pubblicazione ordinaria sul ramo remoto esistente.

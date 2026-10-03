@@ -1,6 +1,6 @@
-# 12 — Redditività di Doorluma: la prima offerta da mettere alla prova
+# 12 — Redditività di LinkedHome: la prima offerta da mettere alla prova
 
-Data della ricerca: **3 ottobre 2026**. Sintesi di due analisi economiche e dei filoni concorrenza, distribuzione, segmenti, provider e normativa. Il brief usava LinkedHome/Soglia; il nome corrente del progetto, verificato dopo il pull di `9db6a9c`, è **Doorluma**. Gli allegati conservano i nomi storici.
+Data della ricerca: **3 ottobre 2026**; riconciliazione del progetto: **4 ottobre 2026**. Sintesi di due analisi economiche e dei filoni concorrenza, distribuzione, segmenti, provider e normativa. Il brief usava LinkedHome/Soglia; il nome corrente è **LinkedHome**, scelto dall'utente nel commit `25d02c6` integrato dopo il pull di `9db6a9c`, che usava Doorluma. Gli allegati conservano i nomi storici.
 
 **Raccomandazione: testare un'installazione a perimetro fisso da 790 € + IVA, con manutenzione realmente facoltativa da 49 € + IVA/mese, per piccole agenzie che lavorano molti affitti.** Il compratore è il titolare; gli agenti usano il processo e i candidati lo completano gratuitamente. Il problema da dimostrare è il tempo perso tra richiesta, informazioni complete e visita confermata. Prima distribuzione diretta, da remoto, su un solo stack di strumenti; Bologna rimane un possibile bacino per osservare il lavoro, non una città di lancio approvata.
 
@@ -18,7 +18,7 @@ Il cliente prioritario da cercare è un'agenzia indipendente con **almeno 100 ri
 
 ## 2. Evidenze che limitano l'idea
 
-Tutte le fonti seguenti sono state consultate il 3 ottobre 2026. Un listino prova un prezzo esposto; una pagina di prodotto prova la funzione dichiarata. Nessuno dei due dimostra vendite, efficacia o domanda incrementale per Doorluma.
+Tutte le fonti seguenti sono state consultate il 3 ottobre 2026. Un listino prova un prezzo esposto; una pagina di prodotto prova la funzione dichiarata. Nessuno dei due dimostra vendite, efficacia o domanda incrementale per LinkedHome.
 
 | Evidenza ufficiale | Conseguenza economica |
 | --- | --- |
@@ -28,7 +28,7 @@ Tutte le fonti seguenti sono state consultate il 3 ottobre 2026. Un listino prov
 | [Tally](https://tally.so/pricing) offre moduli e risposte gratuiti nel fair use, [embed](https://tally.so/help/embed-your-form), [API](https://tally.so/help/api) e [webhook](https://tally.so/help/webhooks). Branding e retention automatica hanno limiti/piani diversi. | Il prototipo può costare poco; il semplice modulo è facilmente sostituibile. Gratis non significa che tutte le necessità operative siano coperte. |
 | [Formulr](https://www.formulr.io/it/use-cases/real-estate) offre link, raccolta, solleciti e integrazioni; [il listino](https://www.formulr.io/it/pricing) include Collect gratuito e Plus 99 €/mese + IVA. La pagina italiana non dimostra supporto normativo o integrazioni italiane. | Il dossier documentale è già un'offerta adiacente, non una novità difendibile. |
 | [Tenant Turner](https://tenantturner.com/plans-pricing/) e [ShowMojo](https://hello.showmojo.com/pricing/) descrivono pre-domande, appuntamenti e promemoria. | Il processo è tecnicamente plausibile; il mercato estero non prova la disponibilità a pagare italiana. |
-| [Zappyrent referral](https://zappyrent.zendesk.com/hc/it/articles/9926451038097-Programma-di-Referral-Termini-e-Condizioni) pubblica premi ma prescrive uso personale e non commerciale. Per gli altri programmi esaminati manca un payout pubblico applicabile a Doorluma. | Ricavi da referral e assicurazioni sono **zero** nel modello, finché non esiste un accordo utilizzabile. |
+| [Zappyrent referral](https://zappyrent.zendesk.com/hc/it/articles/9926451038097-Programma-di-Referral-Termini-e-Condizioni) pubblica premi ma prescrive uso personale e non commerciale. Per gli altri programmi esaminati manca un payout pubblico applicabile a LinkedHome. | Ricavi da referral e assicurazioni sono **zero** nel modello, finché non esiste un accordo utilizzabile. |
 
 La ricerca ampliata ha richiesto 205 risultati di ricerca, con possibili duplicati, e recuperato pagine ufficiali nei vari filoni. Non sono 205 fonti indipendenti lette integralmente. Metodo, URL e limiti sono nei [dossier allegati](economics-2026-10-03/README.md).
 
@@ -88,7 +88,7 @@ Per un'installazione G790 **senza manutenzione**, nel centrale:
 
 `727,99 − 13,98 pagamenti − 120 consegna − 90 vendita − 40 CAC cash − 20,50 supporto/tool primo mese ≈ 443,50 €`
 
-È contribuzione dopo acquisizione, prima di fissi, gestione e avvio. Il primo mese è un'ipotesi di assistenza commerciale; non elimina eventuali obblighi di correzione o responsabilità da definire nel contratto. Senza manutenzione non si presume hosting o assistenza perpetui di Doorluma.
+È contribuzione dopo acquisizione, prima di fissi, gestione e avvio. Il primo mese è un'ipotesi di assistenza commerciale; non elimina eventuali obblighi di correzione o responsabilità da definire nel contratto. Senza manutenzione non si presume hosting o assistenza perpetui di LinkedHome.
 
 La manutenzione G49 genera circa **23,55 €/cliente-mese** di contribuzione prima dei fissi, con 15 minuti di supporto ordinario e 100 ingressi × 5% errori tecnici × 4 minuti. Con il 25% di errori diventa **−16,45 €**. Sono guasti del workflow, non chiamate agli inquilini o lettura di documenti.
 
@@ -106,9 +106,9 @@ Il pull include il [flusso locale di attestazione](../product/04-income-attestat
 
 [Tink Income Check](https://tink.com/it/prodotti/income-check/) documenta supporto italiano; CRIF NEOS e altri servizi hanno capacità descritte, ma prezzo B2B, minimi, categoria di reddito, uso locativo e riuso restano dipendenze contrattuali. Il [dossier provider](economics-2026-10-03/v1/providers-legal.md) e la [ricerca reddituale integrata](11-income-verification.md) distinguono controllo bancario, documento, reddito e garanzia.
 
-Nell'offerta G eventuali controlli sono scelti e acquistati separatamente dall'agenzia presso il provider: **zero ricavi e zero costi di verifica per Doorluma nel modello**, ma il costo del compratore resta nel suo preventivo complessivo. Non si presume un'API aperta o compatibilità automatica. Niente ricavi assicurativi inventati: [IVASS](https://www.ivass.it/operatori/intermediari/faq/regolamento-5/index.html) distingue mera segnalazione e attività ulteriori; pagamento diretto al provider non prova l'esenzione.
+Nell'offerta G eventuali controlli sono scelti e acquistati separatamente dall'agenzia presso il provider: **zero ricavi e zero costi di verifica per LinkedHome nel modello**, ma il costo del compratore resta nel suo preventivo complessivo. Non si presume un'API aperta o compatibilità automatica. Niente ricavi assicurativi inventati: [IVASS](https://www.ivass.it/operatori/intermediari/faq/regolamento-5/index.html) distingue mera segnalazione e attività ulteriori; pagamento diretto al provider non prova l'esenzione.
 
-Nel primo perimetro Doorluma configura strumenti; l'agenzia gestisce relazione e locazione. I ruoli privacy, l'accesso ai dati, i contratti e l'attività concreta vanno definiti. Marchio dell'agenzia, canone fisso o account intestato al cliente non dimostrano da soli l'esclusione dalla mediazione né la conformità GDPR. I budget legali del modello sono ipotesi, non preventivi.
+Nel primo perimetro LinkedHome configura strumenti; l'agenzia gestisce relazione e locazione. I ruoli privacy, l'accesso ai dati, i contratti e l'attività concreta vanno definiti. Marchio dell'agenzia, canone fisso o account intestato al cliente non dimostrano da soli l'esclusione dalla mediazione né la conformità GDPR. I budget legali del modello sono ipotesi, non preventivi.
 
 ## 7. Prova economica dei prossimi 30 giorni
 

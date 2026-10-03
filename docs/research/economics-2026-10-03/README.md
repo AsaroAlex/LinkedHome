@@ -1,8 +1,8 @@
 # Allegati all'analisi economica del 3 ottobre 2026
 
-Documento principale: [Redditività di Doorluma](../12-sustainable-economics.md). Si integra con la ricerca esistente e con il prototipo a `9db6a9c`. Nessuna nuova offerta commerciale è implementata o validata.
+Documento principale: [Redditività di LinkedHome](../12-sustainable-economics.md). Si integra con la ricerca esistente e con il prototipo a `9db6a9c`. Nessuna nuova offerta commerciale è implementata o validata.
 
-I file conservano il nome Soglia usato nel brief e nei primi studi. Il primo esame del checkout era a `6d4805c`; dopo il pull sono presenti brand Doorluma, UX, SMTP/staging e flusso reddituale **sintetico**. Il documento principale distingue questi fatti dalle proposte economiche. Gli allegati sono snapshot di ricerca, non uno stato aggiornato dell'applicazione.
+I file conservano il nome Soglia usato nel brief e nei primi studi. Il primo esame del checkout era a `6d4805c`; dopo il pull sono presenti brand Doorluma, UX, SMTP/staging e flusso reddituale **sintetico**. Il successivo merge del commit `25d02c6` adotta LinkedHome per scelta dell'utente; il documento principale usa il marchio corrente e distingue questi fatti dalle proposte economiche. Gli allegati sono snapshot di ricerca, non uno stato aggiornato dell'applicazione.
 
 ## V1: controlli e servizio per vacancy
 
