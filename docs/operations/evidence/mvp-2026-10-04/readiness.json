@@ -1,0 +1,67 @@
+{
+  "validated_at": "2026-10-03T23:10:22.747Z",
+  "user_date": "2026-10-04",
+  "user_timezone": "Europe/Rome",
+  "scope": "local synthetic MVP; repository working tree, no public deployment",
+  "base_commit": "6d4805c1a23699722ee15c8a19d1e48be1a7680d",
+  "source_diff_sha256": "302d757738409ac5d6226d67914a76562182441aa394b99bf6bfa7e561b34ffa",
+  "checks": {
+    "build_typecheck": "passed",
+    "unit_integration": {
+      "passed": 73,
+      "files": 3
+    },
+    "browser": {
+      "passed": 13,
+      "workers": 1
+    },
+    "dependency_audit": {
+      "known_vulnerabilities": 0,
+      "dependency_records": 222
+    },
+    "repeated_bootstrap": "passed",
+    "independent_delta_review": "no material issues identified; static review"
+  },
+  "runtime": {
+    "origin": "http://127.0.0.1:3000",
+    "compiled_startup": "passed",
+    "probes": [
+      "health",
+      "compiled HTML and JavaScript",
+      "tenant login, role-specific read and logout",
+      "landlord login, role-specific read and logout",
+      "admin login, role-specific read and logout"
+    ],
+    "data_preserved": true,
+    "counts": {
+      "users": 5,
+      "profiles": 2,
+      "properties": 1,
+      "migrations": 3
+    }
+  },
+  "files": {
+    "landing-mobile.png": {
+      "bytes": 178829,
+      "sha256": "971af62ce48ff3b69b4db5e773b3c1dbdbc1f4f2dd23deb31cb588931e8c766e"
+    },
+    "discovery-retry-mobile.png": {
+      "bytes": 116908,
+      "sha256": "f1fcb002fc30115f3ecd26a04dadef598a8024f4646c03e2b63573c840d76592"
+    },
+    "report-target-mobile.png": {
+      "bytes": 109516,
+      "sha256": "a82a6de65e9af57628c1edf08a1103ea148e964883b4968cc2d3f6fa15227f04"
+    },
+    "performance.json": {
+      "bytes": 478,
+      "sha256": "668c8e3f585b69ae62d8fe24a281291869d982da07827ed1a779cec5cf57c8f6"
+    }
+  },
+  "limits": [
+    "synthetic local data only",
+    "local mailbox, no real delivery",
+    "no public deployment or remote CI validation",
+    "performance is synthetic and single-run"
+  ]
+}

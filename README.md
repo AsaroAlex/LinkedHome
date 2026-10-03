@@ -1,6 +1,6 @@
 # Soglia · LinkedHome
 
-A working local prototype of an Italy-first reverse rental marketplace: publish preferences, discover compatible profiles for a property, invite, accept and converse. Built with TypeScript, React, Fastify and real PostgreSQL. **Synthetic data only; public deployment is deliberately disabled.** Soglia is a replaceable working name, without trademark/domain clearance.
+A working local MVP of an Italy-first reverse rental marketplace: publish preferences, discover compatible profiles for a property, invite, accept and converse. Built with TypeScript, React, Fastify and real PostgreSQL. **Synthetic data only; public deployment is deliberately disabled.** Soglia is a replaceable working name, without trademark/domain clearance.
 
 ## Run locally
 
@@ -28,6 +28,8 @@ npm audit
 
 Integration tests use only the generated local `soglia_test` database; browser tests manage `soglia_e2e`, start their own server and need port3000 free. Neither suite resets the application database. Chromium is needed: the cloud uses `/usr/bin/chromium`; set `CHROMIUM_PATH` if necessary or install the browser with `npx playwright install chromium`. See [validation evidence](docs/operations/validation.md) for the actual tested outcomes and limits. CI instructions are provided but are not claimed to have run remotely.
 
+Latest verification, 2026-10-04 (Europe/Rome): build/typecheck, **73 unit/integration tests**, **13 browser scenarios**, repeated bootstrap and compiled-startup probes passed; dependency audit reported zero known vulnerabilities. [Current evidence](docs/operations/evidence/mvp-2026-10-04/readiness.json) records the exact source diff and preserved local fixture. Network failures can be retried in property, discovery and chat screens; message reports show the selected text and clear the previous draft when the target changes.
+
 ## What is implemented
 
 - Tenant, landlord and both-role accounts; operator-provisioned admin/moderator, sessions, local confirmation/reset and restricted suspended-account access.
@@ -37,7 +39,7 @@ Integration tests use only the generated local `soglia_test` database; browser t
 - Blocking, scoped reporting, moderation/audit, suspension/appeal/restore, own-data export/deletion and minimal demo activity counts.
 - Honest verification foundation: separate states, expiry/dispute/provenance, no fake live verification.
 
-Optional checks never improve visibility. No person score or protected matching fields. Editing preferences/property facts or pausing cancels pending invitations; unchanged property reconfirmation preserves them. Terminal invitation pairs cannot be reopened in this single-search-episode prototype. Accepted conversations retain the offered property facts and warn when current details have changed.
+Optional checks never improve visibility. No person score or protected matching fields. Editing preferences/property facts or pausing cancels pending invitations; unchanged property reconfirmation preserves them. Terminal invitation pairs cannot be reopened in this single-search-episode prototype. Accepted/closed conversations retain the offered property facts and warn when current details have changed. Their compatibility explanations compare current tenant preferences with those same offered facts.
 
 ## External PostgreSQL
 

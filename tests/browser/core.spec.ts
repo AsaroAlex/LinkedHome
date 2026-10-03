@@ -3,6 +3,7 @@ import {
   expect,
   type Page,
   type APIRequestContext,
+  type Route,
 } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { randomUUID } from "node:crypto";
@@ -329,6 +330,251 @@ test("compatible offer edit invalidates pending acceptance", async ({
     tp.getByRole("button", { name: "Accetta e apri la conversazione" }),
   ).toHaveCount(0);
   await tc.close();
+});
+
+test("property and discovery failures can be retried without a permanent loading state", async ({
+  page,
+}) => {
+  await account(page, "landlord");
+  const { id } = await call(page.request, "/properties", {
+    ...pInput,
+    title: "L".repeat(100),
+    description: "D".repeat(1500),
+  });
+  await call(page.request, `/properties/${id}/status`, { status: "published" });
+  const propertyFailure = async (route: Route) => route.abort("failed");
+  await page.route("**/api/properties", propertyFailure);
+  await page.goto("/properties");
+  await expect(page.getByRole("alert")).toContainText(
+    "Impossibile collegarsi al server. Controlla la connessione e riprova.",
+  );
+  await expect(page.getByText("Un momento, stiamo caricando…")).toHaveCount(0);
+  await page.unroute("**/api/properties", propertyFailure);
+  await page.getByRole("button", { name: "Riprova caricamento" }).click();
+  await expect(
+    page.getByRole("heading", { name: "L".repeat(100) }),
+  ).toBeVisible();
+  await page.setViewportSize({ width: 320, height: 740 });
+  await noOverflow(page);
+
+  await page.route("**/api/properties", propertyFailure);
+  await page.getByRole("link", { name: "Scopri profili", exact: true }).click();
+  await expect(page.getByRole("alert")).toContainText(
+    "Impossibile collegarsi al server. Controlla la connessione e riprova.",
+  );
+  await expect(page.getByText("Un momento, stiamo caricando…")).toHaveCount(0);
+  await page.unroute("**/api/properties", propertyFailure);
+  await page.route(`**/api/discover/${id}`, (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "text/html",
+      body: "<html><body>Servizio temporaneamente non disponibile</body></html>",
+    }),
+  );
+  await page.getByRole("button", { name: "Riprova caricamento" }).click();
+  await expect(page.getByRole("alert")).toContainText(
+    "Il server ha restituito una risposta non valida. Riprova tra poco.",
+  );
+  await expect(page.getByText("Un momento, stiamo caricando…")).toHaveCount(0);
+  await expect(page.getByText("Pagina 1", { exact: true })).toHaveCount(0);
+  await page.unroute(`**/api/discover/${id}`);
+  await page.getByRole("button", { name: "Riprova caricamento" }).click();
+  await expect(page.getByLabel("Stai cercando per")).toHaveValue(id);
+  await expect(page.getByText("Pagina 1", { exact: true })).toBeVisible();
+  await expect(page.getByRole("alert")).toHaveCount(0);
+  await noOverflow(page);
+  await mkdir("test-results/visual", { recursive: true });
+  await page.screenshot({
+    path: "test-results/visual/discovery-retry-mobile.png",
+    fullPage: true,
+  });
+});
+
+test("conversation loading and failures do not claim an accepted or closed state", async ({
+  page,
+  browser,
+}) => {
+  const tc = await browser.newContext({ baseURL: origin }),
+    tp = await tc.newPage(),
+    tenant = await account(tp),
+    pf = await profile(tp.request);
+  try {
+    await account(page, "landlord");
+    const p = await property(page.request),
+      { id } = await call(page.request, "/invitations", {
+        property_id: p.id,
+        tenant_id: tenant.id,
+        property_revision: p.revision,
+        profile_revision: pf.revision,
+      });
+    await call(tp.request, `/invitations/${id}/action`, {
+      action: "accept",
+      property_revision: p.revision,
+      profile_revision: pf.revision,
+    });
+    let release!: () => void;
+    const heldResponse = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await page.route(`**/api/conversations/${id}`, async (route) => {
+      await heldResponse;
+      await route.fulfill({
+        status: 503,
+        json: { error: "Messaggi temporaneamente non disponibili." },
+      });
+    });
+    await page.route(`**/api/invitations/${id}`, (route) =>
+      route.fulfill({
+        status: 503,
+        json: { error: "Dettagli invito temporaneamente non disponibili." },
+      }),
+    );
+    try {
+      await page.goto(`/conversations/${id}`);
+      await expect(
+        page.getByText("Un momento, stiamo caricando…"),
+      ).toBeVisible();
+      await expect(page.locator(".chat .badge")).toHaveCount(0);
+      await expect(
+        page.getByText("Conversazione chiusa.", { exact: false }),
+      ).toHaveCount(0);
+    } finally {
+      release();
+    }
+    await expect(page.getByRole("alert")).toContainText(
+      "Messaggi temporaneamente non disponibili.",
+    );
+    await expect(page.locator(".chat .badge")).toHaveCount(0);
+    await expect(
+      page.getByText("Conversazione chiusa.", { exact: false }),
+    ).toHaveCount(0);
+    await page.unroute(`**/api/conversations/${id}`);
+    await page.getByRole("button", { name: "Riprova caricamento" }).click();
+    await expect(page.getByLabel("Il tuo messaggio")).toBeVisible();
+    await expect(page.getByRole("alert")).toContainText(
+      "Dettagli invito temporaneamente non disponibili.",
+    );
+    await page.unroute(`**/api/invitations/${id}`);
+    await page.getByRole("button", { name: "Riprova caricamento" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Con Persona Demo." }),
+    ).toBeVisible();
+    await expect(page.getByRole("alert")).toHaveCount(0);
+    await expect(page.locator(".chat .badge")).toHaveText("Accettato");
+  } finally {
+    await tc.close();
+  }
+});
+
+test("changing the reported message clears the previous draft and success state", async ({
+  page,
+  browser,
+}) => {
+  const tc = await browser.newContext({ baseURL: origin }),
+    tp = await tc.newPage(),
+    tenant = await account(tp),
+    pf = await profile(tp.request);
+  try {
+    await account(page, "landlord");
+    const p = await property(page.request),
+      { id } = await call(page.request, "/invitations", {
+        property_id: p.id,
+        tenant_id: tenant.id,
+        property_revision: p.revision,
+        profile_revision: pf.revision,
+      });
+    await call(tp.request, `/invitations/${id}/action`, {
+      action: "accept",
+      property_revision: p.revision,
+      profile_revision: pf.revision,
+    });
+    const firstBody = "Primo messaggio sintetico da esaminare.",
+      secondBody = "Secondo messaggio sintetico da esaminare.";
+    await call(page.request, `/conversations/${id}/messages`, {
+      body: firstBody,
+    });
+    await call(page.request, `/conversations/${id}/messages`, {
+      body: secondBody,
+    });
+    await tp.goto(`/conversations/${id}`);
+    const first = tp.locator(".message").filter({ hasText: firstBody }),
+      second = tp.locator(".message").filter({ hasText: secondBody }),
+      report = tp.locator(".report-form");
+    await first.getByRole("button", { name: "Segnala messaggio" }).click();
+    await expect(report.locator("blockquote")).toHaveText(firstBody);
+    await report
+      .getByRole("combobox", { name: "Motivo", exact: true })
+      .selectOption("other");
+    await report
+      .getByLabel("Descrivi il problema")
+      .fill("Bozza riferita al primo messaggio.");
+    await second.getByRole("button", { name: "Segnala messaggio" }).click();
+    await expect(report.locator("blockquote")).toHaveText(secondBody);
+    await expect(report.getByLabel("Descrivi il problema")).toHaveValue("");
+    await expect(
+      report.getByRole("combobox", { name: "Motivo", exact: true }),
+    ).toHaveValue("scam");
+    await report
+      .getByLabel("Descrivi il problema")
+      .fill("Descrizione riferita al secondo messaggio.");
+    await report.getByRole("button", { name: "Invia segnalazione" }).click();
+    await expect(
+      report.getByText("Segnalazione ricevuta.", { exact: false }),
+    ).toBeVisible();
+    const saved = (
+      await db.query(
+        "SELECT selected_message,reason,details FROM reports WHERE invitation_id=$1 AND reporter_id=$2",
+        [id, tenant.id],
+      )
+    ).rows;
+    expect(saved).toEqual([
+      {
+        selected_message: secondBody,
+        reason: "scam",
+        details: "Descrizione riferita al secondo messaggio.",
+      },
+    ]);
+    await first.getByRole("button", { name: "Segnala messaggio" }).click();
+    await expect(report.locator("blockquote")).toHaveText(firstBody);
+    await expect(report.getByLabel("Descrivi il problema")).toHaveValue("");
+    await expect(
+      report.getByText("Segnalazione ricevuta.", { exact: false }),
+    ).toHaveCount(0);
+    await tp.setViewportSize({ width: 390, height: 844 });
+    await noOverflow(tp);
+    await mkdir("test-results/visual", { recursive: true });
+    await tp.screenshot({
+      path: "test-results/visual/report-target-mobile.png",
+      fullPage: true,
+    });
+
+    const otherProperty = await property(page.request),
+      { id: otherId } = await call(page.request, "/invitations", {
+        property_id: otherProperty.id,
+        tenant_id: tenant.id,
+        property_revision: otherProperty.revision,
+        profile_revision: pf.revision,
+      });
+    await call(tp.request, `/invitations/${otherId}/action`, {
+      action: "accept",
+      property_revision: otherProperty.revision,
+      profile_revision: pf.revision,
+    });
+    await tp
+      .getByLabel("Il tuo messaggio")
+      .fill("Bozza della prima conversazione.");
+    await tp.evaluate((nextPath) => {
+      history.pushState({}, "", nextPath);
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    }, `/conversations/${otherId}`);
+    await expect(tp.getByLabel("Il tuo messaggio")).toHaveValue("");
+    await expect(tp.locator(".report-form")).toHaveCount(0);
+    await expect(
+      tp.getByRole("heading", { name: "Comincia con un saluto." }),
+    ).toBeVisible();
+  } finally {
+    await tc.close();
+  }
 });
 
 test("staff navigation preserves response shape and restricted case context", async ({

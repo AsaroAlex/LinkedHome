@@ -1,6 +1,6 @@
 # PROJECT STATE
 
-Aggiornato il 2026-10-03. Repository `/workspace/LinkedHome`, branch locale `work`, riferimento remoto richiesto `claude/sweet-goldberg-5lwng7`. L’utente ha autorizzato **«Esegui tutto il piano del repository»**, incluse revisioni indipendenti A–H. Le fasi 0–28 sono **completate per il perimetro locale con dati sintetici** adottato in PLAN e nel contratto delle funzionalità.
+Aggiornato il 2026-10-04 (Europe/Rome). Repository `/workspace/LinkedHome`, branch locale `work`, riferimento remoto richiesto `claude/sweet-goldberg-5lwng7`. L’utente ha autorizzato **«Esegui tutto il piano del repository»**, incluse revisioni indipendenti A–H. Le fasi 0–28 sono **completate per il perimetro locale con dati sintetici** adottato in PLAN e nel contratto delle funzionalità. Nell’ultima richiesta l’utente ha confermato esplicitamente **«Demo locale completa e verificata»**.
 
 Preservare questo checkout isolato: niente reset, switch, worktree, pull automatici o perdita dei dati ignorati. L’utente ha autorizzato il push su `claude/sweet-goldberg-5lwng7`, eseguito e verificato il 2026-10-03. Nessuna PR, deploy pubblico, servizio a pagamento o contatto esterno.
 
@@ -14,15 +14,19 @@ Quattro panel indipendenti sono documentati: ricerca (review02), prodotto/design
 
 ## Verifiche concluse
 
-- `npm run check`: build/typecheck, **71 test unitari/integrati** e **10 scenari browser** passati.
+- Ultima verifica: `npm run build`, `npm test` e `npm run test:e2e`, con **73 test unitari/integrati** e **13 scenari browser** passati.
 - Axe senza violazioni nei controlli configurati, navigazione da tastiera e controlli responsive; screenshot finali ispezionati e conservati.
-- LCP locale desktop 244 ms; mobile emulato 2.252 ms con CPU4×, rete200kB/s e latenza80ms; CLS0. Sono misure sintetiche, non dati sul campo.
+- Ultimo LCP locale desktop 308 ms; mobile emulato 2.312 ms con CPU4×, rete200kB/s e latenza80ms; CLS0. Sono misure sintetiche, non dati sul campo.
 - `npm audit`: 0 vulnerabilità note nel registro consultato, 222 dipendenze censite; nessuna certificazione di sicurezza implicita.
 - `npm ci`, bootstrap ripetuto e script completo `scripts/cloud-install.sh` eseguiti con successo.
 - Avvio compilato, avvio dev, arresto e riavvio verificati tramite health, HTML/asset, login, immobili, discovery, dashboard e logout. Preservati gli stessi 5 utenti, 2 profili, 1 immobile e 3 migrazioni.
 - Manutenzione manuale eseguita; nessuno scheduler configurato.
 
 Evidenze e limiti: `docs/operations/validation.md`. Correzioni finali includono recupero password dei sospesi senza ripristinare i contatti, export dei propri ricorsi, dashboard oltre 100 inviti, rilascio garantito del client dopo errore di migrazione e wording corretto della conservazione manuale.
+
+Il follow-up del 2026-10-04 corregge inoltre la coerenza fra snapshot dell’offerta e motivazioni di compatibilità per inviti accettati/chiusi, il recupero da errori di rete nelle schermate immobili/discovery/chat e il reset di segnalazioni/bozze al cambio del messaggio o della conversazione. I nuovi scenari verificano anche la destinazione effettiva della segnalazione in PostgreSQL e contenuti lunghi a 320px. La revisione indipendente del diff non ha identificato altri problemi materiali; screenshot mobile finali ispezionati e app compilata avviata. Evidenze: `docs/operations/evidence/mvp-2026-10-04/readiness.json`.
+
+Queste correzioni sono nel working tree locale rispetto a `6d4805c`; non è stato effettuato un ulteriore push o aggiornamento della configurazione cloud. Le registrazioni di pubblicazione riportate sotto si riferiscono alla cronologia precedente.
 
 ## Ambiente e ripresa
 

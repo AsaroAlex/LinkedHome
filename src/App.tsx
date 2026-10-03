@@ -443,7 +443,11 @@ export function App() {
         ) : path === "/invitations" ? (
           <InvitationsPage user={user!} />
         ) : path.startsWith("/conversations/") ? (
-          <Conversation id={path.split("/")[2]} user={user!} />
+          <Conversation
+            key={path.split("/")[2]}
+            id={path.split("/")[2]}
+            user={user!}
+          />
         ) : path === "/verification" ? (
           <VerificationPage />
         ) : path === "/settings" ? (
@@ -1306,6 +1310,11 @@ function PropertiesPage() {
         giorni.
       </PageHeading>
       <ErrorBox text={l.error || a.error} />
+      {l.error && (
+        <button className="button secondary" onClick={l.reload}>
+          Riprova caricamento
+        </button>
+      )}
       {a.message && <Notice>{a.message}</Notice>}
       {edit !== undefined ? (
         <PropertyForm
@@ -1319,13 +1328,15 @@ function PropertiesPage() {
         <>
           <div className="toolbar">
             <span>
-              {l.data?.properties.length || 0} immobili nel tuo spazio
+              {l.data
+                ? `${l.data.properties.length} immobili nel tuo spazio`
+                : "I tuoi immobili"}
             </span>
             <button className="button" onClick={() => setEdit(null)}>
               + Aggiungi immobile
             </button>
           </div>
-          {!l.data && !l.error ? (
+          {l.error ? null : !l.data ? (
             <Loading />
           ) : l.data?.properties.length === 0 ? (
             <Empty title="La tua prima porta da aprire">
@@ -1443,8 +1454,19 @@ function DiscoverPage() {
         Criteri chiari, nessuna classifica delle persone.
       </PageHeading>
       <ErrorBox text={properties.error || l.error || a.error} />
+      {(properties.error || l.error) && (
+        <button
+          className="button secondary"
+          onClick={() => {
+            if (properties.error) properties.reload();
+            if (l.error) l.reload();
+          }}
+        >
+          Riprova caricamento
+        </button>
+      )}
       {a.message && <Notice>{a.message}</Notice>}
-      {!properties.data ? (
+      {properties.error ? null : !properties.data ? (
         <Loading />
       ) : !id ? (
         <Empty title="Prima, raccontaci il tuo immobile">
@@ -1485,7 +1507,7 @@ function DiscoverPage() {
             Quando un invito viene accettato, entrambi vedrete il nome scelto e
             potrete scrivervi. Email e documenti restano privati.
           </p>
-          {!l.data && !l.error ? (
+          {l.error ? null : !l.data ? (
             <Loading />
           ) : l.data?.profiles.length === 0 ? (
             <Empty title="Qui c’è spazio per il prossimo incontro">
@@ -1525,26 +1547,31 @@ function DiscoverPage() {
               ))}
             </div>
           )}
-          <div className="pagination">
-            <button
-              className="button secondary small"
-              disabled={page === 0}
-              onClick={() => setPage((x) => x - 1)}
-            >
-              Precedenti
-            </button>
-            <span>Pagina {page + 1}</span>
-            <button
-              className="button secondary small"
-              disabled={!l.data?.hasMore}
-              onClick={() => {
-                setCursors((c) => [...c.slice(0, page + 1), l.data.nextCursor]);
-                setPage((x) => x + 1);
-              }}
-            >
-              Successivi
-            </button>
-          </div>
+          {l.data && (
+            <div className="pagination">
+              <button
+                className="button secondary small"
+                disabled={page === 0}
+                onClick={() => setPage((x) => x - 1)}
+              >
+                Precedenti
+              </button>
+              <span>Pagina {page + 1}</span>
+              <button
+                className="button secondary small"
+                disabled={!l.data?.hasMore}
+                onClick={() => {
+                  setCursors((c) => [
+                    ...c.slice(0, page + 1),
+                    l.data.nextCursor,
+                  ]);
+                  setPage((x) => x + 1);
+                }}
+              >
+                Successivi
+              </button>
+            </div>
+          )}
         </>
       )}
     </>
@@ -1553,10 +1580,12 @@ function DiscoverPage() {
 function ReportForm({
   invitationId,
   messageId,
+  messageBody,
   onDone,
 }: {
   invitationId: string;
   messageId?: string;
+  messageBody?: string;
   onDone: () => void;
 }) {
   const a = useAction();
@@ -1574,6 +1603,12 @@ function ReportForm({
   return (
     <form className="report-form panel" onSubmit={submit}>
       <h3>Segnala un problema</h3>
+      {messageBody !== undefined && (
+        <div>
+          <p className="small-copy">Messaggio che stai segnalando:</p>
+          <blockquote>{messageBody}</blockquote>
+        </div>
+      )}
       <p className="small-copy">
         Gli operatori vedranno il tuo identificatore, questo invito, il motivo e{" "}
         {messageId ? "il messaggio selezionato" : "la tua descrizione"}. Non
@@ -1795,7 +1830,11 @@ function InvitationsPage({ user }: { user: User }) {
                 </p>
               )}
               {report === i.id && (
-                <ReportForm invitationId={i.id} onDone={() => setReport("")} />
+                <ReportForm
+                  key={i.id}
+                  invitationId={i.id}
+                  onDone={() => setReport("")}
+                />
               )}
             </article>
           ))}
@@ -1809,7 +1848,7 @@ function Conversation({ id, user }: { id: string; user: User }) {
     l = useLoad(`/conversations/${id}${before ? `?before=${before}` : ""}`),
     inv = useLoad(`/invitations/${id}`),
     a = useAction(),
-    [report, setReport] = useState<string | null>(null),
+    [report, setReport] = useState<{ id: string; body: string } | null>(null),
     form = useRef<HTMLFormElement>(null);
   const info = inv.data?.invitation;
   async function send(e: FormEvent<HTMLFormElement>) {
@@ -1835,11 +1874,22 @@ function Conversation({ id, user }: { id: string; user: User }) {
       >
         {info?.property.title}
       </PageHeading>
-      <ErrorBox text={l.error || a.error} />
+      <ErrorBox text={l.error || inv.error || a.error} />
+      {(l.error || inv.error) && (
+        <button
+          className="button secondary"
+          onClick={() => {
+            l.reload();
+            inv.reload();
+          }}
+        >
+          Riprova caricamento
+        </button>
+      )}
       <div className="chat-layout">
         <section className="panel chat">
           <div className="panel-title">
-            <Badge status={l.data?.status || "accepted"} />
+            {l.data && <Badge status={l.data.status} />}
             <button
               className="text-link"
               onClick={() => {
@@ -1895,7 +1945,9 @@ function Conversation({ id, user }: { id: string; user: User }) {
                         minute: "2-digit",
                       })}
                     </time>
-                    <button onClick={() => setReport(m.id)}>
+                    <button
+                      onClick={() => setReport({ id: m.id, body: m.body })}
+                    >
                       Segnala messaggio
                     </button>
                   </div>
@@ -1919,11 +1971,11 @@ function Conversation({ id, user }: { id: string; user: User }) {
                 Invia messaggio →
               </button>
             </form>
-          ) : (
+          ) : l.data ? (
             <p className="disclosure">
               Conversazione chiusa. Non si possono inviare altri messaggi.
             </p>
-          )}
+          ) : null}
           {a.message && <Notice>{a.message}</Notice>}
         </section>
         <aside className="panel chat-aside">
@@ -1967,8 +2019,10 @@ function Conversation({ id, user }: { id: string; user: User }) {
       </div>
       {report && (
         <ReportForm
+          key={`${id}:${report.id}`}
           invitationId={id}
-          messageId={report}
+          messageId={report.id}
+          messageBody={report.body}
           onDone={() => setReport(null)}
         />
       )}

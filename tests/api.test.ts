@@ -1114,20 +1114,128 @@ describe("review regression cases", () => {
       selected_sender_id: null,
     });
   });
-  it("keeps original accepted terms after an owner edit", async () => {
+  it.each(["accepted", "closed"])(
+    "keeps original %s terms and compatibility reasons after an owner edit",
+    async (status) => {
+      const id = await accepted();
+      if (status === "closed")
+        expect(
+          (
+            await request(
+              "POST",
+              `/invitations/${id}/action`,
+              { action: "close" },
+              t.cookie,
+            )
+          ).statusCode,
+        ).toBe(200);
+      expect(
+        (
+          await request(
+            "PUT",
+            `/properties/${property.id}`,
+            {
+              ...cleanProperty(property),
+              city: "Roma",
+              rent: 1200,
+              available_from: "2027-02-01",
+              min_months: 18,
+              capacity: 1,
+            },
+            l.cookie,
+          )
+        ).statusCode,
+      ).toBe(200);
+      const list = await request("GET", "/invitations", undefined, t.cookie);
+      const detail = await request(
+        "GET",
+        `/invitations/${id}`,
+        undefined,
+        t.cookie,
+      );
+      expect(list.statusCode).toBe(200);
+      expect(detail.statusCode).toBe(200);
+      for (const offer of [
+        list.json().invitations[0],
+        detail.json().invitation,
+      ]) {
+        expect(offer.property).toMatchObject({
+          city: "Bologna",
+          rent: 850,
+          available_from: "2026-12-01",
+          min_months: 6,
+          max_months: 36,
+          capacity: 2,
+        });
+        expect(offer.property_changed).toBe(true);
+        expect(offer.status).toBe(status);
+        expect(offer.compatibility).toMatchObject({
+          compatible: true,
+          checks: [
+            { key: "city", matches: true, detail: "Bologna · Bologna" },
+            {
+              key: "budget",
+              matches: true,
+              detail: "€850 · budget fino a €1100",
+            },
+            {
+              key: "date",
+              matches: true,
+              detail: "Disponibile dal 2026-12-01 · ingresso 2027-01-01",
+            },
+            {
+              key: "duration",
+              matches: true,
+              detail: "12 mesi · offerta 6–36",
+            },
+            { key: "occupants", matches: true, detail: "2 · capienza 2" },
+          ],
+        });
+      }
+    },
+  );
+  it("compares current tenant preferences against the accepted offer snapshot", async () => {
     const id = await accepted();
-    await request(
-      "PUT",
-      `/properties/${property.id}`,
-      { ...cleanProperty(property), rent: 1200 },
-      l.cookie,
+    expect(
+      (
+        await request(
+          "PUT",
+          "/profile",
+          {
+            city: profile.city,
+            budget: 800,
+            move_in: profile.move_in,
+            duration: profile.duration,
+            occupants: profile.occupants,
+          },
+          t.cookie,
+        )
+      ).statusCode,
+    ).toBe(200);
+    expect(
+      (
+        await request(
+          "PUT",
+          `/properties/${property.id}`,
+          { ...cleanProperty(property), rent: 1200 },
+          l.cookie,
+        )
+      ).statusCode,
+    ).toBe(200);
+    const detail = await request(
+      "GET",
+      `/invitations/${id}`,
+      undefined,
+      t.cookie,
     );
-    const offer = (
-      await request("GET", "/invitations", undefined, t.cookie)
-    ).json().invitations[0];
-    expect(offer.property.rent).toBe(850);
-    expect(offer.property_changed).toBe(true);
+    expect(detail.statusCode).toBe(200);
+    const offer = detail.json().invitation;
     expect(offer.status).toBe("accepted");
+    expect(offer.property.rent).toBe(850);
+    expect(offer.compatibility.compatible).toBe(false);
+    expect(
+      offer.compatibility.checks.find((c: any) => c.key === "budget"),
+    ).toMatchObject({ matches: false, detail: "€850 · budget fino a €800" });
   });
   it("preserves pending offers when unchanged availability is reconfirmed", async () => {
     const id = await send();

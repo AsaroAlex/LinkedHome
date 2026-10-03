@@ -1,6 +1,6 @@
 # Execution ledger — LinkedHome / Soglia
 
-Updated 2026-10-03. User instruction: **execute all repository phases**. The original52-section brief is absent from the checkout; this ledger and the adopted feature contract define the reviewable local scope. Working name Soglia is not cleared for public use.
+Updated 2026-10-04 (Europe/Rome). User instruction: **execute all repository phases**; follow-up scope explicitly confirmed as **a complete, verified local demo**. The original52-section brief is absent from the checkout; this ledger and the adopted feature contract define the reviewable local scope. Working name Soglia is not cleared for public use.
 
 Research passed an independent bounded gate for synthetic local development. Production deployment, live provider integrations, outside studies and legal/brand clearance are separate [release gates](docs/operations/release-checklist.md).
 
@@ -28,7 +28,7 @@ Research passed an independent bounded gate for synthetic local development. Pro
 | 19 | Verification foundation | DONE — typed states/provenance/expiry/dispute; providers truthfully unavailable |
 | 20 | Trust/safety/admin | DONE — case-scoped context, suspension/appeal/restore, export/delete and audit |
 | 21 | Analytics | DONE — minimal local action counts, no market KPI claims |
-| 22 | Tests | DONE — 71 unit/integration tests and 10 browser scenarios passed; operations/validation |
+| 22 | Tests | DONE — latest verification: 73 unit/integration tests and 13 browser scenarios passed; operations/validation |
 | 23 | Visual QA | DONE — final desktop/mobile screenshots inspected and retained in operations/evidence |
 | 24 | Security | DONE for local scope — independent E/F review, fixes and dependency audit with 0 known vulnerabilities |
 | 25 | Performance/accessibility | DONE — axe/keyboard/narrow-screen checks; measured desktop LCP244ms, throttled mobile2252ms, CLS0 |
@@ -48,3 +48,9 @@ All phases0–28 are complete for the adopted local synthetic scope. Run instruc
 
 
 Completion follow-up: clean-source install/start and isolated PostgreSQL logical recovery passed; see operations/validation. Platform snapshot publication remains an interface action unavailable through the current tools, not an unfinished repository implementation phase.
+
+## Local MVP follow-up — 2026-10-04
+
+User confirmed the local-demo scope. A fresh build, initial full check and independent code review found a snapshot/compatibility inconsistency and recoverability issues in the UI. Accepted/closed invitation explanations now use the offered property snapshot; property/discovery/chat loads have explicit retry controls, network errors are readable in Italian, and report/composer state resets when its target changes. Long property content fits narrow screens.
+
+Final validation passed: build/typecheck, 73 unit/integration tests, 13 browser scenarios and repeated bootstrap. Compiled startup plus tenant, landlord and admin probes passed against the preserved application fixture (5 users, 2 profiles, 1 property, 3 migrations). Mobile screenshots were inspected. [Current evidence](docs/operations/evidence/mvp-2026-10-04/readiness.json) identifies the verified working-tree diff; the previous remote publication and cloud configuration remain historical records, not publication of these follow-up changes.

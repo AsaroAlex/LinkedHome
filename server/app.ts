@@ -681,27 +681,28 @@ export async function buildApp(
     const profile = (
       await db.query("SELECT * FROM profiles WHERE user_id=$1", [u.id])
     ).rows[0];
-    return rows.map((i) => ({
-      ...i,
-      property: publicProperty(
-        ["accepted", "closed"].includes(i.status)
-          ? i.property_snapshot
-          : i.property,
-      ),
-      property_changed: i.property.revision !== i.property_revision,
-      status:
-        i.status === "pending"
-          ? new Date(i.expires_at) <= new Date()
-            ? "expired"
-            : !currentProperty(i.property)
-              ? "unavailable"
-              : "pending"
-          : i.status,
-      compatibility:
-        profile && i.tenant_id === u.id
-          ? compatibility(profile, i.property)
-          : null,
-    }));
+    return rows.map((i) => {
+      const offeredProperty = ["accepted", "closed"].includes(i.status)
+        ? i.property_snapshot
+        : i.property;
+      return {
+        ...i,
+        property: publicProperty(offeredProperty),
+        property_changed: i.property.revision !== i.property_revision,
+        status:
+          i.status === "pending"
+            ? new Date(i.expires_at) <= new Date()
+              ? "expired"
+              : !currentProperty(i.property)
+                ? "unavailable"
+                : "pending"
+            : i.status,
+        compatibility:
+          profile && i.tenant_id === u.id
+            ? compatibility(profile, offeredProperty)
+            : null,
+      };
+    });
   }
   app.get("/api/dashboard", async (r) => {
     const u = actor(r);

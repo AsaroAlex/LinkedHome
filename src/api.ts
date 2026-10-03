@@ -25,13 +25,27 @@ export async function api<T = any>(
   method = "GET",
   body?: unknown,
 ): Promise<T> {
-  const response = await fetch("/api" + url, {
-    method,
-    credentials: "same-origin",
-    headers: method === "GET" ? {} : { "Content-Type": "application/json" },
-    body: method === "GET" ? undefined : JSON.stringify(body ?? {}),
-  });
-  const data = await response.json();
+  let response: Response;
+  try {
+    response = await fetch("/api" + url, {
+      method,
+      credentials: "same-origin",
+      headers: method === "GET" ? {} : { "Content-Type": "application/json" },
+      body: method === "GET" ? undefined : JSON.stringify(body ?? {}),
+    });
+  } catch {
+    throw new ApiError(
+      "Impossibile collegarsi al server. Controlla la connessione e riprova.",
+    );
+  }
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new ApiError(
+      "Il server ha restituito una risposta non valida. Riprova tra poco.",
+    );
+  }
   if (!response.ok) {
     const details = (data.details || []).map(
       (d: { field: string; message: string }) => ({

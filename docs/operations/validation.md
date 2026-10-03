@@ -1,6 +1,22 @@
-# Validation — 2026-10-03
+# Validation — local MVP
 
 The adopted local scope in [PLAN](../../PLAN.md) is implemented and verified with synthetic data. These results establish a usable local MVP, not commercial validation or public deployment readiness.
+
+## Latest verification — 2026-10-04 (Europe/Rome)
+
+The user explicitly confirmed a complete, verified local demo as the target. The current working tree passed `npm run build`, `npm test` (**73 tests in 3 files**), and `npm run test:e2e` (**13 scenarios**, final run 27.6 seconds). Repeated bootstrap preserved the fixture. `npm audit --json` reported zero known vulnerabilities across 222 dependency records; dependency files did not change.
+
+The follow-up repairs three concrete issues: accepted/closed invitation explanations now use the same offered property snapshot as the displayed facts; failed property/discovery/chat loads offer retry without false loading or conversation states; message reports show their selected text and reset draft/result state when the target changes. Switching conversations clears the previous report and composer. Network and non-JSON failures have readable Italian messages, and long property titles/descriptions fit at 320px.
+
+API regressions cover all five compatibility criteria, invitation list/detail, accepted/closed states and later tenant-preference edits. New browser scenarios simulate dropped requests, an HTML 503 response and a held conversation response; verify report contents actually saved in PostgreSQL; and exercise draft reset across messages and conversations. An independent static review of the complete diff found no further material issue. The final browser run includes the existing axe, keyboard, responsive and performance checks.
+
+Compiled `npm start` passed health, HTML/JS delivery, tenant login/profile/invitation/export, landlord login/property/discovery/dashboard, admin login/report/analytics and logout probes. Application user identities and fixture counts remained unchanged: 5 users, 2 profiles, 1 property and 3 migrations. The app is running on loopback port 3000 at handoff; process persistence across tasks is not assumed.
+
+[Readiness evidence](evidence/mvp-2026-10-04/readiness.json) records the base commit, SHA-256 of the tested source diff, runtime probes and screenshot hashes. [Performance](evidence/mvp-2026-10-04/performance.json): desktop LCP 308ms, throttled mobile LCP 2,312ms, CLS 0 in both runs; transfer 387,832 bytes. Raw timestamps are UTC; the heading uses the user's Europe/Rome date. These remain single synthetic runs.
+
+Inspected current screenshots: [mobile landing](evidence/mvp-2026-10-04/landing-mobile.png), [mobile discovery after retry](evidence/mvp-2026-10-04/discovery-retry-mobile.png), and [selected-message report](evidence/mvp-2026-10-04/report-target-mobile.png). Earlier evidence below is retained as history. No production release, remote CI run, push of this follow-up or new cloud snapshot is claimed.
+
+## Original validation — 2026-10-03
 
 ## Executed checks
 
