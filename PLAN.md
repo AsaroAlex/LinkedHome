@@ -101,3 +101,7 @@ La richiesta di massimizzare redditività e contenere spesa è seguita da «Fai 
 - [x] Verifica nuova del codice ottenuto dal pull: build/typecheck, 161 backend, 19 browser core/reddito/mail e 11 esperienza/mail, 26 scenari distinti. Evidenza in [pull-economics-integration](docs/operations/evidence/pull-economics-integration.json).
 
 La prima offerta da provare è un'installazione 790 € con manutenzione facoltativa, D-007 proposto. Nessuna vendita/intervista/campagna/acquisto o implementazione del pivot è effettuata. La ricerca reddituale e il flusso sintetico già implementati restano distinti dalla validazione economica. I comandi di test preservano dati e credenziali applicativi; gli esiti del controllo di avvio/migrazione sono registrati nell'evidenza dedicata.
+
+## Pubblicazione e pulizia dei branch richieste — 2026-10-04
+
+Alla richiesta «Unisci, mergia e pulisci i branch», inventario completo: un solo ramo remoto/default `claude/sweet-goldberg-5lwng7`, un solo locale `work`, nessuna PR aperta. Il lavoro economico `3658f8a` segue la storia già unificata `9db6a9c`: pubblicazione ordinaria fast-forward sul ramo esistente. Nessun branch aggiuntivo da cancellare. I test e audit precedenti restano applicabili perché i sorgenti dell'app e dei modelli non cambiano.

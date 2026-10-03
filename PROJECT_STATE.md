@@ -1,6 +1,6 @@
 # PROJECT STATE
 
-Aggiornato il 2026-10-03. Repository `/workspace/LinkedHome`, branch locale `work`, riferimento remoto richiesto `claude/sweet-goldberg-5lwng7`. L’utente ha autorizzato **«Esegui tutto il piano del repository»**, incluse revisioni indipendenti A–H. Le fasi 0–28 sono **completate per il perimetro locale con dati sintetici** adottato in PLAN e nel contratto delle funzionalità.
+Aggiornato il 2026-10-04 (Europe/Rome). Repository `/workspace/LinkedHome`, branch locale `work`, riferimento remoto richiesto `claude/sweet-goldberg-5lwng7`. L’utente ha autorizzato **«Esegui tutto il piano del repository»**, incluse revisioni indipendenti A–H. Le fasi 0–28 sono **completate per il perimetro locale con dati sintetici** adottato in PLAN e nel contratto delle funzionalità.
 
 Preservare questo checkout isolato: niente reset, switch, worktree, pull automatici o perdita dei dati ignorati. L’utente ha autorizzato il push su `claude/sweet-goldberg-5lwng7`, eseguito e verificato il 2026-10-03. Nessuna PR, deploy pubblico, servizio a pagamento o contatto esterno.
 
@@ -139,3 +139,9 @@ Ricerca, fonti, modelli B/D/E e F/G/H, CSV, parametri e audit sono in [economics
 Nuovo `npm ci` e `npm run check` passati nel checkout aggiornato: build/typecheck, 161 test backend, 19 browser core/reddito/mail e 11 esperienza/mail, 26 scenari distinti. Dati e credenziali locali preservati, nessun seed/reset. [Evidenza nuova](docs/operations/evidence/pull-economics-integration.json) e [report](docs/operations/pull-economics-integration.md) riportano anche il controllo di compatibilità schema/avvio. I conteggi locali di questa macchina non sono quelli del precedente task remoto.
 
 Il lavoro economico è salvato con un commit locale dopo il pull; nessun nuovo push, PR, deploy, provider reddito o invio SMTP esterno è implicito in questa integrazione. I gate del rilascio reale rimangono aperti.
+
+## Unificazione e pulizia dei branch — 2026-10-04
+
+La richiesta «Unisci, mergia e pulisci i branch» autorizza la pubblicazione del lavoro consolidato e la rimozione dei rami confluiti. Inventario completo via `git ls-remote --symref`, fetch di tutti i branch e GitHub: un solo ramo remoto, `claude/sweet-goldberg-5lwng7`, anche default; un solo ramo locale, `work`; nessuna PR aperta. Non esistono rami aggiuntivi da eliminare.
+
+La storia UX/reddito/SMTP è già integrata in `9db6a9c`; il commit economico `3658f8a` ne è un discendente diretto. Si pubblica il risultato sul ramo remoto esistente con push ordinario fast-forward, conservando la storia. Il locale `work` segue quel ramo. Le verifiche funzionali e gli audit registrati sopra riguardano gli stessi sorgenti: questa operazione aggiorna soltanto il registro dello stato e i riferimenti Git, preservando dati e credenziali locali.
