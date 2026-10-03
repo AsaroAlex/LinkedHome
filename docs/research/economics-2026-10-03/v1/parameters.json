@@ -1,0 +1,851 @@
+{
+  "as_of": "2026-10-03",
+  "status_legend": {
+    "V": "verificato da fonte ufficiale",
+    "E": "stimato da evidenza e metodologia esplicita",
+    "H": "ipotizzato per test; non evidenza di domanda/prezzo/copertura"
+  },
+  "general": {
+    "founder_hour_value_eur": {
+      "value": 30,
+      "status": "H",
+      "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+    },
+    "management_hours_month": {
+      "value": 40,
+      "status": "H",
+      "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+    },
+    "founder_hours_month_cap": {
+      "value": 160,
+      "status": "H",
+      "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+    },
+    "setup_spread_months": {
+      "value": 3,
+      "status": "H",
+      "note": "Ore setup distribuite nei mesi1-3 e incluse cap160h/mo."
+    },
+    "customer_hour_value_eur": {
+      "value": 35,
+      "status": "H",
+      "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+    },
+    "contractor_hour_cost_eur": {
+      "value": 35,
+      "status": "H",
+      "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+    },
+    "renter_cash_cac_eur": {
+      "value": 0,
+      "status": "H",
+      "note": "Candidati reperiti dal cliente; attivazione onerosa modellata in ore."
+    },
+    "vat_rate_hypothesis": {
+      "value": 0.22,
+      "status": "H",
+      "note": "Regime fiscale da confermare; fatturato/net costi IVA neutra e segregata."
+    },
+    "payment_percent": {
+      "value": 0.015,
+      "status": "V",
+      "source": "https://stripe.com/it/pricing",
+      "as_of": "2026-10-03"
+    },
+    "payment_fixed_eur": {
+      "value": 0.25,
+      "status": "V",
+      "source": "https://stripe.com/it/pricing",
+      "as_of": "2026-10-03"
+    },
+    "minimum_reserve_eur": {
+      "value": 1000,
+      "status": "H",
+      "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+    },
+    "reserve_months_fixed_cash": {
+      "value": 3,
+      "status": "H",
+      "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+    }
+  },
+  "models": {
+    "B": {
+      "price_practice_net_eur": {
+        "value": 29,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "price_subscription_net_eur": {
+        "value": 0,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "candidates_per_practice": {
+        "value": 1,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "setup_cash_eur": {
+        "value": 2000,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "setup_founder_hours": {
+        "value": 120,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "fixed_tools_infrastructure_eur_month": {
+        "value": 100,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "fixed_legal_compliance_eur_month": {
+        "value": 100,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "fixed_admin_eur_month": {
+        "value": 70,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      }
+    },
+    "D": {
+      "price_practice_net_eur": {
+        "value": 99,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "price_subscription_net_eur": {
+        "value": 0,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "candidates_per_practice": {
+        "value": 2,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "setup_cash_eur": {
+        "value": 3000,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "setup_founder_hours": {
+        "value": 180,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "fixed_tools_infrastructure_eur_month": {
+        "value": 140,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "fixed_legal_compliance_eur_month": {
+        "value": 200,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "fixed_admin_eur_month": {
+        "value": 110,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      }
+    },
+    "E": {
+      "price_practice_net_eur": {
+        "value": 39,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "price_subscription_net_eur": {
+        "value": 79,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "candidates_per_practice": {
+        "value": 1,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "setup_cash_eur": {
+        "value": 5000,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "setup_founder_hours": {
+        "value": 300,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "fixed_tools_infrastructure_eur_month": {
+        "value": 200,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "fixed_legal_compliance_eur_month": {
+        "value": 300,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "fixed_admin_eur_month": {
+        "value": 150,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      }
+    }
+  },
+  "scenarios": {
+    "prudente": {
+      "provider_success_cost_eur": {
+        "value": 15,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "provider_failed_cost_eur": {
+        "value": 4,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "provider_failed_attempt_rate": {
+        "value": 0.18,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "free_checks_ratio": {
+        "value": 0.08,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "retry_attempts_ratio": {
+        "value": 0.25,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "discount_rate": {
+        "value": 0.1,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "refund_rate": {
+        "value": 0.05,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "dispute_rate": {
+        "value": 0.04,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "dispute_external_cost_eur": {
+        "value": 8,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "dispute_hours_each": {
+        "value": 1.0,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "renter_activation_hours_each": {
+        "value": 0.2,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "logo_churn_month": {
+        "value": {
+          "B": 0.1,
+          "D": 0.08,
+          "E": 0.08
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "practice_frequency_month": {
+        "value": {
+          "B": 0.2,
+          "D": 0.2,
+          "E": 0.5
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "paying_client_cash_cac_eur": {
+        "value": {
+          "B": 30,
+          "D": 45,
+          "E": 75
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "paying_client_acquisition_hours": {
+        "value": {
+          "B": 2.0,
+          "D": 4.0,
+          "E": 5.0
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "payer_activation_hours": {
+        "value": {
+          "B": 0.3,
+          "D": 0.5,
+          "E": 1.0
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "manual_review_hours_practice": {
+        "value": {
+          "B": 0.25,
+          "D": 0.9,
+          "E": 0.3
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "support_hours_practice": {
+        "value": {
+          "B": 0.2,
+          "D": 0.35,
+          "E": 0.2
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "operator_support_hours_month": {
+        "value": {
+          "B": 0,
+          "D": 0,
+          "E": 0.25
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "checks_per_practice": {
+        "value": {
+          "B": 1,
+          "D": 1.0,
+          "E": 1
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "monthly_new_paying_clients_points": {
+        "value": {
+          "B": [
+            [
+              1,
+              1
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              18,
+              3
+            ],
+            [
+              24,
+              4
+            ]
+          ],
+          "D": [
+            [
+              1,
+              1
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              18,
+              4
+            ],
+            [
+              24,
+              5
+            ]
+          ],
+          "E": [
+            [
+              1,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              18,
+              2
+            ],
+            [
+              24,
+              3
+            ]
+          ]
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "provider_minimum_eur_month": {
+        "value": 0,
+        "status": "H",
+        "note": "MINIMO NON QUANTIFICATO: zero è esclusione dal base, non evidenza di assenza. Stress250/500 separati."
+      }
+    },
+    "centrale": {
+      "provider_success_cost_eur": {
+        "value": 10,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "provider_failed_cost_eur": {
+        "value": 3,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "provider_failed_attempt_rate": {
+        "value": 0.1,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "free_checks_ratio": {
+        "value": 0.04,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "retry_attempts_ratio": {
+        "value": 0.15,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "discount_rate": {
+        "value": 0.05,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "refund_rate": {
+        "value": 0.03,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "dispute_rate": {
+        "value": 0.025,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "dispute_external_cost_eur": {
+        "value": 8,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "dispute_hours_each": {
+        "value": 0.75,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "renter_activation_hours_each": {
+        "value": 0.15,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "logo_churn_month": {
+        "value": {
+          "B": 0.06,
+          "D": 0.05,
+          "E": 0.05
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "practice_frequency_month": {
+        "value": {
+          "B": 0.35,
+          "D": 1.0,
+          "E": 1.0
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "paying_client_cash_cac_eur": {
+        "value": {
+          "B": 18,
+          "D": 30,
+          "E": 50
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "paying_client_acquisition_hours": {
+        "value": {
+          "B": 1.5,
+          "D": 3.0,
+          "E": 4.0
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "payer_activation_hours": {
+        "value": {
+          "B": 0.2,
+          "D": 0.35,
+          "E": 0.7
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "manual_review_hours_practice": {
+        "value": {
+          "B": 0.18,
+          "D": 0.55,
+          "E": 0.22
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "support_hours_practice": {
+        "value": {
+          "B": 0.12,
+          "D": 0.2,
+          "E": 0.15
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "operator_support_hours_month": {
+        "value": {
+          "B": 0,
+          "D": 0,
+          "E": 0.15
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "checks_per_practice": {
+        "value": {
+          "B": 1,
+          "D": 1.3,
+          "E": 1
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "monthly_new_paying_clients_points": {
+        "value": {
+          "B": [
+            [
+              1,
+              2
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              12,
+              6
+            ],
+            [
+              18,
+              7
+            ],
+            [
+              24,
+              8
+            ]
+          ],
+          "D": [
+            [
+              1,
+              1
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              18,
+              4
+            ],
+            [
+              24,
+              5
+            ]
+          ],
+          "E": [
+            [
+              1,
+              1
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              18,
+              4
+            ],
+            [
+              24,
+              5
+            ]
+          ]
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "provider_minimum_eur_month": {
+        "value": 0,
+        "status": "H",
+        "note": "MINIMO NON QUANTIFICATO: zero è esclusione dal base, non evidenza di assenza. Stress250/500 separati."
+      }
+    },
+    "favorevole": {
+      "provider_success_cost_eur": {
+        "value": 6,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "provider_failed_cost_eur": {
+        "value": 2,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "provider_failed_attempt_rate": {
+        "value": 0.05,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "free_checks_ratio": {
+        "value": 0.02,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "retry_attempts_ratio": {
+        "value": 0.07,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "discount_rate": {
+        "value": 0.02,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "refund_rate": {
+        "value": 0.015,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "dispute_rate": {
+        "value": 0.015,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "dispute_external_cost_eur": {
+        "value": 8,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "dispute_hours_each": {
+        "value": 0.5,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "renter_activation_hours_each": {
+        "value": 0.1,
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "logo_churn_month": {
+        "value": {
+          "B": 0.035,
+          "D": 0.03,
+          "E": 0.03
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "practice_frequency_month": {
+        "value": {
+          "B": 0.5,
+          "D": 2.0,
+          "E": 1.7
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "paying_client_cash_cac_eur": {
+        "value": {
+          "B": 12,
+          "D": 20,
+          "E": 35
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "paying_client_acquisition_hours": {
+        "value": {
+          "B": 0.8,
+          "D": 1.5,
+          "E": 2.0
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "payer_activation_hours": {
+        "value": {
+          "B": 0.15,
+          "D": 0.25,
+          "E": 0.5
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "manual_review_hours_practice": {
+        "value": {
+          "B": 0.12,
+          "D": 0.35,
+          "E": 0.15
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "support_hours_practice": {
+        "value": {
+          "B": 0.08,
+          "D": 0.12,
+          "E": 0.1
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "operator_support_hours_month": {
+        "value": {
+          "B": 0,
+          "D": 0,
+          "E": 0.1
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "checks_per_practice": {
+        "value": {
+          "B": 1,
+          "D": 1.6,
+          "E": 1
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "monthly_new_paying_clients_points": {
+        "value": {
+          "B": [
+            [
+              1,
+              3
+            ],
+            [
+              6,
+              7
+            ],
+            [
+              12,
+              11
+            ],
+            [
+              18,
+              14
+            ],
+            [
+              24,
+              16
+            ]
+          ],
+          "D": [
+            [
+              1,
+              2
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              12,
+              9
+            ],
+            [
+              18,
+              12
+            ],
+            [
+              24,
+              15
+            ]
+          ],
+          "E": [
+            [
+              1,
+              1
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              12,
+              5
+            ],
+            [
+              18,
+              7
+            ],
+            [
+              24,
+              9
+            ]
+          ]
+        },
+        "status": "H",
+        "note": "Ipotesi da sostituire con misure/preventivi nel pilot."
+      },
+      "provider_minimum_eur_month": {
+        "value": 0,
+        "status": "H",
+        "note": "MINIMO NON QUANTIFICATO: zero è esclusione dal base, non evidenza di assenza. Stress250/500 separati."
+      }
+    }
+  }
+}

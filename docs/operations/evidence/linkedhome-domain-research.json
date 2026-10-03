@@ -1,0 +1,134 @@
+{
+  "recorded_date": "2026-10-04",
+  "timezone": "Europe/Rome",
+  "decision": {
+    "brand": "LinkedHome",
+    "adopted_by_explicit_user_request_on": "2026-10-04",
+    "user_request": "Procedi con linkedhome e procedi alle modifiche necessarie",
+    "primary_domain_proposal": "linkedhome.eu",
+    "optional_domain_proposal": "linkedhome.it",
+    "registered_domain": "linkedhome.com",
+    "status": "Brand adopted for product preparation; domains not owned or activated by this work",
+    "legal_clearance": "NOT_OBTAINED; user approval of the brand is not legal authorization to use it"
+  },
+  "registrar_dominiofaidate": {
+    "registrar": "DominioFaiDaTe",
+    "source_summary": "home-compound-registrar-summary.json",
+    "method": "Public availability form; no product selected, account registration, cart or purchase",
+    "checks": [
+      {
+        "domain": "linkedhome.eu",
+        "source_url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=linkedhome&tld=eu",
+        "checked_at_rome": "2026-10-04T00:17:28.379261+02:00",
+        "http_status": 200,
+        "classification": "AVAILABLE",
+        "exact_rows": [
+          "linkedhome.eu € 5,99 Register"
+        ],
+        "registration_price_eur_excl_vat": 5.99,
+        "renewal_price_eur_excl_vat": null
+      },
+      {
+        "domain": "linkedhome.it",
+        "source_url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=linkedhome&tld=it",
+        "checked_at_rome": "2026-10-04T00:17:28.379553+02:00",
+        "http_status": 200,
+        "classification": "AVAILABLE",
+        "exact_rows": [
+          "linkedhome.it € 8,99 Register"
+        ],
+        "registration_price_eur_excl_vat": 8.99,
+        "renewal_price_eur_excl_vat": null
+      },
+      {
+        "domain": "linkedhome.com",
+        "source_url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=linkedhome&tld=com",
+        "checked_at_rome": "2026-10-04T00:17:28.380045+02:00",
+        "http_status": 200,
+        "classification": "REGISTERED",
+        "exact_rows": [
+          "linkedhome.com € 13,99 registered"
+        ],
+        "registration_price_eur_excl_vat": null,
+        "renewal_price_eur_excl_vat": null,
+        "price_interpretation": "Displayed catalogue price is not a purchase offer for this registered domain"
+      }
+    ],
+    "vat_price_source": "https://www.dominiofaidate.com/en/price-list/",
+    "vat_note": "The annual price list observed in the prior domain-research workstream excludes VAT; applicable taxes and current terms require confirmation at checkout",
+    "limitations": "Reports at check time only; no domains reserved; holder eligibility, renewal and final checkout amount were not verified for LinkedHome",
+    "source_summary_note": "Temporary research artifact outside this repository; relevant exact results, timestamps and source URLs are normalized in this self-contained record."
+  },
+  "com_registry": {
+    "domain": "linkedhome.com",
+    "source_url": "https://rdap.verisign.com/com/v1/domain/linkedhome.com",
+    "checked_at_rome": "2026-10-04T00:17:29.726136+02:00",
+    "http_status": 200,
+    "content_type": "application/rdap+json",
+    "classification": "REGISTERED_REGISTRY_OBJECT",
+    "exact_registry_domain_match": true,
+    "source_summary": "home-compound-rdap-summary.json",
+    "interpretation": "An exact registry object was returned; linkedhome.com is registered. No acquisition or transfer quote was obtained.",
+    "source_summary_note": "Temporary research artifact outside this repository; relevant exact results, timestamps and source URLs are normalized in this self-contained record."
+  },
+  "illustrative_first_year_prices": {
+    "currency": "EUR",
+    "assumed_vat_percent": 22,
+    "linkedhome.eu": {
+      "registration_eur_excl_vat": 5.99,
+      "calculated_registration_eur_incl_vat": 7.31
+    },
+    "linkedhome.it": {
+      "registration_eur_excl_vat": 8.99,
+      "calculated_registration_eur_incl_vat": 10.97
+    },
+    "limitation": "Calculated examples, not final invoices; current availability, renewal, applicable taxes and final checkout amount require confirmation"
+  },
+  "name_collision_research": {
+    "method": "Relevant public-use findings carried forward from the current naming research; no new trademark clearance inferred from brand adoption",
+    "near_names": [
+      {
+        "name": "Linkhome",
+        "source_url": "https://about.linkhome.com/",
+        "supporting_source_url": "https://ir.linkhome.com/smarter-search-simpler-transactions-linkhome-launches-new-website-and-app/",
+        "context": "United States property technology, including a website and app serving property seekers and agents",
+        "difference": "Near name: LinkedHome adds a D; not an exact commercial-name match",
+        "interpretation": "Relevant sector and spelling proximity; no legal conflict conclusion"
+      },
+      {
+        "name": "Linkedhomes.io",
+        "source_url": "https://www.linkedin.com/company/linkedhomes/",
+        "supporting_source_url": "https://www.linkedin.com/in/danielmolesworthmartin",
+        "context": "Public company and founder profiles associate the name with a platform for real-estate agencies and property professionals",
+        "difference": "Near plural name; not an exact LinkedHome match",
+        "interpretation": "Relevant sector proximity; no legal conflict conclusion"
+      }
+    ],
+    "trademark_and_company_name_clearance": "NOT_OBTAINED",
+    "social_handle_availability": "NOT_CONFIRMED",
+    "limitation": "Domain registration status and limited public web research do not establish freedom to use the brand"
+  },
+  "preparation_only": {
+    "future_primary_origin": "https://linkedhome.eu",
+    "future_www_host": "www.linkedhome.eu",
+    "future_staging_origin": "https://staging.linkedhome.eu",
+    "future_mail_from": "no-reply@linkedhome.eu",
+    "activation_condition": "Only after domain ownership, verified DNS/TLS, actual hosting targets and provider sender authentication; these examples are not activated by this research"
+  },
+  "historical_evidence": {
+    "path": "domain-research.json",
+    "brand": "Doorluma",
+    "status": "Previous brand proposal superseded by explicit adoption of LinkedHome; historical research file preserved without changes"
+  },
+  "actions": {
+    "domain_reserved": false,
+    "domain_purchased": false,
+    "dns_modified": false,
+    "origin_or_canonical_activated": false,
+    "sender_activated": false,
+    "public_deploy": false,
+    "social_account_created": false
+  },
+  "sources_reviewed_exa_in_this_domain_check": 0,
+  "sanitization": "No registrant personal data, credentials, cookies, cart identifiers or raw HTML preserved"
+}

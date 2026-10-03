@@ -1,0 +1,25 @@
+{
+  "/api/health": {
+    "status": 200,
+    "safe_body": {
+      "ok": true,
+      "environment": "local"
+    }
+  },
+  "/api/config": {
+    "status": 200,
+    "safe_body": {
+      "environment": "local",
+      "mailTransport": "local"
+    }
+  },
+  "/": {
+    "status": 200,
+    "title": "LinkedHome \u2014 Affitti che iniziano da un invito",
+    "robots_noindex_nofollow": true,
+    "script_count": 1,
+    "script_statuses": [
+      200
+    ]
+  }
+}

@@ -24,3 +24,7 @@ This adopted scope supersedes historical MUST labels in research04 and technolog
 | DEFER | Payments, insurance, contract filing, SMS/push, native apps | Outside core local scope; independent feasibility required |
 
 Implementation completeness is distinct from launch clearance. Local seed users must be clearly synthetic, credentials generated locally, and external networking unnecessary for the core loop after installation. No production seed or default privileged password.
+
+## Income extension — 2026-10-03
+
+The new product-design brief authorizes and requires local implementation of the income extension. The DEFER row above refers to **live provider issuance**, not to private reusable synthetic examples and recipient controls. The implemented contract is [income04](04-income-attestation.md): optional preparation, exact-preview consent for each invitation, minimized summary, runtime expiry, revoke/dispute and no discovery/ranking effect. Real documents/providers remain unavailable.

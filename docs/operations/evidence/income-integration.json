@@ -1,0 +1,156 @@
+{
+  "checked_at_utc": "2026-10-03T22:12:45.813Z",
+  "scope": "Integrated local synthetic income work with newer Doorluma, rental UX and SMTP/deployment preparation",
+  "repository": "AsaroAlex/LinkedHome",
+  "local_branch": "work",
+  "remote_target": "claude/sweet-goldberg-5lwng7",
+  "merge_parents": [
+    "f4cf518fea469d50fbdcee55be2f7e3460f27f46",
+    "65f38ee175cdfdbe8431d0b514d28fd0e2fef91e"
+  ],
+  "integration_method": "Normal merge in the current checkout, preserving both histories; no reset, branch switch, worktree replacement or force push",
+  "checks": {
+    "build": {
+      "command": "npm run build",
+      "outcome": "PASS",
+      "exit_code": 0,
+      "includes_typescript": true,
+      "vite_modules": 117
+    },
+    "backend": {
+      "command": "npm test",
+      "outcome": "PASS",
+      "exit_code": 0,
+      "tests": 161,
+      "files": 7,
+      "duration_seconds": 19.04,
+      "database": "soglia_test",
+      "income_tests": 25,
+      "includes_demo_rejection_in_staging_and_production": true,
+      "external_mail_sent": false
+    },
+    "browser": {
+      "command": "npm run test:e2e",
+      "outcome": "PASS",
+      "exit_code": 0,
+      "scenarios": 19,
+      "duration_seconds": 38.7,
+      "database": "soglia_e2e",
+      "real_local_api_scenarios": 15,
+      "mocked_mail_runtime_scenarios": 4
+    },
+    "experience": {
+      "command": "npm run test:e2e:experience",
+      "outcome": "PASS",
+      "exit_code": 0,
+      "scenarios": 11,
+      "duration_seconds": 14.8,
+      "database_connection": false,
+      "scope": "7 experience plus the same 4 mocked mail-runtime scenarios"
+    },
+    "browser_count_note": "19 + 11 executions cover 26 distinct scenarios; four mail-runtime scenarios are repeated.",
+    "execution": "Build and all test suites executed sequentially.",
+    "accessibility_responsive": {
+      "outcome": "PASS within sampled configured automated scope",
+      "minimum_overflow_check_width_px": 320,
+      "scope": "axe configured tags, selected keyboard flows and mobile layout; no WCAG certification or physical-device claim"
+    },
+    "independent_review": {
+      "outcome": "No material static finding remaining after final read-only inspection",
+      "review": "docs/reviews/review-07-income-integration.md",
+      "test_execution_by": "coordinator"
+    },
+    "runtime": {
+      "checked_at_utc": "2026-10-03T22:10:30.056Z",
+      "health_status": 200,
+      "health": {
+        "ok": true,
+        "environment": "local"
+      },
+      "config_status": 200,
+      "config": {
+        "environment": "local",
+        "mailTransport": "local"
+      },
+      "html_title": "Doorluma — Affitti che iniziano da un invito",
+      "app_database_read_only_counts": {
+        "users": 16,
+        "profiles": 7,
+        "properties": 4,
+        "migrations": 4
+      },
+      "seeded_or_reset": false
+    }
+  },
+  "income_boundaries": {
+    "synthetic_demo_environment": "local only; guard uses the HTTP instance RuntimeConfiguration",
+    "real_provider_available": false,
+    "real_endpoint_http_status": 503,
+    "discovery_uses_income": false,
+    "consent": "Exact attestation ID and invitation recipient; no implicit grant on acceptance or renewal"
+  },
+  "source_sha256": {
+    "src/App.tsx": "26a103582eee50d4add2e67802b6a9ac56ec86a5f41f37d338b7c1ffd874e637",
+    "src/Income.tsx": "d2264f69960f37cb5fa24e6b5d59cbe2faaf3a966cc6bc15f46c497b0f8fdb55",
+    "src/api.ts": "9554f600aad448f039613029cee904ae0f91d14d5dda83756bd5d610d4a88ed6",
+    "src/experience.tsx": "ff2687e5c86ed30d00c4ff9b8557a908d3d7935c3cb30a6161d578a859cd834b",
+    "server/app.ts": "dedddc4522c67ed308fb416dd421cdf0d5127bd2bdaae08d9347d0b32ad1244f",
+    "server/income.ts": "338ab1ff9620166debfe459a5252476586af357c26b4193030548ee52dd5e56c",
+    "scripts/test.ts": "c319d925cb76bf82a0dadf5e72f4b4b236c251715ab2e9585c10729df4034b9d",
+    "tests/income.test.ts": "4467b222654f6d96ba7c79f02fe3816b82e242bf76237b57cadbb1b72b5f9da2",
+    "tests/browser/mail-runtime.spec.ts": "d977e1612bdefec74693ee87b24f192ad1806f8901e613c6ebc23751f0c84e87",
+    "tests/experience/experience.spec.ts": "ff451fdbf50ae715bc80ba0fc391f5b7db2fbea0673f00b3f73d38263bdb8c42"
+  },
+  "screenshots": [
+    {
+      "file": "income-integration-workspace-mobile.png",
+      "source": "test-results/visual/income-workspace-mobile.png",
+      "provenance": "Real local API; synthetic data; mobile workspace",
+      "bytes": 261221,
+      "sha256": "b0be1d620e42171e93f2931d809a583189a6c46197fb022355e3739907cf20b5",
+      "visually_inspected_by": "coordinator",
+      "image_width_px": 390,
+      "image_height_px": 4174
+    },
+    {
+      "file": "income-integration-consent-mobile.png",
+      "source": "test-results/visual/income-consent-mobile.png",
+      "provenance": "Real local API; initially unchecked consent; mobile invitation",
+      "bytes": 228794,
+      "sha256": "a8615950a013089835e8c968106496a59458bad38aedc235813884bae2ed10f5",
+      "visually_inspected_by": "coordinator",
+      "image_width_px": 390,
+      "image_height_px": 3605
+    },
+    {
+      "file": "income-integration-owner-preview-desktop.png",
+      "source": "test-results/visual/income-owner-preview-desktop.png",
+      "provenance": "Real local API; authorized recipient; desktop invitation",
+      "bytes": 197040,
+      "sha256": "e522c949a49dee418423fc9624aefcbef76a8f52924f44a6ebbe3d23efe7864a",
+      "visually_inspected_by": "coordinator",
+      "image_width_px": 1440,
+      "image_height_px": 2290
+    },
+    {
+      "file": "income-integration-chat-mobile.png",
+      "source": "test-results/experience-visual/chat-mobile.png",
+      "provenance": "Mocked API; editable chat starters and optional income; mobile conversation",
+      "bytes": 115914,
+      "sha256": "63f710fe17225dc413ca2af8901132e0d2d449f72e49c542ef2fd267e11f6e0f",
+      "visually_inspected_by": "coordinator",
+      "image_width_px": 390,
+      "image_height_px": 2271
+    }
+  ],
+  "historical_evidence": "Earlier Soglia and Doorluma snapshots are retained under their original filenames and dates.",
+  "not_performed": [
+    "public deployment",
+    "domain purchase or activation",
+    "live financial verification",
+    "external SMTP delivery",
+    "remote CI execution",
+    "physical mobile-device or Safari testing",
+    "real-user research"
+  ]
+}

@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://render.com/schema/render.yaml.json
+# Staging blueprint: creates paid resources only when explicitly applied.
+previews:
+  generation: "off"
+
+services:
+  - type: web
+    name: linkedhome-staging
+    runtime: docker
+    region: frankfurt
+    plan: 0.5c-512mb
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    autoDeployTrigger: "off"
+    healthCheckPath: /api/health
+    preDeployCommand: npm run db:migrate && npm run deploy:check
+    envVars:
+      - key: APP_ENV
+        value: staging
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: "3000"
+      - key: APP_ORIGIN
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: linkedhome-staging-db
+          property: connectionString
+      - key: MAIL_TRANSPORT
+        value: smtp
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      # Set false until Render supplies verified incoming proxy IP/CIDR ranges.
+      - key: TRUST_PROXY
+        sync: false
+
+  - type: cron
+    name: linkedhome-staging-maintenance
+    runtime: docker
+    region: frankfurt
+    plan: 0.5c-512mb
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    autoDeployTrigger: "off"
+    schedule: "15 2 * * *"
+    dockerCommand: npm run maintenance
+    envVars:
+      - key: APP_ENV
+        value: staging
+      - key: DATABASE_URL
+        fromDatabase:
+          name: linkedhome-staging-db
+          property: connectionString
+
+databases:
+  - name: linkedhome-staging-db
+    region: frankfurt
+    plan: 0.1c-256mb
+    postgresMajorVersion: "18"
+    diskSizeGB: 5
+    storageAutoscalingEnabled: false
+    databaseName: linkedhome
+    user: linkedhome
+    ipAllowList: []

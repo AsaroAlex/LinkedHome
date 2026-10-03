@@ -1,0 +1,174 @@
+{
+  "checked_at_utc": "2026-10-03T22:40:38.099689+00:00",
+  "recorded_date_rome": "2026-10-04",
+  "scope": "User-approved LinkedHome rebrand of integrated local synthetic rental marketplace; no deployment",
+  "base_commit": "9db6a9cc80706049a39be6c56ee42ecdfbabe379",
+  "tested_changed_source_sha256": {
+    "src/brand.ts": "876b4055176d4d61799d82a5cc6b54e7e788aa8f6751911f58ea83894d931ece",
+    "index.html": "7bb266caa97bb5a399325236c2da13b18ef9d7f14a836350dd3f7ee0f36ef70b",
+    "tests/mail.test.ts": "46b2a5fb8ca879e167b1ae77d421b1ddd7004d500e9b0159d988fb28ff32086a",
+    "tests/browser/core.spec.ts": "a7f76641ad4e6e130f0f29a6654d3d571d6d709dd6caa464f07c2c03601adbed"
+  },
+  "source_note": "Only the four listed source/test files differ from the pulled base; all other changes are documentation, commented environment examples and new evidence.",
+  "dependencies": "Pinned node_modules installed with npm ci before rebrand; package.json and lockfile unchanged.",
+  "checks": {
+    "full_check": {
+      "command": "npm run check",
+      "exit_code": 0,
+      "outcome": "PASS",
+      "database_lifecycle": "Sequential; generated local soglia_test and soglia_e2e fixtures"
+    },
+    "build": {
+      "outcome": "PASS",
+      "typescript": "PASS",
+      "vite": "PASS",
+      "modules": 117,
+      "js_raw_kb": 393.83,
+      "js_gzip_kb": 116.59,
+      "css_raw_kb": 27.94,
+      "css_gzip_kb": 7.0
+    },
+    "backend_unit_integration_smtp": {
+      "outcome": "PASS",
+      "files": 7,
+      "tests": 161,
+      "duration_seconds": 17.42,
+      "smtp_scope": "Controlled loopback SMTP servers; no external recipient/provider",
+      "external_mail_sent": false
+    },
+    "application_browser": {
+      "outcome": "PASS",
+      "scenarios": 19,
+      "duration_seconds": 34.5,
+      "export_filename": "linkedhome-dati.json"
+    },
+    "experience_browser": {
+      "outcome": "PASS",
+      "scenarios": 11,
+      "duration_seconds": 12.9,
+      "database_used": false
+    },
+    "browser_counts": {
+      "mail_scenarios_repeated": 4,
+      "distinct_scenarios": 26
+    },
+    "accessibility_responsive": {
+      "outcome": "PASS",
+      "scope": "Existing configured axe WCAG2A/AA and 2.1AA checks and overflow probes on sampled pages; not certification"
+    },
+    "visual_probe": {
+      "checked_at_utc": "2026-10-03T22:38:09.082Z",
+      "scope": "Built frontend preview with mocked local runtime and unauthenticated session; no database connection",
+      "probes": [
+        {
+          "label": "desktop",
+          "viewport": 1440,
+          "scrollWidth": 1440,
+          "title": "LinkedHome — Affitti che iniziano da un invito.",
+          "description": "LinkedHome: preferenze chiare, inviti pertinenti e conversazioni per trovare casa. Ambiente dimostrativo locale.",
+          "robots": "noindex,nofollow",
+          "logo": "LinkedHome.",
+          "footer": true,
+          "oldNameVisible": false,
+          "controls": [
+            {
+              "text": "Accedi",
+              "left": 1064.6875,
+              "right": 1107.4375,
+              "top": 63.15625,
+              "bottom": 85.671875
+            },
+            {
+              "text": "Crea account ",
+              "left": 1137.4375,
+              "right": 1292,
+              "top": 52.421875,
+              "bottom": 96.421875
+            }
+          ],
+          "screenshot": "docs/operations/evidence/linkedhome-landing-desktop.png"
+        },
+        {
+          "label": "mobile",
+          "viewport": 390,
+          "scrollWidth": 390,
+          "title": "LinkedHome — Affitti che iniziano da un invito.",
+          "description": "LinkedHome: preferenze chiare, inviti pertinenti e conversazioni per trovare casa. Ambiente dimostrativo locale.",
+          "robots": "noindex,nofollow",
+          "logo": "LinkedHome.",
+          "footer": true,
+          "oldNameVisible": false,
+          "controls": [
+            {
+              "text": "Accedi",
+              "left": 20,
+              "right": 58.859375,
+              "top": 104.859375,
+              "bottom": 125.328125
+            },
+            {
+              "text": "Crea account ",
+              "left": 75.859375,
+              "right": 207.046875,
+              "top": 93.09375,
+              "bottom": 137.09375
+            }
+          ],
+          "screenshot": "docs/operations/evidence/linkedhome-landing-mobile.png"
+        },
+        {
+          "label": "320",
+          "viewport": 320,
+          "scrollWidth": 320,
+          "title": "LinkedHome — Affitti che iniziano da un invito.",
+          "description": "LinkedHome: preferenze chiare, inviti pertinenti e conversazioni per trovare casa. Ambiente dimostrativo locale.",
+          "robots": "noindex,nofollow",
+          "logo": "LinkedHome.",
+          "footer": true,
+          "oldNameVisible": false,
+          "controls": [
+            {
+              "text": "Accedi",
+              "left": 20,
+              "right": 58.859375,
+              "top": 104.859375,
+              "bottom": 125.328125
+            },
+            {
+              "text": "Crea account ",
+              "left": 168.8125,
+              "right": 300,
+              "top": 93.09375,
+              "bottom": 137.09375
+            }
+          ],
+          "screenshot": "docs/operations/evidence/linkedhome-landing-320.png"
+        }
+      ],
+      "outcome": "PASS",
+      "screenshots_inspected": true,
+      "finding": "LinkedHome title/header/footer and controls fit desktop,390px and320px; no horizontal overflow; no CSS change required"
+    },
+    "independent_static_review": {
+      "outcome": "No concrete branding or documentation-provenance defect remaining",
+      "scope": "Central brand dependencies, metadata, email/export expectations, technical identifiers, historic observation preservation, naming/domain documentation, archived comparison, evidence provenance and local links"
+    }
+  },
+  "preservation": {
+    "database_cookie_package_identifiers": "Unchanged",
+    "migration_files": "Unchanged",
+    "historical_evidence": "Original brands, observations and dates preserved",
+    "application_seed_or_reset_performed": false
+  },
+  "not_performed": [
+    "domain purchase or reservation",
+    "DNS changes",
+    "activated custom origin or sender",
+    "trademark clearance",
+    "public deployment",
+    "live SMTP delivery",
+    "real income-provider activation",
+    "further push",
+    "remote CI execution"
+  ]
+}

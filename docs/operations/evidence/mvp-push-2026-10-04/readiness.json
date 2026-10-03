@@ -1,0 +1,73 @@
+{
+  "validated_at": "2026-10-03T23:27:20.059Z",
+  "user_date": "2026-10-04",
+  "user_timezone": "Europe/Rome",
+  "scope": "combined LinkedHome source; local synthetic checks before authorized normal push",
+  "local_parent": "d566adbad3f6fcc0b7aab8cb99990e0e7ba96171",
+  "remote_parent": "8891feae3f16b6eb80f9e3ba922a995bf841e296",
+  "source_diff_paths": [
+    "server",
+    "src",
+    "tests",
+    "scripts",
+    "migrations",
+    "package.json",
+    "package-lock.json",
+    "playwright.config.ts",
+    "playwright.experience.config.ts",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "tsconfig.json",
+    "index.html"
+  ],
+  "source_diff_sha256": "9e95cc7b2bc47a5dd8921bdda8fc8452351c15709b0fd93b08a8ad741e7b257a",
+  "checks": {
+    "frozen_install": "passed",
+    "bootstrap": "passed; migration004 added",
+    "build_typecheck": "passed",
+    "unit_integration": {
+      "passed": 163,
+      "files": 7
+    },
+    "browser": {
+      "passed": 22,
+      "duration_seconds": 46.6
+    },
+    "experience_browser": {
+      "passed": 11,
+      "duration_seconds": 17,
+      "note": "7 experience and4 mail-runtime checks; mail-runtime also included in main browser suite"
+    },
+    "dependency_audit": {
+      "known_vulnerabilities": 0,
+      "dependency_records": 224
+    },
+    "independent_merge_review": "backend and UI static review passed"
+  },
+  "runtime": {
+    "compiled_startup": "passed",
+    "probes": [
+      "local health and runtime config",
+      "compiled LinkedHome HTML and JavaScript",
+      "tenant login, role reads and logout",
+      "landlord login, role reads and logout",
+      "admin login, role reads and logout"
+    ],
+    "counts": {
+      "users": 5,
+      "profiles": 2,
+      "properties": 1,
+      "migrations": 4
+    },
+    "all_original_account_ids_preserved": true
+  },
+  "publication": {
+    "authorized_target": "origin/claude/sweet-goldberg-5lwng7",
+    "method": "ordinary non-force push; remote SHA verified separately after commit"
+  },
+  "limits": [
+    "synthetic local fixtures",
+    "no real SMTP delivery or public deployment",
+    "no remote CI run claimed"
+  ]
+}

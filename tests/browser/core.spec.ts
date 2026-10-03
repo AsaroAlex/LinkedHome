@@ -358,7 +358,10 @@ test("property and discovery failures can be retried without a permanent loading
   await noOverflow(page);
 
   await page.route("**/api/properties", propertyFailure);
-  await page.getByRole("link", { name: "Scopri profili", exact: true }).click();
+  await page
+    .getByRole("navigation", { name: "Il tuo spazio", exact: true })
+    .getByRole("link", { name: "Scopri profili", exact: true })
+    .click();
   await expect(page.getByRole("alert")).toContainText(
     "Impossibile collegarsi al server. Controlla la connessione e riprova.",
   );
@@ -657,7 +660,7 @@ test("suspended account keeps own-data access and an appeal route", async ({
     .click();
   const download = page.waitForEvent("download");
   await page.getByRole("button", { name: "Scarica i miei dati" }).click();
-  expect((await download).suggestedFilename()).toBe("soglia-dati.json");
+  expect((await download).suggestedFilename()).toBe("linkedhome-dati.json");
   await page
     .getByRole("button", { name: "Voglio eliminare l’account" })
     .click();

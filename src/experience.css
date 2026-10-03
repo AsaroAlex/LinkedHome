@@ -1,0 +1,240 @@
+.role-switch {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px;
+  margin: 28px auto 0;
+  width: fit-content;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #eeefe6;
+}
+.role-switch button {
+  padding: 12px 22px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.role-switch button[aria-pressed="true"] {
+  background: var(--green);
+  color: white;
+}
+.guide-action {
+  text-align: center;
+  margin-top: 32px;
+}
+.product-faq {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 70px;
+  padding-bottom: 80px;
+}
+.product-faq h2 {
+  font-size: 2.45rem;
+}
+.product-faq p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.product-faq details {
+  margin: 0;
+}
+.product-faq details:last-child {
+  border-bottom: 1px solid var(--border);
+}
+.product-faq summary {
+  padding: 20px 0;
+  line-height: 1.5;
+}
+.product-faq details p {
+  margin: 0 0 22px;
+}
+.role-selection {
+  border: 0;
+  margin: 0 0 22px;
+  padding: 0;
+  min-width: 0;
+}
+.role-selection legend {
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 10px;
+}
+.role-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 13px 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.role-option:has(input:checked) {
+  background: #edf1e7;
+  border-color: var(--green);
+}
+.role-option input {
+  accent-color: var(--green);
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+}
+.role-option strong {
+  display: block;
+  font-size: 0.84rem;
+}
+.role-option small {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 3px;
+}
+.password-input {
+  position: relative;
+}
+.password-input input {
+  padding-right: 145px;
+}
+.password-input button {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  bottom: 4px;
+  padding: 6px 10px;
+  background: #f0f2e9;
+  border: 0;
+  border-radius: 5px;
+  color: var(--ink);
+  font-size: 0.72rem;
+}
+.onboarding {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 16px 35px;
+  margin-bottom: 32px;
+}
+.onboarding-intro {
+  grid-row: span 2;
+}
+.onboarding-intro .eyebrow {
+  margin-bottom: 12px;
+}
+.onboarding-intro h2 {
+  margin-bottom: 12px;
+}
+.onboarding > .button {
+  justify-self: start;
+}
+.onboarding-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.onboarding-steps li {
+  display: flex;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.progress-marker {
+  display: grid;
+  place-items: center;
+  min-width: 30px;
+  height: 30px;
+  border: 1px solid #aebbb0;
+  border-radius: 50%;
+  font-size: 0.8rem;
+}
+.complete .progress-marker {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+.onboarding-steps strong {
+  font-size: 0.87rem;
+}
+.onboarding-steps p {
+  font-size: 0.79rem;
+  margin: 3px 0 0;
+}
+.quick-replies {
+  border: 0;
+  margin: 0 0 18px;
+  padding: 0;
+  min-width: 0;
+}
+.quick-replies legend {
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-bottom: 8px;
+  padding: 0;
+}
+.quick-replies > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.quick-replies button {
+  min-height: 44px;
+  border: 1px solid #b9c6bb;
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: #f4f5ef;
+  color: var(--ink);
+  font-size: 0.77rem;
+}
+.quick-replies button:hover {
+  background: #eaf0e3;
+}
+.message-count {
+  text-align: right;
+  margin: -12px 0 14px;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.chat-property {
+  background: #fffefb;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 22px;
+}
+.chat-property strong {
+  display: block;
+}
+.chat-property p {
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+}
+@media (max-width: 700px) {
+  .product-faq {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding-bottom: 50px;
+  }
+  .product-faq h2 {
+    font-size: 2rem;
+  }
+  .role-switch {
+    width: 100%;
+  }
+  .role-switch button {
+    flex: 1;
+    padding: 12px 8px;
+  }
+  .onboarding {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .onboarding-intro {
+    grid-row: auto;
+  }
+}

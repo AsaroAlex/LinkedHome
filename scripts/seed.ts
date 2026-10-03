@@ -4,9 +4,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { makePool, type DB, tx } from "../server/db.js";
 import { hashPassword, token } from "../server/auth.js";
-import { localDir, production } from "../server/config.js";
+import { localDir } from "../server/config.js";
 export async function seed(db: DB) {
-  if (production || process.env.DATABASE_URL)
+  if (
+    (process.env.APP_ENV && process.env.APP_ENV !== "local") ||
+    process.env.DATABASE_URL
+  )
     throw new Error("Demo seed is restricted to the generated local database.");
   const credentialsPath = path.join(localDir, "demo-accounts.json");
   if (existsSync(credentialsPath)) return;

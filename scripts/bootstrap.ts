@@ -3,7 +3,10 @@ import { makePool } from "../server/db.js";
 import { startDatabase } from "./database.js";
 import { migrate } from "./migrate.js";
 import { seed } from "./seed.js";
-if (process.env.DATABASE_URL)
+if (
+  process.env.DATABASE_URL ||
+  (process.env.APP_ENV && process.env.APP_ENV !== "local")
+)
   throw new Error(
     "For an external database run npm run db:migrate explicitly; bootstrap only manages a local synthetic environment.",
   );

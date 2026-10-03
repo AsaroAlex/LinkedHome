@@ -1,0 +1,89 @@
+{
+  "validated": true,
+  "monthly_rows": 216,
+  "scenario_rows": 18,
+  "output_dir": "/workspace/analysis-soglia",
+  "24month_results": [
+    {
+      "model": "B",
+      "scenario": "prudente",
+      "operating_economic": -43459.10398747916,
+      "project_economic_after_setup": -49059.10398747916,
+      "cash_requirement_with_reserve": 10617.279892796869,
+      "founder_economic_earnings_per_hour": -7.315036852537594,
+      "operating_economic_exit_month": -1997.0065613912045
+    },
+    {
+      "model": "B",
+      "scenario": "centrale",
+      "operating_economic": -44278.024674169385,
+      "project_economic_after_setup": -49878.024674169385,
+      "cash_requirement_with_reserve": 5901.321370428607,
+      "founder_economic_earnings_per_hour": -3.1013724038132207,
+      "operating_economic_exit_month": -2002.4046255955707
+    },
+    {
+      "model": "B",
+      "scenario": "favorevole",
+      "operating_economic": -32330.41023198201,
+      "project_economic_after_setup": -37930.41023198201,
+      "cash_requirement_with_reserve": 3779.0625364168477,
+      "founder_economic_earnings_per_hour": 7.324308930458317,
+      "operating_economic_exit_month": -935.0092198892535
+    },
+    {
+      "model": "D",
+      "scenario": "prudente",
+      "operating_economic": -50697.34899223334,
+      "project_economic_after_setup": -59097.34899223334,
+      "cash_requirement_with_reserve": 8948.406063273362,
+      "founder_economic_earnings_per_hour": -4.256387805091411,
+      "operating_economic_exit_month": -2379.9676121101447
+    },
+    {
+      "model": "D",
+      "scenario": "centrale",
+      "operating_economic": -26390.217600166266,
+      "project_economic_after_setup": -34790.21760016627,
+      "cash_requirement_with_reserve": 5475.466390093969,
+      "founder_economic_earnings_per_hour": 12.242109577118729,
+      "operating_economic_exit_month": -211.69590788598725
+    },
+    {
+      "model": "D",
+      "scenario": "favorevole",
+      "operating_economic": 139190.06092886959,
+      "project_economic_after_setup": 130790.06092886959,
+      "cash_requirement_with_reserve": 4673.417916,
+      "founder_economic_earnings_per_hour": 73.17339557584947,
+      "operating_economic_exit_month": 16719.368215914128
+    },
+    {
+      "model": "E",
+      "scenario": "prudente",
+      "operating_economic": -40884.11485090356,
+      "project_economic_after_setup": -54884.11485090356,
+      "cash_requirement_with_reserve": 11703.891527339914,
+      "founder_economic_earnings_per_hour": -2.8867640333867004,
+      "operating_economic_exit_month": -1374.7772330736027
+    },
+    {
+      "model": "E",
+      "scenario": "centrale",
+      "operating_economic": -18662.548069279703,
+      "project_economic_after_setup": -32662.548069279703,
+      "cash_requirement_with_reserve": 8852.930539069437,
+      "founder_economic_earnings_per_hour": 13.459176605300836,
+      "operating_economic_exit_month": 842.2865773305093
+    },
+    {
+      "model": "E",
+      "scenario": "favorevole",
+      "operating_economic": 42602.69887000726,
+      "project_economic_after_setup": 28602.69887000726,
+      "cash_requirement_with_reserve": 8105.82840705738,
+      "founder_economic_earnings_per_hour": 42.73175450548371,
+      "operating_economic_exit_month": 7337.223564226576
+    }
+  ]
+}

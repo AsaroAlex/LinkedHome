@@ -1,0 +1,379 @@
+import { useId, useState } from "react";
+import { useLoad } from "./api";
+import "./experience.css";
+
+const guides = {
+  tenant: [
+    [
+      "Indica cosa cerchi",
+      "Scegli città, budget complessivo, data di ingresso, durata e numero di persone. Salva e pubblica il tuo profilo quando sei pronto.",
+    ],
+    [
+      "Valuta gli inviti",
+      "I proprietari ti propongono un immobile compatibile. Controlla costo, disponibilità e caratteristiche prima di rispondere.",
+    ],
+    [
+      "Parla con il proprietario",
+      "Accetta l’invito per aprire la chat. Fai domande e concorda una visita: accettare un invito non significa affittare la casa.",
+    ],
+  ],
+  landlord: [
+    [
+      "Aggiungi il tuo immobile",
+      "Descrivi gli spazi, il costo complessivo e le date. Pubblica l’immobile e riconferma la disponibilità almeno ogni 30 giorni.",
+    ],
+    [
+      "Trova profili compatibili",
+      "Confronta le preferenze con le caratteristiche dell’immobile. Ogni criterio è spiegato, così sai perché un profilo è compatibile.",
+    ],
+    [
+      "Invita e inizia a parlare",
+      "Invia un invito per quell’immobile. Quando la persona accetta, potete scrivervi e concordare i prossimi passi.",
+    ],
+  ],
+} as const;
+
+export function RoleGuide() {
+  const [role, setRole] = useState<"tenant" | "landlord">("tenant");
+  const contentId = useId();
+  return (
+    <section className="container how" aria-labelledby="how-heading">
+      <div className="section-heading">
+        <span className="eyebrow">COME FUNZIONA</span>
+        <h2 id="how-heading">Dalle preferenze al primo messaggio.</h2>
+        <p>Scegli il tuo percorso e scopri da dove iniziare.</p>
+      </div>
+      <div
+        className="role-switch"
+        role="group"
+        aria-label="Scegli il tuo percorso"
+      >
+        <button
+          type="button"
+          aria-pressed={role === "tenant"}
+          aria-controls={contentId}
+          onClick={() => setRole("tenant")}
+        >
+          Cerco casa
+        </button>
+        <button
+          type="button"
+          aria-pressed={role === "landlord"}
+          aria-controls={contentId}
+          onClick={() => setRole("landlord")}
+        >
+          Voglio affittare
+        </button>
+      </div>
+      <div id={contentId} className="steps">
+        {guides[role].map(([title, description], index) => (
+          <article key={title}>
+            <span className="step-number">0{index + 1}</span>
+            <h3>{title}</h3>
+            <p>{description}</p>
+          </article>
+        ))}
+      </div>
+      <div className="guide-action">
+        <a
+          className="button"
+          href={role === "tenant" ? "/register" : "/register?role=landlord"}
+        >
+          {role === "tenant"
+            ? "Crea il tuo profilo"
+            : "Aggiungi il tuo immobile"}{" "}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  );
+}
+
+export function ProductFAQ() {
+  return (
+    <section className="container product-faq" aria-labelledby="faq-heading">
+      <div>
+        <span className="eyebrow">PRIMA DI INIZIARE</span>
+        <h2 id="faq-heading">Le risposte alle prime domande.</h2>
+        <p>Visibilità, inviti e conversazioni: ecco cosa aspettarti.</p>
+        <a href="/safeguards" className="text-link">
+          Come funziona e cosa condividi →
+        </a>
+      </div>
+      <div>
+        {[
+          [
+            "Chi può vedere il mio profilo?",
+            "Solo i proprietari autenticati con un immobile pertinente possono scoprire le preferenze che pubblichi. Vedono città, budget, data di ingresso, durata e numero di persone, con un identificatore al posto del tuo nome.",
+          ],
+          [
+            "Accettare un invito mi impegna ad affittare?",
+            "No. Accettare apre una conversazione e rende visibile a entrambe le parti il nome scelto. Puoi chiedere informazioni e valutare l’immobile. L’invito non è una prenotazione o un contratto.",
+          ],
+          [
+            "Posso interrompere la ricerca?",
+            "Sì. Metti in pausa il profilo per fermare nuovi inviti e annullare quelli in attesa. Le conversazioni già accettate restano disponibili: puoi chiuderle o bloccare un contatto.",
+          ],
+          [
+            "Come vengono scelti i profili compatibili?",
+            "Confrontiamo città, costo mensile complessivo, date, durata e capienza. I criteri sono visibili. Identità, reddito e verifiche non vengono usati per assegnare un punteggio o dare più visibilità a una persona.",
+          ],
+          [
+            "Posso firmare il contratto o pagare qui?",
+            "La piattaforma serve a incontrarsi e a parlare dell’immobile. Al momento non gestisce contratti, pagamenti, depositi o verifiche d’identità e reddito.",
+          ],
+        ].map(([question, answer]) => (
+          <details key={question}>
+            <summary>{question}</summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function RoleSelection({ defaultRole }: { defaultRole: string }) {
+  return (
+    <fieldset className="role-selection">
+      <legend>Come vuoi usare la piattaforma?</legend>
+      {[
+        [
+          "tenant",
+          "Cerco casa",
+          "Crea un profilo e ricevi inviti per immobili compatibili.",
+        ],
+        [
+          "landlord",
+          "Offro un immobile",
+          "Pubblica il tuo immobile e invita chi cerca casa.",
+        ],
+        [
+          "both",
+          "Entrambe le cose",
+          "Gestisci la tua ricerca e i tuoi immobili nello stesso account.",
+        ],
+      ].map(([value, title, detail]) => (
+        <label className="role-option" key={value}>
+          <input
+            type="radio"
+            name="role"
+            value={value}
+            defaultChecked={defaultRole === value}
+            required
+          />
+          <span>
+            <strong>{title}</strong>
+            <small>{detail}</small>
+          </span>
+        </label>
+      ))}
+    </fieldset>
+  );
+}
+
+export function PasswordField({ register }: { register: boolean }) {
+  const id = useId();
+  const [visible, setVisible] = useState(false);
+  return (
+    <div className="field">
+      <label htmlFor={id}>Password</label>
+      <div className="password-input">
+        <input
+          id={id}
+          name="password"
+          type={visible ? "text" : "password"}
+          autoComplete={register ? "new-password" : "current-password"}
+          minLength={12}
+          maxLength={128}
+          required
+        />
+        <button
+          type="button"
+          aria-controls={id}
+          aria-pressed={visible}
+          onClick={() => setVisible((v) => !v)}
+        >
+          {visible ? "Nascondi password" : "Mostra password"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+type Profile = { status: string };
+type Property = {
+  status: string;
+  published_at: string;
+  authority_attested: boolean;
+};
+type Step = {
+  title: string;
+  detail: string;
+  href: string;
+  action: string;
+  done: boolean;
+};
+
+export function NextSteps({
+  role,
+  verified,
+}: {
+  role: string;
+  verified: boolean;
+}) {
+  const profile = useLoad<{ profile: Profile | null }>(
+    role !== "landlord" ? "/profile" : null,
+  );
+  const properties = useLoad<{ properties: Property[] }>(
+    role !== "tenant" ? "/properties" : null,
+  );
+  const freshProperty =
+    properties.data?.properties.some(
+      (p) =>
+        p.status === "published" &&
+        p.authority_attested &&
+        new Date(p.published_at).getTime() > Date.now() - 30 * 86400000,
+    ) ?? false;
+  const steps: Step[] = [
+    {
+      title: "Conferma la tua email",
+      detail: "Per pubblicare e inviare o accettare inviti.",
+      href: "/verification",
+      action: "Conferma email",
+      done: verified,
+    },
+    ...(role !== "landlord"
+      ? [
+          {
+            title: "Pubblica il tuo profilo",
+            detail:
+              "Salva le preferenze, controlla l’anteprima e scegli di renderle visibili.",
+            href: "/profile",
+            action: profile.data?.profile
+              ? "Controlla il profilo"
+              : "Prepara il tuo profilo",
+            done: profile.data?.profile?.status === "published",
+          },
+        ]
+      : []),
+    ...(role !== "tenant"
+      ? [
+          {
+            title: "Pubblica un immobile disponibile",
+            detail:
+              "Aggiungi i dettagli e mantieni aggiornata la disponibilità.",
+            href: "/properties",
+            action: properties.data?.properties.length
+              ? "Gestisci i tuoi immobili"
+              : "Aggiungi un immobile",
+            done: freshProperty,
+          },
+        ]
+      : []),
+  ];
+  const loading =
+    (role !== "landlord" && !profile.data && !profile.error) ||
+    (role !== "tenant" && !properties.data && !properties.error);
+  const error = profile.error || properties.error;
+  const next = steps.find((step) => !step.done);
+  return (
+    <section className="panel onboarding" aria-labelledby="next-steps-heading">
+      <div className="onboarding-intro">
+        <span className="eyebrow">DA DOVE INIZIARE</span>
+        <h2 id="next-steps-heading">
+          {loading || error || next
+            ? "Completa i primi passi"
+            : "È tutto pronto"}
+        </h2>
+        <p>
+          {role === "landlord"
+            ? "Prepara l’immobile, poi invita i profili compatibili."
+            : role === "both"
+              ? "Prepara la tua ricerca e i tuoi immobili, poi gestisci inviti e conversazioni."
+              : "Prepara la tua ricerca, poi valuta gli inviti ricevuti."}
+        </p>
+      </div>
+      {loading ? (
+        <p role="status">Caricamento dei tuoi progressi…</p>
+      ) : error ? (
+        <div>
+          <p role="status">
+            Non riusciamo a caricare i tuoi progressi. Riprova.
+          </p>
+          <button
+            className="button secondary"
+            onClick={() => {
+              profile.reload();
+              properties.reload();
+            }}
+          >
+            Ricarica i progressi
+          </button>
+        </div>
+      ) : (
+        <>
+          <ol className="onboarding-steps">
+            {steps.map((step, index) => (
+              <li key={step.title} className={step.done ? "complete" : ""}>
+                <span
+                  className="progress-marker"
+                  aria-label={step.done ? "Completato" : "Da completare"}
+                >
+                  {step.done ? "✓" : index + 1}
+                </span>
+                <div>
+                  <strong>{step.title}</strong>
+                  <p>{step.detail}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <a
+            className="button"
+            href={
+              next?.href ?? (role === "landlord" ? "/discover" : "/invitations")
+            }
+          >
+            {next?.action ??
+              (role === "landlord"
+                ? "Scopri profili compatibili"
+                : "Controlla gli inviti")}{" "}
+            <span aria-hidden="true">→</span>
+          </a>
+        </>
+      )}
+    </section>
+  );
+}
+
+export const quickReplies = {
+  tenant: [
+    [
+      "Disponibilità",
+      "Ciao, grazie per l’invito. L’immobile è ancora disponibile per la data di ingresso indicata?",
+    ],
+    [
+      "Spese incluse",
+      "Potresti indicarmi quali spese sono incluse nel costo mensile e quali eventuali costi restano a parte?",
+    ],
+    [
+      "Organizza una visita",
+      "Mi piacerebbe vedere l’immobile. Quando sarebbe possibile organizzare una visita?",
+    ],
+  ],
+  landlord: [
+    [
+      "Proponi una visita",
+      "Ciao, grazie per aver accettato l’invito. Quando saresti disponibile per una visita all’immobile?",
+    ],
+    [
+      "Data di ingresso",
+      "La data di ingresso indicata nel profilo è ancora quella che cerchi? Possiamo parlarne insieme.",
+    ],
+    [
+      "Domande sull’immobile",
+      "Hai domande sugli spazi, sulle spese o sulle condizioni dell’immobile? Sono a disposizione.",
+    ],
+  ],
+} as const;

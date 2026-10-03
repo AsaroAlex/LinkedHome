@@ -2,9 +2,14 @@ import pg from "pg";
 import { startDatabase } from "./database.js";
 import { migrate } from "./migrate.js";
 import { makePool } from "../server/db.js";
-import { databaseUrl, production } from "../server/config.js";
+import { databaseUrl, deployed } from "../server/config.js";
 import { buildApp } from "../server/app.js";
-if (process.env.DATABASE_URL || production)
+if (
+  process.env.DATABASE_URL ||
+  deployed ||
+  (process.env.APP_ENV && process.env.APP_ENV !== "local") ||
+  (process.env.MAIL_TRANSPORT && process.env.MAIL_TRANSPORT !== "local")
+)
   throw new Error(
     "E2E server only manages the generated local synthetic database.",
   );

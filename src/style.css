@@ -703,7 +703,7 @@ summary:focus-visible {
 }
 .field-hint,
 .small-copy {
-  font-size: 0.77rem !important;
+  font-size: 0.85rem !important;
   line-height: 1.7;
   color: var(--muted);
   margin-bottom: 20px;
@@ -728,11 +728,11 @@ summary:focus-visible {
   background: #eaf0e2;
 }
 .preview .eyebrow {
-  font-size: 0.62rem;
+  font-size: 0.75rem;
 }
 .preview small {
   display: block;
-  font-size: 0.73rem;
+  font-size: 0.85rem;
   margin-top: 14px;
   color: var(--muted);
 }
@@ -775,7 +775,7 @@ summary:focus-visible {
   border-radius: 30px;
   background: #eef1e7;
   color: #405441;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -1287,6 +1287,7 @@ blockquote {
   .header-inner {
     padding: 18px 20px;
     gap: 15px;
+    flex-wrap: wrap;
   }
   .logo {
     font-size: 1.8rem;
@@ -1643,6 +1644,12 @@ blockquote {
     font-size: 0.58rem;
   }
 }
+@media (max-width: 380px) {
+  .header nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   * {
     scroll-behavior: auto !important;
@@ -1696,4 +1703,183 @@ blockquote {
   .invite-example {
     bottom: 35px;
   }
+}
+
+.summary-label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.panel .draft-notice {
+  padding: 12px 15px;
+  border-left: 3px solid var(--clay);
+  border-radius: 0 8px 8px 0;
+  background: #f6eee6;
+  color: #793923;
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+.availability-note {
+  padding: 16px;
+  margin: 20px 0;
+  border: 1px solid #cedac9;
+  background: #f0f4eb;
+  border-radius: 10px;
+}
+.availability-note strong {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+.availability-note p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+.availability-note.needs-action {
+  border-color: #dec4b5;
+  background: #f8efe7;
+  color: #793923;
+}
+.notice-action {
+  display: flex;
+  width: fit-content;
+  margin-top: 6px;
+}
+.field-hint a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.income-section {
+  margin-top: 32px;
+  scroll-margin-top: 24px;
+}
+.income-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 1fr);
+  gap: 26px;
+  align-items: start;
+}
+.income-card {
+  background: #fffefb;
+}
+.income-card > :last-child,
+.income-share-panel > :last-child {
+  margin-bottom: 0;
+}
+.income-section .synthetic-label,
+.synthetic-label {
+  display: inline-block;
+  padding: 6px 11px;
+  border: 1px solid #d7b4a3;
+  border-radius: 6px;
+  background: #f7ebe2;
+  color: #793923;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+.income-step {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.income-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 24px;
+  margin: 20px 0;
+}
+.income-summary > div {
+  min-width: 0;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.income-summary dt {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.income-summary dd {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+.income-shares {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+.income-share-panel {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #f3f5ed;
+  min-width: 0;
+}
+.income-share-panel:focus-within {
+  border-color: var(--green);
+}
+.income-share-panel .field {
+  margin-top: 16px;
+}
+.income-share-panel h3 {
+  margin-bottom: 10px;
+}
+.income-share-panel .actions {
+  gap: 12px;
+}
+.onboarding-steps {
+  padding-left: 22px;
+  margin: 20px 0;
+  color: var(--muted);
+}
+.onboarding-steps li {
+  padding-left: 6px;
+  margin-bottom: 16px;
+}
+.onboarding-steps li::marker {
+  font-weight: 700;
+  color: var(--clay);
+}
+.onboarding-steps strong {
+  color: var(--ink);
+}
+.onboarding-steps span {
+  display: block;
+}
+@media (max-width: 700px) {
+  .income-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .income-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .income-share-panel {
+    padding: 18px;
+  }
+  .income-share-panel .actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .income-share-panel .actions .button {
+    width: 100%;
+  }
+  .main .panel-title .eyebrow {
+    font-size: 0.72rem;
+  }
+}
+
+.summary-label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-bottom: 6px;
 }

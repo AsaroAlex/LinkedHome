@@ -1,0 +1,20 @@
+{
+  "measured_at": "2026-10-03T23:25:07.812Z",
+  "scope": "local Chromium cold-load; not field Core Web Vitals or load at scale",
+  "results": [
+    {
+      "scenario": "desktop loopback",
+      "lcp": 320,
+      "cls": 0.022515190972222224,
+      "domContentLoaded": 134.80000000004657,
+      "transferBytes": 424471
+    },
+    {
+      "scenario": "mobile emulation:4x CPU,200kB/s,80ms",
+      "lcp": 2520,
+      "cls": 0.034471267772511846,
+      "domContentLoaded": 2384.100000000093,
+      "transferBytes": 424471
+    }
+  ]
+}

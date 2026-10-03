@@ -1,8 +1,10 @@
-# Avvio di LinkedHome / Soglia nell’ambiente cloud
+# Avvio di LinkedHome nell’ambiente cloud
 
 Usa `/workspace/LinkedHome`, checkout isolato già fornito dalla piattaforma. Preserva modifiche, dati ignorati e commit locali. Non creare worktree, non fare reset, switch, pull o push automatici. Il branch locale `work` può differire dal riferimento remoto richiesto `claude/sweet-goldberg-5lwng7` senza essere un errore. Nessuna PR senza richiesta.
 
-Leggi eventuali AGENTS.md applicabili, `PROJECT_STATE.md`, `PLAN.md` e `README.md`. Il piano autorizzato comprende ricerca e MVP locale completo, non è più limitato alla documentazione. Lo stack implementato è TypeScript/Fastify/React/Vite/PostgreSQL. Le revisioni indipendenti sono nei file review02–05. Nessun provider reale o rilascio pubblico è disponibile.
+Leggi eventuali AGENTS.md applicabili, `PROJECT_STATE.md`, `PLAN.md` e `README.md`. Il piano autorizzato comprende ricerca e MVP locale completo; il lavoro successivo autorizzato prepara integrazioni reali e deploy. Lo stack implementato è TypeScript/Fastify/React/Vite/PostgreSQL. Le revisioni indipendenti locali sono nei file review02–05. SMTP reale e template staging sono implementati; account, dominio, credenziali e infrastruttura remota non sono stati provisionati. Segui [deployment.md](deployment.md) per quel percorso, mantenendo locale il default di questa macchina.
+
+Il brand approvato dall'utente è **LinkedHome**. Il dominio principale futuro proposto è `linkedhome.eu`, `.it` facoltativo; `linkedhome.com` è già registrato e non è in attesa di nuova registrazione. Nessun dominio acquistato o origin/mittente SMTP reale modificato. La clearance del marchio resta aperta, comprese le vicinanze Linkhome e Linkedhomes: seguire [domain-setup.md](domain-setup.md) e i [controlli del 4 ottobre 2026 alle 00:17 CEST](evidence/linkedhome-domain-research.json). Evidenze e risultati delle precedenti scelte di nome conservano nomi e date originali.
 
 ## Installazione
 
@@ -26,9 +28,9 @@ cd /workspace/LinkedHome
 npm start
 ```
 
-In alternativa `npm run dev` avvia Vite3000 e API3001, con proxy sullo stesso origin. Usare un processo gestito dal terminale e conservarne l’identificatore. Default HTTP su127.0.0.1; `APP_ORIGIN` deve corrispondere all’origin del browser. Non esporre pubblicamente questo ambiente sintetico. `APP_ENV=production` è intenzionalmente bloccato.
+In alternativa `npm run dev` avvia Vite3000 e API3001, con proxy sullo stesso origin. Usare un processo gestito dal terminale e conservarne l’identificatore. Default HTTP su127.0.0.1; `APP_ORIGIN` deve corrispondere all’origin del browser. Non esporre pubblicamente questo ambiente sintetico. Staging/production richiedono origin HTTPS esplicito, PostgreSQL esterno e SMTP valido; non impostarli per avviare la demo locale.
 
-Verificare health, HTML e asset, poi login di un account sintetico e lettura dei suoi immobili/profili compatibili. Credenziali e cookie restano locali e non vanno stampati. La posta di conferma/reset è in `.local/mail/`; nessuna email reale parte e nessun endpoint HTTP espone la casella. Ctrl+C arresta i processi; riavvio e bootstrap conservano gli account. Non cancellare il cluster per rimediare a un errore di lock.
+Verificare health, HTML e asset, poi login di un account sintetico e lettura dei suoi immobili/profili compatibili. Credenziali e cookie restano locali e non vanno stampati. Con il default `MAIL_TRANSPORT=local`, la posta di conferma/reset è in `.local/mail/`; nessuna email reale parte e nessun endpoint HTTP espone la casella. SMTP usa credenziali configurate separatamente e non va abilitato nei test automatici locali. Ctrl+C arresta i processi; riavvio e bootstrap conservano gli account. Non cancellare il cluster per rimediare a un errore di lock.
 
 ## Controlli
 
@@ -40,7 +42,7 @@ npm run test:e2e
 
 Eseguire in sequenza. Per E2E fermare prima il proprio servizio e liberare3000; non terminare processi altrui. Non avviare contemporaneamente comandi che possiedono lo start/stop del DB. Unit/integration usano `soglia_test`, Playwright `soglia_e2e`, app `soglia`. I test rifiutano database esterni e verificano la destinazione effettiva prima delle scritture. Chromium verificato: `/usr/bin/chromium`; se assente, `npx playwright install chromium` oppure `CHROMIUM_PATH` verso un binario installato.
 
-`npm run maintenance` richiede il DB avviato e rimuove dati oltre le soglie documentate. Non esiste scheduler: la pulizia è responsabilità dell’operatore; nessun limite massimo di conservazione è garantito localmente. Per dati persistenti leggere `docs/operations/security.md`.
+`npm run maintenance` richiede il DB avviato e rimuove dati oltre le soglie documentate. Lo scheduler Render è soltanto un template non applicato: la pulizia locale è responsabilità dell’operatore; nessun limite massimo di conservazione è garantito localmente. Per dati persistenti leggere `docs/operations/security.md`.
 
 ## Stato verificato e limiti
 
@@ -58,4 +60,4 @@ Queste prove si svolgono sulla macchina corrente: non equivalgono alla pubblicaz
 
 ## Repository salvato
 
-La configurazione registra `AsaroAlex/LinkedHome` su `github.com`, con mount_path `LinkedHome` e il SHA completo dell’HEAD locale verificato al salvataggio finale. Il riferimento comprende i commit locali dell’implementazione. Non cambiarlo al vecchio branch remoto per rendere possibile un ripristino: preservare il lavoro corrente. Per attivare lo snapshot usare Review and Publish nell’interfaccia del prodotto; questa operazione non è disponibile attraverso i tool della chat.
+La configurazione precedentemente salvata registra `AsaroAlex/LinkedHome` su `github.com`, con mount_path `LinkedHome` e il SHA dell’implementazione locale allora verificata. Il nuovo lavoro SMTP/deploy è successivo a quel riferimento; non presumere che la bozza o GitHub lo contengano finché non sono aggiornati esplicitamente. Non cambiare il checkout al vecchio branch remoto per aggirare il ripristino. Per attivare uno snapshot usare Review and Publish nell’interfaccia del prodotto; questa operazione non è disponibile attraverso i tool della chat.

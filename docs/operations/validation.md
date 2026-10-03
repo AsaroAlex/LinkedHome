@@ -1,24 +1,34 @@
-# Validation — local MVP
+# Validation — updated 2026-10-04
 
 The adopted local scope in [PLAN](../../PLAN.md) is implemented and verified with synthetic data. These results establish a usable local MVP, not commercial validation or public deployment readiness.
 
-## Latest verification — 2026-10-04 (Europe/Rome)
+The earlier completion evidence below retains its original names, source revisions and dates, including the LinkedHome brand checks. The separate local-MVP follow-up was tested before reconciliation with the newer remote history; the latest combined-source checks are recorded separately here.
 
-The user explicitly confirmed a complete, verified local demo as the target. The current working tree passed `npm run build`, `npm test` (**73 tests in 3 files**), and `npm run test:e2e` (**13 scenarios**, final run 27.6 seconds). Repeated bootstrap preserved the fixture. `npm audit --json` reported zero known vulnerabilities across 222 dependency records; dependency files did not change.
+## Verified integration for local builds — 2026-10-04
+
+The user requested **«Pusha che buildo in locale»**. The combined source integrates local follow-up `d566adb` with remote `8891fea`, retaining LinkedHome branding, optional synthetic income, rental UX, SMTP/staging preparation and economics research. Conflicts in the application and documentation were reconciled; independent static backend/UI reviews found no material issue.
+
+Frozen install and bootstrap passed. Build/typecheck and **163 unit/integration tests in 7 files** passed. The final main browser run passed **22 checks in46.6s**; the experience configuration passed **11 checks in17.0s** (7 experience checks and4 mail-runtime checks, the latter also run by the main configuration). Dependency audit reported zero known vulnerabilities across224 dependency records. A duplicate discovery-link test locator introduced by the new property UX was scoped to the navigation before the successful final browser run.
+
+Compiled startup passed health/config, LinkedHome HTML/JS, synthetic tenant/landlord/admin login and role-specific reads, including compatible discovery, own export, staff views and logout. All5 original generated account IDs remain present;2 profiles and1 property were preserved. Migration004 brought the ledger to4 migrations. No real SMTP delivery or external provider issuance was performed.
+
+[Integration evidence](evidence/mvp-push-2026-10-04/readiness.json) identifies both parents and the hash of the tested source diff. [Current performance](evidence/mvp-push-2026-10-04/performance.json): desktop LCP320ms/CLS0.0225; throttled mobile LCP2,520ms/CLS0.0345,424,471 resource-transfer bytes. These are single synthetic runs under the established test budgets. The source is prepared for the authorized ordinary push to `origin/claude/sweet-goldberg-5lwng7`; no public deployment, remote CI result or new cloud snapshot is claimed.
+
+## Historical local-MVP follow-up — 2026-10-04 (Europe/Rome)
+
+The user explicitly confirmed a complete, verified local demo as the target. The follow-up source saved in `d566adb`, based on `6d4805c`, passed `npm run build`, `npm test` (**73 tests in 3 files**), and `npm run test:e2e` (**13 scenarios**, final run 27.6 seconds). Repeated bootstrap preserved the fixture. `npm audit --json` reported zero known vulnerabilities across 222 dependency records; dependency files did not change.
 
 The follow-up repairs three concrete issues: accepted/closed invitation explanations now use the same offered property snapshot as the displayed facts; failed property/discovery/chat loads offer retry without false loading or conversation states; message reports show their selected text and reset draft/result state when the target changes. Switching conversations clears the previous report and composer. Network and non-JSON failures have readable Italian messages, and long property titles/descriptions fit at 320px.
 
 API regressions cover all five compatibility criteria, invitation list/detail, accepted/closed states and later tenant-preference edits. New browser scenarios simulate dropped requests, an HTML 503 response and a held conversation response; verify report contents actually saved in PostgreSQL; and exercise draft reset across messages and conversations. An independent static review of the complete diff found no further material issue. The final browser run includes the existing axe, keyboard, responsive and performance checks.
 
-Compiled `npm start` passed health, HTML/JS delivery, tenant login/profile/invitation/export, landlord login/property/discovery/dashboard, admin login/report/analytics and logout probes. Application user identities and fixture counts remained unchanged: 5 users, 2 profiles, 1 property and 3 migrations. The app is running on loopback port 3000 at handoff; process persistence across tasks is not assumed.
+Compiled `npm start` passed health, HTML/JS delivery, tenant login/profile/invitation/export, landlord login/property/discovery/dashboard, admin login/report/analytics and logout probes. Application user identities and fixture counts remained unchanged: 5 users, 2 profiles, 1 property and 3 migrations. The app was running on loopback port 3000 at that handoff; process persistence across tasks is not assumed.
 
 [Readiness evidence](evidence/mvp-2026-10-04/readiness.json) records the base commit, SHA-256 of the tested source diff, runtime probes and screenshot hashes. [Performance](evidence/mvp-2026-10-04/performance.json): desktop LCP 308ms, throttled mobile LCP 2,312ms, CLS 0 in both runs; transfer 387,832 bytes. Raw timestamps are UTC; the heading uses the user's Europe/Rome date. These remain single synthetic runs.
 
-Inspected current screenshots: [mobile landing](evidence/mvp-2026-10-04/landing-mobile.png), [mobile discovery after retry](evidence/mvp-2026-10-04/discovery-retry-mobile.png), and [selected-message report](evidence/mvp-2026-10-04/report-target-mobile.png). Earlier evidence below is retained as history. No production release, remote CI run, push of this follow-up or new cloud snapshot is claimed.
+Inspected screenshots of that source: [mobile landing](evidence/mvp-2026-10-04/landing-mobile.png), [mobile discovery after retry](evidence/mvp-2026-10-04/discovery-retry-mobile.png), and [selected-message report](evidence/mvp-2026-10-04/report-target-mobile.png). The newer remote income/UX/SMTP and LinkedHome history is retained below with its own evidence. These 73/13 results validate only the follow-up diff from the recorded base, before the current merge with remote `8891fea`; they do not validate the combined source or newer migration. The subsequent request **«Pusha che buildo in locale»** authorizes publication on the existing branch; verification and publication of that merge are recorded separately. No production release, remote CI run or new cloud snapshot is implied.
 
-## Original validation — 2026-10-03
-
-## Executed checks
+## Original MVP checks — 2026-10-03
 
 | Check | Observed outcome |
 |---|---|
@@ -83,3 +93,79 @@ A consistent custom-format `pg_dump` snapshot of the original local database was
 PostgreSQL client18.6 was downloaded through APT using the signed Debian unstable repository metadata and extracted without a system upgrade; it is compatible with server major18. No artifact-signature or checksum checks were disabled. The recovered seed contains5 users,2 profiles,1 property and3 migration records; contact/report tables are empty in this fixture. This proves local logical recovery of that fixture, not a production disaster-recovery exercise or cloud snapshot restore.
 
 The cloud platform's publication/reconnection step is owned by the product interface. The available tools save/read configuration drafts and cannot publish a snapshot or start a restored task. The prepared environment is ready for that platform step; no further chat approval or credential is required for the completed local workflow.
+
+## Continuation: real transport and deployment preparation
+
+On 2026-10-03 the user selected real integrations and deployment preparation and requested a researched provider recommendation. [ADR0002](../adr/0002-deployment-providers.md) recommends Render Frankfurt, Brevo SMTP and OVHcloud for a future Italian domain. [Deployment instructions](deployment.md) describe the concrete staging templates; none was applied to a provider.
+
+| Current check | Observed outcome |
+|---|---|
+| Frozen dependency installation | Updated lockfile installed successfully; nodemailer runtime and types added, tsx moved into runtime dependencies |
+| Local bootstrap | Existing synthetic application records preserved; no remote destination used |
+| Build | Strict TypeScript and Vite passed; JS366.34kB raw/108.92kB gzip, CSS21.84kB raw/5.85kB gzip |
+| Unit/integration/SMTP | **136 passed across6 files**,15.29s: domain20, API50, migration recovery1, configuration26, deployment HTTP6, mail33 |
+| SMTP protocol | Controlled loopback STARTTLS/SMTPS servers and test CA; authentication, accepted/refused recipient, refused certificate/auth and effective socket termination on deadline checked; no real recipient or provider used |
+| Deployment HTTP | Secure Host-cookie creation and logout/reset/delete expiry attributes, exact origin checks, safe config response, trusted/untrusted forwarding and database-readiness failure checked |
+| Browser | **14 passed**,20.7s after final cookie fixes: previous10 workflows plus4 mocked runtime/email scenarios, without external sends |
+| Production-only runtime | `npm ci --omit=dev` in a temporary copy; no embedded database, bootstrap/seed or local state. Actual staging startup with external synthetic PostgreSQL passed frontend/health/live/config/HSTS-header probes; [runtime evidence](evidence/deployment-runtime.json) |
+| Data preservation | Production-runtime probe observed unchanged counts:5 users,2 profiles,1 property,3 migration records; app DB was read only in that probe |
+| Render/Compose | Official Render JSON Schema and Compose `config --quiet`/topology checks passed using fake fixture values; [template evidence](evidence/deployment-templates.json) and [schema snapshot](evidence/render-blueprint.schema.json) |
+| Dependencies | npm audit **0 known vulnerabilities**,224 dependency records; [updated audit](evidence/deployment-dependency-audit.json) |
+| Independent review | [Review06](../reviews/review-06-deployment-preparation.md): missing runtime brand module, cookie expiry and SMTP socket deadline findings corrected; no further material finding identified in its focused scope |
+
+New [performance measurements](evidence/deployment-performance.json) use the same bounded Chromium setup, not field data: desktopLCP228ms/CLS0.0225; mobile4×CPU,200kB/s,80ms LCP2,264ms/CLS0.0345,389,975bytes of resource transfer. The new async runtime banner adds a small layout shift; the previous CLS0 result does not describe this revision. Axe/keyboard/responsive checks included in the browser suite passed within their configured scope.
+
+The runtime smoke test occurred on this machine with a private HTTP listener; asserting an HSTS response header does not verify public TLS. Docker image build/run and certificate issuance were **not tested** because the environment's Docker socket was inaccessible. No SMTP provider credentials, domain, service account, paid resource, actual inbox delivery, public rollout or remote CI result exists for this continuation. No further push or cloud-draft update is claimed. Actual target checks for Render ingress trust/rate limits, provider delivery/quota, monitoring, maintenance execution and backup/restore remain open alongside the real-user release checklist.
+
+SMTP token issuance remains synchronous, without a durable queue. Generic password-recovery status/body and rollback behavior are verified, but timing indistinguishability and provider acceptance-to-inbox delivery are not established. The source is prepared for the next configured staging verification, not declared production-ready.
+
+## Continuation: Doorluma brand and domain research
+
+On 2026-10-03 the user requested autonomous domain selection, repository changes, an English/European name and finally research of the best brand name. **Doorluma** is selected after a qualitative strategic/linguistic comparison and bounded online collision search. [Naming](../product/03-naming.md), [domain setup](domain-setup.md) and [normalized domain evidence](evidence/domain-research.json) separate brand judgments, available domains, quoted prices and remaining trademark/purchase work. No naming study with users or trademark clearance is claimed.
+
+Concurrent UX edits appeared in the shared checkout during this task. Validation used an isolated archive of the staged naming source tree `50ba8c6c056919a46f226d957c5caba8ba028a66`, reusing pinned dependencies and creating its own synthetic database fixture. This validates the source committed by this task without adopting the independent UX edits; no worktree or reset was used. Subsequent changes to this task's documents/evidence did not alter the tested source.
+
+Bootstrap and TypeScript/Vite passed; `npm test` passed **136 tests across six files** (15.04s); `npm run test:e2e` passed **14 scenarios** (22.0s), including the renamed download and configured accessibility/responsive checks. Local startup printed Doorluma and database health passed. A separate320px browser probe measured **scrollWidth320px / viewport320px**, with both access and registration visible; served HTML had the Doorluma title/payoff and `noindex,nofollow`. Desktop,390px and320px screenshots were inspected: [desktop](evidence/doorluma-landing-desktop.png), [mobile](evidence/doorluma-landing-mobile.png), [narrow mobile](evidence/doorluma-landing-320.png). [Validation record](evidence/doorluma-validation.json).
+
+The earlier NestInvite candidate exposed header overflow at320px; the header now wraps and places controls on a separate row at narrow widths. Independent review found no remaining material issue in this naming/domain scope. Database/cookie/session identifiers and migration files are unchanged. Future origins and sender addresses remain commented examples or documentation. No purchase, verified sender, DNS change, public deploy, trademark clearance or additional remote publication occurred.
+
+## Continuation: integration of the saved rental UX
+
+The user requested the home, registration, guided dashboard, FAQ and chat work from `AsaroAlex/LinkedHome`, branch `codex/rental-ux-save-20261003`, commit `504a809d7795d340cb639adad60a059c5fba1d40`. On entry, the UX implementation, dedicated Playwright configuration, tests and benchmark already matched the saved commit byte for byte in the shared checkout. The current brand commit was `deb3afd`; its newer project-state and validation records were retained. The integration adopts the UX delta rather than replacing the newer naming/deployment snapshot.
+
+`npm run check` now includes `npm run test:e2e:experience` after the existing database-backed checks, and the CI definition includes the same command. No dependency or lockfile change was needed. The complete command was executed against the integrated checkout, sequentially, on 2026-10-03:
+
+| Check | Observed outcome |
+|---|---|
+| Build | Strict TypeScript and Vite passed;116 modules; JS375.73kB raw/112.01kB gzip, CSS25.24kB raw/6.50kB gzip |
+| Backend/unit/integration/SMTP | **136 passed across6 files**,15.31s; controlled loopback SMTP only, no external delivery |
+| Existing browser suite | **14 passed**,22.8s;10 application workflows with synthetic PostgreSQL plus4 mocked runtime/mail scenarios |
+| Experience browser suite | **11 passed**,14.3s;7 role/signup/progress/FAQ/draft scenarios plus the same4 mocked runtime/mail scenarios; built frontend on loopback3017, no PostgreSQL connection |
+| Accessibility/responsive | Configured axe WCAG2A/AA and2.1AA checks and overflow checks down to320px passed on sampled pages |
+| Visual inspection | Home desktop/mobile and chat mobile inspected; retained [desktop](evidence/rental-ux-landing-desktop.png), [mobile](evidence/rental-ux-landing-mobile.png), [chat](evidence/rental-ux-chat-mobile.png) |
+| Independent technical review | No concrete P1/P2 finding remaining in the focused UX review; draft isolation, error preservation, explicit sending and account-state progress checked |
+| Local runtime | Compiled app restarted; health200, local runtime config, Doorluma HTML title and `noindex,nofollow` confirmed |
+| Application data | Read-only counts remain5 users,2 profiles,1 property,3 migration records; only dedicated test databases used by suites |
+| Preservation | Brand module, HTML metadata, naming/domain records, server, migrations, SMTP, Docker/Render/Compose/Caddy and environment examples unchanged relative to `deb3afd` |
+
+The browser counts include four mail-runtime scenarios twice; they are not25 distinct scenarios. [Structured evidence](evidence/rental-ux-integration.json) records provenance and scope. The updated [local performance measurement](evidence/rental-ux-performance.json) observed desktopLCP248ms/CLS0.0225 and throttled mobileLCP2,368ms/CLS0.0345,402,761bytes transferred; these are synthetic Chromium measurements, not field performance or a usability study.
+
+The earlier naming validation remains a historical result for its isolated source tree; this continuation validates the combined UX and current Doorluma source. The dedicated experience fixtures establish frontend behavior, not live provider delivery or production deployment. No further push, remote CI execution, domain purchase, public rollout or change to the existing release gates is claimed.
+
+## Continuation: LinkedHome selected by the user — 2026-10-04
+
+After the requested fast-forward pull to `9db6a9cc80706049a39be6c56ee42ecdfbabe379`, the user selected **LinkedHome** and requested the necessary repository changes. The central name and slug now drive the UI, email, service log, newly issued synthetic income observations and export downloads; static HTML metadata and current domain/deployment guidance are aligned. Existing immutable observations and earlier validation/domain evidence retain their original names. No migration or active origin/sender change was made.
+
+`npm run check` passed against the updated source on 2026-10-04 CEST, running the database-owning suites sequentially:
+
+| Check | Observed outcome |
+|---|---|
+| Build | Strict TypeScript and Vite passed; 117 modules; JS393.83kB raw/116.59kB gzip, CSS27.94kB raw/7.00kB gzip |
+| Backend/unit/integration/SMTP | **161 passed across7 files**,17.42s; includes LinkedHome mail sender and new synthetic issuer expectations; controlled loopback mail only |
+| Application browser suite | **19 passed**,34.5s; includes the `linkedhome-dati.json` download and synthetic income workflows |
+| Experience browser suite | **11 passed**,12.9s; role guide, signup, progress, draft/chat and mocked mail/runtime scenarios |
+| Responsive and visual | Built frontend inspected at1440px,390px and320px; matching viewport/scroll widths, visible access/registration controls and correct header/footer name, title, description and `noindex,nofollow` |
+
+Four mail/runtime scenarios run in both browser configurations: the total is **26 distinct browser scenarios**, not30. Existing configured axe and overflow checks passed on the sampled screens. The separate visual probe used a loopback frontend preview with mocked local configuration and an unauthenticated session; it did not connect to PostgreSQL or test a deployed service. Screenshots: [desktop](evidence/linkedhome-landing-desktop.png), [mobile](evidence/linkedhome-landing-mobile.png), [320px](evidence/linkedhome-landing-320.png). [Structured validation evidence](evidence/linkedhome-validation.json) records the scope and source hashes.
+
+Focused independent static review found no remaining branding or documentation-provenance defects; the [historical naming archive](../product/03-naming-doorluma-2026-10-03.md) preserves the earlier comparison. Technical database/session/package identifiers are preserved; no application seed or reset was performed. Future `linkedhome.eu` origins and sender addresses remain documentation or commented examples. The [current domain evidence](evidence/linkedhome-domain-research.json) distinguishes available `.eu`/`.it` from registered `.com`. This continuation does not establish trademark clearance, live SMTP delivery, public TLS, deployment or remote CI; no purchase, DNS/provider activation or further push occurred.

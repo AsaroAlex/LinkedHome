@@ -1,0 +1,79 @@
+{
+  "verified": true,
+  "monthly_rows": 216,
+  "aggregates": 18,
+  "central": [
+    {
+      "offer": "F",
+      "horizon_months": 12,
+      "installed_customers": 24.5,
+      "revenue_net": 8522.043492956154,
+      "operating_economic": -5990.233383342855,
+      "project_economic": -11990.233383342858,
+      "cash_requirement_with_reserve": 4162.868452750001,
+      "cash_requirement_founder_draws": 16208.53155221454,
+      "founder_earnings_per_hour": 2.3176918397953066,
+      "operating_economic_exit_month": -310.82736653458664
+    },
+    {
+      "offer": "F",
+      "horizon_months": 24,
+      "installed_customers": 73.5,
+      "revenue_net": 34296.88690137834,
+      "operating_economic": -6096.820859677685,
+      "project_economic": -12096.82085967769,
+      "cash_requirement_with_reserve": 4162.868452750001,
+      "cash_requirement_founder_draws": 19587.76892517197,
+      "founder_earnings_per_hour": 18.67554000294874,
+      "operating_economic_exit_month": 269.98750300935126
+    },
+    {
+      "offer": "G",
+      "horizon_months": 12,
+      "installed_customers": 24.5,
+      "revenue_net": 14157.472145773692,
+      "operating_economic": -1183.8725395057124,
+      "project_economic": -4883.872539505713,
+      "cash_requirement_with_reserve": 3500,
+      "cash_requirement_founder_draws": 9822.13595238361,
+      "founder_earnings_per_hour": 17.82680471847884,
+      "operating_economic_exit_month": 223.16898707924793
+    },
+    {
+      "offer": "G",
+      "horizon_months": 24,
+      "installed_customers": 73.5,
+      "revenue_net": 47710.870290827006,
+      "operating_economic": 6500.709955693388,
+      "project_economic": 2800.7099556933877,
+      "cash_requirement_with_reserve": 3500,
+      "cash_requirement_founder_draws": 12049.52779399605,
+      "founder_earnings_per_hour": 32.674291561578976,
+      "operating_economic_exit_month": 1007.4348468056112
+    },
+    {
+      "offer": "H",
+      "horizon_months": 12,
+      "installed_customers": 24.5,
+      "revenue_net": 14157.472145773692,
+      "operating_economic": -5308.61418323782,
+      "project_economic": -9008.61418323782,
+      "cash_requirement_with_reserve": 3500,
+      "cash_requirement_founder_draws": 12829.593084560829,
+      "founder_earnings_per_hour": 7.9847545683820185,
+      "operating_economic_exit_month": -73.95352904011474
+    },
+    {
+      "offer": "H",
+      "horizon_months": 24,
+      "installed_customers": 73.5,
+      "revenue_net": 47710.870290827006,
+      "operating_economic": -8300.051131554712,
+      "project_economic": -12000.051131554716,
+      "cash_requirement_with_reserve": 3500,
+      "cash_requirement_founder_draws": 19128.421874490166,
+      "founder_earnings_per_hour": 19.088598313743244,
+      "operating_economic_exit_month": -159.37827228659398
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "checked_at_utc": "2026-10-03T20:46:53.518921+00:00",
+  "scope": "Complete current checkout after adopting saved rental UX, preserving newer Doorluma/domain/deployment work",
+  "repository": "AsaroAlex/LinkedHome",
+  "source_branch": "codex/rental-ux-save-20261003",
+  "source_commit": "504a809d7795d340cb639adad60a059c5fba1d40",
+  "baseline_commit": "deb3afd67da26334844d23f2243d0f160bec322d",
+  "integration_method": "UX files already present in shared checkout; adopt delta in current branch without replacing saved newer project state",
+  "ux_source": {
+    "src/App.tsx": {
+      "sha256": "036cfe74c2a2374668c2d3801a7f2d0dfdc0b35e2aaa3317095c25615da9a8f6",
+      "matches_saved_commit": true
+    },
+    "src/experience.tsx": {
+      "sha256": "ff2687e5c86ed30d00c4ff9b8557a908d3d7935c3cb30a6161d578a859cd834b",
+      "matches_saved_commit": true
+    },
+    "src/experience.css": {
+      "sha256": "a0ec12368b9f645ad98e8a1098858a612f38bd286c32f12b68fabbc7487e2933",
+      "matches_saved_commit": true
+    },
+    "playwright.experience.config.ts": {
+      "sha256": "d4a660ccaece917bfd951379cac180ce2550aa186c4d3c4705dee7cb3a7a86a4",
+      "matches_saved_commit": true
+    },
+    "tests/experience/experience.spec.ts": {
+      "sha256": "ea4429a740200440713263c95cd8bbb540a564ad24f5149e13233b082e78c949",
+      "matches_saved_commit": true
+    }
+  },
+  "preservation": {
+    "outcome": "PASS",
+    "unchanged_paths": [
+      "src/brand.ts",
+      "src/styles.css",
+      "index.html",
+      "server",
+      "scripts",
+      "migrations",
+      "deploy",
+      "Dockerfile",
+      "render.yaml",
+      ".env.example",
+      "docs/product/03-naming.md",
+      "docs/operations/domain-setup.md",
+      "docs/operations/deployment.md",
+      "docs/adr/0002-deployment-providers.md"
+    ],
+    "newer_project_state_and_validation": "Historical records retained; new integration results appended",
+    "dependencies_and_lockfile": "unchanged"
+  },
+  "checks": {
+    "combined": {
+      "command": "npm run check",
+      "outcome": "PASS",
+      "executed_sequentially": true
+    },
+    "build": {
+      "outcome": "PASS",
+      "typescript": "PASS",
+      "vite": "PASS",
+      "modules": 116,
+      "js_raw_kb": 375.73,
+      "js_gzip_kb": 112.01,
+      "css_raw_kb": 25.24,
+      "css_gzip_kb": 6.5
+    },
+    "backend_unit_integration_smtp": {
+      "outcome": "PASS",
+      "tests": 136,
+      "files": 6,
+      "duration_seconds": 15.31,
+      "external_mail_sent": false,
+      "database": "soglia_test"
+    },
+    "existing_browser": {
+      "command": "npm run test:e2e",
+      "outcome": "PASS",
+      "scenarios": 14,
+      "duration_seconds": 22.8,
+      "scope": "10 database-backed application workflows plus 4 mocked runtime/mail scenarios",
+      "database": "soglia_e2e"
+    },
+    "experience_browser": {
+      "command": "npm run test:e2e:experience",
+      "outcome": "PASS",
+      "scenarios": 11,
+      "duration_seconds": 14.3,
+      "scope": "7 UX scenarios plus the same 4 mocked runtime/mail scenarios",
+      "database_connection": false,
+      "loopback_port": 3017
+    },
+    "browser_count_note": "Four mail-runtime scenarios are repeated between the suites; 14+11 is not 25 distinct scenarios.",
+    "accessibility_responsive": {
+      "outcome": "PASS within sampled automated scope",
+      "axe_tags": [
+        "wcag2a",
+        "wcag2aa",
+        "wcag21aa"
+      ],
+      "minimum_overflow_check_width_px": 320
+    },
+    "visual_review": {
+      "outcome": "PASS",
+      "screenshots": [
+        "rental-ux-landing-desktop.png",
+        "rental-ux-landing-mobile.png",
+        "rental-ux-chat-mobile.png"
+      ]
+    },
+    "independent_review": {
+      "outcome": "No concrete P1/P2 finding remaining in focused UX review"
+    },
+    "runtime": {
+      "outcome": "PASS",
+      "startup_log": "Doorluma HTTP service ready (local).",
+      "health_status": 200,
+      "health": {
+        "ok": true,
+        "environment": "local"
+      },
+      "public_config": {
+        "environment": "local",
+        "mailTransport": "local"
+      },
+      "html_title": "Doorluma — Affitti che iniziano da un invito",
+      "robots": "noindex,nofollow",
+      "app_database_read_only_counts": {
+        "users": 5,
+        "profiles": 2,
+        "properties": 1,
+        "migrations": 3
+      }
+    }
+  },
+  "verification_wiring": {
+    "npm_check_includes_experience": true,
+    "ci_definition_includes_experience": true,
+    "remote_ci_executed": false
+  },
+  "performance_evidence": "rental-ux-performance.json; local synthetic measurement, not field data",
+  "not_performed": [
+    "additional push",
+    "remote CI execution",
+    "domain purchase",
+    "live DNS or sender configuration",
+    "public deployment",
+    "real SMTP delivery",
+    "user study"
+  ]
+}

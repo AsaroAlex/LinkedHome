@@ -1,0 +1,103 @@
+﻿section,group,input,value,status,source,note
+general,general,founder_hour_value_eur,30,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+general,general,management_hours_month,40,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+general,general,founder_hours_month_cap,160,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+general,general,setup_spread_months,3,H,,Ore setup distribuite nei mesi1-3 e incluse cap160h/mo.
+general,general,customer_hour_value_eur,35,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+general,general,contractor_hour_cost_eur,35,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+general,general,renter_cash_cac_eur,0,H,,Candidati reperiti dal cliente; attivazione onerosa modellata in ore.
+general,general,vat_rate_hypothesis,0.22,H,,Regime fiscale da confermare; fatturato/net costi IVA neutra e segregata.
+general,general,payment_percent,0.015,V,https://stripe.com/it/pricing,
+general,general,payment_fixed_eur,0.25,V,https://stripe.com/it/pricing,
+general,general,minimum_reserve_eur,1000,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+general,general,reserve_months_fixed_cash,3,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,B,price_practice_net_eur,29,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,B,price_subscription_net_eur,0,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,B,candidates_per_practice,1,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,B,setup_cash_eur,2000,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,B,setup_founder_hours,120,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,B,fixed_tools_infrastructure_eur_month,100,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,B,fixed_legal_compliance_eur_month,100,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,B,fixed_admin_eur_month,70,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,D,price_practice_net_eur,99,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,D,price_subscription_net_eur,0,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,D,candidates_per_practice,2,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,D,setup_cash_eur,3000,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,D,setup_founder_hours,180,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,D,fixed_tools_infrastructure_eur_month,140,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,D,fixed_legal_compliance_eur_month,200,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,D,fixed_admin_eur_month,110,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,E,price_practice_net_eur,39,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,E,price_subscription_net_eur,79,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,E,candidates_per_practice,1,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,E,setup_cash_eur,5000,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,E,setup_founder_hours,300,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,E,fixed_tools_infrastructure_eur_month,200,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,E,fixed_legal_compliance_eur_month,300,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+models,E,fixed_admin_eur_month,150,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,provider_success_cost_eur,15,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,provider_failed_cost_eur,4,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,provider_failed_attempt_rate,0.18,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,free_checks_ratio,0.08,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,retry_attempts_ratio,0.25,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,discount_rate,0.1,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,refund_rate,0.05,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,dispute_rate,0.04,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,dispute_external_cost_eur,8,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,dispute_hours_each,1.0,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,renter_activation_hours_each,0.2,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,logo_churn_month,"{""B"": 0.1, ""D"": 0.08, ""E"": 0.08}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,practice_frequency_month,"{""B"": 0.2, ""D"": 0.2, ""E"": 0.5}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,paying_client_cash_cac_eur,"{""B"": 30, ""D"": 45, ""E"": 75}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,paying_client_acquisition_hours,"{""B"": 2.0, ""D"": 4.0, ""E"": 5.0}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,payer_activation_hours,"{""B"": 0.3, ""D"": 0.5, ""E"": 1.0}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,manual_review_hours_practice,"{""B"": 0.25, ""D"": 0.9, ""E"": 0.3}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,support_hours_practice,"{""B"": 0.2, ""D"": 0.35, ""E"": 0.2}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,operator_support_hours_month,"{""B"": 0, ""D"": 0, ""E"": 0.25}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,checks_per_practice,"{""B"": 1, ""D"": 1.0, ""E"": 1}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,monthly_new_paying_clients_points,"{""B"": [[1, 1], [6, 2], [12, 3], [18, 3], [24, 4]], ""D"": [[1, 1], [6, 2], [12, 3], [18, 4], [24, 5]], ""E"": [[1, 0], [3, 1], [6, 1], [12, 2], [18, 2], [24, 3]]}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,prudente,provider_minimum_eur_month,0,H,,"MINIMO NON QUANTIFICATO: zero è esclusione dal base, non evidenza di assenza. Stress250/500 separati."
+scenarios,centrale,provider_success_cost_eur,10,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,provider_failed_cost_eur,3,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,provider_failed_attempt_rate,0.1,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,free_checks_ratio,0.04,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,retry_attempts_ratio,0.15,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,discount_rate,0.05,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,refund_rate,0.03,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,dispute_rate,0.025,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,dispute_external_cost_eur,8,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,dispute_hours_each,0.75,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,renter_activation_hours_each,0.15,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,logo_churn_month,"{""B"": 0.06, ""D"": 0.05, ""E"": 0.05}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,practice_frequency_month,"{""B"": 0.35, ""D"": 1.0, ""E"": 1.0}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,paying_client_cash_cac_eur,"{""B"": 18, ""D"": 30, ""E"": 50}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,paying_client_acquisition_hours,"{""B"": 1.5, ""D"": 3.0, ""E"": 4.0}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,payer_activation_hours,"{""B"": 0.2, ""D"": 0.35, ""E"": 0.7}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,manual_review_hours_practice,"{""B"": 0.18, ""D"": 0.55, ""E"": 0.22}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,support_hours_practice,"{""B"": 0.12, ""D"": 0.2, ""E"": 0.15}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,operator_support_hours_month,"{""B"": 0, ""D"": 0, ""E"": 0.15}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,checks_per_practice,"{""B"": 1, ""D"": 1.3, ""E"": 1}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,monthly_new_paying_clients_points,"{""B"": [[1, 2], [6, 4], [12, 6], [18, 7], [24, 8]], ""D"": [[1, 1], [6, 2], [12, 3], [18, 4], [24, 5]], ""E"": [[1, 1], [6, 2], [12, 3], [18, 4], [24, 5]]}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,centrale,provider_minimum_eur_month,0,H,,"MINIMO NON QUANTIFICATO: zero è esclusione dal base, non evidenza di assenza. Stress250/500 separati."
+scenarios,favorevole,provider_success_cost_eur,6,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,provider_failed_cost_eur,2,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,provider_failed_attempt_rate,0.05,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,free_checks_ratio,0.02,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,retry_attempts_ratio,0.07,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,discount_rate,0.02,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,refund_rate,0.015,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,dispute_rate,0.015,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,dispute_external_cost_eur,8,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,dispute_hours_each,0.5,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,renter_activation_hours_each,0.1,H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,logo_churn_month,"{""B"": 0.035, ""D"": 0.03, ""E"": 0.03}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,practice_frequency_month,"{""B"": 0.5, ""D"": 2.0, ""E"": 1.7}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,paying_client_cash_cac_eur,"{""B"": 12, ""D"": 20, ""E"": 35}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,paying_client_acquisition_hours,"{""B"": 0.8, ""D"": 1.5, ""E"": 2.0}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,payer_activation_hours,"{""B"": 0.15, ""D"": 0.25, ""E"": 0.5}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,manual_review_hours_practice,"{""B"": 0.12, ""D"": 0.35, ""E"": 0.15}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,support_hours_practice,"{""B"": 0.08, ""D"": 0.12, ""E"": 0.1}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,operator_support_hours_month,"{""B"": 0, ""D"": 0, ""E"": 0.1}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,checks_per_practice,"{""B"": 1, ""D"": 1.6, ""E"": 1}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,monthly_new_paying_clients_points,"{""B"": [[1, 3], [6, 7], [12, 11], [18, 14], [24, 16]], ""D"": [[1, 2], [6, 5], [12, 9], [18, 12], [24, 15]], ""E"": [[1, 1], [6, 3], [12, 5], [18, 7], [24, 9]]}",H,,Ipotesi da sostituire con misure/preventivi nel pilot.
+scenarios,favorevole,provider_minimum_eur_month,0,H,,"MINIMO NON QUANTIFICATO: zero è esclusione dal base, non evidenza di assenza. Stress250/500 separati."

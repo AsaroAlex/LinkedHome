@@ -14,3 +14,9 @@ Use only the generated accounts from `.local/demo-accounts.json`. Open tenant an
 For new signup/reset, no email is sent: the operator reads the corresponding `.local/mail/*.json` message, verifies its intended synthetic recipient and uses its URL. No local-mail token or account password belongs in a screenshot or commit.
 
 A useful demo outcome is an accepted invitation and consensual conversation, plus negative access-control checks. Counts of demo actions do not establish marketplace liquidity or demand.
+
+## Optional synthetic income path
+
+Use a tenant/both account. In Verifiche, expand «Prova il percorso con dati sintetici» and generate a completed example. No input collects real amounts/documents. Review the issuer, period, dates, net-income band and caveat. On a pending/accepted invitation expand «Reddito: scegli cosa condividere»; check the recipient and exact preview, tick the initially empty checkbox and share. In the landlord account open «Informazioni sul reddito condivise» for that invitation. Another invitation, even for the same owner, has no access without its own choice.
+
+Revoke the recipient access or contest/withdraw the example. Refresh the landlord view: the summary is unavailable. Renewing an example revokes old grants and requires new choices. Explore in-progress, insufficient, technical-error and expired examples; contact/visibility still work without them. Real issuance is disabled and returns 503. The demo records a dispute without a staffed provider review. Copies already obtained cannot be recalled.
