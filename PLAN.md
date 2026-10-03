@@ -48,3 +48,7 @@ All phases0–28 are complete for the adopted local synthetic scope. Run instruc
 
 
 Completion follow-up: clean-source install/start and isolated PostgreSQL logical recovery passed; see operations/validation. Platform snapshot publication remains an interface action unavailable through the current tools, not an unfinished repository implementation phase.
+
+## Nuovo incarico: UX e reddito facoltativo — 2026-10-03
+
+Implementata l’estensione richiesta localmente: ricerca mirata, audit browser, confronto A/B/C, anteprima/condivisione per destinatario, revoca/contestazione/scadenza e miglioramenti al percorso principale. `npm run check` PASS (96 unit/API, 15 browser); dettaglio e limiti in [income-validation](docs/operations/income-validation.md). Nessun provider reale, upload finanziario, pagamento, deploy o push. Le fasi storiche restano il ledger originario; questo incarico ne estende lo scope locale senza considerare chiusi i gate reali.

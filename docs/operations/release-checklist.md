@@ -10,7 +10,7 @@ The repository phases produce a tested local synthetic MVP. Public release is ex
 | Trust lead | Staffed moderation, contact channel, suspension reasons/appeals, incident response and realistic service times | Local admin workflow only |
 | Engineering / operations | Reviewed delivery provider, verified domains, SMTP/security configuration, HTTPS/proxy config, privileged provisioning, secrets, monitoring, backup/restore and load test | Unprovisioned; local transport and loopback only |
 | Product / fairness | Adult-account policy, proxy and exposure effects, supported criteria/alternatives, user comprehension and assisted correction | Synthetic invariant tests only |
-| Provider lead | Identity/income provider contracts, scope, entitlement, coverage/alternatives, false-result/appeal handling, costs | No provider available; upload/check endpoints not enabled |
+| Provider lead | Identity/income provider contracts, scope, entitlement, coverage/alternatives, false-result/appeal handling, costs | No real provider available; financial uploads unavailable; synthetic recipient-controlled flow works locally and real-check endpoint returns 503 |
 | Brand owner | Name, domain and trademark clearance, including Soglia collisions | Working name only |
 | Marketplace analyst | Search/vacancy episode identities, relist deduplication, cohort eligibility/withdrawals, maturity/censoring, repeat-turnover invitations | Local single-episode counts only |
 | Finance / strategy | Costs including free/reused checks, support, acquisition and validated payer uptake | No pricing/billing model validated or enabled |

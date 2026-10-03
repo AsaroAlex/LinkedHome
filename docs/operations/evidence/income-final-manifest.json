@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-03",
+  "scope": "local synthetic data; Chromium emulation; no real income provider or external user study",
+  "full_check": {
+    "build_typecheck": "pass",
+    "unit_api_tests": 96,
+    "browser_scenarios": 15,
+    "exit_code": 0
+  },
+  "final_income_browser": {
+    "scenarios": 5,
+    "exit_code": 0
+  },
+  "viewports": [
+    1440,
+    390,
+    320
+  ],
+  "screenshots": [
+    "income-consent-desktop.png",
+    "income-consent-mobile.png",
+    "income-disputed-desktop.png",
+    "income-error-mobile.png",
+    "income-expired-mobile.png",
+    "income-insufficient-mobile.png",
+    "income-owner-preview-desktop.png",
+    "income-pending-mobile.png",
+    "income-workspace-desktop.png",
+    "income-workspace-mobile.png",
+    "income-final-profile-dirty-desktop.png",
+    "income-final-link-recovery-desktop.png",
+    "income-final-workspace-detail-desktop.png",
+    "income-final-seeded-workspace-mobile.png",
+    "income-final-attestation-card.png",
+    "income-final-chat-mobile.png",
+    "income-final-profile-desktop.png",
+    "income-final-property-desktop.png",
+    "income-final-discovery-desktop.png"
+  ],
+  "limitations": [
+    "No Safari/iOS or physical mobile",
+    "No screen-reader user test",
+    "No provider coverage, commercial conversion, price or success threshold validated",
+    "Revocation stops future reads, not copies already obtained"
+  ],
+  "compiled_app_qa": {
+    "evidence": "income-final-qa.json",
+    "passed": true,
+    "browser_errors": 0,
+    "axe_violations": 0,
+    "mobile_overflow": false
+  }
+}

@@ -10,6 +10,7 @@ import { api, useLoad, formValues, dateLabel, ApiError } from "./api";
 import { brand, statuses, reasonLabels } from "./brand";
 import { cities } from "../server/domain";
 import type { User } from "../server/auth";
+import { IncomeWorkspace, InvitationIncome } from "./Income";
 const initialDay = () =>
   new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10);
 function go(path: string) {
@@ -93,8 +94,12 @@ function ErrorBox({ text }: { text: string | ApiError }) {
   ) : null;
 }
 function Notice({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    ref.current?.focus();
+  }, []);
   return (
-    <div role="status" className="alert success">
+    <div ref={ref} tabIndex={-1} role="status" className="alert success">
       {children}
     </div>
   );
@@ -213,7 +218,11 @@ function Checks({ value }: { value: any }) {
           <span aria-hidden="true">{c.matches ? "✓" : "–"}</span>
           <div>
             <strong>{c.label}</strong>
-            <small>{c.detail}</small>
+            <small>
+              {c.detail.replace(/\d{4}-\d{2}-\d{2}/g, (day: string) =>
+                dateLabel(day),
+              )}
+            </small>
           </div>
         </li>
       ))}
@@ -274,6 +283,7 @@ export function App() {
       "/discover": "Scopri profili",
       "/invitations": "Inviti",
       "/settings": "Account",
+      "/verification": "Verifiche e reddito",
       "/staff": "Segnalazioni",
     };
     document.title = `${brand.name} — ${titles[path] || brand.tagline}`;
@@ -445,7 +455,7 @@ export function App() {
         ) : path.startsWith("/conversations/") ? (
           <Conversation id={path.split("/")[2]} user={user!} />
         ) : path === "/verification" ? (
-          <VerificationPage />
+          <VerificationPage user={user!} />
         ) : path === "/settings" ? (
           <Settings user={user!} refresh={refresh} />
         ) : path.startsWith("/staff") ? (
@@ -860,6 +870,17 @@ function Recovery({
       />
       <form className="panel" onSubmit={submit}>
         <ErrorBox text={a.error} />
+        {a.error && (verify || reset) && (
+          <p className="disclosure">
+            Il link potrebbe essere scaduto o già usato.{" "}
+            <Link to={verify ? "/verification" : "/forgot"}>
+              {verify
+                ? "Richiedi una nuova conferma"
+                : "Richiedi un nuovo link di recupero"}
+            </Link>
+            .
+          </p>
+        )}
         {a.message ? (
           <>
             <Notice>{a.message}</Notice>
@@ -1004,6 +1025,8 @@ function Dashboard({ user }: { user: User }) {
 function ProfilePage() {
   const l = useLoad("/profile"),
     a = useAction();
+  const [draft, setDraft] = useState<Record<string, string> | null>(null);
+  const dirty = draft !== null;
   if (l.error) return <ErrorBox text={l.error} />;
   if (!l.data) return <Loading />;
   const p = l.data.profile;
@@ -1017,6 +1040,7 @@ function ProfilePage() {
         duration: Number(v.duration),
         occupants: Number(v.occupants),
       });
+      setDraft(null);
       l.reload();
     }, "Preferenze salvate. Gli eventuali inviti pendenti sono stati annullati.");
   }
@@ -1039,18 +1063,31 @@ function ProfilePage() {
       <ErrorBox text={a.error} />
       {a.message && <Notice>{a.message}</Notice>}
       <div className="form-layout">
-        <form className="panel" onSubmit={save} key={p?.revision || 0}>
+        <form
+          className="panel"
+          onSubmit={save}
+          onChange={(e) =>
+            setDraft(
+              Object.fromEntries(
+                Object.entries(formValues(e.currentTarget)).map(
+                  ([key, value]) => [key, String(value)],
+                ),
+              ),
+            )
+          }
+          key={p?.revision || 0}
+        >
           <div className="panel-title">
             <h2>Le tue preferenze</h2>
             <Badge status={p?.status || "draft"} />
           </div>
           <div className="form-grid">
-            <City value={p?.city} />
+            <City value={draft?.city ?? p?.city} />
             <Field
               name="budget"
               label="Budget totale mensile (€), spese obbligatorie incluse"
               type="number"
-              value={p?.budget || 1000}
+              value={draft?.budget ?? p?.budget ?? 1000}
               min={100}
               max={20000}
             />
@@ -1058,13 +1095,13 @@ function ProfilePage() {
               name="move_in"
               label="Giorno desiderato di ingresso"
               type="date"
-              value={p?.move_in || initialDay()}
+              value={draft?.move_in ?? p?.move_in ?? initialDay()}
             />
             <Field
               name="duration"
               label="Durata desiderata (mesi)"
               type="number"
-              value={p?.duration || 12}
+              value={draft?.duration ?? p?.duration ?? 12}
               min={1}
               max={120}
             />
@@ -1072,7 +1109,7 @@ function ProfilePage() {
               name="occupants"
               label="Numero totale di persone"
               type="number"
-              value={p?.occupants || 1}
+              value={draft?.occupants ?? p?.occupants ?? 1}
               min={1}
               max={12}
             />
@@ -1081,6 +1118,12 @@ function ProfilePage() {
             Una modifica annulla gli inviti ancora in attesa. Le conversazioni
             già aperte restano disponibili.
           </p>
+          {dirty && (
+            <p className="draft-notice" role="status">
+              Modifiche non salvate. Salva per aggiornare le preferenze
+              condivise e l’anteprima.
+            </p>
+          )}
           <button className="button" disabled={a.busy}>
             Salva preferenze
           </button>
@@ -1103,6 +1146,7 @@ function ProfilePage() {
           </p>
           {p && (
             <div className="profile-summary">
+              <span className="summary-label">Preferenze salvate</span>
               <strong>{p.city}</strong>
               <p>
                 Fino a €{p.budget} al mese · {p.occupants} persone
@@ -1116,7 +1160,8 @@ function ProfilePage() {
             <>
               <button
                 className="button full"
-                disabled={a.busy}
+                disabled={a.busy || (dirty && p.status !== "published")}
+                aria-describedby="profile-publication-help"
                 onClick={() =>
                   status(p.status === "published" ? "paused" : "published")
                 }
@@ -1125,7 +1170,15 @@ function ProfilePage() {
                   ? "Metti in pausa e annulla inviti"
                   : "Pubblica queste preferenze"}
               </button>
-              <small>
+              <small id="profile-publication-help">
+                {dirty && (
+                  <>
+                    Salva le modifiche prima di pubblicare. Puoi mettere in
+                    pausa anche con modifiche non salvate: resteranno nel
+                    modulo.
+                    <br />
+                  </>
+                )}
                 La pausa ferma la scoperta e annulla gli inviti pendenti. Puoi
                 pubblicare di nuovo.
               </small>
@@ -1288,13 +1341,24 @@ function PropertiesPage() {
   const l = useLoad("/properties"),
     a = useAction();
   const [edit, setEdit] = useState<any>(undefined);
+  const [publishedProperty, setPublishedProperty] = useState<string | null>(
+    null,
+  );
   async function status(p: any) {
-    await a.run(async () => {
-      await api(`/properties/${p.id}/status`, "POST", {
-        status: p.status === "published" ? "paused" : "published",
-      });
-      l.reload();
-    });
+    const next = p.status === "published" ? "paused" : "published";
+    setPublishedProperty(null);
+    await a.run(
+      async () => {
+        await api(`/properties/${p.id}/status`, "POST", {
+          status: next,
+        });
+        if (next === "published") setPublishedProperty(p.id);
+        l.reload();
+      },
+      next === "published"
+        ? `Pubblicato: ${p.title}. Ora puoi scoprire i profili compatibili.`
+        : `${p.title} è in pausa. Gli inviti pendenti sono stati annullati.`,
+    );
   }
   return (
     <>
@@ -1306,7 +1370,19 @@ function PropertiesPage() {
         giorni.
       </PageHeading>
       <ErrorBox text={l.error || a.error} />
-      {a.message && <Notice>{a.message}</Notice>}
+      {a.message && (
+        <Notice>
+          {a.message}
+          {publishedProperty && (
+            <Link
+              to={`/discover?property=${encodeURIComponent(publishedProperty)}`}
+              className="text-link notice-action"
+            >
+              Scopri profili per questo immobile <Arrow />
+            </Link>
+          )}
+        </Notice>
+      )}
       {edit !== undefined ? (
         <PropertyForm
           property={edit}
@@ -1333,73 +1409,129 @@ function PropertiesPage() {
             </Empty>
           ) : (
             <div className="two-grid">
-              {l.data?.properties.map((p: any) => (
-                <article className="property-card panel" key={p.id}>
-                  <div className="property-art" aria-hidden="true">
-                    <span className="building">
-                      <i />
-                      <i />
-                      <i />
-                      <i />
-                    </span>
-                    <span className="property-art-text">{p.city}</span>
-                  </div>
-                  <div className="panel-title">
-                    <span className="eyebrow">
-                      {p.city} · {p.area}
-                    </span>
-                    <Badge status={p.status} />
-                  </div>
-                  <h2>{p.title}</h2>
-                  <p className="price">
-                    €{p.rent}
-                    <small> / mese, spese incluse</small>
-                  </p>
-                  <p>
-                    {p.sqm} m² · {p.rooms} locali · fino a {p.capacity} persone
-                  </p>
-                  <p className="small-copy">
-                    Disponibile dal {dateLabel(p.available_from)}.
-                    Autorizzazione autodichiarata.
-                  </p>
-                  <p className="field-hint">
-                    Mettere in pausa annulla gli inviti pendenti: non potranno
-                    essere riaperti. Riconfermare senza modifiche li mantiene
-                    validi.
-                  </p>
-                  <div className="actions wrap">
-                    <button
-                      className="button secondary small"
-                      onClick={() => setEdit(p)}
-                    >
-                      Modifica
-                    </button>
-                    <button
-                      className="button small"
-                      disabled={a.busy}
-                      onClick={() => status(p)}
-                    >
-                      {p.status === "published" ? "Metti in pausa" : "Pubblica"}
-                    </button>
-                    {p.status === "published" && (
-                      <button
-                        className="text-link"
-                        disabled={a.busy}
-                        onClick={() =>
-                          a.run(async () => {
-                            await api(`/properties/${p.id}/status`, "POST", {
-                              status: "published",
-                            });
-                            l.reload();
-                          }, "Disponibilità riconfermata. Gli inviti pendenti restano validi.")
+              {l.data?.properties.map((p: any) => {
+                const expiresAt = p.published_at
+                  ? new Date(p.published_at).getTime() + 30 * 86400000
+                  : 0;
+                const current =
+                  p.status === "published" && expiresAt > Date.now();
+                return (
+                  <article className="property-card panel" key={p.id}>
+                    <div className="property-art" aria-hidden="true">
+                      <span className="building">
+                        <i />
+                        <i />
+                        <i />
+                        <i />
+                      </span>
+                      <span className="property-art-text">{p.city}</span>
+                    </div>
+                    <div className="panel-title">
+                      <span className="eyebrow">
+                        {p.city} · {p.area}
+                      </span>
+                      {p.status === "published" && !current ? (
+                        <span className="badge expired">Da riconfermare</span>
+                      ) : (
+                        <Badge status={p.status} />
+                      )}
+                    </div>
+                    <h2>{p.title}</h2>
+                    <p className="price">
+                      €{p.rent}
+                      <small> / mese, spese incluse</small>
+                    </p>
+                    <p>
+                      {p.sqm} m² · {p.rooms} locali · fino a {p.capacity}{" "}
+                      persone
+                    </p>
+                    <p className="small-copy">
+                      Disponibile dal {dateLabel(p.available_from)}.
+                      Autorizzazione autodichiarata.
+                    </p>
+                    {p.status === "published" ? (
+                      <div
+                        className={
+                          "availability-note" + (current ? "" : " needs-action")
                         }
                       >
-                        Riconferma disponibilità
-                      </button>
+                        <strong>
+                          {current
+                            ? "Disponibilità confermata"
+                            : "Disponibilità da riconfermare"}
+                        </strong>
+                        <p>
+                          {current
+                            ? `Riconferma entro il ${dateLabel(new Date(expiresAt).toISOString())} per continuare a scoprire profili e inviare inviti.`
+                            : "La scoperta e i nuovi inviti sono sospesi. Riconferma se l’immobile è ancora disponibile."}
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="field-hint">
+                        {p.status === "draft"
+                          ? "Salvato in bozza. Pubblica per scoprire profili compatibili."
+                          : "In pausa: puoi pubblicare di nuovo quando l’immobile è disponibile."}
+                      </p>
                     )}
-                  </div>
-                </article>
-              ))}
+                    {!p.authority_attested && (
+                      <p className="draft-notice">
+                        Apri Modifica e conferma di poter offrire l’immobile
+                        prima di pubblicarlo.
+                      </p>
+                    )}
+                    <p className="field-hint">
+                      Mettere in pausa annulla gli inviti pendenti: non potranno
+                      essere riaperti. Riconfermare senza modifiche li mantiene
+                      validi.
+                    </p>
+                    <div className="actions wrap">
+                      <button
+                        className="button secondary small"
+                        onClick={() => setEdit(p)}
+                      >
+                        Modifica
+                      </button>
+                      <button
+                        className="button small"
+                        disabled={
+                          a.busy ||
+                          (p.status !== "published" && !p.authority_attested)
+                        }
+                        onClick={() => status(p)}
+                      >
+                        {p.status === "published"
+                          ? "Metti in pausa"
+                          : "Pubblica"}
+                      </button>
+                      {p.status === "published" && (
+                        <button
+                          className="text-link"
+                          disabled={a.busy}
+                          onClick={() =>
+                            a.run(async () => {
+                              await api(`/properties/${p.id}/status`, "POST", {
+                                status: "published",
+                              });
+                              setPublishedProperty(p.id);
+                              l.reload();
+                            }, "Disponibilità riconfermata. Gli inviti pendenti restano validi.")
+                          }
+                        >
+                          Riconferma disponibilità
+                        </button>
+                      )}
+                      {current && p.authority_attested && (
+                        <Link
+                          to={`/discover?property=${encodeURIComponent(p.id)}`}
+                          className="text-link"
+                        >
+                          Scopri profili <Arrow />
+                        </Link>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           )}
         </>
@@ -1409,13 +1541,23 @@ function PropertiesPage() {
 }
 function DiscoverPage() {
   const properties = useLoad("/properties"),
-    [selected, setSelected] = useState(""),
+    [selected, setSelected] = useState(
+      () => new URLSearchParams(location.search).get("property") || "",
+    ),
     [page, setPage] = useState(0),
     [cursors, setCursors] = useState<string[]>([""]);
+  const publishedProperties =
+    properties.data?.properties.filter((p: any) => p.status === "published") ||
+    [];
+  const currentProperties = publishedProperties.filter(
+    (p: any) =>
+      p.authority_attested &&
+      p.published_at &&
+      new Date(p.published_at).getTime() > Date.now() - 30 * 86400000,
+  );
   const id =
-    selected ||
-    properties.data?.properties.find((p: any) => p.status === "published")
-      ?.id ||
+    currentProperties.find((p: any) => p.id === selected)?.id ||
+    currentProperties[0]?.id ||
     "";
   const l = useLoad(
       id
@@ -1447,12 +1589,22 @@ function DiscoverPage() {
       {!properties.data ? (
         <Loading />
       ) : !id ? (
-        <Empty title="Prima, raccontaci il tuo immobile">
+        <Empty
+          title={
+            publishedProperties.length
+              ? "La disponibilità va riconfermata."
+              : "Prima, raccontaci il tuo immobile"
+          }
+        >
           <p>
-            Serve un immobile pubblicato e riconfermato negli ultimi 30 giorni.
+            {publishedProperties.length
+              ? "Per tornare a scoprire profili, apri i tuoi immobili e scegli Riconferma disponibilità per quelli ancora disponibili. La conferma dura 30 giorni."
+              : "Serve un immobile pubblicato e riconfermato negli ultimi 30 giorni."}
           </p>
           <Link to="/properties" className="button">
-            Vai agli immobili
+            {publishedProperties.length
+              ? "Riconferma disponibilità"
+              : "Vai agli immobili"}
           </Link>
         </Empty>
       ) : (
@@ -1468,19 +1620,24 @@ function DiscoverPage() {
                   setCursors([""]);
                 }}
               >
-                {properties.data.properties
-                  .filter((p: any) => p.status === "published")
-                  .map((p: any) => (
-                    <option key={p.id} value={p.id}>
-                      {p.title} · {p.city}
-                    </option>
-                  ))}
+                {currentProperties.map((p: any) => (
+                  <option key={p.id} value={p.id}>
+                    {p.title} · {p.city}
+                  </option>
+                ))}
               </select>
             </label>
             <p>
               Vedi solo preferenze compatibili e profili non ancora invitati.
             </p>
           </div>
+          {publishedProperties.length > currentProperties.length && (
+            <p className="field-hint">
+              Alcuni immobili pubblicati richiedono una nuova conferma di
+              disponibilità.{" "}
+              <Link to="/properties">Gestisci gli immobili →</Link>
+            </p>
+          )}
           <p className="disclosure">
             Quando un invito viene accettato, entrambi vedrete il nome scelto e
             potrete scrivervi. Email e documenti restano privati.
@@ -1638,7 +1795,9 @@ function InvitationsPage({ user }: { user: User }) {
       },
       value === "accept"
         ? "Invito accettato. La conversazione è aperta."
-        : "Invito aggiornato.",
+        : value === "decline"
+          ? "Invito rifiutato. Il contatto non è stato aperto."
+          : "Invito ritirato. Il destinatario non può più accettarlo.",
     );
   }
   return (
@@ -1730,6 +1889,14 @@ function InvitationsPage({ user }: { user: User }) {
                   apri la chat. Nessuna email o documento viene condiviso. Scade
                   il {dateLabel(i.expires_at)}.
                 </p>
+              )}
+              {["pending", "accepted"].includes(i.status) && (
+                <InvitationIncome
+                  invitationId={i.id}
+                  isTenant={i.tenant_id === user.id}
+                  propertyTitle={i.property.title}
+                  otherName={i.other_name}
+                />
               )}
               <div className="actions wrap">
                 {["pending", "unavailable"].includes(i.status) &&
@@ -1835,7 +2002,7 @@ function Conversation({ id, user }: { id: string; user: User }) {
       >
         {info?.property.title}
       </PageHeading>
-      <ErrorBox text={l.error || a.error} />
+      <ErrorBox text={l.error || inv.error || a.error} />
       <div className="chat-layout">
         <section className="panel chat">
           <div className="panel-title">
@@ -1965,6 +2132,14 @@ function Conversation({ id, user }: { id: string; user: User }) {
           </button>
         </aside>
       </div>
+      {info && l.data?.status === "accepted" && (
+        <InvitationIncome
+          invitationId={id}
+          isTenant={info.tenant_id === user.id}
+          propertyTitle={info.property.title}
+          otherName={info.other_name}
+        />
+      )}
       {report && (
         <ReportForm
           invitationId={id}
@@ -1975,9 +2150,23 @@ function Conversation({ id, user }: { id: string; user: User }) {
     </>
   );
 }
-function VerificationPage() {
+function VerificationPage({ user }: { user: User }) {
   const l = useLoad("/verification"),
     a = useAction();
+  if (!l.data && !l.error) return <Loading />;
+  if (l.error)
+    return (
+      <>
+        <PageHeading
+          eyebrow="TRASPARENZA"
+          title="Ogni verifica ha un significato."
+        />
+        <ErrorBox text={l.error} />
+        <button className="button secondary" onClick={l.reload}>
+          Riprova a caricare
+        </button>
+      </>
+    );
   return (
     <>
       <PageHeading
@@ -1993,7 +2182,7 @@ function VerificationPage() {
           <span className="eyebrow">IL TUO INDIRIZZO</span>
           <h2>
             Conferma locale{" "}
-            {l.data?.email_verified ? "confermata" : "da confermare"}
+            {l.data?.email_verified ? "completata" : "da completare"}
           </h2>
           <p>
             In questo ambiente il link è generato in un messaggio locale per
@@ -2017,9 +2206,9 @@ function VerificationPage() {
           )}
         </article>
         <article className="panel muted-panel">
-          <span className="eyebrow">IDENTITÀ E REDDITO</span>
+          <span className="eyebrow">IDENTITÀ</span>
           <h2>
-            Non disponibili
+            Non disponibile
             <br />
             in questo ambiente.
           </h2>
@@ -2027,13 +2216,14 @@ function VerificationPage() {
             Nessun provider è collegato. Non caricare documenti o dati
             finanziari.
           </p>
-          <span className="badge">Nessun esito simulato</span>
+          <span className="badge">Nessuna verifica d’identità disponibile</span>
           <p className="small-copy">
             Le verifiche opzionali non aumentano la visibilità e non sono
             richieste per ricevere inviti.
           </p>
         </article>
       </div>
+      {user.role !== "landlord" && <IncomeWorkspace />}
       {l.data?.checks.map((v: any) => (
         <article className="panel" key={v.id}>
           <h2>{v.kind === "identity" ? "Identità" : "Reddito"}</h2>

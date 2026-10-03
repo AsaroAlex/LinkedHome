@@ -1,0 +1,14 @@
+{
+  "scope": "compiled application on preserved local soglia database; only synthetic demo accounts",
+  "checks": [
+    "verification loading presents no false unconfirmed state",
+    "verification error has retry and recovers",
+    "dirty preference shows saved preview and warns before publication",
+    "invalid verification link exposes new confirmation path",
+    "compiled demo creates clearly synthetic private example and blocks real issuance"
+  ],
+  "browser_errors": 0,
+  "axe_violations": 0,
+  "mobile_overflow": false,
+  "passed": true
+}

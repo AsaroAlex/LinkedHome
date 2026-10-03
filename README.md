@@ -15,7 +15,7 @@ npm start
 
 Bootstrap creates an ignored `.local/` directory with a random PostgreSQL password, migrations and synthetic accounts. Credentials are in `.local/demo-accounts.json` with mode0600; they are never printed or committed. The database binds loopback on port55432 and the application on port3000. `npm start` serves the compiled app; `npm run dev` uses Vite on3000 and API on3001. Stop with Ctrl+C. Restarting preserves local data. Never remove `.local/postgres` to fix a startup error.
 
-Email messages are local files under `.local/mail/`, not deliveries to real addresses. Read the intended synthetic account's message locally to use its confirmation/reset link. There is no HTTP mailbox endpoint. Real identity/income providers, document uploads, payments and guarantees are unavailable.
+Email messages are local files under `.local/mail/`, not deliveries to real addresses. Read the intended synthetic account's message locally to use its confirmation/reset link. There is no HTTP mailbox endpoint. Real identity/income providers, document uploads, payments and guarantees are unavailable. The optional income flow uses server-generated examples explicitly labelled synthetic, with private preview and invitation-specific sharing.
 
 ## Validate
 
@@ -35,7 +35,8 @@ Integration tests use only the generated local `soglia_test` database; browser t
 - Explained compatibility on city, total monthly cost, dates, duration and occupancy; pseudonymous discovery with stable cursor pagination.
 - Revision-bound invitations, immutable offered property snapshot, mutual conversations and paginated history.
 - Blocking, scoped reporting, moderation/audit, suspension/appeal/restore, own-data export/deletion and minimal demo activity counts.
-- Honest verification foundation: separate states, expiry/dispute/provenance, no fake live verification.
+- Optional private reusable income examples: explicit consent for the exact preview and recipient, provenance/period/expiry, revocation, dispute, renewal without automatic sharing, and an unavailable real-provider contract.
+- Honest identity verification foundation, with no fake live verification.
 
 Optional checks never improve visibility. No person score or protected matching fields. Editing preferences/property facts or pausing cancels pending invitations; unchanged property reconfirmation preserves them. Terminal invitation pairs cannot be reopened in this single-search-episode prototype. Accepted conversations retain the offered property facts and warn when current details have changed.
 
@@ -46,3 +47,11 @@ Set `DATABASE_URL` through your local environment without committing it. Bootstr
 ## Project map
 
 [Execution ledger](PLAN.md) · [Italian handoff](PROJECT_STATE.md) · [Product](docs/product/01-product-thesis.md) · [UX](docs/design/01-ux.md) · [Architecture](docs/adr/0001-modular-monolith.md) · [Demo walkthrough](docs/operations/demo.md) · [Security/operations](docs/operations/security.md) · [Release gates](docs/operations/release-checklist.md) · [Independent reviews](docs/reviews/README.md)
+
+## Optional income attestation extension
+
+Open **Verifiche → Prova il percorso con dati sintetici** as a tenant/both account. Create a generated example, review it, then open **Inviti e messaggi → Reddito: scegli cosa condividere** on a pending/accepted invitation. The checkbox starts unchecked. Sharing is bound to the exact attestation preview and that invitation; the landlord can read only its consented summary. Revocation, dispute, expiry, replacement, block/suspension and terminal invitation states remove future access. New examples never inherit old sharing choices.
+
+No income or verification badge is exposed in discovery; acceptance works without an attestation. The demo supports employment, self-employment and variable income examples and recoverable states. It accepts no income amount, financial file, banking credential or arbitrary provider result from the client. `POST /api/income/checks` returns 503; real issuance remains unavailable. Adding a provider needs a reviewed adapter, source/method semantics and a separate migration because current observations are constrained to synthetic data.
+
+[Research and provider comparison](docs/research/11-income-verification.md) · [Product decision and user experiment](docs/product/04-income-attestation.md) · [UX audit](docs/design/03-ux-audit-income.md) · [Extension validation](docs/operations/income-validation.md).

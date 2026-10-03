@@ -1063,6 +1063,9 @@ describe("moderation, verification and data control", () => {
   it("re-running migrations preserves data and does not add duplicate versions", async () => {
     const before = (await db.query("SELECT count(*)::int n FROM users")).rows[0]
       .n;
+    const versionsBefore = (
+      await db.query("SELECT count(*)::int n FROM schema_migrations")
+    ).rows[0].n;
     await migrate(db);
     expect(
       (await db.query("SELECT count(*)::int n FROM users")).rows[0].n,
@@ -1070,7 +1073,7 @@ describe("moderation, verification and data control", () => {
     expect(
       (await db.query("SELECT count(*)::int n FROM schema_migrations")).rows[0]
         .n,
-    ).toBe(3);
+    ).toBe(versionsBefore);
   });
 });
 

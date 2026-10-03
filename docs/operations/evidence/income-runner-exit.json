@@ -1,0 +1,6 @@
+{
+  "scope": "intentional failing isolated probe for test runner, removed afterwards",
+  "expected_exit": 1,
+  "actual_exit": 1,
+  "passed": true
+}

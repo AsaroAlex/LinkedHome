@@ -25,6 +25,14 @@ import {
 } from "./domain.js";
 import { localMail } from "./mail.js";
 import type { PoolClient } from "pg";
+import {
+  demoIncomeResult,
+  incomeAttestation,
+  incomeSelect,
+  incomeShare,
+  incomeStatus,
+  unavailableIncomeProvider,
+} from "./income.js";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -128,11 +136,13 @@ export async function buildApp(
     mail?: typeof localMail;
     limits?: boolean;
     serveStatic?: boolean;
+    incomeDemo?: boolean;
   } = {},
 ) {
   const app = Fastify({ logger: false, bodyLimit: 16384, trustProxy: false });
   const origin = options.origin || appOrigin;
   const mail = options.mail || localMail;
+  const incomeDemoAvailable = !production && options.incomeDemo !== false;
   await app.register(cookie);
   await app.register(rateLimit, {
     max: options.limits === false ? 100000 : 180,
@@ -984,7 +994,7 @@ export async function buildApp(
     const u = actor(r);
     const rows = (
       await db.query(
-        "SELECT id,kind,status,provider,checked_at,expires_at,dispute_reason FROM verification_checks WHERE user_id=$1",
+        "SELECT id,kind,status,provider,checked_at,expires_at,dispute_reason FROM verification_checks WHERE user_id=$1 AND kind='identity'",
         [u.id],
       )
     ).rows;
@@ -1005,12 +1015,310 @@ export async function buildApp(
       await lockUsers(c, [u.id]);
       await active(c, u.id);
       const result = await c.query(
-        "UPDATE verification_checks SET status='DISPUTED',dispute_reason=$3 WHERE id=$1 AND user_id=$2 AND status IN ('VERIFIED','FAILED','EXPIRED') RETURNING id",
+        "UPDATE verification_checks SET status='DISPUTED',dispute_reason=$3 WHERE id=$1 AND user_id=$2 AND kind='identity' AND status IN ('VERIFIED','FAILED','EXPIRED') RETURNING id",
         [id, u.id, reason],
       );
       requireThat(result.rowCount, "Verifica non contestabile.", 400);
     });
     return { ok: true };
+  });
+  const incomeSharesSelect = `SELECT s.*,
+    COALESCE(i.property_snapshot->>'title',p.title) AS property_title,
+    CASE WHEN i.status='accepted' THEN recipient.display_name ELSE 'Proprietario dell’immobile' END AS recipient_label,
+    (s.revoked_at IS NULL AND v.status='VERIFIED' AND v.expires_at>clock_timestamp()
+     AND holder.suspended=false AND recipient.suspended=false
+     AND (i.status='accepted' OR (i.status='pending' AND i.expires_at>clock_timestamp()
+      AND p.status='published' AND p.authority_attested AND p.published_at>clock_timestamp()-interval '30 days'))
+     AND NOT EXISTS(SELECT 1 FROM blocks b WHERE
+      (b.blocker_id=s.subject_id AND b.blocked_id=s.recipient_id)
+      OR (b.blocker_id=s.recipient_id AND b.blocked_id=s.subject_id))) AS available
+    FROM income_shares s JOIN verification_checks v ON v.id=s.check_id
+    JOIN invitations i ON i.id=s.invitation_id JOIN properties p ON p.id=i.property_id
+    JOIN users holder ON holder.id=s.subject_id JOIN users recipient ON recipient.id=s.recipient_id`;
+  async function currentIncome(c: DB | PoolClient, userId: string) {
+    return (
+      await c.query(
+        `${incomeSelect} WHERE v.user_id=$1 AND v.kind='income' ORDER BY v.created_at DESC,v.id DESC LIMIT 1`,
+        [userId],
+      )
+    ).rows[0];
+  }
+  async function incomeContactAvailable(c: PoolClient, i: any) {
+    if (
+      !["pending", "accepted"].includes(i.status) ||
+      (i.status === "pending" && new Date(i.expires_at) <= new Date())
+    )
+      return false;
+    const users = (
+      await c.query("SELECT id,suspended FROM users WHERE id=ANY($1::uuid[])", [
+        [i.tenant_id, i.landlord_id],
+      ])
+    ).rows;
+    if (users.length !== 2 || users.some((u) => u.suspended)) return false;
+    if (await blocked(c, i.tenant_id, i.landlord_id)) return false;
+    if (i.status === "pending") {
+      const p = (
+        await c.query("SELECT * FROM properties WHERE id=$1", [i.property_id])
+      ).rows[0];
+      if (!currentProperty(p)) return false;
+    }
+    return true;
+  }
+  app.get("/api/income", async (r) => {
+    const u = actor(r, { allowSuspended: true });
+    const [attestations, shares] = await Promise.all([
+      db.query(
+        `${incomeSelect} WHERE v.user_id=$1 AND v.kind='income' ORDER BY v.created_at DESC,v.id DESC`,
+        [u.id],
+      ),
+      db.query(
+        `${incomeSharesSelect} WHERE s.subject_id=$1 ORDER BY s.consented_at DESC,s.id DESC`,
+        [u.id],
+      ),
+    ]);
+    const history = attestations.rows.map(incomeAttestation);
+    return {
+      provider_available: unavailableIncomeProvider.available,
+      demo_available: incomeDemoAvailable,
+      status: history[0]?.status || "not_requested",
+      attestation: history[0] || null,
+      history,
+      shares: shares.rows.map(incomeShare),
+    };
+  });
+  app.post("/api/income/checks", async (r) => {
+    const u = actor(r, { role: "tenant" });
+    z.object({}).strict().parse(r.body);
+    return unavailableIncomeProvider.request({
+      subject_id: u.id,
+      authorization_reference: "",
+    });
+  });
+  app.post("/api/income/demo", async (r, reply) => {
+    const u = actor(r, { role: "tenant" });
+    const input = z
+      .object({
+        scenario: z.enum([
+          "pending",
+          "completed",
+          "insufficient",
+          "error",
+          "expired",
+        ]),
+        category: z
+          .enum(["employment", "self_employment", "variable"])
+          .default("employment"),
+      })
+      .strict()
+      .parse(r.body);
+    if (!incomeDemoAvailable)
+      throw new Problem(
+        503,
+        "Il simulatore è disponibile soltanto nella dimostrazione locale.",
+        "provider_unavailable",
+      );
+    const result = demoIncomeResult(input.scenario, input.category);
+    const attestation = await tx(db, async (c) => {
+      await lockUsers(c, [u.id]);
+      await active(c, u.id);
+      // Renewing is deliberately separate from sharing. No old consent silently
+      // transfers to a new observation, even when its synthetic band is equal.
+      await c.query(
+        "UPDATE income_shares SET revoked_at=now(),revocation_reason='superseded' WHERE subject_id=$1 AND revoked_at IS NULL",
+        [u.id],
+      );
+      const check = (
+        await c.query(
+          "INSERT INTO verification_checks(user_id,kind,status,provider,provider_reference,checked_at,expires_at,created_at) VALUES($1,'income',$2,$3,$4,$5,$6,clock_timestamp()) RETURNING id",
+          [
+            u.id,
+            result.status,
+            result.provider,
+            result.provider_reference,
+            result.checked_at,
+            result.expires_at,
+          ],
+        )
+      ).rows[0];
+      await c.query(
+        "INSERT INTO income_attestations(check_id,synthetic,category,period_from,period_to,monthly_net_min,monthly_net_max,source_categories) VALUES($1,true,$2,$3,$4,$5,$6,$7)",
+        [
+          check.id,
+          result.category,
+          result.period_from,
+          result.period_to,
+          result.summary?.monthly_net_band.min ?? null,
+          result.summary?.monthly_net_band.max ?? null,
+          result.summary?.source_categories || [],
+        ],
+      );
+      await event(c, "income_demo_created");
+      return incomeAttestation(
+        (await c.query(`${incomeSelect} WHERE v.id=$1`, [check.id])).rows[0],
+      );
+    });
+    return reply.code(201).send({ attestation });
+  });
+  app.post("/api/income/shares", async (r, reply) => {
+    const input = z
+      .object({
+        invitation_id: uuid,
+        attestation_id: uuid,
+        consent: z.literal(true),
+      })
+      .strict()
+      .parse(r.body);
+    const share = await withInvitation(
+      r,
+      input.invitation_id,
+      async (c, i, u) => {
+        requireThat(
+          i.tenant_id === u.id,
+          "Solo il titolare può condividere questa attestazione.",
+          403,
+        );
+        requireThat(
+          await incomeContactAvailable(c, i),
+          "Invito non disponibile per la condivisione.",
+        );
+        const check = await currentIncome(c, u.id);
+        requireThat(
+          check && incomeStatus(check) === "completed",
+          "Serve un’attestazione completata e non scaduta.",
+        );
+        requireThat(
+          check.id === input.attestation_id,
+          "L’attestazione è cambiata. Rileggi il riepilogo e conferma la condivisione.",
+        );
+        const existing = (
+          await c.query(
+            "SELECT id FROM income_shares WHERE invitation_id=$1 AND revoked_at IS NULL",
+            [i.id],
+          )
+        ).rows[0];
+        requireThat(
+          !existing,
+          "L’attestazione è già condivisa per questo invito.",
+        );
+        const created = (
+          await c.query(
+            "INSERT INTO income_shares(check_id,invitation_id,subject_id,recipient_id,consent_version) VALUES($1,$2,$3,$4,'income-summary-v1') RETURNING *",
+            [check.id, i.id, u.id, i.landlord_id],
+          )
+        ).rows[0];
+        await event(c, "income_share_created");
+        return incomeShare(
+          (await c.query(`${incomeSharesSelect} WHERE s.id=$1`, [created.id]))
+            .rows[0],
+        );
+      },
+    );
+    return reply.code(201).send({ share });
+  });
+  app.delete("/api/income/shares/:id", async (r) => {
+    const u = actor(r, { allowSuspended: true }),
+      id = idParam(r);
+    z.object({}).strict().parse(r.body);
+    await tx(db, async (c) => {
+      await lockUsers(c, [u.id]);
+      const result = await c.query(
+        "UPDATE income_shares SET revoked_at=COALESCE(revoked_at,now()),revocation_reason=COALESCE(revocation_reason,'holder') WHERE id=$1 AND subject_id=$2 RETURNING id",
+        [id, u.id],
+      );
+      requireThat(result.rowCount, "Condivisione non trovata.", 404);
+      await event(c, "income_share_revoked");
+    });
+    return { ok: true };
+  });
+  for (const action of ["dispute", "revoke"] as const) {
+    app.post(`/api/income/:id/${action}`, async (r) => {
+      const u = actor(r, { allowSuspended: true }),
+        id = idParam(r);
+      const input =
+        action === "dispute"
+          ? z
+              .object({ reason: z.string().trim().min(5).max(300) })
+              .strict()
+              .parse(r.body)
+          : (z.object({}).strict().parse(r.body), { reason: null });
+      await tx(db, async (c) => {
+        await lockUsers(c, [u.id]);
+        const check = (
+          await c.query(
+            `${incomeSelect} WHERE v.id=$1 AND v.user_id=$2 AND v.kind='income' FOR UPDATE OF v`,
+            [id, u.id],
+          )
+        ).rows[0];
+        requireThat(check, "Attestazione non trovata.", 404);
+        requireThat(check.status !== "REVOKED", "Attestazione già revocata.");
+        if (action === "dispute")
+          requireThat(
+            ["VERIFIED", "INSUFFICIENT", "FAILED", "EXPIRED"].includes(
+              check.status,
+            ),
+            "Attestazione non contestabile.",
+          );
+        await c.query(
+          "UPDATE verification_checks SET status=$3,dispute_reason=$4 WHERE id=$1 AND user_id=$2",
+          [
+            id,
+            u.id,
+            action === "dispute" ? "DISPUTED" : "REVOKED",
+            input.reason,
+          ],
+        );
+        await c.query(
+          "UPDATE income_shares SET revoked_at=now(),revocation_reason=$2 WHERE check_id=$1 AND revoked_at IS NULL",
+          [id, action === "dispute" ? "disputed" : "attestation_revoked"],
+        );
+        await event(
+          c,
+          action === "dispute" ? "income_disputed" : "income_revoked",
+        );
+      });
+      return { ok: true };
+    });
+  }
+  app.get("/api/invitations/:id/income", async (r) => {
+    return withInvitation(r, idParam(r), async (c, i, u) => {
+      const available = await incomeContactAvailable(c, i);
+      const share = available
+        ? (
+            await c.query(
+              `${incomeSharesSelect} WHERE s.invitation_id=$1 AND s.subject_id=$2 AND s.recipient_id=$3 AND s.revoked_at IS NULL`,
+              [i.id, i.tenant_id, i.landlord_id],
+            )
+          ).rows[0]
+        : null;
+      const validShare = share?.available ? share : null;
+      const own = u.id === i.tenant_id;
+      const check = own
+        ? await currentIncome(c, u.id)
+        : validShare
+          ? (
+              await c.query(`${incomeSelect} WHERE v.id=$1 AND v.user_id=$2`, [
+                validShare.check_id,
+                i.tenant_id,
+              ])
+            ).rows[0]
+          : null;
+      const delivered =
+        validShare &&
+        check &&
+        incomeStatus(check) === "completed" &&
+        (i.status === "accepted" || new Date(i.expires_at) > new Date());
+      return {
+        status: delivered ? "available" : "unavailable",
+        attestation:
+          check && (own || delivered) ? incomeAttestation(check) : null,
+        share: delivered ? incomeShare(validShare) : null,
+        can_share:
+          own &&
+          available &&
+          !validShare &&
+          Boolean(check && incomeStatus(check) === "completed"),
+      };
+    });
   });
   app.post("/api/account/appeal", async (r) => {
     const u = actor(r, { allowSuspended: true });
@@ -1043,6 +1351,8 @@ export async function buildApp(
       reports,
       checks,
       appeals,
+      income,
+      incomeShares,
     ] = await Promise.all([
       db.query("SELECT * FROM profiles WHERE user_id=$1", [u.id]),
       db.query("SELECT * FROM properties WHERE owner_id=$1", [u.id]),
@@ -1069,6 +1379,14 @@ export async function buildApp(
         "SELECT reason,status,created_at,resolved_at FROM appeals WHERE user_id=$1",
         [u.id],
       ),
+      db.query(
+        `${incomeSelect} WHERE v.user_id=$1 AND v.kind='income' ORDER BY v.created_at DESC,v.id DESC`,
+        [u.id],
+      ),
+      db.query(
+        `${incomeSharesSelect} WHERE s.subject_id=$1 ORDER BY s.consented_at DESC,s.id DESC`,
+        [u.id],
+      ),
     ]);
     return {
       account: {
@@ -1085,6 +1403,8 @@ export async function buildApp(
       blocks: blocks.rows,
       reports: reports.rows,
       appeals: appeals.rows,
+      income: income.rows.map(incomeAttestation),
+      income_shares: incomeShares.rows.map(incomeShare),
       verification: checks.rows.map((v) => ({
         ...v,
         status: verificationState(v),

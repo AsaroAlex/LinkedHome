@@ -1,0 +1,30 @@
+{
+  "observed": [
+    "Invito inviato via pulsante della UI a destinatario audit, con conferma e rimozione dalla discovery",
+    {
+      "state": "expired-invitation",
+      "source": "API response transformed only in audit browser, presentation check not backend expiration test",
+      "acceptButtons": 0
+    }
+  ],
+  "keyboard": [
+    {
+      "route": "/invitations",
+      "nextAfterHeading": "Confronto con le preferenze attuali"
+    },
+    {
+      "element": "compatibility-details",
+      "open": true
+    },
+    {
+      "element": "skip-link",
+      "focused": true,
+      "visible": true
+    },
+    {
+      "element": "skip-target",
+      "focus": "BODY"
+    }
+  ],
+  "expiryFixture": true
+}

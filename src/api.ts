@@ -33,14 +33,23 @@ export async function api<T = any>(
   });
   const data = await response.json();
   if (!response.ok) {
-    const details = (data.details || []).map(
-      (d: { field: string; message: string }) => ({
-        ...d,
-        message:
-          fields[d.field] ||
-          (d.field ? `Controlla il campo ${d.field}.` : d.message),
-      }),
+    const rawDetails = (data.details || []).flatMap(
+      (d: { field: string; message: string }) =>
+        !d.field && d.message === "Durata massima inferiore alla minima"
+          ? [
+              { ...d, field: "min_months" },
+              { ...d, field: "max_months" },
+            ]
+          : [d],
     );
+    const details = rawDetails.map((d: { field: string; message: string }) => ({
+      ...d,
+      message:
+        d.message === "Durata massima inferiore alla minima"
+          ? `${d.message}. Controlla la durata ${d.field === "min_months" ? "minima" : "massima"}.`
+          : fields[d.field] ||
+            (d.field ? `Controlla il campo ${d.field}.` : d.message),
+    }));
     throw new ApiError(data.error || "Operazione non riuscita.", details);
   }
   return data;
@@ -55,7 +64,11 @@ export function useLoad<T = any>(url: string | null) {
   const reload = useCallback(() => setVersion((x) => x + 1), []);
   useEffect(() => {
     let active = true;
-    setState({ url, data: null, error: "" });
+    setState((previous) => ({
+      url,
+      data: previous.url === url ? previous.data : null,
+      error: "",
+    }));
     if (url)
       api<T>(url)
         .then((data) => {

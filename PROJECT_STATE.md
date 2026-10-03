@@ -73,3 +73,15 @@ La pubblicazione dello snapshot resta un’operazione del prodotto chiamata Revi
 ## Push autorizzato da mobile
 
 Alla richiesta «pusha no?» è stato eseguito un push ordinario (senza force) su `origin/claude/sweet-goldberg-5lwng7`. Il remoto iniziale `9b0f42a` era un antenato del lavoro locale; il primo push ha pubblicato `5c78b05`. Questo aggiornamento documentale viene pubblicato nello stesso branch e il relativo SHA viene confrontato con `git ls-remote`. Nessuna PR o modifica al branch principale. L’implementazione è quindi recuperabile da GitHub; la pubblicazione dello snapshot cloud è un’operazione distinta e non serve per conservare il codice.
+
+## Estensione UX e attestazione reddituale facoltativa — 2026-10-03
+
+Il nuovo brief autorizza ricerca, audit e implementazione dell’estensione reddito: i precedenti rinvii riguardano l’emissione reale, non il flusso locale ora implementato. Scelta A: attestazione privata riutilizzabile, condivisione distinta per esatta anteprima e invito/destinatario; niente reddito/badge in discovery o modifica compatibilità/ranking. Migrazione 004 crea osservazioni immutabili sintetiche e grant, con scadenza/revoca/contestazione/sostituzione/contatto applicati lato server. Emissione reale: 503, nessun upload, provider o garanzia. Le categorie dipendenti/autonomi/variabili e gli esiti sono fixture server esplicite, non verifiche di persone reali.
+
+Risolti i principali problemi UX dell’audit: pubblicazione di preferenze non salvate, validità/riconferma immobile, loading delle verifiche, continuità del focus/esiti, date leggibili, errori di durata e recupero link invalidi. Ricerca con fonti ufficiali e limiti in docs/research/11-income-verification.md; decisione A/B/C, provider dependencies e prossimo studio in docs/product/04-income-attestation.md. Nessun risultato o prezzo validato, contatto esterno, acquisto, deploy o push in questo incarico.
+
+`npm run check` PASS: 96 test unit/API, 15 browser (5 nuovi reddito); review indipendente risolve il rischio di condividere un attestato aggiornato dopo una preview superata. Evidenze e limiti attuali in docs/operations/income-validation.md. Questa estensione è locale utilizzabile con esempi, non clearance per un pilot con redditi reali. Preservato checkout e dati locali; le suite usano database separati.
+
+## Consolidamento e pulizia richiesti
+
+L’estensione UX/reddito e le evidenze sono consolidate nel branch locale `work`. Rimossi i report browser generati e lo script temporaneo di QA; conservati database, credenziali locali ignorate, dipendenze, build funzionante ed evidenze permanenti. Manifest degli screenshot completato e fonti di ricerca collegate. Nessun reset, cambio checkout, push o deploy. I controlli funzionali precedenti restano validi: questa pulizia non modifica il comportamento del codice.

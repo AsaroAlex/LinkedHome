@@ -1,0 +1,338 @@
+{
+  "timestamp": "2026-10-03T21:25:59.201Z",
+  "viewportDesktop": {
+    "width": 1440,
+    "height": 1000
+  },
+  "viewportMobile": {
+    "width": 390,
+    "height": 844
+  },
+  "observed": [
+    {
+      "label": "landing-desktop",
+      "overflow": false,
+      "h1": "La prossima casacomincia da te.",
+      "mainWidth": 1440,
+      "focus": "H1"
+    },
+    {
+      "label": "register-desktop",
+      "overflow": false,
+      "h1": "Facciamo spazio\nal tuo progetto.",
+      "mainWidth": 1200,
+      "focus": "H1"
+    },
+    {
+      "label": "register-mobile",
+      "overflow": false,
+      "h1": "Facciamo spazio\nal tuo progetto.",
+      "mainWidth": 390,
+      "focus": "H1"
+    },
+    "Onboarding tenant via UI → dashboard non confermato",
+    "Onboarding landlord via UI → dashboard non confermato",
+    "Onboarding both via UI → dashboard non confermato",
+    {
+      "label": "both-dashboard-desktop",
+      "overflow": false,
+      "h1": "Ciao, Doppio Ruolo Audit.",
+      "mainWidth": 1200,
+      "focus": "H1"
+    },
+    {
+      "label": "profile-empty-desktop",
+      "overflow": false,
+      "h1": "Partiamo da ciò che cerchi.",
+      "mainWidth": 1200,
+      "focus": "H1"
+    },
+    {
+      "label": "profile-dirty-desktop",
+      "overflow": false,
+      "h1": "Partiamo da ciò che cerchi.",
+      "mainWidth": 1200,
+      "focus": "INPUT"
+    },
+    {
+      "label": "profile-mobile",
+      "overflow": false,
+      "h1": "Partiamo da ciò che cerchi.",
+      "mainWidth": 390,
+      "focus": "BODY"
+    },
+    {
+      "label": "discovery-empty-desktop",
+      "overflow": false,
+      "h1": "Le preferenze incontrano il tuo spazio.",
+      "mainWidth": 1200,
+      "focus": "H1"
+    },
+    {
+      "label": "property-validation-desktop",
+      "overflow": false,
+      "h1": "Ogni spazio, una possibilità.",
+      "mainWidth": 1200,
+      "focus": "DIV"
+    },
+    {
+      "label": "property-draft-desktop",
+      "overflow": false,
+      "h1": "Ogni spazio, una possibilità.",
+      "mainWidth": 1200,
+      "focus": "BODY"
+    },
+    {
+      "label": "property-published-desktop",
+      "overflow": false,
+      "h1": "Ogni spazio, una possibilità.",
+      "mainWidth": 1200,
+      "focus": "BODY"
+    },
+    {
+      "label": "discovery-desktop",
+      "overflow": false,
+      "h1": "Le preferenze incontrano il tuo spazio.",
+      "mainWidth": 1200,
+      "focus": "H1"
+    },
+    {
+      "label": "discovery-mobile",
+      "overflow": false,
+      "h1": "Le preferenze incontrano il tuo spazio.",
+      "mainWidth": 390,
+      "focus": "H1"
+    },
+    "Invito inviato via API al destinatario audit, UI discovery osservata prima e dopo",
+    {
+      "label": "invitation-pending-mobile",
+      "overflow": false,
+      "h1": "Da qui può nascere qualcosa.",
+      "mainWidth": 390,
+      "focus": "H1"
+    },
+    {
+      "label": "invitation-accepted-mobile",
+      "overflow": false,
+      "h1": "Da qui può nascere qualcosa.",
+      "mainWidth": 390,
+      "focus": "BODY"
+    },
+    {
+      "label": "chat-empty-mobile",
+      "overflow": false,
+      "h1": "Con Proprietario Audit.",
+      "mainWidth": 390,
+      "focus": "H1"
+    },
+    {
+      "label": "chat-mobile",
+      "overflow": false,
+      "h1": "Con Proprietario Audit.",
+      "mainWidth": 390,
+      "focus": "BODY"
+    },
+    "Scambio messaggi audit + aggiornamento manuale",
+    {
+      "label": "invitation-declined-desktop",
+      "overflow": false,
+      "h1": "Da qui può nascere qualcosa.",
+      "mainWidth": 1200,
+      "focus": "BODY"
+    },
+    {
+      "label": "verification-mobile",
+      "overflow": false,
+      "h1": "Ogni verifica ha un significato.",
+      "mainWidth": 390,
+      "focus": "H1"
+    },
+    {
+      "label": "settings-desktop",
+      "overflow": false,
+      "h1": "Le tue scelte, in un solo posto.",
+      "mainWidth": 1200,
+      "focus": "H1"
+    },
+    {
+      "action": "export",
+      "suggestedFilename": "soglia-dati.json"
+    },
+    "Conferma cancellazione aperta, account conservato",
+    {
+      "label": "settings-mobile",
+      "overflow": false,
+      "h1": "Le tue scelte, in un solo posto.",
+      "mainWidth": 390,
+      "focus": "BODY"
+    },
+    {
+      "label": "verification-loading-mobile",
+      "overflow": false,
+      "h1": "Ogni verifica ha un significato.",
+      "mainWidth": 390,
+      "focus": "H1"
+    },
+    {
+      "label": "verification-invalid-mobile",
+      "overflow": false,
+      "h1": "Conferma la tua email.",
+      "mainWidth": 390,
+      "focus": "DIV"
+    },
+    {
+      "label": "chat-blocked-mobile",
+      "overflow": false,
+      "h1": "Con Proprietario Audit.",
+      "mainWidth": 390,
+      "focus": "BODY"
+    },
+    {
+      "label": "landing-320",
+      "overflow": false,
+      "h1": "La prossima casacomincia da te.",
+      "mainWidth": 320,
+      "focus": "H1"
+    }
+  ],
+  "issues": [
+    {
+      "id": "U01",
+      "evidence": "HMR fix già attivo: modifiche non salvate segnalate, pubblicazione disabilitata",
+      "dirtyDisabled": true
+    },
+    {
+      "id": "U01-published",
+      "confirmedPublishedBudget": 1800
+    }
+  ],
+  "axe": [
+    {
+      "label": "landing-desktop",
+      "violations": []
+    },
+    {
+      "label": "register-desktop",
+      "violations": []
+    },
+    {
+      "label": "register-mobile",
+      "violations": []
+    },
+    {
+      "label": "both-dashboard-desktop",
+      "violations": []
+    },
+    {
+      "label": "profile-empty-desktop",
+      "violations": []
+    },
+    {
+      "label": "profile-dirty-desktop",
+      "violations": []
+    },
+    {
+      "label": "profile-mobile",
+      "violations": []
+    },
+    {
+      "label": "discovery-empty-desktop",
+      "violations": []
+    },
+    {
+      "label": "property-validation-desktop",
+      "violations": []
+    },
+    {
+      "label": "property-draft-desktop",
+      "violations": []
+    },
+    {
+      "label": "property-published-desktop",
+      "violations": []
+    },
+    {
+      "label": "discovery-desktop",
+      "violations": []
+    },
+    {
+      "label": "discovery-mobile",
+      "violations": []
+    },
+    {
+      "label": "invitation-pending-mobile",
+      "violations": []
+    },
+    {
+      "label": "invitation-accepted-mobile",
+      "violations": []
+    },
+    {
+      "label": "chat-empty-mobile",
+      "violations": []
+    },
+    {
+      "label": "chat-mobile",
+      "violations": []
+    },
+    {
+      "label": "invitation-declined-desktop",
+      "violations": []
+    },
+    {
+      "label": "verification-mobile",
+      "violations": []
+    },
+    {
+      "label": "settings-desktop",
+      "violations": []
+    },
+    {
+      "label": "settings-mobile",
+      "violations": []
+    },
+    {
+      "label": "verification-invalid-mobile",
+      "violations": []
+    },
+    {
+      "label": "chat-blocked-mobile",
+      "violations": []
+    },
+    {
+      "label": "landing-320",
+      "violations": []
+    }
+  ],
+  "states": [
+    {
+      "route": "/properties",
+      "state": "error",
+      "text": "Controlla i campi inseriti.\nDurata massima inferiore alla minima",
+      "focus": "alert"
+    },
+    {
+      "route": "/verification",
+      "state": "loading-delayed-network",
+      "earlyText": "IL TUO INDIRIZZO\nConferma locale da confermare\n\nIn questo ambiente il link è generato in un messaggio locale per l’operatore. Nessuna email viene inviata: questa conferma dimostrativa non prova il controllo di una casella reale, l’identità o il reddito.\n\nInvia di nuovo la conferma\nIDENTITÀ E REDDITO\nNon disponibili\nin questo ambiente.\n\nNessun provider è collegato. Non caricare documenti o dati finanziari.\n\nNessun esito simulato\n\nLe verifiche opzionali non aumentano la visibilità e non sono richieste per ricevere inviti.",
+      "loadingStatus": 0
+    },
+    {
+      "route": "/account/verify",
+      "state": "invalid-or-expired-token",
+      "text": "Link non valido o scaduto."
+    },
+    {
+      "route": "/conversations",
+      "state": "blocked/closed",
+      "composer": 0
+    }
+  ],
+  "keyboard": [
+    {
+      "route": "/",
+      "firstTab": "Cerco casa",
+      "outline": "solid"
+    }
+  ]
+}
