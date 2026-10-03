@@ -1,6 +1,6 @@
 # Product thesis — Phase 5
 
-Working product: **Soglia**, a private local MVP of an Italy-first reverse rental marketplace. “Find a relevant conversation while keeping control of what you share.” This is a testable proposition, not a promise of a home, solvency or discrimination-free selection.
+Working product: **Doorluma**, a private local MVP of an Italy-first reverse rental marketplace. “Find a relevant conversation while keeping control of what you share.” This is a testable proposition, not a promise of a home, solvency or discrimination-free selection.
 
 The tenant prepares structured search preferences and deliberately publishes them. A landlord with a current property sees compatible pseudonymous profiles and why the declared criteria fit. The landlord sends a property-specific invitation; the tenant accepts or declines; acceptance opens a private conversation. Either party can close, block or report. Pausing a profile stops discovery and new invitations and cancels pending invitations; existing accepted conversations remain explicitly accessible until closed. Pausing a property stops discovery/invitations and cancels pending invitations; closing a conversation prevents further messages.
 

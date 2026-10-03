@@ -411,7 +411,7 @@ test("suspended account keeps own-data access and an appeal route", async ({
     .click();
   const download = page.waitForEvent("download");
   await page.getByRole("button", { name: "Scarica i miei dati" }).click();
-  expect((await download).suggestedFilename()).toBe("soglia-dati.json");
+  expect((await download).suggestedFilename()).toBe("doorluma-dati.json");
   await page
     .getByRole("button", { name: "Voglio eliminare l’account" })
     .click();

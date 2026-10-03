@@ -1,0 +1,599 @@
+{
+  "recorded_at_utc": "2026-10-03T20:27:22.838296+00:00",
+  "decision": {
+    "brand": "Doorluma",
+    "primary_domain": "doorluma.com",
+    "optional_defensive_domains": [
+      "doorluma.eu",
+      "doorluma.it"
+    ],
+    "status": "Selected after brand-merit research; not purchased"
+  },
+  "availability_is_ephemeral": true,
+  "selected_domain_checks": {
+    "registrar": [
+      {
+        "domain": "doorluma.com",
+        "source_url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=doorluma&tld=com",
+        "checked_at_utc": "2026-10-03T20:23:42.136674+00:00",
+        "http_status": 200,
+        "availability": "AVAILABLE",
+        "exact_row_text": "doorluma.com € 13,99 Register",
+        "registration_price_eur_excl_vat": 13.99,
+        "renewal_price_eur_excl_vat": 13.99
+      },
+      {
+        "domain": "doorluma.it",
+        "source_url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=doorluma&tld=it",
+        "checked_at_utc": "2026-10-03T20:23:42.252247+00:00",
+        "http_status": 200,
+        "availability": "AVAILABLE",
+        "exact_row_text": "doorluma.it € 8,99 Register",
+        "registration_price_eur_excl_vat": null,
+        "renewal_price_eur_excl_vat": null
+      },
+      {
+        "domain": "doorluma.eu",
+        "source_url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=doorluma&tld=eu",
+        "checked_at_utc": "2026-10-03T20:23:42.135699+00:00",
+        "http_status": 200,
+        "availability": "AVAILABLE",
+        "exact_row_text": "doorluma.eu € 5,99 Register",
+        "registration_price_eur_excl_vat": null,
+        "renewal_price_eur_excl_vat": null
+      }
+    ],
+    "registry_rdap": {
+      "domain": "doorluma.com",
+      "source_url": "https://rdap.verisign.com/com/v1/domain/doorluma.com",
+      "checked_at_utc": "2026-10-03T20:23:42.252594+00:00",
+      "http_status": 404,
+      "content_type": "application/rdap+json",
+      "classification": "NO_REGISTRY_RECORD"
+    },
+    "vat_price_source": "https://www.dominiofaidate.com/en/price-list/",
+    "no_purchase": true
+  },
+  "brand_research": {
+    "scope": "Bounded online collision research and strategic/linguistic assessment; no naming user study or trademark clearance",
+    "comparison_document": "../../product/03-naming.md",
+    "exact_Doorluma_use_found_in_reviewed_results": false,
+    "known_risks": [
+      "Dorluma spelling with one O",
+      "Door/lighting/smart-home category association",
+      "nearby DoorAlum door manufacturer"
+    ],
+    "pronunciation_proposal": "door-LOO-ma"
+  },
+  "gandi_latest_blocker": {
+    "provider": "Gandi",
+    "domain": "doorliva.com",
+    "checked_utc": "2026-10-03T20:21:35.702464+00:00",
+    "url": "https://shop.gandi.net/api/v5/suggest/suggest?country=IT&grid=A&currency=EUR&lang=en&search=doorliva.com&tlds=com&phases=golive&phases=landrush&phases=sunrise&lock_sentence=false&page=1&per_page=30&required_availables=15&source=shop",
+    "http_status": 403,
+    "auth_challenge_bypassed": false,
+    "response_summary": "HTTP403 Error403abuse / VarnishL7server; requests stopped without bypass"
+  },
+  "prior_candidate_research": {
+    "status": "Superseded by final Doorluma selection; earlier availability checks remain historical only",
+    "NestInvite_and_Italian_candidates": {
+      "recorded_at_utc": "2026-10-03T20:13:02Z",
+      "decision": {
+        "brand": "NestInvite",
+        "primary_domain": "nestinvite.com",
+        "optional_defensive_domain": "nestinvite.it",
+        "status": "Selected for preparation following the user preference for an English/European name; no domain purchased"
+      },
+      "availability_is_ephemeral": true,
+      "com_registry": {
+        "domain": "nestinvite.com",
+        "source_url": "https://rdap.verisign.com/com/v1/domain/nestinvite.com",
+        "checked_at_utc": "2026-10-03T20:08:52.774982+00:00",
+        "http_status": 404,
+        "content_type": "application/rdap+json",
+        "status": "NO_REGISTRY_RECORD",
+        "source_snapshot_sha256": "a01add15efa15ae6c310fbf19c6d142547e4e47ae7850069bc90ad3f2b03ad87",
+        "interpretation": "No RDAP object returned at check time; supported by two independent registrar new-registration offers. No reservation or purchase."
+      },
+      "registrar_dominiofaidate": {
+        "provider": "Dominiofaidate.com",
+        "method": "Normal public GET search form, no authentication, cart or purchase",
+        "checks": [
+          {
+            "domain": "nestinvite.com",
+            "url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=nestinvite&tld=com",
+            "checked_utc": "2026-10-03T20:09:25.677073+00:00",
+            "http_status": 200,
+            "returned_domain": "nestinvite.com",
+            "availability": "available",
+            "exact_row_text": "nestinvite.com € 13,99 Register",
+            "exact_row_register_action": true,
+            "registration_price_eur_excl_vat": 13.99,
+            "renewal_price_eur_excl_vat": 13.99,
+            "price_period": "one year",
+            "price_source": "https://www.dominiofaidate.com/en/price-list/"
+          },
+          {
+            "domain": "nestinvite.it",
+            "url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=nestinvite&tld=it",
+            "checked_utc": "2026-10-03T20:10:12.005445+00:00",
+            "http_status": 200,
+            "returned_domain": "nestinvite.it",
+            "availability": "available",
+            "exact_row_text": "nestinvite.it € 8,99 Register",
+            "exact_row_register_action": true,
+            "registration_price_eur_excl_vat": 8.99,
+            "renewal_price_eur_excl_vat": 9.99,
+            "price_period": "one year",
+            "price_source": "https://www.dominiofaidate.com/en/price-list/"
+          }
+        ],
+        "vat_note": "All prices exclude VAT; one-year period unless stated otherwise",
+        "vat_note_source": "https://www.dominiofaidate.com/en/price-list/",
+        "source_snapshot_sha256": "66d906dcd303e4ae045d77e8812e13f1b46b7860dc37cd84d6ad206ff8809ade"
+      },
+      "registrar_gandi": {
+        "provider": "Gandi",
+        "method": "Anonymous public storefront form followed by its public SSE response; no login, cart or purchase",
+        "checks": [
+          {
+            "domain": "nestinvite.com",
+            "checked_at_utc": "2026-10-03T20:10:19.451822+00:00",
+            "source_url": "https://shop.gandi.net/api/v5/suggest/suggest?country=IT&grid=A&currency=EUR&lang=en&search=nestinvite.com&tlds=com&phases=golive&phases=landrush&phases=sunrise&lock_sentence=false&page=1&per_page=30&required_availables=15&source=shop",
+            "http_status": 200,
+            "availability": "available",
+            "premium": 0,
+            "reserved": 0,
+            "vat_rate_percent": 22.0,
+            "prices": {
+              "renew": {
+                "price_before_taxes_eur": 31.98,
+                "price_after_taxes_eur": 39.02,
+                "discount": false,
+                "period": "one year",
+                "scope": "Single-year quote; multi-year price variants not used in the comparison"
+              },
+              "create": {
+                "price_before_taxes_eur": 11.0,
+                "price_after_taxes_eur": 13.42,
+                "discount": false,
+                "period": "one year",
+                "scope": "Single-year quote; multi-year price variants not used in the comparison"
+              }
+            }
+          },
+          {
+            "domain": "nestinvite.it",
+            "checked_at_utc": "2026-10-03T20:10:21.413558+00:00",
+            "source_url": "https://shop.gandi.net/api/v5/suggest/suggest?country=IT&grid=A&currency=EUR&lang=en&search=nestinvite.it&tlds=it&phases=golive&phases=landrush&phases=sunrise&lock_sentence=false&page=1&per_page=30&required_availables=15&source=shop",
+            "http_status": 200,
+            "availability": "available",
+            "premium": 0,
+            "reserved": 0,
+            "vat_rate_percent": 22.0,
+            "prices": {
+              "renew": {
+                "price_before_taxes_eur": 31.98,
+                "price_after_taxes_eur": 39.02,
+                "discount": false,
+                "period": "one year",
+                "scope": "Single-year quote; multi-year price variants not used in the comparison"
+              },
+              "create": {
+                "price_before_taxes_eur": 4.99,
+                "price_after_taxes_eur": 6.09,
+                "discount": true,
+                "period": "one year",
+                "scope": "Single-year quote; multi-year price variants not used in the comparison"
+              }
+            }
+          }
+        ],
+        "source_snapshot_sha256": "b2371f539084b1d99b6e8ef05c28c139d461fa3286f8e32e0c8c4985619f534a"
+      },
+      "registrar_recommendation": {
+        "provider": "DominioFaiDaTe",
+        "scope": "Among the exact NestInvite offers verified; lower single-year .com renewal than Gandi",
+        "ovh_status": "Previous .it generic tariff is retained only in the Italian-candidate archive; no .com tariff or exact NestInvite quote verified here"
+      },
+      "illustrative_totals_dominiofaidate": {
+        "assumed_vat_percent": 22,
+        "currency": "EUR",
+        "period": "one year",
+        "com_first_year": 17.07,
+        "com_renewal": 17.07,
+        "it_first_year": 10.97,
+        "it_renewal": 12.19,
+        "com_and_it_first_year": 28.04,
+        "com_and_it_renewal": 29.26,
+        "limitation": "Calculated at 22% VAT; taxes applicable to the purchaser, current availability, terms and final checkout amount require confirmation"
+      },
+      "name_collision_research": {
+        "checked_date": "2026-10-03",
+        "exact_historic_usage": {
+          "hostname": "nestinvite.blogspot.com",
+          "source_url": "https://nestinvite.blogspot.com/",
+          "historic_title": "Wedding Invitations",
+          "sector": "Wedding invitations",
+          "index_traces": [
+            {
+              "index": "Siteindices",
+              "reported_date": "2019-11-26"
+            },
+            {
+              "index": "Siteprice",
+              "reported_date": "2020-08-08"
+            }
+          ],
+          "current_blog_http_status": 404,
+          "current_blog_text": "Blog not found",
+          "verification": "Historical index traces and current blog observation reported by the independent name-research workstream"
+        },
+        "scope": "An active housing/software collision was not verified; the sample does not establish absence of exact historical usage, marks or business names",
+        "legal_clearance": "Pending"
+      },
+      "preparation_only": {
+        "future_primary_origin": "https://nestinvite.com",
+        "future_staging_origin": "https://staging.nestinvite.com",
+        "future_mail_from": "no-reply@nestinvite.com",
+        "activation_condition": "After registration, verified DNS/TLS and provider sender verification; these values are not activated by this research",
+        "application_language": "Italian; English brand selection is not an international rollout"
+      },
+      "prior_italian_candidate_research": {
+        "recorded_at_utc": "2026-10-03T20:04:54Z",
+        "decision": {
+          "brand": "Abituno",
+          "primary_domain": "abituno.it",
+          "optional_defensive_domain": "abituno.com",
+          "status": "Italian candidate checked before the user requested an English/European name; not purchased and superseded by NestInvite"
+        },
+        "availability_is_ephemeral": true,
+        "registry_it": {
+          "checks": [
+            {
+              "domain": "abituno.it",
+              "source_url": "https://who.is/whois/abituno.it",
+              "http_status": 200,
+              "checked_at_utc": "2026-10-03T19:58:21.156197+00:00",
+              "registry_status": "AVAILABLE",
+              "source_kind": "Registry WHOIS text relayed by Who.is"
+            },
+            {
+              "domain": "abivito.it",
+              "source_url": "https://who.is/whois/abivito.it",
+              "http_status": 200,
+              "checked_at_utc": "2026-10-03T19:58:21.523089+00:00",
+              "registry_status": "AVAILABLE",
+              "source_kind": "Registry WHOIS text relayed by Who.is"
+            },
+            {
+              "domain": "invitara.it",
+              "source_url": "https://who.is/whois/invitara.it",
+              "http_status": 200,
+              "checked_at_utc": "2026-10-03T19:58:21.566360+00:00",
+              "registry_status": "AVAILABLE",
+              "source_kind": "Registry WHOIS text relayed by Who.is"
+            }
+          ],
+          "status_semantics_source": "https://www.nic.it/sites/default/files/documenti/2024/Linee_Guida_Tecniche_Sincrone_v3_1.pdf",
+          "status_semantics_section": "16.5",
+          "limitations": [
+            "WHOIS was relayed by an intermediary, not queried over a direct registry connection.",
+            "Who.is generic registered-website banner contradicted the raw WHOIS status; availability here uses the registry Status field and separate registrar confirmations."
+          ],
+          "source_snapshot_sha256": "246408da8fd98d3d9d63e326f6086f22636612de283d28efe33731c5a7cd77b1"
+        },
+        "registrar_dominiofaidate": {
+          "provider": "Dominiofaidate.com",
+          "method": "Normal public GET search form advertised by provider homepage; no authentication, cart or purchase",
+          "vat_note": "All prices are VAT excluded. Each service lasts one year unless otherwise stated.",
+          "vat_note_source": "https://www.dominiofaidate.com/en/price-list/",
+          "checks": [
+            {
+              "domain": "abituno.it",
+              "url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=abituno&tld=it",
+              "checked_utc": "2026-10-03T20:02:19.618692+00:00",
+              "http_status": 200,
+              "returned_domain": "abituno.it",
+              "availability": "available",
+              "availability_text": "Domain is AVAILABLE!",
+              "exact_row_text": "abituno.it € 8,99 Register",
+              "exact_row_register_action": true,
+              "registration_price_eur_excl_vat": 8.99,
+              "renewal_price_eur_excl_vat": 9.99,
+              "price_period": "one year",
+              "price_source": "https://www.dominiofaidate.com/en/price-list/"
+            },
+            {
+              "domain": "invitara.it",
+              "url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=invitara&tld=it",
+              "checked_utc": "2026-10-03T20:02:19.828071+00:00",
+              "http_status": 200,
+              "returned_domain": "invitara.it",
+              "availability": "available",
+              "availability_text": "Domain is AVAILABLE!",
+              "exact_row_text": "invitara.it € 8,99 Register",
+              "exact_row_register_action": true,
+              "registration_price_eur_excl_vat": 8.99,
+              "renewal_price_eur_excl_vat": 9.99,
+              "price_period": "one year",
+              "price_source": "https://www.dominiofaidate.com/en/price-list/"
+            },
+            {
+              "domain": "abivito.it",
+              "url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=abivito&tld=it",
+              "checked_utc": "2026-10-03T20:02:19.901922+00:00",
+              "http_status": 200,
+              "returned_domain": "abivito.it",
+              "availability": "available",
+              "availability_text": "Domain is AVAILABLE!",
+              "exact_row_text": "abivito.it € 8,99 Register",
+              "exact_row_register_action": true,
+              "registration_price_eur_excl_vat": 8.99,
+              "renewal_price_eur_excl_vat": 9.99,
+              "price_period": "one year",
+              "price_source": "https://www.dominiofaidate.com/en/price-list/"
+            },
+            {
+              "domain": "abituno.com",
+              "url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=abituno&tld=com",
+              "checked_utc": "2026-10-03T20:02:19.720219+00:00",
+              "http_status": 200,
+              "returned_domain": "abituno.com",
+              "availability": "available",
+              "availability_text": "Domain is AVAILABLE!",
+              "exact_row_text": "abituno.com € 13,99 Register",
+              "exact_row_register_action": true,
+              "registration_price_eur_excl_vat": 13.99,
+              "renewal_price_eur_excl_vat": 13.99,
+              "price_period": "one year",
+              "price_source": "https://www.dominiofaidate.com/en/price-list/"
+            },
+            {
+              "domain": "abivito.com",
+              "url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=abivito&tld=com",
+              "checked_utc": "2026-10-03T20:02:22.840807+00:00",
+              "http_status": 200,
+              "returned_domain": "abivito.com",
+              "availability": "available",
+              "availability_text": "Domain is AVAILABLE!",
+              "exact_row_text": "abivito.com € 13,99 Register",
+              "exact_row_register_action": true,
+              "registration_price_eur_excl_vat": 13.99,
+              "renewal_price_eur_excl_vat": 13.99,
+              "price_period": "one year",
+              "price_source": "https://www.dominiofaidate.com/en/price-list/"
+            },
+            {
+              "domain": "soglia.it",
+              "url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=soglia&tld=it",
+              "checked_utc": "2026-10-03T20:02:23.021397+00:00",
+              "http_status": 200,
+              "returned_domain": null,
+              "availability": "registered",
+              "availability_text": "Domain is already registered",
+              "exact_row_text": "soglia.it € 8,99 registered",
+              "exact_row_register_action": false,
+              "registration_price_eur_excl_vat": 8.99,
+              "renewal_price_eur_excl_vat": 9.99,
+              "price_period": "one year",
+              "price_source": "https://www.dominiofaidate.com/en/price-list/"
+            },
+            {
+              "domain": "lhcontrollo20261003x7q9z2.it",
+              "url": "https://www.dominiofaidate.com/en/CheckAvailability.aspx?sld=lhcontrollo20261003x7q9z2&tld=it",
+              "checked_utc": "2026-10-03T20:02:23.063296+00:00",
+              "http_status": 200,
+              "returned_domain": "lhcontrollo20261003x7q9z2.it",
+              "availability": "available",
+              "availability_text": "Domain is AVAILABLE!",
+              "exact_row_text": "lhcontrollo20261003x7q9z2.it € 8,99 Register",
+              "exact_row_register_action": true,
+              "registration_price_eur_excl_vat": 8.99,
+              "renewal_price_eur_excl_vat": 9.99,
+              "price_period": "one year",
+              "price_source": "https://www.dominiofaidate.com/en/price-list/"
+            }
+          ],
+          "source_snapshot_sha256": "4859c5a665e021e0903eb87587edd5d3c80e9baf1a1c17b17dc8ab5ac39c0222"
+        },
+        "registrar_gandi": {
+          "provider": "Gandi",
+          "method": "Anonymous public storefront form followed by its public SSE availability response; no account, cart or purchase",
+          "checks": [
+            {
+              "domain": "abituno.it",
+              "checked_at_utc": "2026-10-03T20:00:43.113020+00:00",
+              "source_url": "https://shop.gandi.net/api/v5/suggest/suggest?country=IT&grid=A&currency=EUR&lang=en&search=abituno.it&tlds=it&phases=golive&phases=landrush&phases=sunrise&lock_sentence=false&page=1&per_page=30&required_availables=15&source=shop",
+              "http_status": 200,
+              "availability": "available",
+              "premium": 0,
+              "reserved": 0,
+              "vat_rate_percent": 22.0,
+              "prices": {
+                "renew": {
+                  "price_before_taxes_eur": 31.98,
+                  "price_after_taxes_eur": 39.02,
+                  "discount": false,
+                  "period": "one year"
+                },
+                "create": {
+                  "price_before_taxes_eur": 4.99,
+                  "price_after_taxes_eur": 6.09,
+                  "discount": true,
+                  "period": "one year"
+                }
+              }
+            },
+            {
+              "domain": "invitara.it",
+              "checked_at_utc": "2026-10-03T20:01:28.007944+00:00",
+              "source_url": "https://shop.gandi.net/api/v5/suggest/suggest?country=IT&grid=A&currency=EUR&lang=en&search=invitara.it&tlds=it&phases=golive&phases=landrush&phases=sunrise&lock_sentence=false&page=1&per_page=30&required_availables=15&source=shop",
+              "http_status": 200,
+              "availability": "available",
+              "premium": 0,
+              "reserved": 0,
+              "vat_rate_percent": 22.0,
+              "prices": {
+                "renew": {
+                  "price_before_taxes_eur": 31.98,
+                  "price_after_taxes_eur": 39.02,
+                  "discount": false,
+                  "period": "one year"
+                },
+                "create": {
+                  "price_before_taxes_eur": 4.99,
+                  "price_after_taxes_eur": 6.09,
+                  "discount": true,
+                  "period": "one year"
+                }
+              }
+            },
+            {
+              "domain": "abivito.it",
+              "checked_at_utc": "2026-10-03T20:01:26.500241+00:00",
+              "source_url": "https://shop.gandi.net/api/v5/suggest/suggest?country=IT&grid=A&currency=EUR&lang=en&search=abivito.it&tlds=it&phases=golive&phases=landrush&phases=sunrise&lock_sentence=false&page=1&per_page=30&required_availables=15&source=shop",
+              "http_status": 200,
+              "availability": "available",
+              "premium": 0,
+              "reserved": 0,
+              "vat_rate_percent": 22.0,
+              "prices": {
+                "renew": {
+                  "price_before_taxes_eur": 31.98,
+                  "price_after_taxes_eur": 39.02,
+                  "discount": false,
+                  "period": "one year"
+                },
+                "create": {
+                  "price_before_taxes_eur": 4.99,
+                  "price_after_taxes_eur": 6.09,
+                  "discount": true,
+                  "period": "one year"
+                }
+              }
+            }
+          ],
+          "source_snapshot_sha256": "a091fffe84615ceda3c7949f74e128fdd7ebcc89dd13b8a6d0ac3d31bd715e7a"
+        },
+        "com_registry": {
+          "domain": "abituno.com",
+          "source_url": "https://rdap.verisign.com/com/v1/domain/abituno.com",
+          "http_status": 404,
+          "content_type": "application/rdap+json",
+          "checked_date": "2026-10-03",
+          "verification": "Official RDAP response independently observed by root and research workstreams",
+          "interpretation": "No RDAP object returned at check time; supported by separate registrar new-registration offers, without reserving the name"
+        },
+        "registrar_ovh": {
+          "source_url": "https://www.ovhcloud.com/it/domains/tld/it/",
+          "checked_date": "2026-10-03",
+          "registration_eur_excl_vat": 2.99,
+          "renewal_eur_excl_vat": 8.99,
+          "period": "one year",
+          "scope": "Generic .it TLD tariff; exact abituno.it checkout quote not completed because the storefront verification challenge remained unresolved"
+        },
+        "registrar_namecheap": {
+          "source_url": "https://www.namecheap.com/domains/registration/results/?domain=abituno.it",
+          "checked_date": "2026-10-03",
+          "method": "Normal browser storefront observation",
+          "it_result": "Unsupported TLD",
+          "offered_domain": "abituno.com",
+          "action": "Add to cart offered; not activated",
+          "displayed_first_year_eur": 10.05,
+          "displayed_retail_eur": 13.35,
+          "promotion_usd": 6.79,
+          "promotion_code": "NEWCOM679",
+          "promotion_scope": "New customers; non-premium domains; eligibility not confirmed",
+          "vat_status": "Not confirmed",
+          "renewal_price_status": "Not confirmed",
+          "source_snapshot_sha256": "41299f2fcf7599b56deafa9bea05f22669108f2b37d0c07cc8a8b8257394a52a"
+        },
+        "illustrative_totals_dominiofaidate": {
+          "assumed_vat_percent": 22,
+          "currency": "EUR",
+          "period": "one year",
+          "it_first_year": 10.97,
+          "it_renewal": 12.19,
+          "it_and_com_first_year": 28.04,
+          "it_and_com_renewal": 29.26,
+          "limitation": "Calculated at 22% VAT; actual applicable taxes and final checkout amount must be confirmed for the purchaser"
+        },
+        "name_search": {
+          "checked_date": "2026-10-03",
+          "exact_queries": 4,
+          "results_requested": 20,
+          "finding": "No exact Abituno or Abivito presence surfaced within the limited sample; not an exhaustive or trademark search",
+          "reported_by": "Root workstream research summary",
+          "nearby_names": [
+            {
+              "name": "Abitami",
+              "url": "https://abitami-italia.com/"
+            },
+            {
+              "name": "AbitaQui",
+              "url": "https://abitaqui.it/"
+            },
+            {
+              "name": "Aptuno",
+              "url": "https://www.aptuno.com/"
+            }
+          ],
+          "rejected_names": [
+            {
+              "name": "Dimovia",
+              "reason": "Existing presence",
+              "url": "https://www.dimovia.com/"
+            },
+            {
+              "name": "Domivio",
+              "reason": "Existing presence",
+              "url": "https://domivio.nl/over-domivio/"
+            },
+            {
+              "name": "Nivora",
+              "reason": "Existing presence",
+              "url": "https://www.nivoracap.com/"
+            },
+            {
+              "name": "Avitora",
+              "reason": "Premium .com offer",
+              "displayed_usd": 5005
+            }
+          ],
+          "other_domain_finding": {
+            "domain": "invitara.com",
+            "status": "Registered",
+            "verification": "Independent registrar research summary"
+          },
+          "legal_clearance": "Pending"
+        },
+        "actions": {
+          "purchase": "NOT_PERFORMED",
+          "dns_change": "NOT_PERFORMED",
+          "origin_or_canonical_activation": "NOT_PERFORMED",
+          "sender_activation": "NOT_PERFORMED",
+          "external_email": "NOT_SENT"
+        },
+        "sanitization": "No WHOIS personal records, login cookies, shopping tokens, or cart identifiers preserved."
+      },
+      "actions": {
+        "purchase": "NOT_PERFORMED",
+        "dns_change": "NOT_PERFORMED",
+        "origin_or_canonical_activation": "NOT_PERFORMED",
+        "sender_activation": "NOT_PERFORMED",
+        "external_email": "NOT_SENT"
+      },
+      "sanitization": "No WHOIS personal records, login cookies, shopping tokens, or cart identifiers preserved."
+    }
+  },
+  "actions": {
+    "domain_purchased": false,
+    "dns_modified": false,
+    "canonical_activated": false,
+    "sender_activated": false,
+    "public_deploy": false,
+    "additional_push": false
+  },
+  "sanitization": "No cart identifiers, challenges, cookies, credentials, registrant personal data or raw HTML saved"
+}

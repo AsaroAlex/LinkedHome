@@ -120,7 +120,7 @@ describe("transactional email", () => {
       );
       expect(message.html).not.toMatch(/<img|<script|\?token=/);
       expect(message.from).toEqual({
-        name: "Soglia",
+        name: "Doorluma",
         address: environment.MAIL_FROM,
       });
       expect(message.text).toContain("30 minuti");
