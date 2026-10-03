@@ -44,14 +44,20 @@ All counts and windows below are **proposed study designs**, not achieved sample
 
 Twelve interviews are an initial qualitative sample, not statistical validation. Do not infer market rates from it. Stop or redesign a study if it needs sensitive data without an approved purpose and handling protocol. Research does not include impersonating a tenant, submitting false applications or paying for competitor accounts.
 
+### Study handling and pre-registration
+
+Before recruitment: assign a research owner/controller, purpose and lawful basis; issue a plain-language notice; keep contact details separate from pseudonymous notes; restrict access; define deletion dates and an incidental sensitive-disclosure protocol. No recruitment or contact is authorised merely by this plan. Include nonstandard income, unsupported credentials, varied language/digital confidence and assistive-technology needs without inferring protected traits.
+
+Extend E2/E3 with unaided teach-back before explaining publication, match, document sharing and limits of revoking downloaded copies. Compare otherwise identical UNVERIFIED/PENDING/EXPIRED/DISPUTED cards: record landlord invitation choices, reasons and understanding as well as algorithm invariance. Do not assume equal eligibility prevents human badge bias. Test scarce-side usefulness with consenting landlords with recent vacancies and voluntary repeat use against their current workflow; synthetic task completion is not retention. Before each study, the research owner writes proceed/revise/stop criteria and reports negative observations; the proposed 12 interviews are exploratory.
+
 ## 4. Measurement definitions for a later pilot
 
 These definitions reconcile 06 §D; they are **not adopted KPI targets**. Use property-level vacancies and tenant search episodes rather than lifetime account counts. A new move creates a new episode; a relisted property needs a deduplication rule.
 
 | Measure | Numerator / observation | Denominator / population | Important exclusions and caveats |
 |---|---|---|---|
-| Tenant opportunity within 14 days | Eligible published search episodes receiving at least one relevant, non-test property invitation | Published episodes with a full 14-day observation window in the pilot catchment | Report early withdrawals separately; no zero-day cohorts mixed in; no required paid/optional verification |
-| Supply conversation within 7 days | Published genuine vacancies with at least one accepted invitation | Vacancies with a full 7-day window | Deduplicate property relists and users; disclose withdrawn/let-elsewhere records |
+| Tenant opportunity within 14 days | Eligible published search episodes receiving at least one relevant, non-test property invitation | Published episodes with a full 14-day observation window in the pilot catchment | Fix eligibility at publication. Keep early withdrawals and unsuccessful/let-elsewhere episodes in intent-to-observe denominators; report them separately. Immature cohorts are pending, not silently discarded. No optional verification requirement |
+| Supply conversation within 7 days | Published genuine vacancies with at least one accepted invitation | Vacancies with a full 7-day window | Fix eligibility at publication; retain early withdrawals/let-elsewhere in the denominator and report outcomes separately; deduplicate relists; immature follow-up stays pending |
 | Invitation acceptance within 72 hours | Unique invitations accepted within 72 hours of delivery | Valid delivered invitations with 72-hour observation | Track expired, withdrawn, blocked and undeliverable separately |
 | Time to first invitation / accepted invitation | Elapsed time from publication, reported separately for tenant and vacancy | Full defined cohort, including observations without an event | Report censored/no-event counts; median among successes alone exaggerates performance |
 | Viewing progression | Matches with a viewing explicitly reported by a participant | Mature mutual matches, with reporting coverage | Self-report is not confirmed tenancy; avoid counting duplicate events |
@@ -79,4 +85,4 @@ No provider account, credential, contract, partner commitment or operating team 
 
 Brand/name, product thesis, final MUST/SHOULD list, design system, data model, framework versions and production deployment remain later phases. Inherited technology recommendations are candidate inputs: six npm versions were rechecked, but no integrated application was built. Guarantee/insurance products, rent collection, contract filing, bureau reports and biometric processing remain separate feasibility tracks.
 
-The immediate next action is to resolve the critical evidence items in [review 01](../reviews/review-01-research.md), then conduct the required independent review. Move to Phase 5 only with a recorded gate decision. Completing these research documents does not authorise beginning implementation.
+The immediate next action is to resolve the critical evidence items in [review 01](../reviews/review-01-research.md), then conduct the required independent review. Move to Phase 5 only with a recorded gate decision. The user subsequently authorised all repository phases. A recorded desk-research gate permits conservative synthetic development; live research and production gates remain separate.

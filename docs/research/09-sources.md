@@ -1,5 +1,8 @@
 # 09 — Consolidated source and verification register
 
+> **Update, 2026-10-03:** [Primary recheck](evidence/primary-recheck.md) and [retrieval manifest](evidence/retrieval-manifest.json) supersede the access status and corrected conclusions for the named sources. Initial 403 attempts below are preserved as historical observations. Unlisted sources remain unverified; bibliography size does not imply verification.
+
+
 **Review date:** 2026-10-02. This is a provenance index, not a claim that every listed page was read or every statement is correct. Source IDs are local to each dossier: `02:S1` and `05:S1` identify different records. This register preserves that namespace and links back to the original bibliographies. The completed legal dossier uses `07:L01`–`07:L21`; its missing legacy S-number bibliography was not reconstructed as if it had been verified.
 
 ## 1. Coverage and evidence rules

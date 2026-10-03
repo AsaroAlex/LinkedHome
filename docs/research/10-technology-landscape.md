@@ -1,6 +1,6 @@
 # 10 — Technology Landscape (input for the stack ADR)
 
-> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. The [research gate](../reviews/review-01-research.md) has not passed.
+> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. Current primary corrections and access limits are recorded in [the recheck](evidence/primary-recheck.md); the current gate decision is in [review 02](../reviews/review-02-independent-research.md).
 
 **Research / access date for every source:** 2026-10-02
 **Author role:** Senior full-stack architect + DevOps (LinkedHome research track)
@@ -367,7 +367,7 @@ Legend: **F** = figure verified today; **E** = estimate from memory, re-verify b
 | **storybook** / `@storybook/nextjs-vite` | 10.6.1 | 2026-09-29 | MIT | — | 10.0.0 = 2025-10-28: **ESM-only**, module automocking, Vitest addon, "Next 16, Vitest 4" support; 11.0.0-alpha exists [S40] |
 | GitHub Actions Postgres | — | — | — | — | FACT: official docs show a `services: postgres: image: postgres` service container with health checks [S70] |
 
-**Recommendation (OPINION):** Vitest 5 (unit + component via RTL), **real PostgreSQL 16 for integration tests** using the IntegreSQL *pattern* implemented in ~50 lines (run migrations into a `template` DB once per run; `CREATE DATABASE test_<n> TEMPLATE …` per worker; drop after) — works locally today and in CI with the Postgres service container; PGlite as the fast lane for pure-SQL unit tests. Playwright 1.63 for E2E with `@axe-core/playwright` on every public page; Lighthouse CI budgets (mobile preset) on the public routes; **Playwright screenshots over Storybook** for visual QA at MVP (Storybook 10 is excellent but another ESM-only toolchain to maintain). Avoid pg-mem for anything touching Postgres-specific SQL.
+**Recommendation (OPINION):** Vitest 5 (unit + component via RTL), **real PostgreSQL 16 for integration tests** using the IntegreSQL *pattern* implemented in ~50 lines (run migrations into a `template` DB once per run; `CREATE DATABASE test_<n> TEMPLATE …` per worker; drop after) — proposed for local development and CI; not executed in the current checkout at research time; PGlite as the fast lane for pure-SQL unit tests. Playwright 1.63 for E2E with `@axe-core/playwright` on every public page; Lighthouse CI budgets (mobile preset) on the public routes; **Playwright screenshots over Storybook** for visual QA at MVP (Storybook 10 is excellent but another ESM-only toolchain to maintain). Avoid pg-mem for anything touching Postgres-specific SQL.
 
 ---
 
@@ -465,11 +465,11 @@ Everything in this section is **OPINION** built on the facts above; each row nam
 | Storage | **`StorageProvider` interface: filesystem (dev/test) / S3-compatible (prod) — Cloudflare R2 `eu` jurisdiction or Scaleway fr-par**; sharp re-encode + EXIF strip; file-type sniff; ClamAV as async job | Hetzner/OVH object storage (unverified) | MinIO server is unmaintained; R2 has a documented EU jurisdiction + free egress |
 | Hosting | **Docker image on Fly.io `fra`/`ams` or Hetzner+Coolify; Neon Launch (Frankfurt) or Fly MPG for Postgres** | Supabase Pro (Frankfurt) | Verified EU regions and prices; app stays portable |
 | Observability | **Sentry (EU org) + OTel/pino → Axiom EU; PostHog EU cookieless; Plausible for marketing** | Better Stack / Grafana EU (verify) | Verified EU storage locations |
-| Testing | **Vitest 5, RTL, MSW 3, fast-check; real PG16 template-DB pattern (+PGlite); Playwright 1.63 + axe; Lighthouse CI budgets; Playwright screenshots** | Storybook 10 | No Docker locally; everything above runs with one `pnpm dev`/`pnpm test` |
+| Testing | **Vitest 5, RTL, MSW 3, fast-check; real PG16 template-DB pattern (+PGlite); Playwright 1.63 + axe; Lighthouse CI budgets; Playwright screenshots** | Storybook 10 | Proposed target; current checkout had no scripts at research time |
 | Tooling | **Biome 2.5 (lint+format)** or ESLint 10 + Prettier if type-aware rules are required; lefthook; Renovate; GH Actions with Postgres service | Turborepo (later) | Single binary, fast; husky dormant |
 | Security | Next CSP nonces (`proxy.ts`), Server-Action origin check, rate-limiter-flexible (Postgres), gitleaks + osv-scanner + Semgrep in CI | — | All verified built-ins/libs |
 
-**One-command local run (OPINION, satisfies the constraint):** `pnpm dev` = `concurrently` of (a) `drizzle-kit migrate` against local PG16, (b) `maildev`, (c) `next dev`, (d) pg-boss worker in-process; no Docker, no S3 emulator, no Redis.
+**Proposed startup sequence:** verify PostgreSQL readiness, run migrations to completion, then start the app and any required workers. Never race migrations with dependent services. The final ADR and tested repository scripts supersede this candidate stack.
 
 ---
 

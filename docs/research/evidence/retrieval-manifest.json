@@ -1,0 +1,100 @@
+[
+  {
+    "id": "eurostat-tenure-2024-dimensions",
+    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ilc_lvho02?geo=IT&time=2024",
+    "checked_at": "2026-10-03T08:18:49.607901+00:00",
+    "status": 200,
+    "bytes": 8186,
+    "content_type": "application/json",
+    "final_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ilc_lvho02?geo=IT&time=2024",
+    "sha256": "de05cc98bf5393dc3de64ee93cb6a2fe5a2c3aa1ddb88cde3540eb74cd1027b8",
+    "waf_action": null
+  },
+  {
+    "id": "locservice-pricing",
+    "url": "https://www.locservice.fr/tarifs",
+    "checked_at": "2026-10-03T08:14:30.724363+00:00",
+    "status": 200,
+    "bytes": 53421,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://www.locservice.fr/tarifs",
+    "sha256": "16b6d84b5b77bf1e76dec138553896c3908d7bbcbe5d3e3f14bd021f4d36a885",
+    "waf_action": null
+  },
+  {
+    "id": "idealista-q4-2025",
+    "url": "https://www.idealista.it/news/immobiliare/residenziale/2026/01/20/312325-case-in-vendita-e-in-affitto-i-capoluoghi-piu-richiesti-a-fine-2025",
+    "checked_at": "2026-10-03T08:14:30.743730+00:00",
+    "status": 200,
+    "bytes": 96840,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://www.idealista.it/news/immobiliare/residenziale/2026/01/20/312325-case-in-vendita-e-in-affitto-i-capoluoghi-piu-richiesti-a-fine-2025",
+    "sha256": "a052e1582b67a920d26aa2ee733d1dd1c8bdbb63b8aa3dadf72c83824f93e76c",
+    "waf_action": null
+  },
+  {
+    "id": "garante-dpia",
+    "url": "https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/9058979",
+    "checked_at": "2026-10-03T08:14:31.907960+00:00",
+    "status": 200,
+    "bytes": 123243,
+    "content_type": "text/html;charset=UTF-8",
+    "final_url": "https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/9058979",
+    "sha256": "5eab19cccaf626d994d643a4abdb03e9de5bb312b913688d1b13c7befa47b366",
+    "waf_action": null
+  },
+  {
+    "id": "garante-sic",
+    "url": "https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/9141941",
+    "checked_at": "2026-10-03T08:14:32.185073+00:00",
+    "status": 200,
+    "bytes": 210106,
+    "content_type": "text/html;charset=UTF-8",
+    "final_url": "https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/9141941",
+    "sha256": "3d459e0c07745e6e365eee528a85a09bce7d13fc9030db12d530a5f6a29907d4",
+    "waf_action": null
+  },
+  {
+    "id": "mediation-session-full",
+    "url": "https://www.normattiva.it/esporta/attoCompleto?atto.dataPubblicazioneGazzetta=1989-02-09&atto.codiceRedazionale=089G0062",
+    "status": 200,
+    "bytes": 60025,
+    "sha256": "73ed9c859282dde5979822599a0c5627b4c13e9adf5d8478186a669677b2c19a",
+    "title": [
+      "Normattiva - Export"
+    ]
+  },
+  {
+    "id": "garante-cookies",
+    "url": "https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/9677876",
+    "checked_at": "2026-10-02T17:23:05.389027+00:00",
+    "status": 200,
+    "bytes": 243070,
+    "content_type": "text/html;charset=UTF-8",
+    "final_url": "https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/9677876",
+    "sha256": "624e45e32267303c9272078fec13af9d10bbc8d5c0a0f28e5263bf0ce266aba9",
+    "waf_action": null
+  },
+  {
+    "id": "homeflow",
+    "url": "https://homeflow.it/",
+    "checked_at": "2026-10-02T17:23:05.420676+00:00",
+    "status": 200,
+    "bytes": 121296,
+    "content_type": "text/html; charset=utf-8",
+    "final_url": "https://homeflow.it/",
+    "sha256": "f49879ed9c602348eb9c7022bd0092bcda859b9ef4d8ccb2df43b05913c2b6f0",
+    "waf_action": null
+  },
+  {
+    "id": "gdpr-authority-pdf",
+    "url": "https://www.garanteprivacy.it/documents/10160/0/Regolamento+UE+2016+679.+Arricchito+con+riferimenti+ai+Considerando+Aggiornato+alle+rettifiche+pubblicate+sulla+Gazzetta+Ufficiale++dell%27Unione+europea+127+del+23+maggio+2018.pdf/1bd9bde0-d074-4ca8-b37d-82a3478fd5d3?version=1.9",
+    "checked_at": "2026-10-03T08:25:00.856726+00:00",
+    "status": 200,
+    "bytes": 967425,
+    "content_type": "application/pdf",
+    "final_url": "https://www.garanteprivacy.it/documents/10160/0/Regolamento+UE+2016+679.+Arricchito+con+riferimenti+ai+Considerando+Aggiornato+alle+rettifiche+pubblicate+sulla+Gazzetta+Ufficiale++dell%27Unione+europea+127+del+23+maggio+2018.pdf/1bd9bde0-d074-4ca8-b37d-82a3478fd5d3?version=1.9",
+    "sha256": "16c0bb358414707b194678bdf80d7e4ba721a0d9cb0e76965569257b75be3e58",
+    "waf_action": null
+  }
+]

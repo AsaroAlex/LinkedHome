@@ -6,18 +6,18 @@
 
 ## Current scope and gate
 
-The user requested **completion of research and review** for this continuation. Product thesis, branding, design and implementation remain subsequent work. The research documents are assembled and a single-agent A–H review is written; the **research gate is BLOCKED**, with two critical primary-evidence items unresolved. Independent peer review has not occurred. See [review 01](docs/reviews/review-01-research.md).
+The user now requests **all repository phases**. Research passed the independent desk gate for internal design and local development with synthetic data; no commercial/legal/customer validation is implied. See [review 02](docs/reviews/review-02-independent-research.md). Product, design and architecture are next, followed by implementation and verification. Real-user launch requirements will be recorded separately and cannot be fabricated by local tests.
 
 ## Phase ledger
 
 | # | Phase | Status | Evidence / remaining condition |
 |---|---|---|---|
 | 0 | Environment / repository inspection | DONE | Actual checkout, Git integrity/read access, runtime versions and document-only workflow checked |
-| 1 | International market research | BLOCKED — evidence verification | Dossiers 01/02/04/06 and source register assembled; current primary competitor checks blocked |
-| 2 | Competitor analysis | BLOCKED — evidence verification | Categories and identity gaps explicit; current product/traction claims unverified |
-| 3 | Italian-market analysis | BLOCKED — evidence verification | All 17 city totals and four weight scenarios checked; input evidence and launch hypothesis not validated |
-| 4 | Legal / privacy research | BLOCKED — evidence verification | 07 sections 0–17 complete, 21 official reading targets; current primary texts/counsel application outstanding |
-| — | Research review 01 | BLOCKED — approval pending | A–H perspectives and eight document fixes complete; R01-C1/C2 open; independent review pending |
+| 1 | International market research | DONE — bounded desk review | Dossiers 01/02/04/06 and source register assembled; current selected primary corrections recorded |
+| 2 | Competitor analysis | DONE — bounded desk review | Categories and identity gaps explicit; current product/traction claims unverified |
+| 3 | Italian-market analysis | DONE — bounded desk review | All 17 city totals and four weight scenarios checked; input evidence and launch hypothesis not validated |
+| 4 | Legal / privacy research | DONE — bounded desk review | 07 sections 0–17 complete, 21 official reading targets; current primary texts/counsel application outstanding |
+| — | Research review 01 | DONE — independent follow-up | A–H perspectives and eight document fixes complete; R01-C1/C2 resolved for synthetic development; independent review completed in review 02 |
 | 5 | Product thesis | TODO | Requires research-gate decision |
 | 6 | Feature prioritisation | TODO | Research opportunities are provisional |
 | 7 | Naming / branding | TODO | No name/domain/trademark clearance performed |
@@ -71,4 +71,4 @@ All 17 published city totals agree with recomputation. Four alternative weightin
 
 ## Next useful action
 
-Apply the saved domain changes in environment settings, then re-fetch the specific blocked sources in 09 §2.1. A failed request is not a request for a GitHub token; the native Git read already works. Complete R01-C1/C2 with exact current source content, periods and qualifications, update conclusions if contradicted, and obtain the intended independent review before recording a research-gate pass. Do not begin Phase 5 in this continuation.
+Execute phases 5–28 under the expanded user instruction. Preserve the current isolated checkout and the synthetic-data boundary; save tested installation/startup instructions after the software exists.

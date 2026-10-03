@@ -1,6 +1,6 @@
 # 07 — Legal, privacy and fairness research for an Italian reverse rental marketplace
 
-Research review: **2026-10-02**. Scope: product research, not a legal clearance or a completed DPIA. **Status: document complete; primary-text verification and counsel review outstanding.**
+Research review: **2026-10-02**. Scope: product research, not a legal clearance or a completed DPIA. **Status: baseline primary texts inspected; launch-specific current-law and counsel assessment outstanding.**
 
 ## 0. Evidence and scope
 
@@ -11,7 +11,7 @@ The previous draft stopped at section 9 without its bibliography. This revision 
 - **PROPOSAL**: a conservative design choice, not a statutory requirement.
 - **OPEN**: a condition that remains unresolved.
 
-Direct HTTPS retrieval of GDPR, SCHUFA, the AI Act and DSA on EUR-Lex, the Garante cookie guidelines and Law 39/1989 on Normattiva returned proxy **403** on 2026-10-02. No live search tool is available in this session. The other references below are identified reading targets, not newly accessed sources. Historical search excerpts are not a substitute for consolidated law. See [the evidence register](09-sources.md) and [review 01](../reviews/review-01-research.md).
+Initial proxy failures on 2 October are historical. The [primary recheck](evidence/primary-recheck.md) records subsequent substantive reading of GDPR (Garante-hosted annotated text), Law 39/1989 and Garante cookie/DPIA/SIC texts, with hashes and access limits. EUR-Lex AI Act, DSA and judgments remain unread; no claim depending on them is adopted as clearance. L01/L05/L07/L12/L18 reading status must be interpreted using this supplement, not the original blocked-attempt status. Qualified review of the actual service remains a launch condition, not a requirement to finish synthetic local development.
 
 ## 1. Purposes, lawful bases and controller roles
 
@@ -174,6 +174,9 @@ These are proposed checks for later design/implementation, **not executed softwa
 
 ## 16. Open decisions and release gates
 
+> Historical baseline status: blocked/unread labels below refer to the initial 2 October pass. The current [primary recheck](evidence/primary-recheck.md) supersedes them for the specified GDPR, Garante and Normattiva texts; other targets remain unread.
+
+
 | Gate | Owner to appoint | Evidence required | Status |
 |---|---|---|---|
 | Primary legal-text verification | Research lead | Retrieved consolidated texts, exact provisions, current amendment/application checks | BLOCKED by current egress policy for tested hosts |
@@ -186,6 +189,9 @@ These are proposed checks for later design/implementation, **not executed softwa
 Document completion does not close these gates. Research synthesis may identify hypotheses; it must not announce legal compliance, launch approval or a validated business model.
 
 ## 17. Sources and retrieval status
+
+> Historical baseline status: blocked/unread labels below refer to the initial 2 October pass. The current [primary recheck](evidence/primary-recheck.md) supersedes them for the specified GDPR, Garante and Normattiva texts; other targets remain unread.
+
 
 **B** = direct retrieval attempted on 2026-10-02 and proxy returned 403. **R** = identified official reading target; not retrieved in this continuation. None of these entries is a newly verified legal-text quote. Provision references above must be confirmed against the current text; homepage targets require locating the exact current guidance.
 

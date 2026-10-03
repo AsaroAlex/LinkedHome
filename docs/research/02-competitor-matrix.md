@@ -1,6 +1,6 @@
 # 02 — Reverse Rental Marketplace Competitor Matrix
 
-> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. The [research gate](../reviews/review-01-research.md) has not passed.
+> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. Current primary corrections and access limits are recorded in [the recheck](evidence/primary-recheck.md); the current gate decision is in [review 02](../reviews/review-02-independent-research.md).
 
 **Research / access date:** 2026-10-02
 **Scope:** Direct "reverse rental marketplace" competitors (tenants publish profiles; landlords discover / invite them), plus adjacent products that must be classified so the team does not confuse them with true reverse marketplaces.
@@ -31,7 +31,7 @@
 
 | Area | Confidence | Why |
 |---|---|---|
-| Homeflow existence, founders, launch, model | High | Regional newspaper + company site excerpts agree [S1][S2] |
+| Homeflow existence / operating status | Mixed | Current company FAQ says pre-launch; historical press launch claim conflicts; no funding inference |
 | Homeflow pricing / users / app / funding | Low | Not found in any excerpt |
 | MyTenant (Italy) | High that *no public trace exists* | 5 distinct queries, only name collisions |
 | Renter30 | High (model, legal entity, launch date) | Company site + USPTO filing [S9][S10] |
@@ -48,11 +48,11 @@ Legend for "Model": **RM** = true reverse marketplace (tenant profile is the pri
 
 | # | Product | Country | Model | Status (2026-10-02) | Launch | Who pays, how much | Verification | Matching logic | Traction evidence |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | **Homeflow** (homeflow.it) | IT (Milan, Brescia, Bergamo) | **RM** (+ sales side) | Active (site + blog indexed) [S1][S3][S4][S5] | Sept 2025 [S2] | NOT FOUND | Self-declared by tenant (job, references) [S2] | CLAIM: AI "punteggio di compatibilità" [S2] | None public |
+| 1 | **Homeflow** (homeflow.it) | IT (proposed Milan, Brescia, Bergamo) | **RM** (+ sales side) | Company homepage says pre-launch; live operations unverified [R-HF](evidence/primary-recheck.md#r-hf) | Historical press says Sept 2025; conflicts with current FAQ | Launch terms pending | Self-declared / proposed | Advertised compatibility; implementation unverified | No audited traction |
 | 2 | **MyTenant** | IT? | — | **NOT FOUND** (only a Nigerian app and a generic landlord tool share the name) [S7][S8] | — | — | — | — | — |
 | 3 | **Renter30** (renter30.com) | US (LLC in Northfield, MA) | **RM** | Active, just launched [S9][S10] | First use 2026-02-13 [S10] | 100 % free both sides [S9] | None described | Zip-code search, no score [S9] | None public |
 | 4 | **Want2Rent** | AU? | — | **NOT FOUND** (only a Florida rent-to-own site shares the name) [S12] | — | — | — | — | — |
-| 5 | **LocService** (locservice.fr) | FR | **RM** (since 1997) | Active [S13][S14] | 1997 [S15][S18] | Tenant one-off €34 / €29 student; landlord free [S13][S14] | Tenant declares guarantees/budget [S14] | Rule-based: rent, property type, area [S14] | 250k landlords, 6,000 matches/day (self-reported) [S15][S17]; Trustpilot 3.9/5, 22k+ reviews [S17][S19] |
+| 5 | **LocService** (locservice.fr) | FR | **RM** | Public service and pricing pages available | Company says service since 2005; 1997 attribution unresolved | Tenant €29/month, cancellable; landlords free | Advertises state-verified dossier; mechanism unverified | Declared criteria | All provider traction claims unaudited [R-LS](evidence/primary-recheck.md#r-ls) |
 | 6 | **Kamernet** (kamernet.nl) | NL | Portal **+ RM feature** (landlord browses seeker profiles) | Active [S22] | n.d. | Landlord Premium €34/month; seekers also behind a paywall [S22][S24] | n.d. | Filters in "Kamernet Data" dashboard [S22] | Trustpilot page exists (rating not retrieved) [S25] |
 | 7 | **Preferred Tenants** (preferredtenants.au) | AU | **RM** ("premium directory of low-risk renters") | Active [S26][S27] | n.d. | Tenant pays to activate profile (amount NOT FOUND); landlord free [S26][S27] | Exclusion rules (late rent, breach, eviction, income source) [S26] | Landlord enters property → sees only "suitable" profiles [S26] | None public |
 | 8 | **FindaFlat.co.uk** | UK | **RM-section** ("flat wanted" adverts) | Active (page indexed) [S28] | n.d. | NOT FOUND | n.d. | Landlord searches wanted ads [S28] | None public |
@@ -79,10 +79,10 @@ Legend for "Model": **RM** = true reverse marketplace (tenant profile is the pri
 
 | Field | Finding |
 |---|---|
-| **Current status** | **Active** (FACT): homepage "HomeFlow — Il mercato immobiliare reinventato" is indexed [S1]; the blog publishes practical rental guides (e.g. "Come trovare casa in affitto senza agenzia", "Tapparelle rotte affitto: chi paga", "Danni all'immobile: quando trattenerli dalla caparra") [S3][S4][S5]. No evidence of shutdown. Direct fetch of homeflow.it was blocked, so I could not confirm that sign-up is live today. |
-| **Launch date** | FACT: "La piattaforma ha debuttato a settembre in contemporanea a Milano, Brescia e Bergamo" — i.e. September 2025 [S2]. Company founded "nell'estate del 2025" at the Polo Innovativo di Brescia (MIMIT-certified incubator) [S2]. |
+| **Current status** | Company homepage read 2026-10-02 says “Homeflow è in fase di pre-lancio”; first cities will activate based on waitlist demand. Availability and traction are unverified [R-HF](evidence/primary-recheck.md#r-hf). |
+| **Launch date** | Historical press [S2] reported a September 2025 debut in Milan/Brescia/Bergamo. Current primary homepage says pre-launch. Preserve the discrepancy; do not assume an operational three-city launch or outside funding. |
 | **Legal / ownership** | FACT: "Srl innovativa" with Marco Copeta (amministratore, 34 %), Fabrizio Tudisco (33 %), Polo Innovativo (33 %) [S2]. Stefano Patelli also named among the leadership [S2]. |
-| **Geographic coverage** | FACT: Milan, Brescia, Bergamo [S2]. |
+| **Geographic coverage** | Milan/Brescia/Bergamo are proposed first cities on the current pre-launch homepage; operations unverified. |
 | **Tenant flow** | FACT (from company and press text): tenants create a profile and "a loro discrezione potranno dichiarare situazione lavorativa, referenze, preferenze e altre informazioni utili"; the platform surfaces "profilo, budget, zona e tempistiche di chi cerca" before any message [S1][S2]. |
 | **Landlord flow** | FACT: "è il proprietario a vedere un feed di profili qualificati di potenziali inquilini" [S2]; landlords publish "condizioni, regole e disponibilità" so "il primo contatto è già informato"; "chi offre decide con più elementi: meno candidature generiche, più segnali utili per scegliere" [S1]. |
 | **Sales side** | FACT: "oltre alla locazione c'è anche la compravendita, dove viene applicata la stessa logica del marketplace invertito" [S2]. |
@@ -98,9 +98,9 @@ Legend for "Model": **RM** = true reverse marketplace (tenant profile is the pri
 | **Traction signals** | Regional press coverage (Giornale di Brescia) [S2]; active SEO blog [S3][S4][S5]. No national press, no LinkedIn company data surfaced in searches. |
 | **App-store ratings** | N/A (no app found). |
 | **Complaints / positive feedback** | NOT FOUND (no reviews surfaced). |
-| **Likely strengths (HYPOTHESIS)** | First Italian company to own the "marketplace invertito" narrative; two-sided (rent + sale) widens TAM; incubator support; founders with local real-estate background (Copeta described elsewhere as "Advisor Immobiliare" in Brescia). |
-| **Apparent weaknesses (HYPOTHESIS)** | Three-city footprint; no app; no published pricing; "AI compatibility score" without methodology is an opaque-score risk (see §3.2); self-declared data with no verification lowers landlord trust — the very problem it claims to solve. |
-| **Differentiation vs. a new entrant** | Narrative identical to LinkedHome's; the gap is in verification, transparency of the score, and tenant-side control. |
+| **Likely strengths (HYPOTHESIS)** | Recognisable reverse-flow narrative. First-mover status, expanded TAM and actual competitive strength are not established. |
+| **Apparent weaknesses (HYPOTHESIS)** | Current pre-launch offer, terms and advertised compatibility need live validation. No inference of a three-city footprint or absent verification. |
+| **Differentiation vs. a new entrant** | Similar advertised narrative. User control and explainability are proposed choices, not a proven open gap. |
 
 ### 2.2 MyTenant — Italy (claimed)
 
@@ -148,21 +148,21 @@ HYPOTHESIS: as with MyTenant, the name may be wrong, pre-launch, or defunct. Pre
 | Field | Finding |
 |---|---|
 | **Status** | **Active** (FACT): pricing page live [S13]; multiple 2026-dated review articles [S14][S15][S16][S17]. |
-| **Launch** | FACT: created in **1997**; publisher GOBOCOM, RCS Vannes 414 438 192 [S15][S18]. |
+| **Launch** | Current pricing page says service “Depuis 2005”. Historical 1997 attribution may concern the publisher; not reconciled. No proven 28-year operating history [R-LS](evidence/primary-recheck.md#r-ls). |
 | **Coverage** | FACT: all of France ("partout en France") [S13]. |
 | **Model** | FACT: "modèle inversé où le locataire publie sa recherche et ce sont les propriétaires qui le contactent" [S14]. |
 | **Tenant flow** | FACT: tenant registers a "candidature" stating needs, budget and guarantees; the candidature is broadcast for a period the tenant chooses, up to 12 months [S14]. |
 | **Landlord flow** | FACT: landlords consult candidatures that already match "au loyer, au type de bien, au secteur" and contact tenants; benefit framed as "éviter d'être noyé sous les appels" [S14]. |
-| **Pricing** | FACT: **tenant pays once: €34 standard / €29 student (rates since 2025-07-22); not a subscription**. **Landlords: entirely free — no commission, no publication fee, no fee to access files** [S13][S14]. |
-| **Verification** | Tenant self-declares guarantees; no third-party verification described in excerpts [S14]. |
+| **Pricing** | Current company pricing page, read 2026-10-03: **€29/month**, without commitment, cancellable; landlords entirely free. This supersedes the old €34/€29 one-off claim. Full cancellation terms not reviewed [R-LS](evidence/primary-recheck.md#r-ls). |
+| **Verification** | Current LocService page advertises a state-verified dossier; mechanism and efficacy unverified (R-LS). |
 | **Matching** | Rule-based filters (rent, property type, area) [S14]. No AI score claimed. |
 | **Traction** | Self-reported: "plus de 250 000 propriétaires inscrits", "6 000 mises en relation par jour", 91,000+ on-site reviews at 4.1/5 [S15][S17]. Independent: **Trustpilot 3.9/5 with 22,000+ reviews**, "94 % des retours positifs" [S17][S19]. |
 | **Complaints** | FACT (review-site synthesis): negative reviews come "essentiellement de locataires en zone tendue qui attendaient des contacts garantis, ce que le service ne promet pas" [S17]; recurring "arnaque?" questions answered as "site légitime et ancien … pas une arnaque" [S17][S18]. |
 | **Positive feedback** | No agency fees for tenants; landlords get pre-qualified demand [S14][S16]. |
 | **Mobile / web** | Web confirmed; app not retrieved. |
-| **Strengths (HYPOTHESIS)** | 28-year survival proves the reverse model is viable at national scale; one-off tenant fee is simple and defensible; landlord side free maximises supply. |
-| **Weaknesses (HYPOTHESIS)** | In tight markets (Paris, Lyon) tenant pays and may get zero contacts → refund/expectation complaints; no verification layer; dated UX (inference from review-site tone, low confidence). |
-| **Relevance to Italy** | Highest. Same civil-law landlord mindset, same "no agency fee" hook. Tenant-pays-once is a proven price point (~€30). |
+| **Strengths (HYPOTHESIS)** | A long-running reverse service is a relevant precedent. Survival and published prices establish neither profitability nor Italian willingness to pay. |
+| **Weaknesses (HYPOTHESIS)** | Complaints about lack of contacts are research leads. Current page advertises “Dossier vérifié” and “un dossier vérifié par l’État”; mechanism, coverage and effectiveness were not audited. No basis for claiming no verification layer. |
+| **Relevance to Italy** | Reverse-flow and pricing comparator only. Current €29/month subscription is not evidence of a proven Italian price point. |
 
 ### 2.6 Kamernet (kamernet.nl) — Netherlands
 
@@ -316,7 +316,7 @@ Roomster, Bungalow, Apartment List "Rental Profile", Rentable, RentMatch, Homepa
 
 **Consistent failure modes (FACT where cited, otherwise HYPOTHESIS):**
 - **Liquidity in tight markets.** LocService's negative reviews concentrate on tenants in "zone tendue" who paid and got no contacts [S17]. Flow (ZA) abandoned matching because "the critical mass required was not near what was needed" [S48]. HYPOTHESIS: reverse marketplaces invert the usual cold-start problem — supply (landlords) is now the scarce, lazy side that has to be pulled in to browse, and landlords only browse when they have a vacancy *right now*.
-- **Verification is thin.** Homeflow (self-declared "a loro discrezione") [S2], Renter30 (none) [S9], LocService (declared guarantees) [S14]. Only the Italian screening-adjacent products (Affitto Certificato — registry data [S33]; InquilinoGiusto — pay slips [S30]; InquilinoFacile — "documenti verificati" [S32]) describe document checks. HYPOTHESIS: the landlord's real pain ("centinaia di candidature anonime senza alcuno strumento per capire chi è davvero affidabile" [S2]) is *trust*, and self-declared profiles do not solve it.
+- **Verification is not an established open gap.** LocService now advertises a state-verified dossier; InquilinoGiusto, InquilinoFacile and Affitto Certificato already make verification claims [S30][S32][S33]. The current mechanisms and quality of each require separate verification. A reusable profile is not novel by itself.
 - **Privacy exposure.** Renter30 shows profiles to anyone with a zip code and no account [S9]; Finn.no wanted ads are public [S21]. doMate is the only product found that explicitly hides phone and bank details until later [S45]. HYPOTHESIS: GDPR-grade gating (what is visible pre- vs post-invite) is an open differentiator in Italy.
 - **No mobile apps** among the small reverse players (Homeflow, Renter30, InquilinoGiusto, InquilinoFacile, Preferred Tenants: none found). HYPOTHESIS: web-first is adequate for landlords; tenants may expect an app.
 
@@ -335,7 +335,7 @@ HYPOTHESIS: an opaque AI score on self-declared data is the weakest position —
 
 | Pattern | Example | Price point | Who pays |
 |---|---|---|---|
-| One-off tenant fee for visibility | LocService | €34 / €29 student, up to 12 months [S13][S14] | Tenant |
+| Tenant subscription | LocService | €29/month as published 2026-10-03 [R-LS](evidence/primary-recheck.md#r-ls) | Tenant |
 | Tenant pays to "activate" a curated profile | Preferred Tenants | amount not found [S26] | Tenant |
 | Tenant subscription for contact priority | ImmoScout24 Suchen+/MieterPlus | €12.99–39.99 / month [S63] | Tenant |
 | Landlord subscription to browse seeker profiles | Kamernet Premium | €34 / month [S22] | Landlord |
@@ -345,13 +345,13 @@ HYPOTHESIS: an opaque AI score on self-declared data is the weakest position —
 | Rent share for managed/guaranteed rental | Zappyrent | 1 month + 8 % of subsequent months [S39] | Landlord |
 | Free (pre-monetisation) | Renter30, InquilinoGiusto, InquilinoFacile (private), Homeflow (unknown) | €0 [S9][S30][S32] | — |
 
-**Dominant model among pure reverse marketplaces: tenant pays a small one-off (~€30) or activation fee; landlord is free.** The oldest survivor (LocService) and the Australian curated directory both chose this. Landlord-pays appears only as (a) a subscription bolted onto a portal that already has landlord traffic (Kamernet) or (b) per-check screening (Affitto Certificato, RentProfile). HYPOTHESIS for Italy: tenant-pays is socially fragile (doMate's founders explicitly refuse it [S45]; Italian tenant advocacy is strong), so a landlord-pays-per-verified-contact or per-check model with a free tenant side is more defensible, but it requires solving landlord liquidity first.
+**No dominant one-off model is established by this sample.** LocService currently publishes a monthly tenant subscription; other models vary. For the proposed product, core tenant visibility and invitations remain free. A potential landlord service price is a hypothesis requiring costs, uptake, alternatives and legal review; no per-contact or per-match fee is adopted.
 
 ### 3.4 Evidence of shutdowns and pivots
 
 - **Flow (South Africa)** — the only documented pivot: consumer matching + rewards (2019) → "full-stack marketplace" (2020) → B2B social-ad automation for agents (2021) → $4.5M raise on the B2B model (2023). Stated reason: lack of critical mass [S48][S49][S50][S51]. Lesson: the team monetised the *agent* side where budgets exist.
 - **Name churn / long tail** — FindaFlat.co.uk, tenantslookup.com, renter-profile.com: small reverse or profile sites with no visible traction [S28][S77][S78]. HYPOTHESIS: the model is cheap to build and routinely attempted, rarely liquid.
-- **Survivors** are either very old with a national brand built pre-portal era (LocService, 1997 [S15]) or reverse *sections inside* dominant portals (Finn.no, Kamernet) [S21][S22].
+- **Survival evidence is descriptive.** LocService says service since 2005, while Finn.no and Kamernet offer features within broader portals. These examples do not establish causation or profitability.
 - No Italian reverse-marketplace shutdown was documented in this pass; MyTenant could be one (see §2.2) but there is no evidence either way. Movebubble, Bungalow, Roomster status: NOT RESEARCHED.
 
 ---
@@ -360,10 +360,10 @@ HYPOTHESIS: an opaque AI score on self-declared data is the weakest position —
 
 ### 4.1 Implications (HYPOTHESIS unless cited)
 
-1. **Homeflow is a narrative competitor, not yet a traction competitor.** It owns the "marketplace invertito" story in Lombardy press since Sept 2025 [S2] and is building SEO content [S3][S4][S5], but shows no public pricing, app, user numbers or outside funding. A new entrant in the same cities would fight for the same early-adopter landlords; entering elsewhere (Rome, Turin, Bologna, university towns) avoids a head-on launch.
-2. **Verification is the open flank.** Every Italian reverse/profile product either self-declares (Homeflow) or is a screening tool without a marketplace (Affitto Certificato). Combining document-verified profiles (ID, payslips, previous-landlord reference as Affitto Certificato does for free [S34]) with the reverse feed is not yet done well by anyone found.
+1. **Homeflow is a relevant advertised competitor.** Its current pre-launch FAQ prevents treating it as proven operational competition in three cities; absence of audited traction also does not prove inactivity. Reassess city competition scores before a launch decision.
+2. **A verification moat is unproven.** Existing Italian profile/screening products and LocService make verification claims. Differentiate through tested user control and contact usefulness; remove claims that nobody combines these features well.
 3. **Make the score explainable or drop it.** See §3.2. InquilinoFacile already markets "scoring trasparente" [S32]; the entrant should go further (show tenants their own score and the factors).
-4. **Price point anchors:** ~€30 one-off (tenant, LocService [S13]); €34/month (landlord browse, Kamernet [S22]); €59 per check (landlord, Affitto Certificato [S36]); 1 month + 8 % (managed, Zappyrent [S39]). A landlord-side price between €0 (browse) and €15–€30 per verified contact/unlock sits between these anchors.
+4. **Published prices are comparators, not validated anchors:** LocService €29/month (tenant); historical Kamernet €34/month and Affitto Certificato €59/check remain unrefreshed. No inference supports a €15–30 contact unlock.
 5. **Expect incumbents to copy cheaply.** Finn.no and Kamernet show that a "wanted"/profile section can be added to a portal [S21][S22]; Immobiliare.it and Idealista could do the same. Defensibility must come from verification data and workflow (invites, applications, references), not from the feed itself.
 6. **Privacy-by-design is both a legal requirement and a feature.** Renter30's open profiles [S9] would not be acceptable under GDPR for income/household data; doMate's hidden-contact channel [S45] is the right direction.
 7. **Liquidity strategy must target landlords with a vacancy *now*.** Flow's failure [S48] and LocService's complaints [S17] both stem from landlords not showing up. Seeding via agencies (Affitto Certificato and Pronto Inquilino both go through agencies [S33][S43]) or via managed-rental partners may be necessary before a pure C2C flywheel works.

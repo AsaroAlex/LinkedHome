@@ -11,7 +11,7 @@ Format: **D-NNN — title** · date · status (`proposed` / `accepted` / `supers
 - **Date:** 2026-10-02 · **Status:** accepted
 - **Decision:** No positioning, naming, design or implementation decision is taken until the research dossier in `docs/research/` exists and has passed the first critical review.
 - **Reason:** The founding brief contains strong assumptions (reverse marketplace, Tenant Passport defensibility, Milan as obvious launch city). Each is cheap to validate now and expensive to unwind later.
-- **Evidence:** Preliminary search on 2026-10-02 already showed a funded Italian competitor (Homeflow) live in three cities with an opaque AI compatibility score, which materially changes the differentiation question.
+- **Evidence:** Preliminary search identified an Italian competitor (Homeflow). Correction on 2026-10-03: its current FAQ says pre-launch; funding and operational launch were not established. See the primary-evidence recheck.
 - **Result:** Research gate opened with seven parallel streams (see `PLAN.md` §1–4).
 
 ## D-002 — Local development must not require Docker
@@ -24,3 +24,10 @@ Format: **D-NNN — title** · date · status (`proposed` / `accepted` / `supers
 ## Research checkpoint — 2026-10-02
 
 D-001 remains in force. Research documents 01–10 and the single-agent A–H assessment in [review 01](reviews/review-01-research.md) are complete as documents; the research gate has **not passed**. Primary legal/market evidence and independent review remain outstanding. Bologna, pricing, providers and the technical stack are provisional research inputs, not approved product decisions. See [the synthesis](research/01-market-landscape.md) for reconciled conclusions.
+
+## D-003 — Bounded research gate and full implementation scope
+
+- **Date:** 2026-10-03 · **Status:** accepted
+- **Decision:** Research gate passed for internal design and local synthetic development, after eight independent reviewers and strategy/legal follow-ups. The user requested the entire repository plan.
+- **Evidence:** Review 02 and primary recheck, including competitor corrections and legal source hashes.
+- **Boundary:** No proven market demand, moat, city superiority, trademark clearance, live identity/income provider or legal approval. These are launch conditions, not claims made by a local MVP.

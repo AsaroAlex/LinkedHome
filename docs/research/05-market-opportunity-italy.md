@@ -1,6 +1,6 @@
 # 05 — Market opportunity: Italian long-term residential rentals and launch-city decision matrix
 
-> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. The [research gate](../reviews/review-01-research.md) has not passed.
+> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. Current primary corrections and access limits are recorded in [the recheck](evidence/primary-recheck.md); the current gate decision is in [review 02](../reviews/review-02-independent-research.md).
 
 | | |
 |---|---|
@@ -26,9 +26,9 @@
 
 | Indicator | Value | Year | Label | Source |
 |---|---|---|---|---|
-| Share of population owning their home (Italy) | 72.3 % – 74.2 % across the most recent EU-SILC years (the digest did not isolate the 2024 point value) | 2021-2024 | FACT (range) | [S1], [S2] |
-| Share of population renting (complement) | ≈ 26 % – 28 % | 2021-2024 | HYPOTHESIS (derived from S1 range) | [S1] |
-| Split market-rate vs reduced/free rent | **n/r** — dataset `ilc_lvho02` carries the split (tenant at market price / tenant reduced price or free) but the 2024 Italian values could not be opened | 2024 | GAP | [S1] |
+| Share of population owning their home (Italy) | **75.9%** | 2024 | PRIMARY: population, all income groups / household types | [R-EU](evidence/primary-recheck.md#r-eu) |
+| Share of population renting | **24.1%** | 2024 | PRIMARY: population, not households | [R-EU](evidence/primary-recheck.md#r-eu) |
+| Split market-rate vs reduced/free rent | **16.0% / 8.1%** of population | 2024 | PRIMARY: same dataset slice | [R-EU](evidence/primary-recheck.md#r-eu) |
 | Housing-cost overburden rate, tenants at market price (share spending > 40 % of disposable income on housing) | **19.4 %** | 2024 | FACT | [S3] |
 | Households living in owned homes (Agenzia delle Entrate / MEF) | "Tre famiglie su quattro" (≈ 75 %) | 2019 data | FACT | [S4] |
 | Households renting by necessity (not choice) | **53.6 %** of tenants say renting is forced by insufficient resources to buy | 2025 | FACT | [S31] |
@@ -120,15 +120,15 @@ Source: *Rapporto Immobiliare* residential editions (2025 edition = 2024 data; 2
 | Dwellings owned by natural persons | **32.7 M = 92.8 %** of all cadastral dwellings; 7.2 % owned by companies/entities | 2020 | FACT [S6] |
 | Residential units in the leased-dwellings database | **3.6 M**, of which **≈ 3.2 M (87 %) leased by natural persons**, ≈ 0.5 M (13 %) by companies/entities | 2023 ed. | FACT [S5] |
 | Number of individual landlords (locatori persone fisiche) | **4.3 M** (slightly down vs 2014) | 2016 | FACT [S5] |
-| Implied leased units per individual landlord | **≈ 0.75** (3.2 M / 4.3 M; different reference years) → the modal landlord owns **one** rented flat | — | HYPOTHESIS [S5] |
+| Leased units per individual landlord | **WITHHELD**: 3.2M units / 4.3M persons mix reference years and populations; cannot establish mean or mode | — | No one-flat-landlord inference |
 | Total dwellings (ISTAT census) | **35,271,829** (2021) → **35,610,473** (2023) | 2021/2023 | FACT [S37][S38] |
 | Non-occupied dwellings | **9,581,772 = 27.2 %** (2021) → **9,558,791 ≈ 26.8 %** (2023); Islands 34.9 %, South 32 %, North-West 26 %, North-East 23.1 % | 2021/2023 | FACT [S37][S38] |
 | SoloAffitti claim: empty homes | "8 milioni di case sfitte", owners deterred by **morosità and uncertain recovery times** | 2025 | FACT (industry estimate) [S33] |
 | Short-term rental structures in the national database (BDSR) | **686,645 registered; 610,686 CIN issued (88.9 %)** | 23-09-2025 | FACT [S43] |
-| Airbnb listings per city (Inside Airbnb, 2025-26 scrapes) | Roma **34,409** · Milano **≈ 22,000** · Firenze **11,138** · Napoli **7,520** · Bologna **3,895**; per 100 residents: Roma 0.86, Milano 1.40, **Firenze 3.03**; the five largest tourist cities hold **≈ 100,000** apartments (Aug 2026) | 2025-26 | FACT [S44] |
+| Airbnb listings per city (Inside Airbnb, 2025-26 scrapes) | Roma **34,409** · Milano **≈ 22,000** · Firenze **11,138** · Napoli **7,520** · Bologna **3,895**; density comparisons withheld: reported Roma/Milano densities do not match the populations above, and geography/period compatibility is unverified; the five largest tourist cities hold **≈ 100,000** apartments (Aug 2026) | 2025-26 | FACT [S44] |
 | Banca d'Italia agents: short-term rentals | "rilevanza elevata in molte città", significant driver of rent growth | Q4 2025 | FACT [S29] |
 
-**Reading:** supply is held by millions of one-flat landlords (87 % of leased units, modal holding = 1) who screen manually, fear arrears and, since 2023, have had a liquid alternative in short-term lets. This is the most fragmented supply side in Western Europe and is precisely the segment a landlord-facing screening/matching tool must win one flat at a time (HYPOTHESIS: agencies are the aggregation layer today; the product competes with them for the landlord's attention, not with the portals).
+**Reading:** natural persons appear important in the inherited figures, but neither the modal landlord holding nor a Western-Europe fragmentation ranking is established. Manual screening and agency aggregation remain research hypotheses; do not derive city fragmentation scores from the invalid ratio.
 
 ### A8. Risk and trust
 
@@ -143,7 +143,7 @@ Source: *Rapporto Immobiliare* residential editions (2025 edition = 2024 data; 2
 | Regions | Lombardia **6,574** (1st), then Lazio, Campania | FACT |
 | Provinces | Roma **5,286**, Napoli **3,159**, Torino **2,350**, Milano **1,726** (of which **1,317 = 76 % morosità**) | FACT |
 | Per 1,000 renting families (SoloAffitti elaboration) | Roma **16**, Torino **10**, Napoli **9**, Bologna **6**, Milano **5**; Imperia prov. **30.2**; Turin = province with most evictions relative to population | FACT |
-| Daily rate | **153** morosità eviction orders per day | FACT [S35] |
+| Daily rate | **WITHHELD**: inherited 153/day implies 55,845/year, inconsistent with ≈30,000 arrears orders and 40,158 total orders | Categories/period must be reconciled before use [S35] |
 
 **Eviction duration** (legal-practice sources, 2026) [S36]: best case (no opposition) **2-4 months**; typical **6-12 months** in efficient courts, **18-24 months** in large cities; worst case with opposition and forced execution **3-4 years**; in Milan/Rome/Naples **3-12 months** between validation hearing and actual release; "termine di grazia" adds ~4 months, humanitarian deferrals +2-3 months.
 
@@ -180,23 +180,23 @@ Source: *Rapporto Immobiliare* residential editions (2025 edition = 2024 data; 2
 
 | City | Pop. (comune) | Foreign share | Univ. students / fuorisede | Asking rent €/m² (Idealista) | YoY rent | Demand pressure | Time-to-rent / speed | Evictions 2024 (prov.; per 1,000 renting fam.) | Airbnb listings (per 100 res.) | Named competitors present | Local policy signal |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| **Milan** | 1,399,079 (end-2025) [S41] | 21 % [S41] | n/r (ASSUMPTION: largest in Italy; verify MUR) | **22.8** (Dec-25); 23.3 (Oct-25) [S19][S25] | **-2.3 %** 2025 [S20] | Idealista index **6.9 vs 12** nat. (Q1-26, -19 %) [S24]; but 33 % let in < 24 h (Q1-25) [S16] | **2.6 mo** (+12 %) [S14] | 1,726; **5**/1,000 [S35] | ≈ 22,000 (1.40) [S44] | **Homeflow**, Zappyrent, Joivy, Habyt, +6,000 coliving beds by 2026 [S64][S65][S66] | Startup capital: 72 % of Lombardy's innovative startups [S67] |
-| **Bologna** | n/r | n/r | **> 90,000** students; **57 % fuorisede**; new enrolments 26,748 (+3 %), out-of-region **-6 %** [S51] | **17.1** (Dec-25); 17.7 (Oct-25) [S19][S25] | **-7.7 %** 2025 [S19] | Idealista index **11.9 vs 9.7** nat. (Q4-25) — highest among retrieved cities [S23] | "among the fastest" [S17] | n/r; **6**/1,000 [S35] | 3,895 [S44] | Zappyrent, Joivy; no Homeflow | 30.6 % of contracts to students [S52]; €1.3 M concordato incentive, Piano per l'Abitare, 3,100 beds + 2,300 pipeline [S53][S54] |
-| **Rome** | 2,746,984 [S42] | 12.9 % [S42] | n/r (ASSUMPTION: largest student body after Milan) | **18.6** (Oct-25) [S25] | n/r | n/r | 66 % let within 90 days [S14] | **5,286**; **16**/1,000 (highest) [S34][S35] | **34,409** (0.86) [S44] | Zappyrent, Joivy | — |
+| **Milan** | 1,399,079 (end-2025) [S41] | 21 % [S41] | n/r (ASSUMPTION: largest in Italy; verify MUR) | **22.8** (Dec-25); 23.3 (Oct-25) [S19][S25] | **-2.3 %** 2025 [S20] | Idealista Q4-25 index **7.8 vs 9.7** national [S23]; different-period Q1-26 excerpt remains unverified [S24]; but 33 % let in < 24 h (Q1-25) [S16] | **2.6 mo** (+12 %) [S14] | 1,726; **5**/1,000 [S35] | ≈ 22,000 (density withheld) [S44] | **Homeflow**, Zappyrent, Joivy, Habyt, +6,000 coliving beds by 2026 [S64][S65][S66] | Startup capital: 72 % of Lombardy's innovative startups [S67] |
+| **Bologna** | n/r | n/r | **> 90,000** students; **57 % fuorisede**; new enrolments 26,748 (+3 %), out-of-region **-6 %** [S51] | **17.1** (Dec-25); 17.7 (Oct-25) [S19][S25] | **-7.7 %** 2025 [S19] | Idealista index **11.9 vs 9.7** nat. (Q4-25) — above national, below e.g. Rome 19 and Turin 14.1 [S23] | "among the fastest" [S17] | n/r; **6**/1,000 [S35] | 3,895 [S44] | Zappyrent, Joivy; Homeflow operations unverified | 30.6 % of contracts to students [S52]; €1.3 M concordato incentive, Piano per l'Abitare, 3,100 beds + 2,300 pipeline [S53][S54] |
+| **Rome** | 2,746,984 [S42] | 12.9 % [S42] | n/r (ASSUMPTION: largest student body after Milan) | **18.6** (Oct-25) [S25] | n/r | n/r | 66 % let within 90 days [S14] | **5,286**; **16**/1,000 (highest) [S34][S35] | **34,409** (density withheld) [S44] | Zappyrent, Joivy | — |
 | **Turin** | 856,745 [S42] | 16.0 % [S42] | n/r | **11.5** (Dec-25) [S26] | n/r (FQ May-26: "crescono anche Bologna e Torino" [S28]) | n/r | n/r | **2,350**; **10**/1,000; highest relative to population [S34][S35] | n/r | Zappyrent, Joivy; +4,600 coliving beds by 2026 [S66] | — |
 | **Florence** | n/r | n/r | n/r | **22.6** (Dec-25); 22.9 (Oct-25) [S19][S25] | n/r | n/r | n/r | n/r | **11,138 (3.03 — highest density)** [S44] | Zappyrent, Joivy | STR saturation [S44] |
 | **Padua** | n/r | n/r | n/r (ASSUMPTION: large; verify UniPD) | **14.1** centre [S27] | **+4.5 %** in Q3-25 (among fastest-rising) [S27] | n/r | n/r | n/r | n/r | none of the named players confirmed | — |
 | **Naples** | n/r | n/r | n/r | **15.6** (Oct-25) [S25] | n/r | n/r | n/r | **3,159**; **9**/1,000 [S34][S35] | 7,520 [S44] | Zappyrent (4 listings) | — |
-| Bergamo / Brescia | n/r | n/r | n/r | n/r | n/r | n/r | n/r | n/r | n/r | **Homeflow home turf** [S64] | 2nd/3rd startup hubs of Lombardy [S67] |
+| Bergamo / Brescia | n/r | n/r | n/r | n/r | n/r | n/r | n/r | n/r | n/r | **Homeflow proposed first cities** [S64] | 2nd/3rd startup hubs of Lombardy [S67] |
 | Verona, Genoa, Trieste, Bari, Pisa, Parma, Modena, Trento | n/r | n/r | n/r | n/r | n/r | n/r | n/r | n/r | n/r | Zappyrent in Genoa [S65] | — |
 
 Average monthly rents (SoloAffitti network, 2025): Italy **€680**, Milan **€1,278**, Rome **€999** [S33]. Typical 1-bed/2-bed asking rents per city were not retrievable as a table (GAP, §E).
 
 ### B2. City notes
 
-**Milan.** The deepest market by every absolute measure (population, foreign share 21 %, graduate inflows, rents €22.8/m² and €1,278 average contract) but the one where the 2025-26 cycle turned first: rents -2.3 % in 2025, demand index down 19 % to 6.9 (below the national 12), time-to-rent up to 2.6 months, listings rising. Short-term rentals (~22,000 Airbnb units) and 6,000 new coliving beds absorb the mobile demand. Competition is unmatched in Italy: Homeflow launched its AI "compatibility" matching here in Sept 2025 [S64]; Zappyrent's guaranteed-rent model is Milan-born [S65]; Joivy/Habyt dominate rooms. Eviction risk is the lowest of the big cities (5/1,000). **Scarce side today: landlord attention (every landlord already has agencies, Zappyrent, Homeflow pitching); tenant demand is abundant but softening.**
+**Milan.** Comparable Q4-2025 demand index 7.8 is below national 9.7. Current Homeflow operations, landlord acquisition cost and paid demand are unresolved; no inference that Milan should automatically be excluded.
 
-**Bologna.** The most student-intensive large city: 90,000+ students, 57 % fuorisede, 30.6 % of all rental contracts signed by students, demand index 11.9 (highest retrieved). Rents fell -7.7 % in 2025 from €18.5 to €17.1/m² — a correction after the 2023-24 spike, coinciding with the Comune paying landlords to bring empty homes to concordato and 2,300 new beds in pipeline. Evictions moderate (6/1,000). Few Airbnb units (3,895). Institutional channels exist that no other city offers at this scale: Unibo *Sportello affitti* [S55], the Piano per l'Abitare and its fuorisede survey [S53], a renewed accordo territoriale [S54]. Competitors present only as generic nationals (Zappyrent, Joivy). **Scarce side: supply — demonstrated by the Comune subsidising landlords; a product must bring landlords, tenants come for free through the university funnel.**
+**Bologna.** Research catchment candidate. Verified Q4-2025 demand index 11.9 is above 9.7 national, below Rome/Turin and many smaller cities. Historical student, rent, vacancy and municipal-channel figures need current primary confirmation. Institutional existence would not prove acquisition access or free tenant acquisition.
 
 **Rome.** Largest absolute stock and the biggest short-term-rental drain (34,409 listings), highest eviction intensity (16/1,000, 5,286 orders) and the slowest, most sprawling market (66 % let within 90 days). Rent €18.6/m². Operationally hard for a density-dependent marketplace (HYPOTHESIS). **Scarce side: trustworthy supply (STR displacement + morosità fear).**
 
@@ -224,25 +224,27 @@ Average monthly rents (SoloAffitti network, 2025): Italy **€680**, Milan **€
 | 2 | Turnover / churn | 10 | Share of transitory/student contracts, tenant permanence, mobility | A2, A5, A6 |
 | 3 | Student population & fuorisede | 10 | Absolute and relative student demand | A5, B1 |
 | 4 | Young-professional inflow | 10 | Graduate migration destinations, foreign share, employers | A6 |
-| 5 | Rent level / affordability pressure | 8 | Willingness to pay for a better process; tenant pain | A1, B1 |
+| 5 | Rent level / affordability pressure | 8 | Tenant affordability pressure; does not measure landlord willingness to pay | A1, B1 |
 | 6 | Competition (inverse) | 10 | Presence of Homeflow, Zappyrent, Joivy/Habyt, coliving pipeline, agency density | A7, B1 |
 | 7 | Property availability | 8 | Listing volumes, supply trend, STR displacement | A3, A7 |
-| 8 | Landlord fragmentation | 7 | Share of one-flat private landlords (reachable, under-served) | A7 |
+| 8 | Landlord fragmentation | 7 | Private-landlord reachability; one-flat distribution unverified | A7 |
 | 9 | Ability to acquire both sides | 8 | Institutional funnels (universities, Comune programmes), community density | B2 |
 | 10 | CAC risk (inverse) | 7 | Advertising saturation, competitor spend, noise | B1 |
 | 11 | Network-effect density / compactness | 7 | Geographic compactness, single-market liquidity | B2 |
 | | **Total** | **100** | | |
 
-### C2. Scores (1 = worst, 5 = best) with evidence lines
+### C2. Historical scores (1 = worst, 5 = best) — not a launch recommendation
+
+The 17 totals and four weight scenarios are arithmetically correct. Input validity is not: Homeflow status, landlord fragmentation, payer WTP and institutional access are unresolved or corrected. Preserve this table as an audit trail, not current evidence of the best city. A new launch decision needs comparable reachable vacancies, observed landlord participation and uncertainty in inputs as well as weights. Bologna is a research catchment hypothesis only.
 
 Confidence: **H** = three or more retrieved city-specific facts; **M** = one or two; **L** = none, scored by analogy (must be re-scored after §E gaps are closed).
 
 | City | Conf. | 1 Demand | 2 Turnover | 3 Students | 4 Young prof. | 5 Rent pressure | 6 Competition (inv.) | 7 Availability | 8 Fragmentation | 9 Both sides | 10 CAC (inv.) | 11 Density | **Weighted (max 5)** |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| **Bologna** | H | 5 — index 11.9 vs 9.7 [S23]; "fast" [S17] | 5 — 57 % fuorisede, 30.6 % contracts to students [S51][S52] | 5 — > 90k students [S51] | 4 — named top-3 destination for Southern graduates [S39] | 4 — €17.1/m², rooms 2nd most expensive [S19][S11] | 3 — Zappyrent, Joivy; no Homeflow [S65][S66] | 3 — small stock; rents -7.7 % = supply returning [S19] | 4 — student lets by small private owners (HYPOTHESIS from [S52]) | 5 — Unibo sportello, Piano Abitare, accordo territoriale [S53-55] | 4 — institutional funnels lower paid-CAC need | 5 — compact, bike/walk city | **4.32** |
+| **Bologna** | H | 5 — index 11.9 vs 9.7 [S23]; "fast" [S17] | 5 — 57 % fuorisede, 30.6 % contracts to students [S51][S52] | 5 — > 90k students [S51] | 4 — named top-3 destination for Southern graduates [S39] | 4 — €17.1/m², rooms 2nd most expensive [S19][S11] | 3 — Zappyrent, Joivy; Homeflow operations unverified [S65][S66] | 3 — small stock; rents -7.7 % = supply returning [S19] | 4 — student lets by small private owners (HYPOTHESIS from [S52]) | 5 — Unibo sportello, Piano Abitare, accordo territoriale [S53-55] | 4 — institutional access and lower CAC are untested hypotheses | 5 — compact, bike/walk city | **4.32** |
 | **Padua** | M | 4 — +4.5 % Q3-25 among fastest [S27] | 4 — student city (ASSUMPTION) | 4 — large university (ASSUMPTION) | 3 — Veneto employment basin (ASSUMPTION) | 3 — €14.1/m² [S27] | 4 — no named player confirmed | 3 — n/r | 4 — n/r (national pattern [S5]) | 4 — single university, compact | 4 — low competitor spend | 4 — compact | **3.74** |
 | **Pisa** | L | 4 | 4 | 4 — very high students-per-resident (ASSUMPTION) | 1 — weak employer base | 3 | 4 | 2 — tiny stock | 4 | 4 | 4 | 5 | **3.53** |
-| **Milan** | H | 3 — index 6.9 vs 12, TTR 2.6 mo [S24][S14]; 33 % < 24 h [S16] | 5 — transitory/expat heavy, 21 % foreign [S41] | 5 — largest (ASSUMPTION) | 5 — primary graduate destination [S39] | 5 — €22.8/m², €1,278 avg [S19][S33] | 1 — Homeflow + Zappyrent + Joivy + Habyt + 6,000 coliving beds [S64-66] | 4 — large stock, listings rising [S11] | 3 — more agency/institutional share (HYPOTHESIS) | 3 — dense but noisy | 1 — most contested ad market | 3 — large metro | **3.50** |
+| **Milan** | H | 3 — historical mixed-period index (superseded above), TTR 2.6 mo [S24][S14]; 33 % < 24 h [S16] | 5 — transitory/expat heavy, 21 % foreign [S41] | 5 — largest (ASSUMPTION) | 5 — primary graduate destination [S39] | 5 — €22.8/m², €1,278 avg [S19][S33] | 1 — Homeflow + Zappyrent + Joivy + Habyt + 6,000 coliving beds [S64-66] | 4 — large stock, listings rising [S11] | 3 — more agency/institutional share (HYPOTHESIS) | 3 — dense but noisy | 1 — most contested ad market | 3 — large metro | **3.50** |
 | **Trento** | L | 4 | 3 | 3 | 3 | 3 | 4 | 2 — tight stock | 4 | 3 | 4 | 4 | **3.38** |
 | Parma | L | 3 | 3 | 3 | 3 | 3 | 4 | 3 | 4 | 3 | 4 | 4 | **3.31** |
 | Modena | L | 3 | 3 | 3 | 3 | 3 | 4 | 3 | 4 | 3 | 4 | 4 | **3.31** |
@@ -263,25 +265,25 @@ Sensitivity (original scratchpad not present in this checkout; all totals and th
 
 **Strategy: single city first (Bologna), second city (Padua) only after a liquidity threshold, no simultaneous two-city launch.** Reasons:
 
-1. **Density beats size for a two-sided marketplace.** Bologna combines the highest retrieved demand pressure (index 11.9 vs 9.7 national), the highest student share of the rental market (30.6 % of contracts, 57 % fuorisede), compactness, and institutional distribution channels (Unibo sportello, Comune programme) that make both-side acquisition cheap. Liquidity (matches per week in a given neighbourhood) is reachable with a few hundred landlords.
+1. **Density is a hypothesis to test.** Bologna may permit geographically focused learning, but neither cheap acquisition nor liquidity with a few hundred landlords is established. Compare reachable current vacancies and actual participation before selecting a launch city.
 2. **Supply is the scarce side and the city already pays landlords to list** (€1.3 M concordato incentive, empty-homes measure [S54]). A product that de-risks tenants for one-flat landlords is aligned with public policy; co-marketing with the Comune/Unibo is plausible (HYPOTHESIS to test in discovery interviews).
-3. **Padua as city two** replicates the pattern (big university, compact, +4.5 % rent momentum, no named competitor) 1 h 20 min away by train, allowing one ops team to serve both and creating a defensible Emilia–Veneto corridor (Bologna → Padua → Modena/Parma/Verona) that Milan-centric competitors are not prioritising.
+3. **No second city is selected.** Padua and other candidates require comparable evidence; proximity or score arithmetic does not establish a defensible corridor.
 
 **Arguments AGAINST Milan as launch city (why it is deferred, not excluded):**
-- Direct competitor already in-market with the same core idea: Homeflow's compatibility score launched Sept 2025 in Milan/Brescia/Bergamo [S64]; Zappyrent's guaranteed-rent model is strongest there [S65]; Joivy/Habyt and 6,000 new coliving beds absorb the mobile tenant [S66].
-- Agency-dominated supply with the highest ad-market competition in Italy (72 % of Lombardy startups, every PropTech's first city) → highest CAC on both sides.
+- Homeflow advertises a similar idea but currently says pre-launch; operational competition is unverified [R-HF](evidence/primary-recheck.md#r-hf); Zappyrent's guaranteed-rent model is strongest there [S65]; Joivy/Habyt and 6,000 new coliving beds absorb the mobile tenant [S66].
+- Agency share and higher Milan CAC are hypotheses; no comparable measured acquisition-cost evidence was retrieved.
 - The cycle has turned: rents -2.3 % (2025), demand index -19 %, time-to-rent +12 % [S20][S24][S14]. Landlords now have more time to find tenants, which lowers urgency for a screening tool exactly where it is most contested.
 - Low eviction rate (5/1,000) means the "arrears-fear" value proposition is weaker than in Turin/Rome/Naples.
 
-**Arguments FOR Milan (what we give up):** the largest absolute volume and highest willingness to pay (€1,278 average contract, €22.8/m²), the strongest inflow of young professionals and expats (21 % foreign), and the best PR/investor visibility. **Trade-off:** Bologna caps early GMV but buys a defensible density and a cheaper proof of liquidity; Milan should be the city-three move once the matching engine has demonstrable liquidity metrics and a landlord-side NPS, ideally entering via the expat/relocation segment where Homeflow is weakest (HYPOTHESIS).
+**Milan trade-off hypothesis:** scale may matter, but rent levels do not establish payer WTP. No city-three schedule, cheaper Bologna acquisition or weakness of Homeflow in relocation is verified.
 
-**Why not Turin or Rome first:** Turin is cheap and large but its market pain is landlord distrust (10 evictions/1,000) rather than scarcity, and the tenant solvency base is thinner; Rome is too sprawling and STR-drained for a density product; both are strong second-wave cities for a "trust/guarantee" feature set.
+**Other candidates:** Turin and Rome need comparable reachable-supply and participation research; no solvency comparison or automatic second-wave classification is adopted.
 
 ### C4. Which side is scarce, city by city (determines which side to subsidise)
 
 | City | Scarce side | Evidence | Implication |
 |---|---|---|---|
-| Bologna | **Supply** | Highest demand index; Comune subsidises landlords; 2,300-bed pipeline can't close a 57 %-fuorisede gap [S23][S53][S54] | Subsidise landlords: free listing, free screening, concierge onboarding; tenants acquired via university channels |
+| Bologna | Supply is a hypothesis | Q4-2025 index above national, not highest; institutional access unverified | Test reachable vacancies and repeat participation, not assumed free acquisition |
 | Padua | **Supply** (seasonal, Sept-Oct) | +4.5 % rent momentum [S27] | Same as Bologna; pre-load landlords before September |
 | Florence | **Supply** (structural) | Airbnb 3.03/100 residents [S44] | Landlord-first, position against STR hassle after 26 %/P.IVA rules [S61] |
 | Rome | **Trustworthy supply** | 34,409 STR, 16 evictions/1,000 [S44][S35] | Guarantee/screening product has pull; density low |
@@ -305,7 +307,7 @@ Sensitivity (original scratchpad not present in this checkout; all totals and th
 
 ## D. Implications for the product
 
-1. **Woo landlords first, everywhere except Milan.** 87 % of leased units belong to private individuals, the modal landlord owns one flat, and their stated blocker is arrears fear and recovery time (28 % experienced delays, 8 % morosità; 8 M homes kept empty) [S5][S33]. Onboarding must be concierge-grade: photo/listing done for them, contract type selector (4+4 / 3+2 / transitorio / studenti), cedolare simulator, concordato attestation link, RLI registration reminder (30-day rule).
+1. **Test supply participation.** No modal one-flat holding or automatic exception for Milan is established. Compare landlord workflows and voluntary participation; concierge, fiscal and registration services are separate unapproved candidates.
 2. **The tenant profile is the asset; sell its *verifiability*, not a score.** Landlords in Milan already check finances (65 %) but almost never get a guarantee (11 %) [S58]. Give them structured, explainable evidence (income band, contract type, employer category, references, deposit readiness, guarantor availability) rather than a single opaque number — this is both the differentiation vs Homeflow and the anti-discrimination safeguard (UNAR: Arab-name applicants get 35 % fewer replies [S56]).
 3. **Design for high turnover.** 4+4 contracts are shrinking; transitory (28.9 %), concordato (24.8 %) and student contracts grow [S8]. Tenant permanence is ~26 months [S33]. Re-matching events are frequent — the product should retain both sides across moves (tenant profile persists; landlord relists in one click).
 4. **Price against the agency fee, not against the portal.** Market custom is one month's rent + VAT from each side [S62]; on a €680 average rent (Bologna/Padua will be €600-900 for 1-2 beds — ASSUMPTION) the landlord's alternative costs €830 per let. This comparison is a pricing hypothesis, not willingness-to-pay evidence. No per-match/success fee is recommended; assess any flat service fee and regulated guarantee activity separately (07 §11).

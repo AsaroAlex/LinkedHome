@@ -1,5 +1,8 @@
 # Review 01 — Research gate
 
+> Historical checkpoint. The current independent panel, primary-source corrections and bounded PASS are in [review 02](review-02-independent-research.md).
+
+
 **Date:** 2026-10-02. **Scope:** dossiers 01–10, their source trail, cross-document consistency and the evidence needed before product decisions. **Outcome: BLOCKED for gate approval; document consolidation and internal corrections completed.**
 
 **Review method:** one agent performed eight explicit role-based passes following [the review protocol](README.md). These are A–H perspectives, not eight independent people or agent runs. No customer interviews, qualified legal opinion or independent peer sign-off is implied. The underlying evidence limitations are recorded in [09](../research/09-sources.md).

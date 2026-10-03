@@ -1,12 +1,15 @@
 # 01 — Market landscape synthesis: reverse rental discovery in Italy
 
+> Current correction: see [primary recheck](evidence/primary-recheck.md) and [independent review](../reviews/review-02-independent-research.md). Homeflow says pre-launch; LocService is €29/month and advertises a verified dossier; Bologna is a research catchment hypothesis. No verified moat, payer WTP, launch-city superiority or provider availability is claimed.
+
+
 **Review date:** 2026-10-02. **Status:** research synthesis complete; evidence gate pending. This document consolidates [competitors](02-competitor-matrix.md), [user problems](03-user-pain-points.md), [features](04-feature-benchmark.md), [Italy and cities](05-market-opportunity-italy.md), [business models](06-business-models.md), [legal risks](07-legal-privacy-risks.md) and [technology](10-technology-landscape.md). It does not approve a product thesis, launch city or pricing.
 
 ## 1. What the evidence can support
 
 **HYPOTHESIS:** a reusable, selectively shared tenant profile could reduce repeated disclosure and the effort of arranging relevant conversations. The inversion of contact—landlord invites, tenant accepts—needs to prove that it saves landlords time and gives tenants useful opportunities. It does not increase the housing stock or guarantee payment.
 
-The dossiers suggest a crowded landscape rather than an empty category. Their search excerpts and vendor statements provide leads for research, not proof of adoption, profitability or customer preference. This continuation could retrieve npm metadata, but official legal and selected market/vendor pages were blocked by the current network policy. No interviews, live product walkthroughs or pilot transactions have been conducted.
+The dossiers suggest a crowded landscape rather than an empty category. Their search excerpts and vendor statements provide leads for research, not proof of adoption, profitability or customer preference. This continuation retrieved selected primary legal, competitor and market sources (see the recheck). Other sources remain inaccessible or unrefreshed. No interviews, live product walkthroughs or pilot transactions have been conducted.
 
 **Evidence labels:** FACT = directly checked in this continuation or an explicitly stated reproducible computation; REPORTED = attributed to an inherited dossier, not newly confirmed; CLAIM = vendor/third-party assertion; HYPOTHESIS = explanation to test; ASSUMPTION = a chosen input. Original dossier labels do not automatically carry over as FACT. Source identifiers are namespaced in [09](09-sources.md).
 
@@ -93,6 +96,6 @@ These are research corrections and scope boundaries, not completion of Phase 5 o
 
 ## 8. What closes the research gate
 
-See [review 01](../reviews/review-01-research.md) for owners, severity and resolution evidence. The immediate missing work is primary-source retrieval for decisive market/legal claims and a current competitor check. Interviews, provider eligibility/costs and legal advice remain explicitly separate validation work; no contact or spending is authorised merely by listing them.
+See [review 01](../reviews/review-01-research.md) for owners, severity and resolution evidence. Current primary corrections and the independent reviewer resolutions are recorded in review 02. Interviews, provider eligibility/costs and legal advice remain explicitly separate validation work; no contact or spending is authorised merely by listing them.
 
-The research documents are now assembled and reviewed from eight perspectives. **The research gate remains BLOCKED by unresolved evidence issues; product, branding and implementation phases have not started.**
+The research documents are now assembled and reviewed from eight perspectives. **Independent strategy and legal follow-up found no remaining critical blocker for internal design with synthetic data, subject to the recorded editorial corrections. No real-user launch is approved by this desk-research gate.**

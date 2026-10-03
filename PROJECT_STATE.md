@@ -11,9 +11,9 @@ Il risultato finale di progetto resta un monolite modulare TypeScript avviabile 
 
 ## Richiesta attuale e ambito
 
-L'utente ha chiesto di leggere questo file e riprendere il lavoro. Alla domanda sul perimetro ha scelto esplicitamente: **«Completa ricerca e revisione»**. Questa ripresa riguarda i dossier e il review gate; non avvia prodotto, naming o MVP.
+L'ultima istruzione dell'utente è **«Esegui tutto il piano del repository»**. Supera la precedente limitazione a ricerca e revisione e autorizza le fasi 0–28, comprese decisioni, design, codice e verifiche locali. Le revisioni indipendenti A–H sono state autorizzate. Non sono autorizzati deploy pubblico, contatti a persone, spese o creazione di PR.
 
-L'onboarding cloud precedente ha verificato Git e il workflow documentale e salvato istruzioni di avvio. La successiva richiesta di ripresa autorizza le modifiche ai documenti di ricerca qui registrate.
+In corso: applicate le correzioni dei revisori e aggiunte fonti primarie con hash in `docs/research/evidence/`; chiusura gate desk research prima di avviare prodotto e codice. I paragrafi storici sottostanti descrivono il checkpoint precedente e saranno sostituiti alla milestone.
 
 ## Stato corrente
 

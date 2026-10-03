@@ -1,6 +1,6 @@
 # 06 — Business models, unit economics and cold-start strategy
 
-> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. The [research gate](../reviews/review-01-research.md) has not passed.
+> **Research review — 2026-10-02:** This dossier contains inherited evidence and provisional recommendations. Except for the specifically logged checks in [09](09-sources.md), source access has not been repeated in this continuation. [01](01-market-landscape.md) reconciles conclusions; [08](08-product-opportunities.md) records hypotheses and boundaries; [07](07-legal-privacy-risks.md) controls legal caveats. These documents supersede conflicting implementation/pricing suggestions below. Current primary corrections and access limits are recorded in [the recheck](evidence/primary-recheck.md); the current gate decision is in [review 02](../reviews/review-02-independent-research.md).
 > **City correction:** the Milan-first sequence in §C.5 is retained as an earlier hypothesis; use Bologna as the provisional research location, not an approved launch decision.
 
 Reverse rental marketplace, Italy-first (tenants build profiles → landlords discover and invite → mutual match → chat → viewing → rental).
@@ -28,11 +28,11 @@ Reverse rental marketplace, Italy-first (tenants build profiles → landlords di
 | # | Model | Who pays | Price evidence (label) | Willingness-to-pay evidence | Effect on liquidity | MVP fit | Long-term fit | Regulatory risk (IT) |
 |---|---|---|---|---|---|---|---|---|
 | 1 | Tenant subscription | Tenant | ImmoScout24 Suchen+ €12.99–39.99/mo by tier/term [S1][S2] FACT-S; WG-Gesucht Plus €13.90–20.90/mo [S7] FACT-S; SpareRoom Early Bird £15/7d, £27/14d, £30/28d [S3] FACT; dozens of DE/FR auto-apply tools €9–149/wk [S7] FACT-S | Strong in supply-starved cities (Berlin, Paris, Munich): a whole paid-tool ecosystem exists [S7]; IS24 claims "at least 54% more viewing invitations" for subscribers [S7] | **Suppresses demand-side volume and creates two-class tenants**; paywalled "MieterPlus-exclusive" listings provoked a user-built browser extension to hide them [S5] | Poor (tenants are the abundant side; pay-to-apply backlash) | Only for non-core conveniences; never for applying or being seen | Medium: a fee contingent on finding a home looks like *provvigione* (L. 39/1989) [S22][S23] HYPOTHESIS; UK bans tenant fees tied to a tenancy [S8] |
-| 2 | Landlord subscription / per-listing fee | Landlord | OpenRent: tenants free, referencing £30 paid by landlord, Rent Now holds deposit [S7] FACT-S; Rent Now £49 ASSUMPTION (brief; page blocked); Immobiliare.it / Idealista private-listing prices NOT FOUND; Zillow Rental Manager listing fee conflicting tertiary claims [S51] NOT VERIFIED | Zillow "subsidised leads in almost all marketplaces, slowly turned on pricing as value was proved" [S18] FACT | Charging the scarce side early suppresses supply; charge only after value is proven | Free at MVP; optional paid add-ons | Core long-term revenue (per-property or per-month) | Low if flat-fee, not contingent on letting [S22] |
+| 2 | Landlord subscription / per-listing fee | Landlord | OpenRent: tenants free, referencing £30 paid by landlord, Rent Now holds deposit [S7] FACT-S; Rent Now £49 ASSUMPTION (brief; page blocked); Immobiliare.it / Idealista private-listing prices NOT FOUND; Zillow Rental Manager listing fee conflicting tertiary claims [S51] NOT VERIFIED | Zillow "subsidised leads in almost all marketplaces, slowly turned on pricing as value was proved" [S18] FACT | Charging the scarce side early suppresses supply; charge only after value is proven | Free at MVP; optional paid add-ons | Core long-term revenue (per-property or per-month) | Activity-dependent; a flat fee is not a mediation exemption (07) |
 | 3 | Pay-per-match / per-contact / unlock | Landlord (or tenant) | Flatfox: optional landlord "bid paid only if tenant is chosen" [S7] FACT-S (reported); Zazume (ES) 50% of one month's rent, success-based [S7] FACT-S; Nestraq £0.49 per address reveal (B2B) [S7] FACT-S; Idealista Spain pay-per-lead NOT FOUND; Zumper PowerSearch $24.99 [S7] reported | Thin; dating-style unlocks exist but no pricing fetched | Per-contact fees raise the cost of the first invitation → fewer invitations → lower match rate (HYPOTHESIS) | Poor | Possible as "invite credits" for high-volume agencies only | **High if contingent on the deal** (= provvigione → mediazione) [S22]; low if priced per contact regardless of outcome |
 | 4 | Success fee on rental | Landlord and/or tenant | Italian norm: *provvigione* due from both parties "on conclusione dell'affare" (artt. 1754–1755 c.c.) [S22] FACT-S; "1 month + VAT per side" ASSUMPTION (brief; verify); Spain analog "agency fee 1 month + IVA" [S50] FACT-S; Zappyrent / Housfy / Dove.it / Casavo pricing NOT FOUND | Market-proven (every agency) | Highest take per transaction, but requires the platform to *conclude* deals → operational drag | No | Only via a licensed partner (agency/mediatore) or own licence | **Highest**: unlicensed mediation → no right to the fee + sanctions; chamber of commerce commissions must report abusive mediators [S23][S24] FACT-S |
 | 5 | Agency / property-manager SaaS seats | Agency / PM | Goodlord referencing "variable" [S7] FACT-S; Rentila, Rentger NOT FOUND; Hired "subscription model for employers plus success fees" [S38] FACT-S | B2B SaaS WTP generally robust (no Italian datapoint found) | Neutral-to-positive: brings professional supply with many units | Later (needs product maturity) | Strong second-stage revenue | Low (software licence) |
-| 6 | Verification fee | Tenant or landlord | Zillow reusable application $35 for 30 days [S7] FACT-S; TransUnion SmartMove $25–49 [S7]; SingleKey CAD 29.99 one-time reusable [S7]; Idealista "solvency certificate" €9.99 in ES/PT/**IT** [S7] FACT-S; Flatfox debt-register extract CHF 29.90 [S7]; DossierFacile (FR) free, state-run [S26][S29] FACT; CRIF visura cost NOT FOUND | Proven on both sides; public free alternative (DossierFacile) sets the price ceiling in FR | Positive if the dossier is reusable (one fee, many applications); negative if per-application | **Yes — best MVP revenue line**, charged to landlords "bring your own applicants", tenant basic dossier free | Keep; add premium verifications | Medium: GDPR/credit-data (legal stream); not mediation |
+| 6 | Verification fee | Tenant or landlord | Zillow reusable application $35 for 30 days [S7] FACT-S; TransUnion SmartMove $25–49 [S7]; SingleKey CAD 29.99 one-time reusable [S7]; Idealista "solvency certificate" €9.99 in ES/PT/**IT** [S7] FACT-S; Flatfox debt-register extract CHF 29.90 [S7]; DossierFacile (FR) free, state-run [S26][S29] FACT; CRIF visura cost NOT FOUND | Proven on both sides; public free alternative (DossierFacile) sets the price ceiling in FR | Positive if the dossier is reusable (one fee, many applications); negative if per-application | **Yes — best MVP revenue line**, charged to landlords "bring your own applicants", tenant basic dossier free | Keep; add premium verifications | Activity-dependent: assess GDPR, credit-data rights and mediation together (07) |
 | 7 | Insurance / rent-guarantee referral | Landlord (or tenant) | Garantme (FR) ~€270/yr [S7] FACT-S; Flatfair deposit alternative 28% of one month [S7]; Visale (FR) free, state-backed [S7]; DossierFacile auto-validates Visale-eligible dossiers free [S28] FACT; Zappyrent / Garantitaly / Affitto Sicuro / Idealista Garanzia commissions NOT FOUND | Guarantees are a top landlord anxiety; referral commissions standard in FR (no IT figure found) | Positive: lowers landlord risk → more invitations to "thin-file" tenants | Partner referral only (no own underwriting) | Strong adjacency | Medium: insurance intermediation rules (legal stream) |
 | 8 | Contract services (registration, cedolare secca, e-sign) | Landlord | Cedolare secca 21% ordinary / 10% canone concordato; registration tax (~2% of annual rent) waived under cedolare [S25] FACT-S; prices of Immobiliare.it contract service / Rentila NOT FOUND | Every letting needs registration → recurring need | Positive: "come for the tool" hook for landlords [S21] | Yes as free tool (single-player value) | Paid tier later | Low |
 | 9 | Property-management upsell | Landlord | DoveVivo / Zappyrent management % NOT FOUND; US tertiary "7–10% monthly + placement fee" [S51] NOT VERIFIED | Market-proven (co-living operators) | Positive but operationally heavy | No | Partner referral | Medium (mediation/management licences) |
@@ -46,7 +46,7 @@ Reverse rental marketplace, Italy-first (tenants build profiles → landlords di
 - **The "auto-apply" tool market** (Germany/France) shows extreme tenant WTP in supply-starved cities: WG-Gesucht Plus €20.90 (1 mo) / €19.90 (3 mo) / €13.90 (12 mo); Wohnly €19.99–39.99/mo; Get The Flat €78–82/mo; Prems (FR) €29–149/week; LocService €29/mo; Sherlok €34–48/mo [S7] (FACT-S, research date 2026-09-23). Read-across: tenants will pay when supply is the bottleneck — but what they pay for is *reach*, which a reverse marketplace gives them for free by design. Monetising it would cannibalise the core promise.
 - **Italy-relevant datapoint:** Idealista sells a "solvency certificate" to tenants for €9.99 (within 12 h) in ES/PT/IT [S7] (FACT-S) — i.e., a tenant-paid *verification*, not a subscription.
 - HousingAnywhere, Uniplaces, Badi Pro, Spotahome, Rentberry pricing pages: **NOT FOUND** (searched: WebFetch to each pricing page → egress blocked; GitHub code search). Secondary: HousingAnywhere tenant fee "~25%" is marked *reported, unverified* in [S7]; Uniplaces and Spotahome "no tenant subscription stated" [S7]; an Italian founder's competitor notes describe HousingAnywhere as "fee alta per inquilino" and Spotahome as "costoso per landlord" [S45] (tertiary opinion).
-- **Italian consumer-law constraints on charging tenants:** NOT FOUND (normattiva/gazzettaufficiale blocked). HYPOTHESIS from the mediation analysis [S22][S23]: a tenant fee that is *contingent on obtaining a tenancy* would be read as a *provvigione* and pull the platform into L. 39/1989; a flat subscription for a tool (dossier, alerts) would not. Flag to the legal stream.
+- **Italian fee classification:** assess the actual activities and relevant current rules; neither flat subscriptions nor outcome-independent charges establish an exemption (07).
 
 ### A.2 Landlord subscription / per-property fees — detail
 
@@ -59,19 +59,19 @@ Reverse rental marketplace, Italy-first (tenants build profiles → landlords di
 
 - Flatfox (CH) lets landlords auto-invite applicants and offers an "optional bid paid only if tenant is chosen" [S7] (reported). Zazume (ES) charges 50% of one month's rent, success-based [S7] (verified by that study). Nestraq (UK, agents) charges £0.49 per address reveal [S7]. Idealista Spain agency pay-per-lead: NOT FOUND.
 - Dating-app unlock mechanics: pricing NOT FOUND; behavioural evidence from PubMed: the probability of receiving a reply "drops markedly with increasing difference in desirability between the pursuer and the pursued" [S33] — read-across: if landlords must pay per invitation, they will rationally target only the most "desirable" (highest-income) profiles, worsening fairness and lowering overall match rates (HYPOTHESIS).
-- **Regulatory line (IT):** EasyCasa's internal boundary matrix for an Italian portal states the key rule as "No fee structure may be computed as a percentage of or contingent upon sale completion — this triggers *provvigione* entitlement and *mediazione* classification", citing art. 1754 c.c. and Cass. 19161/2017 ("activity, not labels, determines status") [S22] (FACT-S). A per-contact fee charged irrespective of outcome is closer to advertising; a per-*match* fee charged only on success is a success fee.
+- **Regulatory scope (IT):** inherited internal competitor notes [S22] are not authoritative law. Per-contact, subscription and success pricing all require activity-specific mediation assessment; no fee formula alone decides status.
 
 ### A.4 Success fee on rental — detail
 
 - Italian structure: the *mediatore* "puts two or more parties in relation to conclude a deal" (art. 1754 c.c.); provvigione is due by both parties on *conclusione dell'affare* (art. 1755 c.c.) [S22]. Enrolment: SCIA via Comunicazione Unica, REA registration (ATECO 68.31), moral + professional requisites, exam, mandatory RC insurance; every *preposto* who mediates must be registered [S22][S23]. Chamber-of-commerce commissions "are required to report to the judicial authority those who abusively exercise, even discontinuously, the profession of mediator" (L. 39/1989 art. 7 c.6, quoted in the ministerial decree notes) [S24] (FACT, mirror of Gazzetta Ufficiale text). Unlicensed actors cannot claim the fee and face sanctions [S23].
 - Typical fee level "one month + VAT per side": **ASSUMPTION** (brief). Analog: Barcelona guide "Agency fee: 1 month + IVA" [S50] (FACT-S, Spain). The 1994 Italian research note found only a *sale* figure (2–3% of price) [S53] — not rents. **NOT FOUND** for Italian rental norms via reachable sources.
 - Zappyrent, Housfy, Dove.it, Casavo models: NOT FOUND (all domains blocked; GitHub mentions of Zappyrent are only scrapers and hiring tests [S44]).
-- Verdict: a success fee is the largest per-transaction take but converts the platform into a mediator. For an MVP without a licence, **exclude**; long-term, either (a) obtain the licence for a separate entity (EasyCasa's plan: run brokered activity "in a separate entity" [S22]) or (b) refer to licensed partner agencies for a flat, non-contingent referral fee.
+- **Product boundary:** no success fee, paid contact unlock or mediated transaction in this local scope. A separate entity, licence or partner arrangement is not an automatic exemption for the platform; assess each actual role before offering services.
 
 ### A.5 Agency / property-manager SaaS seats — detail
 
 - Goodlord's pricing page was blocked; the Dutch study recorded only "referencing: variable (30% instant)" [S7]. Rentila and Rentger: NOT FOUND.
-- Labour-market precedent: Hired ran "a subscription model for employers plus success fees" [S38] (FACT-S), i.e., seats for the inviting side plus a contingent fee — the exact combination this document recommends for the long term, with the contingent component replaced by non-contingent per-property fees in Italy to stay outside L. 39/1989.
+- **SaaS fee caveat:** a non-contingent software charge does not establish exclusion from mediation rules. Apply 07 to actual activities.
 
 ### A.6 Verification fee — detail
 
@@ -144,16 +144,16 @@ Reverse rental marketplace, Italy-first (tenants build profiles → landlords di
 ### B.4 Parametrised contribution model (template — all inputs to be replaced)
 
 ```
-Per landlord-year (ASSUMPTION inputs, replace with verified values):
-  units per landlord            u   (1–3 for private; 20+ for agencies)
-  turnover per unit per year    t   (≈ 0.25–0.5 if tenure is 2–4 years)
-  checks per vacancy            c   (3–8 shortlisted applicants)
-  price per check               p   (€15–25 bracket, see A.6)
-  guarantee referral rev/let    g   (NOT FOUND for IT; FR analog ~€270/yr premium → referral share unknown)
-  landlord subscription         s   (0 at MVP; later €/month or €/property)
-  Revenue/landlord-year ≈ u·t·(c·p + g) + 12·s
-  Example (u=1, t=0.33, c=5, p=20, g=0, s=0): ≈ €33/yr  → private landlords alone cannot carry CAC;
-  Example (u=20, t=0.4, c=5, p=20, g=0, s=0): ≈ €800/yr → agencies/PMs carry the economics (HYPOTHESIS).
+Per landlord-year (scenario variables, not observed outcomes):
+  units u; turnover per unit/year t; shortlisted applicants c
+  proportion needing a new or refreshed check n; paid uptake a; net price p
+  subscription s (zero in the local MVP); referral revenue excluded
+  Billable checks = u * t * c * n * a
+  Gross revenue = billable checks * p + 12 * s
+  Contribution = revenue - paid AND free check/provider/review/support/refund costs
+  Then assess acquisition and fixed costs separately.
+  Earlier €33/€800 illustrations assume n=a=1 and zero costs: upper scenarios,
+  not profit, measured WTP, or evidence that any segment can carry CAC.
 ```
 
 ---
@@ -190,7 +190,9 @@ Per landlord-year (ASSUMPTION inputs, replace with verified values):
 
 **Subsidy design (HYPOTHESIS):** zero fees for landlords for the first season in the launch district; free verification credits for each posted vacancy; a published taper ("free until N invitations / until month 6") per [S56]; no cash bonuses to tenants (they are the easy side; "the easy side mostly needs a clean consumer experience" [S56]).
 
-### C.3 Single-player value at zero liquidity
+### C.3 Single-player value hypotheses at zero liquidity
+
+Tool-to-marketplace conversion must be measured separately: among consenting tool users with a current vacancy, how many publish it, invite a previously unknown platform tenant and return voluntarily at their next eligible opportunity? Existing-applicant checks are not new supply, matches or marketplace retention. The examples below are candidates, not adopted MVP scope; no importing third-party applicants or automatic dossier disclosure.
 
 | Side | Single-player value | Precedent | Label |
 |---|---|---|---|
@@ -211,12 +213,12 @@ Precedent of partnership-led seeding: HousingAnywhere + universities — **NOT F
 | Municipal social-rental agencies | **Milano Abitare** ("agenzia sociale per la locazione", cited as a model by a civic programme [S46]) | Public-interest alignment on concordato leases; landlord trust | FACT-S (existence) / ASSUMPTION (partnership) |
 | Universities / student services | Politecnico di Milano, Università Statale, Bocconi, Università di Bologna, housing offices; **ESN Italia** / Erasmus offices | Demand bursts at semester start (cannot be stockpiled [S47]); universities distribute the dossier tool to incoming students | ASSUMPTION (all sites blocked) |
 | Employers / relocation | HR teams of large Milan employers; relocation agencies; co-living operators (DoveVivo and peers) for overflow | Pre-verified, salaried tenants are the profiles landlords most want; employers can bulk-onboard dossiers | ASSUMPTION |
-| Small agencies / property managers | Independent agencies holding mandates | Bring 20+ units each (see B.4 economics) and are licensed mediators (fee-safe partner for success-fee work) | HYPOTHESIS |
+| Small agencies / property managers | Independent agencies holding mandates | Bring 20+ units each (see B.4 economics) and may have relevant licences; platform activity and each party’s mandate still require review (07) | HYPOTHESIS |
 | Job boards / newsletters (reverse-marketplace precedent) | City newsletters, expat groups, LinkedIn/Meta ads | Hired/Vettery: job boards ≈ 50% of early supply; LinkedIn sponsored updates top performer; "surprisingly low CAC" [S11] | FACT (labour analog) |
 
 ### C.5 Sequencing recommendation: city → segment → channel
 
-1. **City:** one supply-constrained city first — Milan (rent pressure [S49]; brief's launch-city matrix in `05-market-opportunity-italy.md`). Constrain further to 2–3 districts (Chen: "groupings of a handful of people, with the right intent, in the right situation, at the right time" [S9]; Tavel's thimble [S10]). Note the Homeflow signal: a funded competitor launched September 2025 in Milan/Brescia/Bergamo with an opaque AI compatibility score [S48] — launching three cities at once is a "big bang" pattern Chen warns against (persona digest [S55]); our differentiation is explainable signals plus a tighter atomic network.
+1. **City:** Bologna is a proposed research catchment, not an approved launch city. Use the corrected comparable indicators and input uncertainty in 05. Homeflow currently says pre-launch; no outside funding, live score or three-city liquidity has been established.
 2. **Segment:** supply = private landlords with 1–3 units plus 3–5 small agencies in those districts; demand = salaried relocators and graduate students with complete, verified dossiers. Do not adopt the Airbnb 300/100 analogy [S12] as a launch threshold; determine pilot capacity from local cohorts and observed outcomes (08 §4).
 3. **Channel (supply):** direct sales + landlord associations + condominium administrators (direct sales was the #1 lever for ~60% of marketplaces [S18]); Vettery-style 20-minute onboarding calls [S11]; founder-hosted landlord meetups [S12]; referrals with a modest activation bonus for landlords who bring landlords (Airbnb 10–15% of supply from referrals [S16]).
 4. **Channel (demand):** university/ESN/employer distribution of the free dossier; SEO on "dossier affitto / documenti per affittare"; the dossier's share link is itself a viral loop (every off-platform use advertises the product).
@@ -234,7 +236,7 @@ Precedent of partnership-led seeding: HousingAnywhere + universities — **NOT F
 | Demand liquidity | % of completed tenant dossiers that receive ≥1 invitation within 14 days of completion | Reverse of the above; the "empty feed" failure mode [S56] |
 | Time-to-first-match | Median hours from vacancy post → first mutual match; from dossier completion → first invitation | Chen's atomic network must "stand on its own" [S9] |
 | Happy-match rate | % of mutual matches that progress to a viewing; % of viewings that progress to a signed lease | "Happy GMV" [S10] |
-| Activation (landlord) | Posted a vacancy with ≥1 verified applicant check used (tool use counts even with no network) | Single-player activation [S18] |
+| Activation (landlord) | Deliberately published current vacancy; report tool-only use separately | A check on an existing applicant does not establish marketplace supply |
 | Activation (tenant) | Usable profile with required compatibility fields deliberately published; identity/income checks optional | Deliberate publication with required compatibility fields; optional evidence must not gate invitations |
 | Invitation acceptance | % of landlord invitations accepted by tenants within 72 h | Reverse-recruiting analog (Hired interview requests) [S37] |
 | Supply critical mass per district | No adopted threshold; the 300/100 analogy is not a validated Italian pilot requirement | Historical Airbnb analogy [S12], not a transferable target |
@@ -302,7 +304,7 @@ Precedent of partnership-led seeding: HousingAnywhere + universities — **NOT F
 | **Fairness/discrimination in invitation targeting** | Reply-probability gradients by desirability in dating markets [S33]; submarket partitioning [S34] | Explainable signals only; test specified fairness invariants; protected-group monitoring requires a separately lawful research protocol (07 §3) |
 | **Free public competitor for the dossier** | DossierFacile displaced private vaults in France [S31] | If an Italian public dossier emerges, pivot to integration (Connect-style API) rather than competition |
 | **Subsidy rollback kills supply** | Chen: publish the taper [S56] | Announce free-period end dates at signup; convert to SaaS with grandfathering |
-| **Big-bang multi-city launch** | Homeflow launched 3 cities at once [S48]; Chen warns of "big bang failures" (persona digest [S55]) | One catchment as a research hypothesis; pilot and expansion thresholds require local outcome evidence, not the 300/100 analogy [S12] |
+| **Big-bang multi-city launch** | Homeflow advertises proposed first cities but currently says pre-launch; no operational multi-city case established | A single research catchment is a hypothesis, not a proven optimum |
 | **Evidence gaps in this document** | §Research constraints | Run §H verification queue before any pricing or legal decision |
 
 ---
@@ -360,7 +362,7 @@ Access date for all entries: **2026-10-02**. "Mirror" = verbatim copy of a prima
 | S45 | roommate TODO.md — Italian founder's competitor matrix (Immobiliare.it, Idealista, HousingAnywhere, Spotahome, Bakeca) | AG4MA (GitHub) | n.d. (2026) | https://github.com/AG4MA/roommate/blob/main/TODO.md | Tertiary (opinion) |
 | S46 | sbt-2026 goals.md — "Creazione di un'agenzia sociale per la locazione (modello 'Milano Abitare')" | robbisg (GitHub) | 2026 | https://github.com/robbisg/sbt-2026/blob/main/goals.md | Tertiary |
 | S47 | "pm-network-effects.md" — student-housing marketplace hard-side reasoning (owners vs students) | sidgaikwad/be-better-dev (GitHub) | n.d. | https://github.com/sidgaikwad/be-better-dev/blob/main/packages/scripts/src/course/product-management/content/pm-network-effects.md | Tertiary |
-| S48 | LinkedHome internal: `docs/DECISIONS.md` D-001 and `PLAN.md` §1–4 early signal (Homeflow, Brescia; launched Sept 2025 in Milan/Brescia/Bergamo) | This repository | 2026-10-02 | /home/user/LinkedHome/docs/DECISIONS.md · /home/user/LinkedHome/PLAN.md | Internal (preliminary search) |
+| S48 | LinkedHome internal: `docs/DECISIONS.md` D-001 and `PLAN.md` §1–4 early signal (Homeflow, Brescia; historical press launch claim; superseded by current pre-launch FAQ) | This repository | 2026-10-02 | /home/user/LinkedHome/docs/DECISIONS.md · /home/user/LinkedHome/PLAN.md | Internal (preliminary search) |
 | S49 | Italian news feed mirror, 30 Jan 2026 — Corriere della Sera headline: Milan house prices and rents rise with the 2026 Olympics, citing Immobiliare.it Insights | p1va/news-in-brief (GitHub) | 2026-01-30 | https://github.com/p1va/news-in-brief/blob/main/italy-today/artifacts/2026-01-30/2026-01-30-user-message.md | Mirror of headline (no figures) |
 | S50 | Barcelona "neighborhoods-choosing.md" — "Agency fee: 1 month + IVA" | clawic/skills (GitHub) | n.d. | https://github.com/clawic/skills/blob/main/skills/barcelona/neighborhoods-choosing.md | Tertiary (Spain analog) |
 | S51 | Conflicting tertiary claims on Zillow Rental Manager / Apartments.com / RentSpree pricing | blackskyi/farmhouse LAUNCH_STRATEGY.md; Salus-Ventures-Projects/apartmentdibs-mock docs/Personas.md (GitHub) | n.d. | https://github.com/blackskyi/farmhouse/blob/main/LAUNCH_STRATEGY.md · https://github.com/Salus-Ventures-Projects/apartmentdibs-mock/blob/main/docs/Personas.md | Tertiary (NOT VERIFIED) |
