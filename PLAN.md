@@ -1,74 +1,47 @@
-# PLAN.md — Execution ledger
+# Execution ledger — LinkedHome / Soglia
 
-> Project: Italy-first reverse rental marketplace; product name undecided.
-> Repository: `AsaroAlex/LinkedHome`; target remote branch `claude/sweet-goldberg-5lwng7`.
-> Updated: 2026-10-02. DONE means the stated check occurred; document completion does not imply evidence, legal, customer or software validation.
+Updated 2026-10-03. User instruction: **execute all repository phases**. The original52-section brief is absent from the checkout; this ledger and the adopted feature contract define the reviewable local scope. Working name Soglia is not cleared for public use.
 
-## Current scope and gate
+Research passed an independent bounded gate for synthetic local development. Production deployment, live provider integrations, outside studies and legal/brand clearance are separate [release gates](docs/operations/release-checklist.md).
 
-The user now requests **all repository phases**. Research passed the independent desk gate for internal design and local development with synthetic data; no commercial/legal/customer validation is implied. See [review 02](docs/reviews/review-02-independent-research.md). Product, design and architecture are next, followed by implementation and verification. Real-user launch requirements will be recorded separately and cannot be fabricated by local tests.
+| # | Phase | Status / evidence |
+|---|---|---|
+| 0 | Environment/repository inspection | DONE — current checkout, Node24/npm11/Git; existing isolated `work` branch preserved |
+| 1 | International research | DONE — dossiers01/02/04/06; current source corrections and explicit unverified claims |
+| 2 | Competitor analysis | DONE — Homeflow pre-launch, LocService29€/month corrections; no moat/traction inference |
+| 3 | Italian market | DONE —17 totals/four scenarios checked; current Eurostat/Idealista slices; city remains hypothesis |
+| 4 | Legal/privacy research | DONE for desk scope — inspected primary baseline, no deployment clearance; review02 |
+| 5 | Product thesis | DONE — docs/product/01; independently reviewed |
+| 6 | Priorities | DONE — docs/product/02 acceptance contract; external features deferred explicitly |
+| 7 | Naming/branding | DONE as working name — Soglia centralized; no availability/clearance claim |
+| 8 | UX architecture | DONE — docs/design/01, review03 |
+| 9 | Design system | DONE — docs/design/02 and implemented responsive CSS |
+| 10 | Technical ADR | DONE — Fastify/React/TypeScript/PostgreSQL; review03 and amendments |
+| 11 | Scaffolding | DONE — manifest/lockfile/pinned runtime, scripts, CI definition |
+| 12 | Database/domain | DONE — three SQL migrations, checksum ledger, native PostgreSQL, generated seed |
+| 13 | Authentication | DONE — sessions, local confirmation/reset, role/rights controls |
+| 14 | Tenant profile | DONE — private draft, publish/pause, approved matching fields |
+| 15 | Landlord/property | DONE — owner edits, self-attestation, availability expiry/reconfirm |
+| 16 | Matching | DONE — deterministic explained criteria, no person score, stable cursor order |
+| 17 | Invitations | DONE — exact revisions, terminal-state contract and offer snapshot |
+| 18 | Messaging | DONE — accepted participants, bounded history, block/close |
+| 19 | Verification foundation | DONE — typed states/provenance/expiry/dispute; providers truthfully unavailable |
+| 20 | Trust/safety/admin | DONE — case-scoped context, suspension/appeal/restore, export/delete and audit |
+| 21 | Analytics | DONE — minimal local action counts, no market KPI claims |
+| 22 | Tests | DONE — 71 unit/integration tests and 10 browser scenarios passed; operations/validation |
+| 23 | Visual QA | DONE — final desktop/mobile screenshots inspected and retained in operations/evidence |
+| 24 | Security | DONE for local scope — independent E/F review, fixes and dependency audit with 0 known vulnerabilities |
+| 25 | Performance/accessibility | DONE — axe/keyboard/narrow-screen checks; measured desktop LCP244ms, throttled mobile2252ms, CLS0 |
+| 26 | Documentation | DONE — README, demo, operations, evidence and tested cloud install/start instructions; draft revision4 saved |
+| 27 | Final adversarial review | DONE — eight independent final reviewers; review05 PASS for local synthetic scope |
+| 28 | Fix material issues | DONE — material findings corrected and regressions passed; external release gates remain separate |
 
-## Phase ledger
+## Milestones and operating constraints
 
-| # | Phase | Status | Evidence / remaining condition |
-|---|---|---|---|
-| 0 | Environment / repository inspection | DONE | Actual checkout, Git integrity/read access, runtime versions and document-only workflow checked |
-| 1 | International market research | DONE — bounded desk review | Dossiers 01/02/04/06 and source register assembled; current selected primary corrections recorded |
-| 2 | Competitor analysis | DONE — bounded desk review | Categories and identity gaps explicit; current product/traction claims unverified |
-| 3 | Italian-market analysis | DONE — bounded desk review | All 17 city totals and four weight scenarios checked; input evidence and launch hypothesis not validated |
-| 4 | Legal / privacy research | DONE — bounded desk review | 07 sections 0–17 complete, 21 official reading targets; current primary texts/counsel application outstanding |
-| — | Research review 01 | DONE — independent follow-up | A–H perspectives and eight document fixes complete; R01-C1/C2 resolved for synthetic development; independent review completed in review 02 |
-| 5 | Product thesis | TODO | Requires research-gate decision |
-| 6 | Feature prioritisation | TODO | Research opportunities are provisional |
-| 7 | Naming / branding | TODO | No name/domain/trademark clearance performed |
-| 8 | UX architecture | TODO | — |
-| 9 | Design system | TODO | — |
-| 10 | Technical ADR | TODO | Candidate stack only; registry metadata is not compatibility evidence |
-| 11 | Repository scaffolding | TODO | No application manifest, lockfile or source tree |
-| 12 | Database / domain model | TODO | — |
-| 13 | Authentication | TODO | — |
-| 14 | Tenant onboarding / profile | TODO | — |
-| 15 | Landlord / property flow | TODO | — |
-| 16 | Matching engine | TODO | No opaque person score or ML matching |
-| 17 | Invitations / mutual matching | TODO | — |
-| 18 | Messaging | TODO | — |
-| 19 | Verification foundation | TODO | Providers, coverage, lawful processing and costs unresolved |
-| 20 | Trust / safety / admin | TODO | — |
-| 21 | Analytics | TODO | Proposed research definitions are not live instrumentation |
-| 22 | Testing | TODO | No application runner exists |
-| 23 | Visual QA | TODO | — |
-| 24 | Security review | TODO | Research risks are not an implementation security review |
-| 25 | Performance / accessibility review | TODO | — |
-| 26 | Documentation | TODO | Research documentation complete; application documentation not yet applicable |
-| 27 | Final adversarial review | TODO | — |
-| 28 | Fix material issues | TODO | — |
+Local commits: `a5d4e80` research consolidation; `d47a214` independent research corrections; `c0180de` reviewed product/design/ADR; `0185593` implemented and tested local MVP. Final evidence is committed separately in this history. No push or PR was created. Remote target remains only `claude/sweet-goldberg-5lwng7`; never reset/switch the platform checkout or create a worktree unless explicitly requested.
 
-## Environment evidence from this continuation
+Only generated local data: `.local/` and credentials remain ignored. Test DBs are `soglia_test` and `soglia_e2e`, distinct from `soglia`. Do not run database-owning lifecycle commands concurrently. The tested cloud install/start instructions are saved in draft revision4. Saving is not publication or validation of a restored new task; restoration of unpublished local-only commits is not guaranteed.
 
-Checkout: `/workspace/LinkedHome`, platform-provided local branch `work`. Initial local HEAD and remote target branch both resolved to `9b0f42a6303cdb5f5176cc7cdbb06787665e859b`. Do not reset/switch the checkout simply because its local name differs. Each cloud task is already isolated; no Git worktree is needed unless explicitly requested.
+## Completion and follow-on scope
 
-Observed tools: Git 2.52.0, Python 3.12.14, Node 24.19.0 and npm 11.9.0. The prior `/home/user/LinkedHome` environment and its PostgreSQL/browser/pnpm versions are historical and were not reproduced or required for a documentation-only workflow. No application services were started.
-
-Saved cloud draft fields: `start_skill` and the custom network allowlist needed for source retrieval. No installation script or application secrets are required at this stage. Saving the draft does not publish a snapshot, apply runtime policy or prove a fresh task restores it.
-
-## Research artefacts and validation
-
-| Artefact | Result |
-|---|---|
-| 01 market landscape | Cross-dossier synthesis, evidence labels, city sensitivity and reconciled conclusions |
-| 02 competitors | Inherited evidence retained with current review notice |
-| 03 user problems | Inherited evidence retained; absence/search-scope and illustrative-number caveats |
-| 04 feature benchmark | Optional provider feasibility, no person score/ML, no automatic credit-report acceptance |
-| 05 Italian opportunity | Correct arithmetic; fee/language/legal-rule conflicts corrected; Bologna remains a hypothesis |
-| 06 business models | Mediation caveat, optional verification, cohort definitions and critical-mass correction |
-| 07 legal/privacy | Replaced unfinished, untraceable draft with complete topic coverage and explicit verification gaps |
-| 08 opportunities | Testable opportunities, disconfirming experiments, metric denominators and dependencies |
-| 09 source register | 566 namespaced records, 684 extracted URL strings, 17 reused URL strings |
-| 10 technology | Six current npm metadata spot checks; no broader compatibility or security claim |
-| Review 01 | Single-agent A–H assessment; eight document-level critical issues corrected; two external evidence blockers remain |
-
-All 17 published city totals agree with recomputation. Four alternative weighting scenarios agree with the original Bologna/Milan sensitivity values. Six npm metadata requests succeeded. Nine distinct legal/market URLs returned proxy 403; pages were not read. Local source-reference and Markdown-link checks accompany finalisation. No customer research, legal approval or software tests were fabricated.
-
-## Next useful action
-
-Execute phases 5–28 under the expanded user instruction. Preserve the current isolated checkout and the synthetic-data boundary; save tested installation/startup instructions after the software exists.
+All phases0–28 are complete for the adopted local synthetic scope. Run instructions are in README and cloud-start; exact verification is in docs/operations/validation.md. The current app is usable locally. Work toward real users must address the separately owned release gates; no current evidence establishes their completion. No public deployment, remote CI, outside study or fresh-task restoration is claimed.

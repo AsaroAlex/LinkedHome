@@ -1,104 +1,56 @@
 # PROJECT STATE
 
-> Memoria operativa per riprendere il lavoro. Aggiornato il 2026-10-02 dopo la ripresa della ricerca in Codex.
-> Leggere questo file, `PLAN.md` e `docs/reviews/review-01-research.md`; verificare sempre la coerenza con Git e i file effettivi.
+Aggiornato il 2026-10-03. Repository `/workspace/LinkedHome`, branch locale `work`, riferimento remoto richiesto `claude/sweet-goldberg-5lwng7`. L’utente ha autorizzato **«Esegui tutto il piano del repository»**, incluse revisioni indipendenti A–H. Le fasi 0–28 sono **completate per il perimetro locale con dati sintetici** adottato in PLAN e nel contratto delle funzionalità.
 
-## Obiettivo
+Preservare questo checkout isolato: niente reset, switch, worktree, pull automatici o perdita dei dati ignorati. Nessun push, PR, deploy pubblico, servizio a pagamento o contatto esterno è stato effettuato.
 
-Costruire le fondamenta di un marketplace degli affitti al contrario per l'Italia: profilo inquilino, scoperta da parte di proprietari pertinenti, invito, accettazione reciproca e conversazione. Ricerca → decisioni → design → implementazione → verifiche. LinkedHome è il nome del repository, non un brand approvato.
+## Risultato
 
-Il risultato finale di progetto resta un monolite modulare TypeScript avviabile in locale, con bootstrap, migrazioni, seed, autenticazione, profili, proprietà, matching spiegabile, inviti, messaggi, verifiche, amministrazione, analytics, test e QA. Le scelte tecniche restano candidate fino all'ADR. Il brief integrale di 52 sezioni citato nella memoria precedente **non è presente nel checkout**; PLAN.md è il registro delle fasi, non una copia verificata della sua sezione 48.
+Dossier di ricerca consolidato e verificato nei limiti dichiarati, seguito da prodotto, naming provvisorio **Soglia**, UX, design e architettura. Implementato un monolite TypeScript/Fastify/React/Vite con PostgreSQL nativo, senza Docker obbligatorio. Il nome non ha clearance; italiano completo, struttura locale EN preparata senza traduzione completa.
 
-## Richiesta attuale e ambito
+Funzionano bootstrap/migrazioni/seed, autenticazione e conferma/reset con messaggi locali, ruoli tenant/landlord/both e staff separato, profili privati/pubblicati, immobili, compatibilità spiegata, inviti con revisioni e snapshot, chat paginata, blocchi/segnalazioni, moderazione/sospensione/ricorso, export/cancellazione e conteggi locali. Nessun documento reale, pagamento, punteggio persona, ML o provider identità/reddito. La posta locale non prova il controllo di una vera casella.
 
-L'ultima istruzione dell'utente è **«Esegui tutto il piano del repository»**. Supera la precedente limitazione a ricerca e revisione e autorizza le fasi 0–28, comprese decisioni, design, codice e verifiche locali. Le revisioni indipendenti A–H sono state autorizzate. Non sono autorizzati deploy pubblico, contatti a persone, spese o creazione di PR.
+Quattro panel indipendenti sono documentati: ricerca (review02), prodotto/design/ADR (review03), implementazione (review04), revisione finale (review05). Il gate finale è PASS per lo scope locale; i rilievi materiali sono corretti. I revisori hanno ispezionato il lavoro; il coordinatore ha eseguito i test.
 
-In corso: applicate le correzioni dei revisori e aggiunte fonti primarie con hash in `docs/research/evidence/`; chiusura gate desk research prima di avviare prodotto e codice. I paragrafi storici sottostanti descrivono il checkpoint precedente e saranno sostituiti alla milestone.
+## Verifiche concluse
 
-## Stato corrente
+- `npm run check`: build/typecheck, **71 test unitari/integrati** e **10 scenari browser** passati.
+- Axe senza violazioni nei controlli configurati, navigazione da tastiera e controlli responsive; screenshot finali ispezionati e conservati.
+- LCP locale desktop 244 ms; mobile emulato 2.252 ms con CPU4×, rete200kB/s e latenza80ms; CLS0. Sono misure sintetiche, non dati sul campo.
+- `npm audit`: 0 vulnerabilità note nel registro consultato, 222 dipendenze censite; nessuna certificazione di sicurezza implicita.
+- `npm ci`, bootstrap ripetuto e script completo `scripts/cloud-install.sh` eseguiti con successo.
+- Avvio compilato, avvio dev, arresto e riavvio verificati tramite health, HTML/asset, login, immobili, discovery, dashboard e logout. Preservati gli stessi 5 utenti, 2 profili, 1 immobile e 3 migrazioni.
+- Manutenzione manuale eseguita; nessuno scheduler configurato.
 
-- I dossier 01–10 sono ora presenti: completata la stesura legale, aggiunte sintesi 01 e 08 e registro 09.
-- Revisione 01 scritta con le prospettive A–H e registro delle risoluzioni. **Un solo agente ha effettuato i passaggi: non sono otto revisioni indipendenti.**
-- Otto problemi critici documentali corretti; **R01-C1 e R01-C2 restano aperti** per assenza dei riscontri primari decisivi.
-- **Research gate BLOCCATO**, non approvato. Fasi 5–28 ancora TODO.
-- Nessun codice applicativo, manifest, lockfile o suite software presente. Nessun servizio applicativo avviato.
-- Il dossier legale parziale era già committato in `9b0f42a`; non esiste un ricercatore ancora attivo di quella vecchia sessione.
+Evidenze e limiti: `docs/operations/validation.md`. Correzioni finali includono recupero password dei sospesi senza ripristinare i contatti, export dei propri ricorsi, dashboard oltre 100 inviti, rilascio garantito del client dopo errore di migrazione e wording corretto della conservazione manuale.
 
-## Vincoli da conservare
+## Ambiente e ripresa
 
-- Ricerca e revisione precedono tesi di prodotto, naming, design, ADR e codice.
-- Matching deterministico e spiegabile; nessuno score opaco sulle persone e nessun ML nel matching. Escludere attributi protetti e verificare anche i proxy indiretti.
-- Pubblicazione del profilo deliberata; pre-match identificatore opaco e campi approvati. Match reciproco non significa rilascio automatico di documenti o dati finanziari.
-- Nessun paywall inquilino per visibilità o inviti. Nessuna fee per successo/per-match nella raccomandazione corrente. Una tariffa fissa **non** prova un'esenzione dalle regole sulla mediazione.
-- Verifiche opzionali: distinguere UNVERIFIED, PENDING, VERIFIED, FAILED, scadenza e contestazione. Non trasformare l'assenza di verifica in esclusione o esito negativo.
-- Valutare alternative inclusive a credenziali italiane, biometria e reddito da lavoro dipendente; nessun provider è già disponibile o contrattualizzato.
-- Sviluppo locale deve poter funzionare senza Docker, con eventuale alternativa Compose. Non inferire la disponibilità di database/browser/toolchain dai dati della vecchia macchina.
-- Nome prodotto centralizzato quando sarà deciso; IT prima, EN preparata; lingua interfaccia esclusa dal matching.
-- Ruoli previsti tenant, landlord, both, admin, moderator; futura autorizzazione server-side e matrice permessi da verificare.
-- Mai committare `.env`, credenziali o dati personali reali. Non inventare citazioni, prezzi, interviste, verifiche, disponibilità domini o clearance trademark.
-- Documenti in `docs/` in inglese; questa memoria in italiano.
-- Commit per milestone coerenti. Destinazione remota prevista: solo `claude/sweet-goldberg-5lwng7`, mai altri branch. Nessuna pull request senza richiesta esplicita. Non inventare attribuzioni o identificativi di sessioni Claude per lavoro svolto qui.
-- Ogni task cloud è già isolato: usare il checkout esistente; niente worktree salvo richiesta esplicita.
+Node24.19.0, npm11.9.0, PostgreSQL18.4, Chromium151.0.7922.173 in `/usr/bin/chromium`. Installazione: `bash scripts/cloud-install.sh`; avvio: `npm start`, oppure `npm run dev`. PostgreSQL su loopback55432, UI/API3000; in dev API3001 con proxy. Al termine del lavoro l’app compilata è avviata, ma non presumere che i processi persistano fra task.
 
-## Ambiente effettivamente verificato
+`.local/database.json`, `.local/demo-accounts.json` e `.local/mail/` sono generati e ignorati; non stampare né committare credenziali/token. Credenziali con permessi0600. Il bootstrap è ripetibile e rifiuta database esterni. Con `DATABASE_URL`, migrare solo esplicitamente; startup controlla il ledger senza DDL.
 
-- Checkout: `/workspace/LinkedHome`; branch locale predisposto dalla piattaforma: `work`.
-- HEAD iniziale e branch remoto richiesto coincidevano: `9b0f42a6303cdb5f5176cc7cdbb06787665e859b`.
-- Git 2.52.0; Python 3.12.14; Node 24.19.0; npm 11.9.0.
-- `git fsck --full` e lettura remota HTTPS riusciti. Credenziali Git fornite dalla piattaforma: nessun token aggiuntivo richiesto.
-- Nessuna installazione necessaria per i documenti. PostgreSQL, pnpm, Docker e Playwright della vecchia memoria non sono servizi verificati in questa istanza.
-- In questa sessione non sono disponibili WebSearch/Context7/Ultracode Workflow. Le indicazioni precedenti su questi strumenti e sul budget di ricerca non descrivono questa macchina.
-- Fetch diretto con TLS verificato: 6 metadati npm riusciti; 9 URL legali/mercato bloccati dal proxy con 403. Non confondere un blocco di rete con una pagina inesistente.
+`npm test` usa soltanto `soglia_test`; E2E usa `soglia_e2e` e necessita porta3000 libera. Non eseguire in parallelo processi proprietari del ciclo start/stop del DB. L’app usa `soglia`, preservato dai test. Non cancellare il cluster per risolvere errori: il recupero dei lock è limitato a processi dimostrabilmente morti nel cluster generato.
 
-## Configurazione cloud salvata
+## Configurazione cloud
 
-- `start_skill`: directory di lavoro, uso del checkout isolato, controllo Git, lettura memoria/piano, limiti della fase documentale e istruzioni per rivalutare il setup quando comparirà codice.
-- `network.allowed_domains`: 12 domini mirati per fonti normative e di mercato, elencati in `docs/research/09-sources.md`; mantenuto il preset package manager.
-- Nessun `install_script` né segreto applicativo richiesto.
-- Salvataggio della bozza confermato. Non sono stati applicati dal tool cambiamenti alla rete dell'istanza, pubblicati snapshot o verificati ripristini in nuovi task.
+Bozza salvata e riletta con successo, **revisione 4**: install_script completo identico a `scripts/cloud-install.sh`, start_skill in `docs/operations/cloud-start.md`. Conservati i 12 domini personalizzati e il preset package_managers; nessun segreto esterno richiesto. Le vecchie istruzioni che descrivevano un repository soltanto documentale sono sostituite.
 
-## Completato in questa ripresa
+Salvare la bozza non pubblica lo snapshot né valida il ripristino in un nuovo task. I commit sono locali e il remoto non è aggiornato; il ripristino dei commit locali non pubblicati non è garantito dalla piattaforma. Non aggirare questo limite con reset o push non richiesti. Nessun nuovo task ripristinato o CI remota è stato verificato.
 
-1. Riletto lo stato effettivo e individuati dossier legale tronco, fonti mancanti e indicazioni d'ambiente obsolete.
-2. Riscritto `07-legal-privacy-risks.md` con sezioni 0–17 e 21 riferimenti normativi/ufficiali, distinguendo interpretazioni, proposte e verifiche bloccate. Nessuna approvazione legale dichiarata.
-3. Creato `01-market-landscape.md`: sintesi delle evidenze, concorrenza, problemi, città, monetizzazione e contraddizioni.
-4. Creato `08-product-opportunities.md`: opportunità da validare, esperimenti non eseguiti, definizioni dei denominatori e dipendenze.
-5. Creato `09-sources.md`: 566 riferimenti con namespace per dossier, 684 stringhe URL estratte e 17 URL ricorrenti; provenienza e stato di accesso espliciti.
-6. Corrette raccomandazioni incompatibili in 04/05/06: provider obbligatori, SPID dichiarato gratuito, verifiche infallibili, score/tier, ML, fee considerate sicure, inglese prima, CIN indiscriminato, verifica reddito come attivazione, soglia Airbnb importata.
-7. Ricontrollati tutti i 17 punteggi città e quattro scenari sui pesi: aritmetica corretta. Bologna resta un'ipotesi di luogo di ricerca, non una città di lancio approvata; Padova non è automaticamente la seconda scelta.
-8. Scritta revisione `review-01-research.md` con prospettive A–H, criticità, risoluzioni ed evidenze. Aggiornati piano, indice revisioni e checkpoint delle decisioni.
+## Contratti da mantenere
 
-## Risultati di ricerca da trattare come ipotesi
+- Profili privati fino a pubblicazione deliberata. Prima del match solo campi approvati; dopo accettazione nome scelto e chat, senza email/documenti.
+- Edit e pausa annullano inviti pendenti; riconferma immobile senza modifiche li conserva. Le coppie con invito terminale non vengono riaperte in questo prototipo a singolo episodio.
+- Ordine fisso per hash immobile/profilo con cursore: non rotazione o equità dimostrata. Nessun badge aumenta visibilità.
+- Sessioni revocate alla sospensione; login e recupero consentono soltanto diritti/ricorso, senza riattivare contatti. I ricorsi propri sono esportabili.
+- Report altrui mantengono il solo contesto selezionato dopo eliminazione dell’accusato. La manutenzione manuale elimina casi oltre 30 giorni; nessuna cancellazione automatica o durata massima garantita localmente.
+- Inviti accettati/chiusi mantengono lo snapshot dell’offerta; cambi successivi sono indicati.
 
-- Possibile valore: ridurre disclosure ripetuta e lavoro necessario per conversazioni pertinenti. Non crea case né garantisce solvibilità.
-- Form profilo e inviti sono copiabili; vantaggio competitivo, liquidità e disponibilità a pagare non dimostrati.
-- Bologna guida la matrice soggettiva verificata; serve riscontro su offerta raggiungibile, domanda comparabile e acquisizione locale.
-- Core gratuito; eventuale servizio di verifica per proprietari da valutare legalmente ed economicamente. €15–25 è un'ipotesi, non prezzo validato.
-- Verifiche CIE/SPID, biometriche e bancarie richiedono termini commerciali, copertura, alternative, basi giuridiche e costi reali.
-- Una verifica documentale non prova affidabilità futura; una carta pseudonima non elimina tutti i proxy; hosting UE e vendor esterno non risolvono automaticamente privacy e trasferimenti.
+## Commit e lavoro successivo
 
-## Problemi aperti e prossima azione
+`a5d4e80`: consolidamento ricerca; `d47a214`: evidenze/revisione indipendente; `c0180de`: prodotto/design/ADR; `0185593`: MVP e suite di test. Evidenze finali, stato e configurazione sono nel commit documentale successivo. Nessun push.
 
-1. **R01-C1:** applicare nelle impostazioni ambiente i domini salvati, poi recuperare testi normativi consolidati e disposizioni esatte. Il dossier legale contiene target di lettura, non nuove citazioni lette sul primario. Valutazione delle attività concreta da affidare successivamente a consulente qualificato.
-2. **R01-C2:** recuperare fonti primarie correnti su concorrenti e indicatori decisivi città. Separare periodi, popolazioni, stock e flussi; aggiornare le ipotesi se contraddette. Coda dettagliata in 09 §3 e 05 §E.
-3. Ottenere la revisione indipendente prevista, senza presentare i passaggi di un solo agente come revisori diversi. Registrare esito e risoluzioni prima del gate.
-4. Solo dopo chiusura esplicita del gate e nel perimetro del task successivo: tesi di prodotto, priorità, naming, UX/design, ADR e implementazione.
+Non rimangono fasi locali aperte o approvazioni pendenti. Per un futuro rilascio reale seguire `docs/operations/release-checklist.md`: ricerca utenti, consulenza aggiornata, ruoli/informative/DPIA, provider, operazioni e supporto, infrastruttura/restore, retention, naming e misure su coorti. Non inventare questi risultati né considerarli verificati dalla demo.
 
-Ulteriori attività future: ricerca utenti consensuale, WTP/costi, condizioni provider, DPIA, ruoli privacy, retention e operatività supporto. Non sono state eseguite interviste, contattati partner, creati account o sostenute spese.
-
-## File per riprendere
-
-- `PLAN.md` — ledger e gate.
-- `docs/reviews/review-01-research.md` — problemi critici e registro risoluzioni.
-- `docs/research/01-market-landscape.md` — sintesi di riferimento.
-- `docs/research/07-legal-privacy-risks.md` — copertura legale e questioni aperte.
-- `docs/research/08-product-opportunities.md` — agenda di validazione.
-- `docs/research/09-sources.md` — provenienza e richieste bloccate.
-- `docs/research/02..06, 10` — dossier di base con note correttive.
-- `docs/DECISIONS.md` — D-001 ricerca prima del codice; D-002 sviluppo senza Docker obbligatorio.
-
-## Verifiche e limiti
-
-Passati: integrità/accesso Git, lettura dei documenti, aritmetica matrice e sensibilità, sei metadati npm. Riferimenti bibliografici e collegamenti Markdown locali controllati in chiusura.
-
-Bloccati: nove fetch legali/mercato per policy di rete. Non eseguiti: ricerca primaria successiva allo sblocco, peer review indipendente, opinione legale, esperimenti clienti, build/test applicativi. Nessuna di queste attività è marcata come superata. La stesura dei documenti è completa; la validazione della ricerca resta aperta.
+Il brief integrale originario di 52 sezioni non è nel checkout: PLAN e il contratto adottato delimitano il lavoro verificabile. La ricerca conserva le distinzioni fra fonti lette, bloccate e ipotesi: 566 riferimenti bibliografici non equivalgono a 566 fonti verificate. Non ricominciare la ricerca o chiedere nuove approvazioni per correzioni già autorizzate.

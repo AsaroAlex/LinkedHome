@@ -11,7 +11,7 @@ This adopted scope supersedes historical MUST labels in research04 and technolog
 | MUST | Invitation | Current property/profile required, owner and tenant distinct, one record per pair, acceptance by intended recipient only, no chat before acceptance, stale changes revalidated |
 | MUST | Conversation | Participant-only text, bounded input, closed/block states enforced server-side, report message/invitation, no raw HTML |
 | MUST | Privacy/control | Own structured data export, pause, account deletion with session revocation, no third-party documents; explicitly separate publication and conversation |
-| MUST | Verification foundation | Typed states and provenance/expiry/appeal model; truthful unavailable external integrations; actual email confirmation distinct from identity/income |
+| MUST | Verification foundation | Typed states and provenance/expiry/appeal model; truthful unavailable external integrations; local token confirmation explicitly distinct from real email delivery and identity/income |
 | MUST | Trust/admin | Report intake, moderator minimum relevant context, audited close/action reasons, user suspension restricted and reversible; block prevents contact both ways |
 | MUST | Analytics | Minimal first-party workflow events; admin aggregates and report counts, no public user metrics, avoid raw content in logs |
 | MUST | Environment | One-command bootstrap from lockfile, migration ledger, synthetic seed, Docker-free PostgreSQL, explicit external DB mode |

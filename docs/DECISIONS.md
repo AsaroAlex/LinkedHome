@@ -31,3 +31,12 @@ D-001 remains in force. Research documents 01–10 and the single-agent A–H as
 - **Decision:** Research gate passed for internal design and local synthetic development, after eight independent reviewers and strategy/legal follow-ups. The user requested the entire repository plan.
 - **Evidence:** Review 02 and primary recheck, including competitor corrections and legal source hashes.
 - **Boundary:** No proven market demand, moat, city superiority, trademark clearance, live identity/income provider or legal approval. These are launch conditions, not claims made by a local MVP.
+
+
+## D-004 — Complete the synthetic local MVP with explicit release boundaries
+
+- **Date:** 2026-10-03 · **Status:** accepted
+- **Decision:** Implement the reviewed feature contract under the replaceable working name Soglia, using the accepted TypeScript/Fastify/React/PostgreSQL ADR. Local generated-token email confirmation demonstrates a workflow only; identity/income providers remain unavailable.
+- **Evidence:** Independent product/implementation/final panels (reviews03–05),71 unit/integration tests,10 browser scenarios, actual install/start/dev/restart checks and recorded visual/performance evidence.
+- **Result:** Phases0–28 complete for the adopted local scope. D-002's Docker-free requirement is met by native embedded PostgreSQL; the earlier proposed Compose fallback is superseded by the tested explicit local/external modes. Tests use isolated databases and preserve the application seed. Suspended users retain recovery/rights/appeal access. Report cleanup is manual, never promised as a hard retention maximum.
+- **Boundary:** [Release gates](operations/release-checklist.md) remain outstanding. No public deployment, outside messaging, paid services or unrequested push/PR. Cloud draft saving does not verify fresh-task restoration of local-only commits.

@@ -1,0 +1,39 @@
+{
+  "code_commit": "01855937b85034d5276ef54f3d3d76389f9ba450",
+  "captured_on": "2026-10-03",
+  "scope": "Synthetic local test evidence; no credentials or traces included.",
+  "files": {
+    "chat-mobile.png": {
+      "sha256": "d167d01aa99f89d9032294ac334f06587c970fcbd7779a2a1c7b8d9fd6dae0ee",
+      "bytes": 96003
+    },
+    "dependency-audit.json": {
+      "sha256": "20bd8c9ab1844df61617736e21b8821b09d2eaaeda5ce083cd6b5ce490611e5c",
+      "bytes": 375
+    },
+    "discovery-desktop.png": {
+      "sha256": "edce50c047d99cf01a819177b8f538359eecaeeff13ff4e833c1f5133c7f27f8",
+      "bytes": 104004
+    },
+    "landing-desktop.png": {
+      "sha256": "62188f0bf373338bafa27264ed9dfea2ea1f0e3a75bf7f729018b75226f9019b",
+      "bytes": 226845
+    },
+    "landing-mobile.png": {
+      "sha256": "971af62ce48ff3b69b4db5e773b3c1dbdbc1f4f2dd23deb31cb588931e8c766e",
+      "bytes": 178829
+    },
+    "performance.json": {
+      "sha256": "fab8d3ba11816840bf946268b2d131ab93a056bf0352a2e6fa21e07803b36a5a",
+      "bytes": 477
+    },
+    "profile-desktop.png": {
+      "sha256": "8e317758ef12615ea204ecbf6e76d13083211b34763606bd7ddd605885553fb4",
+      "bytes": 124116
+    },
+    "staff-desktop.png": {
+      "sha256": "990f6e85312a52fe284cc351ffda24002733c9326c1e91d4323c842228e62a1a",
+      "bytes": 95082
+    }
+  }
+}
