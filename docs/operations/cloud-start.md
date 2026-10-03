@@ -1,4 +1,4 @@
-# Avvio di LinkedHome / Soglia nell’ambiente cloud
+# Avvio di LinkedHome / Doorluma nell’ambiente cloud
 
 Usa `/workspace/LinkedHome`, checkout isolato già fornito dalla piattaforma. Preserva modifiche, dati ignorati e commit locali. Non creare worktree, non fare reset, switch, pull o push automatici. Il branch locale `work` può differire dal riferimento remoto richiesto `claude/sweet-goldberg-5lwng7` senza essere un errore. Nessuna PR senza richiesta.
 

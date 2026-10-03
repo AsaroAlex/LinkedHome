@@ -2157,7 +2157,7 @@ function Settings({
       );
       const link = document.createElement("a");
       link.href = url;
-      link.download = "soglia-dati.json";
+      link.download = `${brand.slug}-dati.json`;
       link.click();
       URL.revokeObjectURL(url);
     }, "Esportazione preparata. Conserva il file in un luogo sicuro.");

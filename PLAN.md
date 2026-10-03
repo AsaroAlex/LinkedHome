@@ -1,6 +1,6 @@
-# Execution ledger — LinkedHome / Soglia
+# Execution ledger — LinkedHome / Doorluma
 
-Updated 2026-10-03. User instruction: **execute all repository phases**. The original52-section brief is absent from the checkout; this ledger and the adopted feature contract define the reviewable local scope. Working name Soglia is not cleared for public use.
+Updated 2026-10-03. User instruction: **execute all repository phases**. The original52-section brief is absent from the checkout; this ledger and the adopted feature contract define the reviewable local scope. Doorluma supersedes the original working name Soglia after the authorized domain search; domain purchase and trademark clearance remain open.
 
 Research passed an independent bounded gate for synthetic local development. Production deployment, live provider integrations, outside studies and legal/brand clearance are separate [release gates](docs/operations/release-checklist.md).
 
@@ -13,7 +13,7 @@ Research passed an independent bounded gate for synthetic local development. Pro
 | 4 | Legal/privacy research | DONE for desk scope — inspected primary baseline, no deployment clearance; review02 |
 | 5 | Product thesis | DONE — docs/product/01; independently reviewed |
 | 6 | Priorities | DONE — docs/product/02 acceptance contract; external features deferred explicitly |
-| 7 | Naming/branding | DONE as working name — Soglia centralized; no availability/clearance claim |
+| 7 | Naming/branding | DONE — Doorluma centralized; domain availability research completed in the subsequent authorized scope, purchase and trademark clearance pending |
 | 8 | UX architecture | DONE — docs/design/01, review03 |
 | 9 | Design system | DONE — docs/design/02 and implemented responsive CSS |
 | 10 | Technical ADR | DONE — Fastify/React/TypeScript/PostgreSQL; review03 and amendments |
@@ -65,3 +65,7 @@ On 2026-10-03 the user selected **«Integrazioni reali e preparazione del deploy
 The default local environment remains synthetic and Docker-free. No real SMTP credentials, verified domain, paid service or public deploy exists. Docker schema/configuration and production-dependency startup were checked, but actual image build/run could not be checked because the environment does not permit access to its Docker socket. Render ingress/rate-limit trust, live email delivery, hosted backup/restore, monitoring and real-user release gates remain target-environment work. Exact follow-on evidence is in operations/validation and deployment.md.
 
 The existing remote/cloud configuration references the earlier published commit. This continuation is saved in the local checkout; additional remote publication is not claimed.
+
+## Authorized continuation — domain research and naming
+
+The user requested autonomous selection of an available domain and the resulting repository changes. **Doorluma / doorluma.com** is selected; optional `doorluma.it` is also offered for new registration. [Naming evidence](docs/product/03-naming.md) distinguishes registry availability, registrar offers and bounded collision research. Public branding and deployment guidance are updated; persistent technical identifiers are unchanged. No domain purchase, verified sender, custom-origin activation or additional push is implied. Verification results are recorded in operations/validation.

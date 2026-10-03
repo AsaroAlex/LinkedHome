@@ -1,6 +1,7 @@
 export const brand = {
-  name: "Soglia",
-  tagline: "Un nuovo modo di incontrare casa.",
+  name: "Doorluma",
+  slug: "doorluma",
+  tagline: "Affitti che iniziano da un invito.",
   defaultLocale: "it-IT",
   supportedLocales: ["it-IT"],
   preparedLocales: ["en-GB"],

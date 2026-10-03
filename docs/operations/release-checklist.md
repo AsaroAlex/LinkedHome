@@ -11,7 +11,7 @@ The original repository phases produced a tested local synthetic MVP. The subseq
 | Engineering / operations | Reviewed delivery provider, verified domains, SMTP/security configuration, HTTPS/proxy config, privileged provisioning, secrets, monitoring, backup/restore and load test | Render Frankfurt + Brevo recommended; SMTP adapter and staging templates implemented. Credentials, DNS, actual delivery, Render ingress trust, deployed backup/restore/load and monitoring remain unverified |
 | Product / fairness | Adult-account policy, proxy and exposure effects, supported criteria/alternatives, user comprehension and assisted correction | Synthetic invariant tests only |
 | Provider lead | Identity/income provider contracts, scope, entitlement, coverage/alternatives, false-result/appeal handling, costs | No provider available; upload/check endpoints not enabled |
-| Brand owner | Name, domain and trademark clearance, including Soglia collisions | Working name only |
+| Brand owner | Register and control the selected domain; assess business-name/trademark collisions and obtain clearance | Doorluma selected; doorluma.com, .it and .eu available for new registration according to Dominiofaidate on 2026-10-03, unpurchased. Bounded collision/pronunciation research completed; trademark clearance pending |
 | Marketplace analyst | Search/vacancy episode identities, relist deduplication, cohort eligibility/withdrawals, maturity/censoring, repeat-turnover invitations | Local single-episode counts only |
 | Finance / strategy | Costs including free/reused checks, support, acquisition and validated payer uptake | No pricing/billing model validated or enabled |
 

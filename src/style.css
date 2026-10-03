@@ -1286,6 +1286,7 @@ blockquote {
   .header-inner {
     padding: 18px 20px;
     gap: 15px;
+    flex-wrap: wrap;
   }
   .logo {
     font-size: 1.8rem;
@@ -1640,6 +1641,12 @@ blockquote {
   }
   .main .panel-title .eyebrow {
     font-size: 0.58rem;
+  }
+}
+@media (max-width: 380px) {
+  .header nav {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 @media (prefers-reduced-motion: reduce) {

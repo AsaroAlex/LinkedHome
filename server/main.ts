@@ -3,6 +3,7 @@ import { makePool } from "./db.js";
 import { readRuntimeConfiguration } from "./config.js";
 import { validateMailConfiguration } from "./mail.js";
 import { migrate } from "../scripts/migrate.js";
+import { brand } from "../src/brand.js";
 const runtime = readRuntimeConfiguration();
 validateMailConfiguration();
 // Deployed runtimes contain no embedded database or synthetic seed tooling.
@@ -21,7 +22,7 @@ try {
     host: process.env.HOST || "127.0.0.1",
     port: Number(process.env.PORT || 3000),
   });
-  console.log(`Soglia HTTP service ready (${runtime.environment}).`);
+  console.log(`${brand.name} HTTP service ready (${runtime.environment}).`);
   let stopping = false;
   const stop = async () => {
     if (stopping) return;

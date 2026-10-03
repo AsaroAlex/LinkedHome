@@ -1,6 +1,6 @@
-# Soglia · LinkedHome
+# Doorluma · LinkedHome
 
-A prototype of an Italy-first reverse rental marketplace: publish preferences, discover compatible profiles for a property, invite, accept and converse. Built with TypeScript, React, Fastify and real PostgreSQL. Local development uses synthetic data; external PostgreSQL, authenticated SMTP and staging deployment templates are prepared. Real-user release conditions remain open. Soglia is a replaceable working name, without trademark/domain clearance.
+A prototype of an Italy-first reverse rental marketplace: publish preferences, discover compatible profiles for a property, invite, accept and converse. Built with TypeScript, React, Fastify and real PostgreSQL. Local development uses synthetic data; external PostgreSQL, authenticated SMTP and staging deployment templates are prepared. Real-user release conditions remain open. Doorluma is the selected product name after a bounded domain/collision search. `doorluma.com` was confirmed available for new registration by the registrar and returned no record at the official .com registry on 2026-10-03; it has not been purchased and trademark clearance remains pending. See [naming research](docs/product/03-naming.md) and [domain setup](docs/operations/domain-setup.md).
 
 ## Run locally
 
