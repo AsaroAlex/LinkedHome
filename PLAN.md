@@ -109,3 +109,9 @@ Following an explicit user-requested pull, the checkout contains the integrated 
 ## Pubblicazione e pulizia dei branch richieste — 2026-10-04
 
 Alla richiesta «Unisci, mergia e pulisci i branch», inventario completo: un solo ramo remoto/default `claude/sweet-goldberg-5lwng7`, un solo locale `work`, nessuna PR aperta. Il remoto è avanzato durante il push a `25d02c6`, con il naming LinkedHome. Integrato tramite merge insieme alla ricerca `3658f8a`; risolti i conflitti documentali, con D-007 naming e D-008 proposta economica. Nessun branch aggiuntivo da cancellare. Nuova verifica del codice integrato in [branch-merge-validation](docs/operations/branch-merge-validation.md); pubblicazione ordinaria sul ramo remoto esistente.
+
+## Authorized publication and branch cleanup — 2026-10-04
+
+DONE — following «Unisci, mergia e pulisci i branch», published LinkedHome `25d02c6` normally to the existing default `claude/sweet-goldberg-5lwng7`. All income, SMTP and rental UX histories remain preserved in merge `9db6a9c`. Integrated the concurrent Git-operation records `b5fa6d2` and `dcb665f` with a documentation-only merge. Fetch/prune and full remote-head inventory confirmed one remote branch and no open PR or additional branch to delete. Renamed this checkout's local `work` branch to the same shared name, retaining upstream and data. Build/typecheck and 33 mail tests passed on the synchronized LinkedHome source; previously recorded complete checks remain attributed to their actual execution. Publish the consolidated record on the same branch; no force push or deployment required.
+
+Consolidamento finale: inclusi `c1fefe2` e `cfc849f`, anche i registri operativi concorrenti. Naming LinkedHome e ricerca economica D-008 conservati; codice e modelli invariati dopo la verifica completa161/26. Unico branch locale/remoto con nome comune e upstream; push ordinario e inventario finale.

@@ -1,6 +1,6 @@
 # Verifica locale del merge dei branch
 
-Verifica nuova eseguita il 2026-10-03, dopo il segnale del coordinatore che i tre conflitti documentali erano risolti. Il checkout testato integra il parent locale `78e0491` con il remoto `25d02c6` che adotta **LinkedHome**, prima della creazione del commit di merge. Nessun file risulta unmerged; il verificatore non ha eseguito mutazioni Git né modifiche al codice. README, modulo brand e HTML indicano LinkedHome.
+Verifica nuova eseguita il 4 ottobre 2026 (Europe/Rome), dopo il segnale del coordinatore che i tre conflitti documentali erano risolti. Il checkout testato integra il parent locale `78e0491` con il remoto `25d02c6` che adotta **LinkedHome**, prima della creazione del commit di merge. Nessun file risulta unmerged; il verificatore non ha eseguito mutazioni Git né modifiche al codice. README, modulo brand e HTML indicano LinkedHome.
 
 Node 24.19.0, npm 11.9.0. `package.json` e lockfile non cambiano: sono state riutilizzate le dipendenze già installate con `npm ci`, senza reinstallazione.
 
@@ -24,3 +24,5 @@ Dopo il comando passato è stato provato anche `npm start` sul frontend compilat
 Non sono emersi fallimenti. Il warning Node `NO_COLOR` / `FORCE_COLOR` è non bloccante. Le verifiche browser configurate coprono i controlli di accessibilità/responsività campionati; i risultati non sono una certificazione, una misura di usabilità con utenti o una prova di produzione. Nessun invio esterno, integrazione reale reddito/pagamenti, deploy o CI remoto è stato eseguito. Commit, push, ancestry e pulizia dei branch sono attività separate del coordinatore.
 
 Evidenze: [JSON](evidence/branch-merge-check.json), [Log](evidence/branch-merge-check.log) e [Runtime](evidence/branch-merge-runtime-probes.json). Le snapshot private di confronto sono state eliminate dopo l'aggregazione, senza pubblicare righe o credenziali.
+
+Le successive registrazioni remote confluite in `cfc849f` modificano soltanto PLAN e PROJECT_STATE. Il loro merge conserva esattamente il codice verificato sopra; non richiede una nuova esecuzione della suite. La storia Git e i riferimenti del risultato sono verificati separatamente dal coordinatore.
