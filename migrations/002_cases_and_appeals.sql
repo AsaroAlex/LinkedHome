@@ -1,0 +1,11 @@
+ALTER TABLE reports DROP CONSTRAINT reports_invitation_id_fkey;
+ALTER TABLE reports ALTER COLUMN invitation_id DROP NOT NULL;
+ALTER TABLE reports ADD CONSTRAINT reports_invitation_id_fkey FOREIGN KEY(invitation_id) REFERENCES invitations(id) ON DELETE SET NULL;
+ALTER TABLE reports ADD COLUMN reported_user_id uuid REFERENCES users(id) ON DELETE SET NULL;
+ALTER TABLE reports ADD COLUMN selected_message text CHECK(length(selected_message)<=2000);
+ALTER TABLE reports ADD COLUMN selected_sender_id uuid REFERENCES users(id) ON DELETE SET NULL;
+UPDATE reports r SET reported_user_id=CASE WHEN i.tenant_id=r.reporter_id THEN i.landlord_id ELSE i.tenant_id END FROM invitations i WHERE r.invitation_id=i.id;
+UPDATE reports r SET selected_message=m.body,selected_sender_id=m.sender_id FROM messages m WHERE r.message_id=m.id;
+CREATE TABLE appeals (id uuid PRIMARY KEY DEFAULT gen_random_uuid(),user_id uuid UNIQUE NOT NULL REFERENCES users ON DELETE CASCADE,reason text NOT NULL CHECK(length(reason) BETWEEN 5 AND 500),status text NOT NULL DEFAULT 'open' CHECK(status IN ('open','resolved')),created_at timestamptz NOT NULL DEFAULT now(),resolved_at timestamptz);
+ALTER TABLE verification_checks DROP CONSTRAINT verification_checks_check;
+ALTER TABLE verification_checks ADD CONSTRAINT verification_result_complete CHECK(status<>'VERIFIED' OR (provider IS NOT NULL AND provider_reference IS NOT NULL AND checked_at IS NOT NULL AND expires_at IS NOT NULL AND expires_at>checked_at));

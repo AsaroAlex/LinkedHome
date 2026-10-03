@@ -1,0 +1,3 @@
+ALTER TABLE invitations ADD COLUMN property_snapshot jsonb;
+UPDATE invitations i SET property_snapshot=jsonb_build_object('id',p.id,'title',p.title,'city',p.city,'area',p.area,'description',p.description,'rent',p.rent,'available_from',p.available_from,'min_months',p.min_months,'max_months',p.max_months,'capacity',p.capacity,'sqm',p.sqm,'rooms',p.rooms,'furnished',p.furnished,'authority_attested',p.authority_attested,'status',p.status,'revision',p.revision,'published_at',p.published_at) FROM properties p WHERE i.property_id=p.id;
+ALTER TABLE invitations ALTER COLUMN property_snapshot SET NOT NULL;

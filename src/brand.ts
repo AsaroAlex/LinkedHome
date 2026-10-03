@@ -1,0 +1,37 @@
+export const brand = {
+  name: "Soglia",
+  tagline: "Un nuovo modo di incontrare casa.",
+  defaultLocale: "it-IT",
+  supportedLocales: ["it-IT"],
+  preparedLocales: ["en-GB"],
+} as const;
+export const statuses: Record<string, string> = {
+  unavailable: "Da riconfermare",
+  draft: "Bozza privata",
+  published: "Pubblicato",
+  paused: "In pausa",
+  pending: "In attesa",
+  accepted: "Accettato",
+  declined: "Declinato",
+  withdrawn: "Ritirato",
+  cancelled: "Annullato",
+  closed: "Chiuso",
+  expired: "Scaduto",
+  open: "Da esaminare",
+  resolved: "Risolto",
+  UNVERIFIED: "Non verificato",
+  PENDING: "In corso",
+  VERIFIED: "Verificato",
+  FAILED: "Non riuscito",
+  EXPIRED: "Scaduto",
+  DISPUTED: "Contestato",
+};
+export const reasonLabels: Record<string, string> = {
+  scam: "Possibile truffa",
+  harassment: "Contatto molesto",
+  discrimination: "Discriminazione",
+  other: "Altro",
+  abuse: "Abuso del servizio",
+  security: "Sicurezza",
+  appeal_accepted: "Revisione accolta",
+};
