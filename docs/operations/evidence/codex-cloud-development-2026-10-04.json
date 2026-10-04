@@ -1,0 +1,53 @@
+{
+  "verifiedAt": "2026-10-04T09:01:36.434Z",
+  "requestedWorkflow": "same Codex chat and cloud checkout with iterative edits and manual live preview",
+  "externalPlatformExcluded": true,
+  "providerConfigurationRemoved": [
+    ".replit",
+    "REPLIT_DEV_DOMAIN adapter",
+    "provider-specific regression cases",
+    "import instructions"
+  ],
+  "checks": {
+    "build": true,
+    "typecheck": true,
+    "unitIntegrationTests": 180,
+    "developmentConfigTests": 16,
+    "privateFileRegressionTests": 1,
+    "protectedFixtureUrls": 24,
+    "protectedFixtureStatus": 403,
+    "formatting": true,
+    "diffCheck": true
+  },
+  "finalDevelopment": {
+    "command": "npm run dev",
+    "internalHealth": true,
+    "internalFrontend": true,
+    "privateFilesDenied": true,
+    "dataPreserved": true,
+    "dataCounts": {
+      "users": 5,
+      "profiles": 2,
+      "properties": 1,
+      "schema_migrations": 4
+    }
+  },
+  "preview": {
+    "incomingUrlAvailable": false,
+    "portForwardToolAvailable": false,
+    "manualBrowserVerified": false,
+    "status": "blocked by missing ingress between managed runtime and desktop browser",
+    "browserPanelOpeningCreatesForwarding": false
+  },
+  "sources": [
+    "https://developers.openai.com/codex/browser#preview-a-page",
+    "https://developers.openai.com/codex/environments/cloud-environments#current-limitations",
+    "https://developers.openai.com/codex/remote-connections#hand-off-a-chat-between-hosts"
+  ],
+  "limits": [
+    "Internal health/HTML checks are not proof of desktop preview reachability.",
+    "The current browser panel cannot create a connection into this runtime.",
+    "Cloud computer/browser automation limitations are distinct from a manual browser preview.",
+    "Prior browser suites were not repeated for this provider-configuration removal."
+  ]
+}

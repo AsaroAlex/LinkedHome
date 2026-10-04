@@ -24,40 +24,14 @@ export function readDevelopmentConfiguration(
     );
   const uiPort = port(env.DEV_PORT, 3000, "DEV_PORT"),
     apiPort = port(env.DEV_API_PORT, 3001, "DEV_API_PORT"),
-    codespaces = env.CODESPACES === "true",
-    replitDomain = env.REPLIT_DEV_DOMAIN;
+    codespaces = env.CODESPACES === "true";
   if (uiPort === apiPort)
     throw new Error("DEV_PORT and DEV_API_PORT must be different.");
-  const host =
-    env.DEV_HOST ||
-    (cloud || codespaces || replitDomain ? "0.0.0.0" : "127.0.0.1");
+  const host = env.DEV_HOST || (cloud || codespaces ? "0.0.0.0" : "127.0.0.1");
   if (host !== "localhost" && !isIP(host))
     throw new Error("DEV_HOST must be localhost or an IPv4/IPv6 bind address.");
 
   let origin = env.APP_ORIGIN;
-  if (!origin && replitDomain) {
-    let preview: URL;
-    try {
-      preview = new URL(`https://${replitDomain}`);
-    } catch {
-      throw new Error(
-        "REPLIT_DEV_DOMAIN must contain only the preview host name.",
-      );
-    }
-    if (
-      preview.hostname !== replitDomain.toLowerCase() ||
-      preview.username ||
-      preview.password ||
-      preview.port ||
-      preview.pathname !== "/" ||
-      preview.search ||
-      preview.hash
-    )
-      throw new Error(
-        "REPLIT_DEV_DOMAIN must contain only the preview host name.",
-      );
-    origin = preview.origin;
-  }
   if (!origin && codespaces) {
     if (!env.CODESPACE_NAME)
       throw new Error(
@@ -69,7 +43,7 @@ export function readDevelopmentConfiguration(
   }
   if (!origin && cloud)
     throw new Error(
-      "Cloud development requires APP_ORIGIN matching the forwarded browser URL, or the Codespaces/Replit preview environment. Set it in .env.development.local or use npm run dev for local development.",
+      "Cloud development requires APP_ORIGIN matching the forwarded browser URL. Set it in .env.development.local or use npm run dev for local development.",
     );
   const localHost =
     host === "0.0.0.0" || host === "::"

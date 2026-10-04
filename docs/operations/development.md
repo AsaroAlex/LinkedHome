@@ -2,25 +2,19 @@
 
 Questa guida descrive il checkout corrente e il ciclo modifica → test → feedback. Il percorso di sviluppo usa dati sintetici e gli strumenti già presenti nel repository. La configurazione di staging e i servizi per utenti reali restano nel percorso separato di [deployment](deployment.md).
 
-## Cloud Replit: percorso corrente
+## Questa chat Codex in cloud: percorso corrente
 
-La richiesta corrente è lavorare in cloud con preview raggiungibile dal computer. Il percorso è importare in Replit **questo repository esistente**, mantenendo frontend, API e PostgreSQL già implementati. Non va ricreata l'app da un prompt né attivato un deployment di produzione.
+La richiesta corrente è un'esperienza iterativa in questa chat Codex, sullo stesso checkout cloud. L'assistente modifica i file, riproduce il feedback, corregge la causa e mantiene pronto il servizio per il test successivo. Frontend, API, database e convenzioni esistenti restano il punto di partenza di ogni iterazione.
 
-Il solo passaggio iniziale che richiede l'interfaccia dell'utente è [importare LinkedHome in Replit](https://replit.com/github.com/AsaroAlex/LinkedHome), oppure usare l'[import GitHub guidato](https://replit.com/import): repository pubblico `AsaroAlex/LinkedHome`, branch predefinito/sorgente `claude/sweet-goldberg-5lwng7`. L'[import ufficiale](https://docs.replit.com/build/import-from-providers) trasferisce file e dipendenze, non segreti o dati dei servizi. `.local/`, `.env.development.local` e le credenziali demo non viaggiano con Git; il nuovo workspace genera i propri dati sintetici.
+Il comando ordinario è `npm run dev`: un supervisor mantiene PostgreSQL, API watch e Vite HMR. I dati sintetici persistono in `.local/`; le modifiche frontend si aggiornano con hot reload e le API si riavviano senza fermare il database. Non serve un push dopo ogni modifica: Git resta disponibile per salvataggi/versioni richiesti.
 
-`.replit` seleziona il modulo `nodejs-24`, presente nel [catalogo ufficiale Replit](https://github.com/replit/nixmodules/blob/main/pkgs/modules/default.nix). Nel workspace importato verificare il runtime Node24/npm e installare una volta, se l'import non ha già installato le dipendenze:
+Per il test manuale dal computer serve un URL di preview in ingresso fornito dal runtime Codex verso Vite3000. API3001 e PostgreSQL55432 restano loopback; l'origin del browser deve corrispondere ad `APP_ORIGIN`. Quando il runtime fornisce effettivamente un URL, `npm run dev:cloud` abilita il binding della UI per quel forwarding.
 
-```bash
-npm ci
-```
+Limite corrente: l'app è eseguibile nell'ambiente cloud, ma gli strumenti del runtime disponibili non forniscono un URL di preview in ingresso. La prova manuale dal computer è quindi bloccata dall'accesso alla preview. `127.0.0.1` del cloud non è il localhost del computer. Continuare il lavoro e le verifiche interne in questo checkout, riportando il limite senza dichiarare raggiungibile un URL non disponibile.
 
-Poi **Run** esegue `npm run dev:cloud`. Il comando avvia bootstrap necessario, PostgreSQL, API watch e Vite HMR. La configurazione Replit espone soltanto la UI sulla3000; API3001 e PostgreSQL55432 restano loopback. `APP_ORIGIN` viene derivato da `https://<REPLIT_DEV_DOMAIN>`, salvo valore esplicito; questa variabile appartiene alla preview del Project Editor ed è [documentata separatamente dai Deployments](https://docs.replit.com/features/project-setup/configuration). Aprire l'URL effettivo della preview Replit **in una nuova scheda del browser** per login e sessioni persistenti, usando gli account sintetici del workspace. Il riquadro incorporato dell'editor è un contesto cross-site e può bloccare il cookie di sessione esistente `SameSite=Strict`; il contratto di autenticazione resta invariato.
+La [guida alla preview Browser di Codex](https://developers.openai.com/codex/browser#preview-a-page) descrive l'avvio dal terminale integrato; non fornisce un collegamento in ingresso a questo runtime cloud. Le [limitazioni cloud](https://developers.openai.com/codex/environments/cloud-environments#current-limitations) relative a Computer/browser use riguardano l'automazione dell'agente e sono distinte dalla preview manuale. Il blocco qui identificato è la mancanza di una route/URL in ingresso negli strumenti disponibili. Anche l'[handoff tra host](https://developers.openai.com/codex/remote-connections#hand-off-a-chat-between-hosts) non supporta il cloud: non presumere un trasferimento automatico della chat o dei processi. La preview manuale resta da verificare quando il runtime fornisce effettivamente l'accesso.
 
-Dopo l'import, l'assistente lavora sull'app Replit esistente e le modifiche salvate in quel workspace diventano provabili con HMR/restart API. Non occorre un push per ogni iterazione; Git resta disponibile per salvataggi/versioni o esportazioni richieste. Fornire alla chat il collegamento dell'app importata permette di identificare il workspace corretto. Un import una tantum non sincronizza automaticamente altri checkout: i file modificati devono essere quelli del workspace in prova.
-
-Stato attuale: configurazione preparata, app Replit/import/runtime/preview ancora da creare e verificare. Il listener del cloud Codex corrente non è raggiungibile dal computer dell'utente e non equivale alla preview Replit. Disponibilità dell'ambiente, permessi della preview e conservazione del volume dipendono dalla piattaforma; si verificano all'avvio effettivo, senza promettere un servizio sempre attivo.
-
-## Alternativa: avvio locale
+## Riferimento tecnico: avvio locale
 
 Richiesti Node24, npm11 e un ambiente Linux/macOS non-root compatibile con il pacchetto PostgreSQL nativo. `.nvmrc` indica Node24.19.0; `package.json` richiede Node `>=24 <25`. Il devcontainer è disponibile anche per lavorare da un computer senza questi prerequisiti installati sull'host.
 
@@ -35,25 +29,11 @@ Apri `http://127.0.0.1:3000` sul computer che esegue il servizio. Usa quell'orig
 
 Il terminale mostra output di avvio, errori di Vite e diagnostica del backend. Lascialo aperto durante le prove. Ctrl+C arresta UI, API e il database locale quando il comando ne possiede l'avvio. I dati salvati in `.local/postgres` sopravvivono al riavvio; sessioni e account sono nel database, non nella memoria del processo API.
 
-## Alternativa Codex locale su macOS
+## Riferimenti tecnici: Codex locale e Dev Container
 
-Questa era la scelta precedente e resta un'alternativa; l'ultima richiesta seleziona il cloud. Nel percorso locale app e assistente condividono la stessa cartella, con preview affiancata e ciclo modifica → test → feedback. La chat cloud non può eseguire comandi sul Mac; aprire il repository come progetto locale nell’app Codex è il passaggio iniziale necessario. Poi l’agente locale può installare le dipendenze, avviare il servizio e aprire la preview sullo stesso computer.
+Le configurazioni locali e Dev Container/Codespaces restano riferimenti tecnici già presenti. La scelta corrente rimane questa chat cloud; questi riferimenti non costituiscono il passaggio successivo richiesto all'utente.
 
-Richiesto Node24; il PostgreSQL di sviluppo viene fornito dal pacchetto npm, senza installazione separata o Docker. Per una nuova copia del progetto, da una cartella adatta sul Mac:
-
-```bash
-git clone --branch claude/sweet-goldberg-5lwng7 https://github.com/AsaroAlex/LinkedHome.git LinkedHome-dev
-```
-
-Se il repository è già presente sul Mac, usare quella cartella e aggiornare il branch esistente senza sovrascrivere modifiche locali; non clonare sopra una cartella esistente. Aprire la cartella del repository in Codex, scegliere l’esecuzione locale e fornire questo messaggio iniziale:
-
-> Continua LinkedHome da questo checkout. Leggi AGENTS.md e PROJECT_STATE.md; verifica Node24, installa le dipendenze se mancanti, avvia npm run dev e apri http://127.0.0.1:3000 nella preview. Mantieni il servizio durante i test manuali e applica il workflow iterativo già documentato. Non fare push a ogni modifica.
-
-Il contesto delle iterazioni e i controlli effettuati sono nei file del repository. Non occorre rifare analisi o implementazione iniziali. La copia sul Mac genera il proprio database e le proprie credenziali demo al primo avvio; dati e credenziali ignorati del cloud restano nel cloud, senza essere trasferiti tramite Git.
-
-Per avere un pulsante di avvio come in Replit, nelle impostazioni dell’ambiente locale di Codex configurare l’azione **Run** con `npm run dev`. L’azione apre il servizio nel terminale integrato dell’app, che va lasciato attivo durante le prove. L’installazione iniziale resta `npm ci`. Le azioni e gli script di setup si configurano nell’interfaccia desktop e vengono salvati nella cartella `.codex`; qui non viene scritto uno schema di configurazione non verificato. Riferimento: [ambienti locali di Codex](https://developers.openai.com/codex/app/local-environments/). L’esecuzione sul Mac e il pulsante Run devono essere verificati nel progetto locale; questa chat non li ha attivati sul computer.
-
-Durante il lavoro ordinario Codex modifica direttamente i file di quella cartella, verifica il cambiamento e mantiene `npm run dev` attivo. Vite aggiorna il frontend e il watcher riavvia le API. Non servono `npm run build`, push/pull o reinstallazione delle dipendenze a ogni modifica: build e test si eseguono quando pertinenti alla verifica. Cambi alle porte o al file ambiente richiedono il riavvio del comando. Aprire la preview con l’esatto indirizzo indicato dal runner.
+Nel percorso locale app e assistente condividono la cartella del computer e possono usare l'azione **Run** di Codex con `npm run dev`; i dettagli dell'interfaccia sono nella [guida degli ambienti locali](https://developers.openai.com/codex/app/local-environments/). La chat cloud corrente non può eseguire comandi sul Mac. Non trasferire `.local/` o credenziali tramite Git.
 
 ## Esecuzione cloud interattiva
 
@@ -63,9 +43,9 @@ Il modello adatto al progetto è un singolo ambiente di sviluppo con tre process
 npm run dev:cloud
 ```
 
-Questo comando abilita il binding Vite su `0.0.0.0` e richiede un `APP_ORIGIN` esplicito oppure un origin ricavabile da Replit/Codespaces. La piattaforma deve inoltre inoltrare la porta3000: il binding da solo non produce un indirizzo pubblico. PostgreSQL e API restano su `127.0.0.1`.
+Questo comando abilita il binding Vite su `0.0.0.0` e richiede un `APP_ORIGIN` esplicito oppure un origin ricavabile dal supporto Codespaces esistente. La piattaforma deve inoltre inoltrare la porta3000: il binding da solo non produce un indirizzo pubblico. PostgreSQL e API restano su `127.0.0.1`.
 
-In Replit l'origin viene ricavato da `REPLIT_DEV_DOMAIN`; in GitHub Codespaces dalle variabili dell'ambiente Codespaces e dalla porta configurata. Per un'altra piattaforma imposta `APP_ORIGIN` all'esatto origin del browser prima di avviare il servizio, per esempio nella configurazione locale descritta sotto. Controllare i permessi di accesso della preview sulla piattaforma. Le email di conferma/reset usano questo stesso origin nei loro link.
+Il supporto Codespaces già esistente ricava l'origin dalle variabili della piattaforma e dalla porta configurata. Per un URL generico di preview si imposta `APP_ORIGIN` all'esatto origin del browser prima di avviare il servizio. Controllare i permessi di accesso della preview sulla piattaforma. Le email di conferma/reset usano questo stesso origin nei loro link.
 
 La configurazione `.devcontainer/devcontainer.json` usa Node24 e un utente non-root e installa le dipendenze dopo la creazione. Apri un terminale del workspace ed esegui `npm run dev`: il terminale gestisce la sessione e conserva i log. La porta3000 è inoltrata con visibilità privata predefinita e apertura nel browser; il forwarding locale richiede la stessa porta3000. Non viene aggiunto un daemon in background. Evita un secondo comando dev finché il primo usa quelle porte.
 
@@ -73,7 +53,7 @@ I processi restano attivi durante la sessione dell'ambiente. La sospensione o ri
 
 Nel cloud Codex la chiusura del terminale temporaneo può interrompere il supervisor anche fra due messaggi. Per lasciare il servizio pronto durante la stessa sessione dell’host, l’agente avvia direttamente `node --import tsx scripts/dev.ts` tramite un processo Node separato dal PTY (`spawn` con `detached: true`, stdin ignorato, stdout/stderr su un file privato, poi `unref()`). Il PID esatto e il log sono in `.local/dev-runtime.pid` e `.local/dev-runtime.log`, ignorati da Git. Prima di riavviare controllare PID, comando e listener; arrestare con SIGTERM soltanto il supervisor verificato. Una nuova chiamata shell deve confermare health e frontend. Questo avvio non crea un URL pubblico né mantiene il servizio dopo la sospensione dell’host. Sul computer locale il terminale aperto con `npm run dev` resta il percorso ordinario.
 
-Nell'ambiente cloud Codex corrente non è disponibile un URL di preview in ingresso. Un listener locale verificato non dimostra che il browser del computer dell'utente possa raggiungerlo. Per la richiesta corrente la prova manuale avverrà nella preview Replit dopo l'import; devcontainer/Codespaces e checkout locale restano alternative. `127.0.0.1` dell'ambiente cloud non è `127.0.0.1` del computer dell'utente.
+Nell'ambiente cloud Codex corrente non è disponibile un URL di preview in ingresso. Un listener locale verificato non dimostra che il browser del computer dell'utente possa raggiungerlo. Il percorso resta questa chat e questo checkout; la preview manuale dipende dal runtime, mentre analisi, modifiche e verifiche interne possono continuare.
 
 ## Configurazione di sviluppo
 
@@ -90,15 +70,14 @@ APP_ORIGIN=https://preview.example.test
 
 Sostituisci l'origin di esempio con quello reale della preview. Un URL con percorso, query, credenziali o frammento non è un origin valido. Dopo una modifica a questo file o alle porte, riavvia l'intero comando di sviluppo.
 
-| Variabile           | Uso nello sviluppo                                                                                                                                                                                                                                                                                                            |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DEV_HOST`          | Binding Vite; default `127.0.0.1`, `0.0.0.0` per port forwarding cloud.                                                                                                                                                                                                                                                       |
-| `DEV_PORT`          | Porta Vite, default3000; la porta richiesta deve essere libera.                                                                                                                                                                                                                                                               |
-| `DEV_API_PORT`      | Porta privata dell'API, default3001; deve differire dalla porta UI.                                                                                                                                                                                                                                                           |
-| `APP_ORIGIN`        | Origin esatto del browser; default `http://127.0.0.1:<DEV_PORT>` con binding loopback, `http://localhost:<DEV_PORT>` con `DEV_HOST=0.0.0.0` o origin Replit/Codespaces derivato. Il valore esplicito prevale; `dev:cloud` richiede un valore esplicito o Replit/Codespaces. Usato per controllo delle mutazioni e link email. |
-| `REPLIT_DEV_DOMAIN` | Dominio preview fornito da Replit; deriva l'origin HTTPS dello sviluppo. Non contiene credenziali e non configura un deployment.                                                                                                                                                                                              |
-| `APP_ENV`           | `local` per questo workflow; simulatori sintetici disponibili.                                                                                                                                                                                                                                                                |
-| `MAIL_TRANSPORT`    | `local` per questo workflow; email scritte in file privati.                                                                                                                                                                                                                                                                   |
+| Variabile        | Uso nello sviluppo                                                                                                                                                                                                                                                                                              |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DEV_HOST`       | Binding Vite; default `127.0.0.1`, `0.0.0.0` per port forwarding cloud.                                                                                                                                                                                                                                         |
+| `DEV_PORT`       | Porta Vite, default3000; la porta richiesta deve essere libera.                                                                                                                                                                                                                                                 |
+| `DEV_API_PORT`   | Porta privata dell'API, default3001; deve differire dalla porta UI.                                                                                                                                                                                                                                             |
+| `APP_ORIGIN`     | Origin esatto del browser; default `http://127.0.0.1:<DEV_PORT>` con binding loopback, `http://localhost:<DEV_PORT>` con `DEV_HOST=0.0.0.0` o origin Codespaces derivato. Il valore esplicito prevale; `dev:cloud` richiede un valore esplicito o Codespaces. Usato per controllo delle mutazioni e link email. |
+| `APP_ENV`        | `local` per questo workflow; simulatori sintetici disponibili.                                                                                                                                                                                                                                                  |
+| `MAIL_TRANSPORT` | `local` per questo workflow; email scritte in file privati.                                                                                                                                                                                                                                                     |
 
 `npm run dev` rifiuta configurazioni con database esterno, SMTP reale o ambiente staging/production. Non rimuove o sostituisce silenziosamente queste variabili. Il percorso iterativo gestisce soltanto il cluster locale generato: se il terminale eredita configurazione di altri ambienti, usa una sessione dedicata con le variabili corrette.
 
@@ -238,7 +217,7 @@ Una segnalazione breve riguarda la versione corrente e avvia l'indagine: non ric
 
 ## Diagnostica rapida
 
-L’ultima verifica completa è registrata in [development-2026-10-04.json](evidence/development-2026-10-04.json): build/typecheck,179 test unitari/integrati,22 browser principali e11 experience/mail-runtime passati, più prove reali di HMR, watch API/SQL, sessione, stop/restart e conservazione dei dati. L’immagine Dev Container è presente nel registro; la creazione effettiva del container e un URL di preview pubblico non sono stati verificati su questo host.
+La verifica iniziale del setup è registrata in [development-2026-10-04.json](evidence/development-2026-10-04.json): build/typecheck,179 test unitari/integrati,22 browser principali e11 experience/mail-runtime passati, più prove reali di HMR, watch API/SQL, sessione, stop/restart e conservazione dei dati. Questi sono risultati storici del sorgente allora verificato; le modifiche successive richiedono i controlli pertinenti della nuova iterazione. L’immagine Dev Container è presente nel registro; la creazione effettiva del container e un URL di preview pubblico non sono stati verificati su questo host.
 
 Un errore403 durante login o salvataggio con UI visibile spesso indica un `APP_ORIGIN` diverso dall'origin della preview; controllare il messaggio API e l'header `Origin`, poi correggere la configurazione e riavviare. Non disabilitare il controllo.
 

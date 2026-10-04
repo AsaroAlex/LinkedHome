@@ -1,6 +1,0 @@
-run = ["npm", "run", "dev:cloud"]
-modules = ["nodejs-24"]
-
-[[ports]]
-localPort = 3000
-externalPort = 80

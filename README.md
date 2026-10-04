@@ -2,19 +2,22 @@
 
 A working local MVP of an Italy-first reverse rental marketplace: publish preferences, discover compatible profiles for a property, invite, accept and converse. Built with TypeScript, React, Fastify and real PostgreSQL. Local development uses synthetic data; external PostgreSQL, authenticated SMTP and staging deployment templates are prepared. Real-user release conditions remain open. **LinkedHome is the product brand approved by the user.** `linkedhome.eu` is the proposed future main domain; `.it` is optional, while `linkedhome.com` is already registered and is not pending purchase. No domain has been purchased, and this brand update does not change a real application origin or SMTP sender. Trademark clearance remains pending, including the nearby names Linkhome and Linkedhomes. See [naming research](docs/product/03-naming.md), [domain setup](docs/operations/domain-setup.md) and the [domain checks of 2026-10-04 at 00:17 CEST](docs/operations/evidence/linkedhome-domain-research.json). Earlier naming evidence retains its original names and dates.
 
-## Develop in the cloud with Replit
+## Develop in this Codex cloud workspace
 
-The current choice is a cloud workspace with a live preview. [Import LinkedHome into Replit](https://replit.com/github.com/AsaroAlex/LinkedHome) once, or use [Replit's GitHub import](https://replit.com/import): `AsaroAlex/LinkedHome`, default/source branch `claude/sweet-goldberg-5lwng7`. Keep the existing implementation and architecture; this is not a prompt to rebuild the app. The imported source contains no local database, mailbox or generated credentials.
+The current workflow stays in this Codex chat and the same cloud checkout. Codex edits the project, reproduces feedback, applies focused fixes and keeps the development service ready for the next test. Vite provides frontend hot reload; the API watcher restarts backend code while PostgreSQL preserves synthetic data.
 
-In the imported workspace, with Node24/npm11 available:
+Development startup, with Node24/npm11 available:
 
 ```bash
 npm ci
+npm run dev
 ```
 
-`.replit` selects the `nodejs-24` module and sets **Run** to `npm run dev:cloud`: one command manages Vite HMR, API watch and the synthetic PostgreSQL database. Only UI port3000 is exposed; API3001 and PostgreSQL55432 stay on loopback. The development origin is derived from Replit's `REPLIT_DEV_DOMAIN`, unless `APP_ORIGIN` is supplied explicitly. Open the preview URL returned by Replit in a new browser tab for authenticated testing: the editor's embedded preview can block the existing `SameSite=Strict` session cookie.
+One supervisor manages Vite3000, API3001 and PostgreSQL55432. API and database stay on loopback. A manual browser preview requires an incoming URL provided by the Codex runtime for UI port3000, with `APP_ORIGIN` matching that browser origin; `npm run dev:cloud` enables the UI binding for forwarding when such a URL exists.
 
-Once that workspace exists, changes saved there appear through hot reload without pushing to GitHub after every edit. Git remains available for requested versioning/export. The Replit app, imported runtime and accessible preview have not yet been created or verified; the current Codex cloud listener has no incoming URL reachable from the user's computer. See the [development guide](docs/operations/development.md) for the initial import and subsequent feedback loop. This is a synthetic development environment, not a production deployment.
+The app can run inside the current cloud environment, but the available runtime tools provide no incoming preview URL. Manual testing from the user's computer is currently blocked by that access limitation; the cloud's `127.0.0.1` is not the computer's localhost. Continue working in this checkout and record the preview limitation explicitly. No Git push is needed after every edit; Git is used for requested versioning/export. See the [development guide](docs/operations/development.md) for the feedback loop and diagnostics.
+
+Codex's [Browser preview instructions](https://developers.openai.com/codex/browser#preview-a-page) describe an integrated-terminal development server; they do not establish an incoming route to this managed runtime. Manual preview remains pending an actual accessible runtime URL.
 
 ## Local alternative
 
@@ -27,9 +30,9 @@ npm ci
 npm run dev
 ```
 
-Open `http://127.0.0.1:3000`. The command bootstraps the local database and synthetic accounts if needed, preserves existing data and manages Vite, the API and PostgreSQL. Keep its terminal running; Ctrl+C stops the services. See the [development guide](docs/operations/development.md) for configurable ports, ignored `.env.development.local` settings and the included Node24 Dev Container/Codespaces alternative. Replit and Codespaces derive their development origins automatically; other cloud environments use `APP_ORIGIN=https://YOUR-PREVIEW-HOST npm run dev:cloud` and forward only frontend port3000.
+Open `http://127.0.0.1:3000` on the computer running this local alternative. The command bootstraps the local database and synthetic accounts if needed, preserves existing data and manages Vite, the API and PostgreSQL. Keep its terminal running; Ctrl+C stops the services. The [development guide](docs/operations/development.md) documents configurable ports, ignored `.env.development.local` settings and existing Dev Container/Codespaces support as technical references. Codespaces derives its forwarded origin automatically; generic forwarding uses `APP_ORIGIN=https://YOUR-PREVIEW-HOST npm run dev:cloud` and only frontend port3000.
 
-The earlier macOS/Codex-local setup remains an alternative: open this same repository as a local Codex project and keep the preview beside the chat. Codex edits local files directly; HMR/API watch apply changes without a push or manual build per iteration. The current requested route is cloud/Replit. `AGENTS.md` and `PROJECT_STATE.md` preserve the working conventions and earlier fixes.
+The earlier macOS/Codex-local setup remains a technical alternative. The current choice is this Codex cloud workspace. `AGENTS.md` and `PROJECT_STATE.md` preserve the working conventions and earlier fixes.
 
 To test the compiled application:
 
@@ -66,9 +69,11 @@ Integration tests use only the generated local `soglia_test` database; browser t
 
 The experience suite serves the built frontend on loopback3017 with mocked APIs and no PostgreSQL connection. It covers role selection, guided account setup, FAQ and editable chat starters. `npm run check` runs build, backend tests and both browser suites sequentially.
 
-Development setup validation, 2026-10-04: build/typecheck, **179 unit/integration tests**, **22 main browser checks** and **11 experience/mail-runtime checks** passed; HMR, API/SQL watch, session retention, shutdown/restart and data preservation were checked in the Linux cloud environment. [Development evidence](docs/operations/evidence/development-2026-10-04.json) records the tested outcomes and limits; these checks do not verify the subsequent Replit import/runtime/preview or startup on the user's Mac.
+Earlier development setup validation, 2026-10-04: build/typecheck, **179 unit/integration tests**, **22 main browser checks** and **11 experience/mail-runtime checks** passed; HMR, API/SQL watch, session retention, shutdown/restart and data preservation were checked in the Linux cloud environment. [Development evidence](docs/operations/evidence/development-2026-10-04.json) records those outcomes and limits; it does not establish an accessible manual preview in the current runtime.
 
-The subsequent cloud configuration passed build/typecheck and **187 unit/integration tests**, including a real Vite regression denying24 private-file URLs while serving public files. A simulated Replit origin passed host/origin checks and login/session/logout in the managed Linux environment; the actual Replit import and preview remain unverified. See [cloud development evidence](docs/operations/evidence/replit-development-2026-10-04.json).
+The [earlier Replit investigation](docs/operations/evidence/replit-development-2026-10-04.json) is historical evidence from an abandoned route, with187 tests on that earlier source. Its Vite privacy fix and regression coverage are retained; its simulated origin checks do not verify a Codex preview or the current source after removing the provider configuration.
+
+The corrected Codex-cloud configuration passed build/typecheck and **180 unit/integration tests**, retaining development and private-file regression coverage. Seven tests belonged to the removed provider adapter. [Current evidence](docs/operations/evidence/codex-cloud-development-2026-10-04.json) records the internal runtime checks and the unresolved incoming-preview limitation.
 
 The preceding combined-MVP integration passed frozen install, bootstrap, build/typecheck,163 unit/integration tests and the same browser configurations; its dependency audit reported zero known vulnerabilities. [Integration evidence](docs/operations/evidence/mvp-push-2026-10-04/readiness.json) identifies both parents and the tested source diff. The merged fixes add retry for property/discovery/chat loads, readable network errors, the selected text in message reports and draft reset when the report or conversation changes. Earlier standalone follow-up results are retained in the validation history.
 
