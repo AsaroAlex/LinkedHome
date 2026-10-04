@@ -6,12 +6,13 @@ import { databaseUrl, deployed } from "../server/config.js";
 import { buildApp } from "../server/app.js";
 if (
   process.env.DATABASE_URL ||
+  (process.env.PHOTO_STORAGE && process.env.PHOTO_STORAGE !== "local") ||
   deployed ||
   (process.env.APP_ENV && process.env.APP_ENV !== "local") ||
   (process.env.MAIL_TRANSPORT && process.env.MAIL_TRANSPORT !== "local")
 )
   throw new Error(
-    "E2E server only manages the generated local synthetic database.",
+    "E2E server only manages the generated local synthetic database and photo storage.",
   );
 const service = await startDatabase();
 const admin = new pg.Client({ connectionString: databaseUrl("postgres") });

@@ -19,19 +19,37 @@ const fields: Record<string, string> = {
   rent: "Costo mensile: inserisci un valore tra 100 e 20.000 euro.",
   move_in: "Controlla il giorno di ingresso.",
   available_from: "Controlla la data di disponibilità.",
+  min_months: "Durata minima: inserisci da 1 a 120 mesi.",
+  max_months: "Durata massima: inserisci da 1 a 120 mesi.",
+  duration: "Durata: inserisci da 1 a 120 mesi.",
+  occupants: "Persone: inserisci un numero intero da 1 a 12.",
+  capacity: "Capienza: inserisci un numero intero da 1 a 12.",
+  sqm: "Superficie: inserisci un valore da 10 a 2.000 m².",
+  rooms: "Locali: inserisci un numero intero da 1 a 20.",
 };
 export async function api<T = any>(
   url: string,
   method = "GET",
   body?: unknown,
+  extraHeaders: Record<string, string> = {},
 ): Promise<T> {
   let response: Response;
   try {
     response = await fetch("/api" + url, {
       method,
       credentials: "same-origin",
-      headers: method === "GET" ? {} : { "Content-Type": "application/json" },
-      body: method === "GET" ? undefined : JSON.stringify(body ?? {}),
+      headers: {
+        ...(method === "GET" || body instanceof FormData
+          ? {}
+          : { "Content-Type": "application/json" }),
+        ...extraHeaders,
+      },
+      body:
+        method === "GET"
+          ? undefined
+          : body instanceof FormData
+            ? body
+            : JSON.stringify(body ?? {}),
     });
   } catch {
     throw new ApiError(

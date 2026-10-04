@@ -5,8 +5,11 @@ import {
   useId,
   createContext,
   useContext,
+  cloneElement,
+  isValidElement,
   type FormEvent,
   type ReactNode,
+  type ReactElement,
 } from "react";
 import { api, useLoad, formValues, dateLabel, ApiError } from "./api";
 import { brand, statuses, reasonLabels } from "./brand";
@@ -21,6 +24,15 @@ import {
 import { cities } from "../server/domain";
 import type { User } from "../server/auth";
 import { IncomeWorkspace, InvitationIncome } from "./Income";
+import {
+  PhotoEditor,
+  PropertyCover,
+  PropertyGallery,
+  photoLimit,
+  photoSizeLimit,
+  type PropertyPhoto,
+  type SelectedPhoto,
+} from "./PropertyPhotos";
 type RuntimeConfig = {
   environment: "local" | "preview" | "staging" | "production";
   mailTransport: "local" | "smtp" | "disabled";
@@ -89,22 +101,28 @@ function ErrorBox({ text }: { text: string | ApiError }) {
   useEffect(() => {
     if (!text) return;
     ref.current?.focus();
-    const inputs: HTMLElement[] = [];
+    const inputs: Array<{ input: HTMLElement; describedBy: string | null }> =
+      [];
     if (text instanceof ApiError)
       for (const detail of text.details) {
         if (!detail.field) continue;
         document
           .querySelectorAll<HTMLElement>(`[name="${CSS.escape(detail.field)}"]`)
           .forEach((input) => {
+            const describedBy = input.getAttribute("aria-describedby");
             input.setAttribute("aria-invalid", "true");
-            input.setAttribute("aria-describedby", id);
-            inputs.push(input);
+            input.setAttribute(
+              "aria-describedby",
+              [describedBy, id].filter(Boolean).join(" "),
+            );
+            inputs.push({ input, describedBy });
           });
       }
     return () =>
-      inputs.forEach((input) => {
+      inputs.forEach(({ input, describedBy }) => {
         input.removeAttribute("aria-invalid");
-        input.removeAttribute("aria-describedby");
+        if (describedBy) input.setAttribute("aria-describedby", describedBy);
+        else input.removeAttribute("aria-describedby");
       });
   }, [text, id]);
   return text ? (
@@ -170,6 +188,9 @@ function Field({
   max,
   children,
   autoComplete,
+  hint,
+  placeholder,
+  maxLength,
 }: {
   autoComplete?: string;
   label: string;
@@ -180,18 +201,89 @@ function Field({
   min?: number;
   max?: number;
   children?: ReactNode;
+  hint?: string;
+  placeholder?: string;
+  maxLength?: number;
 }) {
+  const id = useId(),
+    [error, setError] = useState("");
+  function validate(input: HTMLInputElement) {
+    const validity = input.validity;
+    setError(
+      validity.valid
+        ? ""
+        : validity.customError
+          ? input.validationMessage
+          : validity.valueMissing
+            ? "Compila questo campo."
+            : validity.typeMismatch
+              ? "Inserisci un indirizzo email valido."
+              : validity.rangeUnderflow
+                ? `Il valore minimo è ${input.min}.`
+                : validity.rangeOverflow
+                  ? `Il valore massimo è ${input.max}.`
+                  : validity.stepMismatch || validity.badInput
+                    ? "Inserisci un numero intero."
+                    : validity.tooShort
+                      ? `Usa almeno ${input.minLength} caratteri.`
+                      : "Controlla il valore inserito.",
+    );
+  }
   return (
-    <label className="field">
-      <span>{label}</span>
-      {children || (
+    <div className="field">
+      <div className="field-label">
+        <label htmlFor={id}>{label}</label>
+        {required && (
+          <span className="required-mark" aria-hidden="true">
+            {" "}
+            *
+          </span>
+        )}
+      </div>
+      {children ? (
+        isValidElement(children) ? (
+          cloneElement(children as ReactElement<any>, {
+            id,
+            "aria-describedby":
+              [
+                (children.props as any)["aria-describedby"],
+                hint && id + "-hint",
+              ]
+                .filter(Boolean)
+                .join(" ") || undefined,
+          })
+        ) : (
+          children
+        )
+      ) : (
         <input
+          id={id}
           name={name}
           type={type}
           defaultValue={value}
           required={required}
           min={min}
           max={max}
+          step={type === "number" ? 1 : undefined}
+          inputMode={
+            type === "number"
+              ? "numeric"
+              : type === "email"
+                ? "email"
+                : undefined
+          }
+          placeholder={placeholder}
+          aria-describedby={
+            [hint && id + "-hint", error && id + "-error"]
+              .filter(Boolean)
+              .join(" ") || undefined
+          }
+          aria-invalid={error ? true : undefined}
+          onBlur={(event) => validate(event.currentTarget)}
+          onInvalid={(event) => validate(event.currentTarget)}
+          onChange={(event) => {
+            if (error) validate(event.currentTarget);
+          }}
           autoComplete={
             autoComplete ??
             (type === "email"
@@ -209,10 +301,29 @@ function Field({
                   ? 2
                   : undefined
           }
-          maxLength={type === "password" ? 128 : undefined}
+          maxLength={
+            maxLength ??
+            (type === "password"
+              ? 128
+              : name === "title"
+                ? 100
+                : name === "area" || name === "display_name"
+                  ? 60
+                  : undefined)
+          }
         />
       )}
-    </label>
+      {hint && (
+        <small id={id + "-hint"} className="input-hint">
+          {hint}
+        </small>
+      )}
+      {error && (
+        <small id={id + "-error"} className="input-error">
+          {error}
+        </small>
+      )}
+    </div>
   );
 }
 function City({ value }: { value?: string }) {
@@ -815,9 +926,19 @@ function Auth({
         <h2>{register ? "Crea un account" : "Accedi"}</h2>
         <ErrorBox text={a.error} />
         {register && (
-          <Field name="display_name" label="Come vuoi essere chiamato?" />
+          <Field
+            name="display_name"
+            label="Come vuoi essere chiamato?"
+            placeholder="Il nome che vuoi usare"
+            hint="Puoi usare uno pseudonimo, da 2 a 60 caratteri."
+          />
         )}
-        <Field name="email" label="Email" type="email" />
+        <Field
+          name="email"
+          label="Email"
+          type="email"
+          placeholder="nome@esempio.it"
+        />
         <PasswordField register={register} />
         {register && (
           <>
@@ -1176,39 +1297,52 @@ function ProfilePage() {
             <h2>Le tue preferenze</h2>
             <Badge status={p?.status || "draft"} />
           </div>
-          <div className="form-grid">
-            <City value={draft?.city ?? p?.city} />
-            <Field
-              name="budget"
-              label="Budget totale mensile (€), spese obbligatorie incluse"
-              type="number"
-              value={draft?.budget ?? p?.budget ?? 1000}
-              min={100}
-              max={20000}
-            />
-            <Field
-              name="move_in"
-              label="Giorno desiderato di ingresso"
-              type="date"
-              value={draft?.move_in ?? p?.move_in ?? initialDay()}
-            />
-            <Field
-              name="duration"
-              label="Durata desiderata (mesi)"
-              type="number"
-              value={draft?.duration ?? p?.duration ?? 12}
-              min={1}
-              max={120}
-            />
-            <Field
-              name="occupants"
-              label="Numero totale di persone"
-              type="number"
-              value={draft?.occupants ?? p?.occupants ?? 1}
-              min={1}
-              max={12}
-            />
-          </div>
+          <p className="form-required-note">I campi con * sono obbligatori.</p>
+          <fieldset className="form-section" disabled={a.busy}>
+            <legend>Dove e quando</legend>
+            <div className="form-grid">
+              <City value={draft?.city ?? p?.city} />
+              <Field
+                name="budget"
+                label="Budget totale mensile (€), spese obbligatorie incluse"
+                type="number"
+                value={draft?.budget ?? p?.budget ?? 1000}
+                min={100}
+                max={20000}
+                hint="Indica il totale che puoi spendere ogni mese, comprese le spese obbligatorie."
+              />
+              <Field
+                name="move_in"
+                label="Giorno desiderato di ingresso"
+                type="date"
+                value={draft?.move_in ?? p?.move_in ?? initialDay()}
+                hint="Il primo giorno da cui vorresti entrare in casa."
+              />
+            </div>
+          </fieldset>
+          <fieldset className="form-section" disabled={a.busy}>
+            <legend>Durata e persone</legend>
+            <div className="form-grid">
+              <Field
+                name="duration"
+                label="Durata desiderata (mesi)"
+                type="number"
+                value={draft?.duration ?? p?.duration ?? 12}
+                min={1}
+                max={120}
+                hint="Da 1 a 120 mesi. Potrai aggiornare la durata in seguito."
+              />
+              <Field
+                name="occupants"
+                label="Numero totale di persone"
+                type="number"
+                value={draft?.occupants ?? p?.occupants ?? 1}
+                min={1}
+                max={12}
+                hint="Conta tutte le persone che abiteranno con te, te compreso."
+              />
+            </div>
+          </fieldset>
           <p className="field-hint">
             Una modifica annulla gli inviti ancora in attesa. Le conversazioni
             già aperte restano disponibili.
@@ -1220,7 +1354,7 @@ function ProfilePage() {
             </p>
           )}
           <button className="button" disabled={a.busy}>
-            Salva preferenze
+            {a.busy ? "Salvataggio…" : "Salva preferenze"}
           </button>
         </form>
         <aside className="panel preview">
@@ -1296,142 +1430,330 @@ function PropertyForm({
   onDone: () => void;
 }) {
   const a = useAction(),
-    formRef = useRef<HTMLFormElement>(null);
+    formRef = useRef<HTMLFormElement>(null),
+    savedId = useRef<string | null>(property?.id ?? null),
+    lastSaved = useRef<string | null>(null),
+    objectUrls = useRef(new Set<string>());
+  const [photos, setPhotos] = useState<PropertyPhoto[]>(property?.photos || []),
+    [selected, setSelected] = useState<SelectedPhoto[]>([]),
+    [photoError, setPhotoError] = useState(""),
+    [photoNotice, setPhotoNotice] = useState(""),
+    [photoBusy, setPhotoBusy] = useState(false),
+    [progress, setProgress] = useState(""),
+    [created, setCreated] = useState(false),
+    [description, setDescription] = useState(property?.description || "");
+  const busy = a.busy || photoBusy;
   useEffect(() => {
     formRef.current?.querySelector<HTMLInputElement>("input")?.focus();
+    const urls = objectUrls.current;
+    return () => urls.forEach((url) => URL.revokeObjectURL(url));
   }, []);
+  function choose(files: File[]) {
+    setPhotoError("");
+    setPhotoNotice("");
+    if (!files.length) return;
+    if (photos.length + selected.length + files.length > photoLimit) {
+      setPhotoError(
+        `Puoi aggiungere al massimo ${photoLimit} foto. Rimuovine una o scegli meno immagini.`,
+      );
+      return;
+    }
+    if (files.some((file) => file.size > photoSizeLimit)) {
+      setPhotoError(
+        "Ogni foto può pesare al massimo 5 MB. Scegli immagini più leggere.",
+      );
+      return;
+    }
+    if (
+      files.some(
+        (file) =>
+          !["image/jpeg", "image/png", "image/webp"].includes(file.type),
+      )
+    ) {
+      setPhotoError("Scegli foto in formato JPG, PNG o WebP.");
+      return;
+    }
+    const additions = files.map((file) => {
+      const url = URL.createObjectURL(file);
+      objectUrls.current.add(url);
+      return { id: crypto.randomUUID(), file, url };
+    });
+    setSelected((previous) => [...previous, ...additions]);
+  }
+  async function removePhoto(id: string, saved: boolean) {
+    setPhotoError("");
+    setPhotoNotice("");
+    if (!saved) {
+      const photo = selected.find((item) => item.id === id);
+      if (photo) {
+        URL.revokeObjectURL(photo.url);
+        objectUrls.current.delete(photo.url);
+      }
+      setSelected((previous) => previous.filter((item) => item.id !== id));
+      return;
+    }
+    setPhotoBusy(true);
+    try {
+      await api(`/properties/${savedId.current}/photos/${id}`, "DELETE");
+      setPhotos((previous) => previous.filter((item) => item.id !== id));
+      setPhotoNotice(
+        "Foto rimossa. Gli eventuali inviti in attesa sono stati annullati.",
+      );
+    } catch (error) {
+      setPhotoError((error as Error).message);
+    } finally {
+      setPhotoBusy(false);
+    }
+  }
   async function save(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const v = formValues(e.currentTarget);
-    const p = {
-      ...v,
-      rent: Number(v.rent),
-      min_months: Number(v.min_months),
-      max_months: Number(v.max_months),
-      capacity: Number(v.capacity),
-      sqm: Number(v.sqm),
-      rooms: Number(v.rooms),
-      furnished: v.furnished === "on",
-      authority_attested: v.authority_attested === "on",
-    };
+    const v = formValues(e.currentTarget),
+      input = {
+        ...v,
+        rent: Number(v.rent),
+        min_months: Number(v.min_months),
+        max_months: Number(v.max_months),
+        capacity: Number(v.capacity),
+        sqm: Number(v.sqm),
+        rooms: Number(v.rooms),
+        furnished: v.furnished === "on",
+        authority_attested: v.authority_attested === "on",
+      };
+    setPhotoError("");
+    setPhotoNotice("");
     await a.run(async () => {
-      await api(
-        property ? `/properties/${property.id}` : "/properties",
-        property ? "PUT" : "POST",
-        p,
-      );
+      const fingerprint = JSON.stringify(input);
+      if (lastSaved.current !== fingerprint) {
+        const result = await api(
+          savedId.current ? `/properties/${savedId.current}` : "/properties",
+          savedId.current ? "PUT" : "POST",
+          input,
+        );
+        if (!savedId.current) savedId.current = result.id;
+        lastSaved.current = fingerprint;
+        if (!property) setCreated(true);
+      }
+      const failed: SelectedPhoto[] = [];
+      for (const [index, photo] of selected.entries()) {
+        setProgress(`Caricamento foto ${index + 1} di ${selected.length}…`);
+        const body = new FormData();
+        body.append("photo", photo.file);
+        try {
+          const result = await api<{ photo: PropertyPhoto }>(
+            `/properties/${savedId.current}/photos`,
+            "POST",
+            body,
+            { "Idempotency-Key": photo.id },
+          );
+          setPhotos((previous) =>
+            previous.some((item) => item.id === result.photo.id)
+              ? previous
+              : [...previous, result.photo],
+          );
+          setSelected((previous) =>
+            previous.filter((item) => item.id !== photo.id),
+          );
+          URL.revokeObjectURL(photo.url);
+          objectUrls.current.delete(photo.url);
+        } catch (error) {
+          failed.push({ ...photo, error: (error as Error).message });
+        }
+      }
+      setSelected(failed);
+      setProgress("");
+      if (failed.length) {
+        setPhotoNotice(
+          "L’immobile e le foto riuscite sono già salvati. Riprova le foto rimaste oppure rimuovile per continuare.",
+        );
+        throw new ApiError(
+          `${failed.length === 1 ? "Una foto non è stata caricata" : `${failed.length} foto non sono state caricate`}. Controlla gli errori sotto le immagini e riprova.`,
+        );
+      }
       onDone();
     });
+    setProgress("");
   }
   return (
-    <form ref={formRef} className="panel" onSubmit={save}>
-      <h2>{property ? "Modifica immobile" : "Descrivi il tuo immobile"}</h2>
+    <form
+      ref={formRef}
+      className="panel property-form"
+      onSubmit={save}
+      aria-busy={busy}
+    >
+      <h2>
+        {property || created ? "Modifica immobile" : "Descrivi il tuo immobile"}
+      </h2>
       <p>
-        {property
-          ? "Le modifiche annullano gli inviti in attesa. Le conversazioni aperte conservano i dettagli dell’offerta originale."
-          : "Salva l’immobile come bozza privata. Potrai controllare i dettagli prima di pubblicarlo."}
+        {property || created
+          ? "Le modifiche, incluse le foto, annullano gli inviti in attesa. Le conversazioni aperte conservano l’offerta originale."
+          : "Salva una bozza privata con dettagli e foto. Potrai controllarla prima di pubblicare."}
+      </p>
+      <p className="form-required-note">
+        I campi con * sono obbligatori. Le foto sono facoltative.
       </p>
       <ErrorBox text={a.error} />
-      <Field name="title" label="Titolo" value={property?.title} />
-      <div className="form-grid">
-        <City value={property?.city} />
+      <fieldset className="form-section" disabled={busy}>
+        <legend>Posizione e descrizione</legend>
         <Field
-          name="area"
-          label="Quartiere o zona (senza indirizzo preciso)"
-          value={property?.area}
+          name="title"
+          label="Titolo"
+          value={property?.title}
+          placeholder="Es. Bilocale luminoso con balcone"
+          hint="Un titolo chiaro, da 5 a 100 caratteri."
         />
-        <Field
-          name="rent"
-          label="Costo totale mensile (€), spese obbligatorie incluse"
-          type="number"
-          value={property?.rent || 850}
-          min={100}
-          max={20000}
-        />
-        <Field
-          name="available_from"
-          label="Disponibile dal"
-          type="date"
-          value={property?.available_from || initialDay()}
-        />
-        <Field
-          name="min_months"
-          label="Durata minima (mesi)"
-          type="number"
-          value={property?.min_months || 6}
-          min={1}
-          max={120}
-        />
-        <Field
-          name="max_months"
-          label="Durata massima (mesi)"
-          type="number"
-          value={property?.max_months || 36}
-          min={1}
-          max={120}
-        />
-        <Field
-          name="capacity"
-          label="Capienza totale (persone)"
-          type="number"
-          value={property?.capacity || 2}
-          min={1}
-          max={12}
-        />
-        <Field
-          name="sqm"
-          label="Superficie (m²)"
-          type="number"
-          value={property?.sqm || 60}
-          min={10}
-          max={2000}
-        />
-        <Field
-          name="rooms"
-          label="Numero locali"
-          type="number"
-          value={property?.rooms || 2}
-          min={1}
-          max={20}
-        />
-      </div>
-      <Field name="description" label="Descrizione">
-        <textarea
-          name="description"
-          rows={4}
-          minLength={10}
-          maxLength={1500}
-          required
-          defaultValue={property?.description}
-          placeholder="Descrivi gli spazi e le condizioni, senza dati personali o richieste discriminatorie."
-        />
-      </Field>
-      <label className="check-label">
-        <input
-          type="checkbox"
-          name="furnished"
-          defaultChecked={property?.furnished}
-        />{" "}
-        Arredato
-      </label>
-      <label className="check-label">
+        <div className="form-grid">
+          <City value={property?.city} />
+          <Field
+            name="area"
+            label="Quartiere o zona (senza indirizzo preciso)"
+            value={property?.area}
+            placeholder="Es. Saragozza"
+            hint="Indica soltanto la zona, da 2 a 60 caratteri."
+          />
+        </div>
+        <Field name="description" label="Descrizione">
+          <textarea
+            name="description"
+            rows={5}
+            minLength={10}
+            maxLength={1500}
+            required
+            defaultValue={property?.description}
+            aria-describedby="property-description-help"
+            onChange={(event) => setDescription(event.currentTarget.value)}
+            placeholder="Descrivi gli spazi, i servizi e le condizioni, senza dati personali o richieste discriminatorie."
+          />
+        </Field>
+        <p id="property-description-help" className="description-count">
+          Da 10 a 1.500 caratteri · {description.length}/1.500
+        </p>
+      </fieldset>
+      <fieldset className="form-section" disabled={busy}>
+        <legend>Costi e disponibilità</legend>
+        <div className="form-grid">
+          <Field
+            name="rent"
+            label="Costo totale mensile (€), spese obbligatorie incluse"
+            type="number"
+            value={property?.rent ?? 850}
+            min={100}
+            max={20000}
+            hint="Includi le spese obbligatorie: è il totale confrontato con il budget."
+          />
+          <Field
+            name="available_from"
+            label="Disponibile dal"
+            type="date"
+            value={property?.available_from || initialDay()}
+            hint="Scegli il primo giorno in cui l’immobile sarà disponibile."
+          />
+          <Field
+            name="min_months"
+            label="Durata minima (mesi)"
+            type="number"
+            value={property?.min_months ?? 6}
+            min={1}
+            max={120}
+            hint="Il periodo minimo per cui offri l’immobile."
+          />
+          <Field
+            name="max_months"
+            label="Durata massima (mesi)"
+            type="number"
+            value={property?.max_months ?? 36}
+            min={1}
+            max={120}
+            hint="Deve essere uguale o superiore alla durata minima."
+          />
+        </div>
+      </fieldset>
+      <fieldset className="form-section" disabled={busy}>
+        <legend>Spazi e dotazioni</legend>
+        <div className="form-grid">
+          <Field
+            name="capacity"
+            label="Capienza totale (persone)"
+            type="number"
+            value={property?.capacity ?? 2}
+            min={1}
+            max={12}
+            hint="Quante persone possono abitare nell’immobile."
+          />
+          <Field
+            name="sqm"
+            label="Superficie (m²)"
+            type="number"
+            value={property?.sqm ?? 60}
+            min={10}
+            max={2000}
+          />
+          <Field
+            name="rooms"
+            label="Numero locali"
+            type="number"
+            value={property?.rooms ?? 2}
+            min={1}
+            max={20}
+          />
+        </div>
+        <label className="check-label">
+          <input
+            type="checkbox"
+            name="furnished"
+            defaultChecked={property?.furnished}
+          />{" "}
+          Arredato
+        </label>
+      </fieldset>
+      <PhotoEditor
+        photos={photos}
+        selected={selected}
+        busy={busy}
+        error={photoError}
+        notice={photoNotice}
+        onChoose={choose}
+        onRemove={(id, saved) => void removePhoto(id, saved)}
+      />
+      {photos.length > 0 && (
+        <p className="field-hint">
+          Rimuovere una foto salvata aggiorna subito l’immobile e annulla gli
+          inviti in attesa. Le altre modifiche e le nuove foto si salvano con il
+          pulsante qui sotto.
+        </p>
+      )}
+      <label className="check-label authority-check">
         <input
           type="checkbox"
           name="authority_attested"
           defaultChecked={property?.authority_attested}
-        />{" "}
+          disabled={busy}
+        />
         Dichiaro di essere autorizzato a offrire questo immobile.
       </label>
       <p className="field-hint">
-        È un’autodichiarazione, non una verifica di proprietà. Le modifiche
-        annullano gli inviti pendenti.
+        È un’autodichiarazione, non una verifica di proprietà. Puoi salvare una
+        bozza; per pubblicarla serve questa conferma.
       </p>
-      <div className="actions">
-        <button className="button" disabled={a.busy}>
-          Salva immobile
+      {progress && (
+        <p role="status" className="photo-notice">
+          {progress}
+        </p>
+      )}
+      <div className="actions form-actions">
+        <button className="button" disabled={busy}>
+          {busy
+            ? progress || "Salvataggio…"
+            : selected.some((photo) => photo.error)
+              ? "Riprova foto e salva"
+              : "Salva immobile"}
         </button>
-        <button type="button" className="button secondary" onClick={onDone}>
-          Annulla
+        <button
+          type="button"
+          className="button secondary"
+          disabled={busy}
+          onClick={onDone}
+        >
+          {created ? "Torna agli immobili" : "Annulla"}
         </button>
       </div>
     </form>
@@ -1524,15 +1846,7 @@ function PropertiesPage() {
                   p.status === "published" && expiresAt > Date.now();
                 return (
                   <article className="property-card panel" key={p.id}>
-                    <div className="property-art" aria-hidden="true">
-                      <span className="building">
-                        <i />
-                        <i />
-                        <i />
-                        <i />
-                      </span>
-                      <span className="property-art-text">{p.city}</span>
-                    </div>
+                    <PropertyCover property={p} />
                     <div className="panel-title">
                       <span className="eyebrow">
                         {p.city} · {p.area}
@@ -1976,6 +2290,10 @@ function InvitationsPage({ user }: { user: User }) {
                 </span>
                 <Badge status={i.status} />
               </div>
+              <PropertyGallery
+                photos={i.property.photos}
+                title={i.property.title}
+              />
               <h2>{i.property.title}</h2>
               <p>
                 {i.property.area} · €{i.property.rent}/mese, spese incluse ·{" "}

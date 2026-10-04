@@ -5,11 +5,17 @@ import {
 } from "../server/mail.js";
 import { makePool } from "../server/db.js";
 import { checkMigrations } from "./migrate.js";
+import {
+  createPhotoStorage,
+  photoObjectKey,
+  readPhotoConfiguration,
+} from "../server/photos.js";
 
 let stage = "configuration";
 try {
   const runtime = readRuntimeConfiguration();
   const mail = validateMailConfiguration();
+  const photos = readPhotoConfiguration();
   if (runtime.environment === "local")
     throw new Error(
       "Deployment preflight requires APP_ENV=preview, staging or production.",
@@ -27,15 +33,32 @@ try {
     } finally {
       await db.end();
     }
+    stage = "photo storage read/write";
+    const storage = createPhotoStorage(photos);
+    const key = photoObjectKey();
+    let stored = false;
+    try {
+      const probe = Buffer.from("LinkedHome private storage readiness");
+      stored = true;
+      await storage.put(key, probe);
+      if (!(await storage.get(key)).equals(probe))
+        throw new Error("Photo storage verification failed.");
+    } finally {
+      try {
+        if (stored) await storage.delete(key);
+      } finally {
+        storage.close?.();
+      }
+    }
     if (runtime.environment === "preview") {
       console.log(
-        "Synthetic preview database/schema ready. Email is disabled; no SMTP connection or message storage is available.",
+        "Synthetic preview database/schema and private photo storage ready. Email is disabled; no SMTP connection or message storage is available.",
       );
     } else {
       stage = "SMTP connection/authentication";
       await verifyMailTransport(mail);
       console.log(
-        "Deployment database/schema and SMTP authentication ready. No email sent; delivery, proxy trust and release gates require separate verification.",
+        "Deployment database/schema, private photo storage and SMTP authentication ready. No email sent; delivery, proxy trust and release gates require separate verification.",
       );
     }
   }

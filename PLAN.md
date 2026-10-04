@@ -125,3 +125,15 @@ Before merging the newer remote LinkedHome/income/UX/SMTP history, that source p
 The user requested **«Pusha che buildo in locale»**. The existing target remains `origin/claude/sweet-goldberg-5lwng7`; incoming history through `8891fea` preserves LinkedHome branding, optional synthetic income, UX, staging/SMTP preparation and prior branch-consolidation records. Verification and publication of this integration are recorded separately from those earlier checks; no public deployment or cloud-snapshot publication is implied.
 
 The combined source passed frozen install, bootstrap, build/typecheck, 163 unit/integration tests, 22 main browser checks and 11 experience/mail-runtime checks. Dependency audit: zero known vulnerabilities, 224 dependency records. Compiled startup and tenant/landlord/admin probes passed; all five original account IDs, two profiles and one property were preserved, with migration004 bringing the ledger to four. [Integration evidence](docs/operations/evidence/mvp-push-2026-10-04/readiness.json) records the tested source and both merge parents. Static backend/UI merge reviews found no material issue. These results support the user-authorized ordinary push to the existing branch for local builds.
+
+## Foto e form nella preview Railway — 2026-10-04
+
+La richiesta «Rendi possibile caricare foto e rendi i form migliori» estende gli
+immobili con foto private persistenti: fino a 6 JPEG/PNG/WebP, normalizzazione e
+rimozione metadati, anteprime/copertina/galleria, rimozione, snapshot e retry senza
+duplicati. Form immobili e preferenze migliorati con sezioni, suggerimenti ed
+errori accessibili. Restano pseudonimia e isolamento della preview sintetica.
+Implementazione e revisione completate; passati 220 backend e 34 scenari browser
+distinti (38 esecuzioni), build/typecheck e audit. [Verifica](docs/operations/photo-forms-validation.md).
+Provisionato storage S3 sul progetto Railway esistente; il deploy e la verifica
+HTTPS completano l'aggiornamento richiesto sullo stesso dominio.

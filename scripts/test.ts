@@ -3,12 +3,13 @@ import { startDatabase } from "./database.js";
 import { localConfig, databaseUrl, deployed } from "../server/config.js";
 if (
   process.env.DATABASE_URL ||
+  (process.env.PHOTO_STORAGE && process.env.PHOTO_STORAGE !== "local") ||
   deployed ||
   (process.env.APP_ENV && process.env.APP_ENV !== "local") ||
   (process.env.MAIL_TRANSPORT && process.env.MAIL_TRANSPORT !== "local")
 )
   throw new Error(
-    "Tests require local mail, APP_ENV=local and no DATABASE_URL; use the isolated generated soglia_test database.",
+    "Tests require local mail/photo storage, APP_ENV=local and no DATABASE_URL; use the isolated generated soglia_test database.",
   );
 localConfig();
 const db = await startDatabase();

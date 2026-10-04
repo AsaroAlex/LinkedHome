@@ -30,6 +30,33 @@ Run `npm run test:e2e:preview` after a build to exercise the browser demo agains
 the isolated local `soglia_e2e` database. It requires port3000 free and runs
 separately from the development supervisor and other database lifecycle suites.
 
+### Persistent property photos
+
+Deployed web and maintenance services require `PHOTO_STORAGE=s3`, `S3_ENDPOINT`,
+`S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY`. Local
+development stores private normalized images under ignored `.local/property-photos`.
+Never use the container filesystem for uploaded photos in a deployed environment.
+Deployment preflight verifies private object upload, read and deletion before the
+new release starts. Storage errors identify the failed check without logging credentials.
+`S3_FORCE_PATH_STYLE=true` is available for providers that require path addressing;
+Railway uses the default virtual-host addressing.
+
+The current Railway bucket is `linkedhome-photos` in `sjc`, beside the existing web
+service. Both services use references to its `ENDPOINT`, `REGION`, `BUCKET`,
+`ACCESS_KEY_ID` and `SECRET_ACCESS_KEY` variables, so credentials stay in Railway
+and credential rotations do not require copying secret values.
+
+An authenticated owner can upload up to six JPEG, PNG or WebP photos per property,
+with a maximum input size of 5 MiB per file. The API decodes, rotates, resizes and
+re-encodes images as WebP, stripping original metadata. Objects are private; image
+URLs go through the authenticated API with property/invitation authorization.
+The first photo is the cover. Preview workspaces remain isolated. Use synthetic
+photos in this demo, consistent with its existing synthetic-data banner.
+
+Photo changes invalidate pending invitations with the property's other revisions.
+Accepted offer snapshots retain their original photos. Object deletion is retried
+by maintenance after related database records are removed.
+
 `Dockerfile` builds the frontend with Node 24 and installs production dependencies in a separate stage. The runtime runs as the `node` user and starts with `npm start`. It contains the application, migrations and the migrate/maintenance/preflight scripts; it does not contain embedded-database or demo-seed tooling, the local database, generated mail, environment files or research evidence. `tsx` is required at runtime because the server and scripts execute TypeScript.
 
 `DATABASE_URL` is mandatory in staging and production. The web process verifies the migration ledger and does not migrate, bootstrap or seed the external database. Run `npm run db:migrate` as a distinct deployment step, followed by `npm run deploy:check`. The preflight checks configuration, database migrations and SMTP connectivity/authentication without sending a message. Demo seeding is exclusively a local development operation.

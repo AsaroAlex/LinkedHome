@@ -2,7 +2,9 @@ import { readdir, readFile, unlink } from "node:fs/promises";
 import path from "node:path";
 import { localDir } from "../server/config.js";
 import { makePool, tx } from "../server/db.js";
+import { cleanupPhotoObjects, createPhotoStorage } from "../server/photos.js";
 const db = makePool();
+const photoStorage = createPhotoStorage();
 try {
   await tx(db, async (c) => {
     await c.query(
@@ -17,6 +19,7 @@ try {
       "DELETE FROM audit_log WHERE created_at<now()-interval '90 days'",
     );
   });
+  const removedPhotos = await cleanupPhotoObjects(db, photoStorage);
   const mailDir = path.join(localDir, "mail");
   for (const file of await readdir(mailDir).catch(() => [])) {
     if (!/^[0-9]+-[a-f0-9-]+\.json$/.test(file)) continue;
@@ -30,8 +33,9 @@ try {
     }
   }
   console.log(
-    "Expired auth records and retention-limited events/audit removed.",
+    `Expired auth records and retention-limited events/audit removed; ${removedPhotos} queued photo objects removed.`,
   );
 } finally {
+  photoStorage.close?.();
   await db.end();
 }

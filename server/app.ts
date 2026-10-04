@@ -2,6 +2,8 @@ import Fastify, { type FastifyRequest, type FastifyReply } from "fastify";
 import cookie from "@fastify/cookie";
 import rateLimit from "@fastify/rate-limit";
 import staticPlugin from "@fastify/static";
+import multipart from "@fastify/multipart";
+import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
@@ -43,6 +45,16 @@ import {
   incomeStatus,
   unavailableIncomeProvider,
 } from "./income.js";
+import {
+  createPhotoStorage,
+  normalizePhoto,
+  photoLimits,
+  photoObjectKey,
+  photoView,
+  propertyPhotos,
+  cleanupPhotoObjects,
+  type PhotoStorage,
+} from "./photos.js";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -131,6 +143,7 @@ const publicProperty = (p: any) => ({
   revision: p.revision,
   published_at: p.published_at,
   authority_attested: p.authority_attested,
+  photos: p.photos || [],
 });
 const currentProperty = (p: any) =>
   p &&
@@ -148,6 +161,7 @@ export async function buildApp(
     limits?: boolean;
     serveStatic?: boolean;
     incomeDemo?: boolean;
+    photoStorage?: PhotoStorage;
   } = {},
 ) {
   const runtime = options.runtime || readRuntimeConfiguration();
@@ -161,10 +175,18 @@ export async function buildApp(
   });
   const origin = options.origin || runtime.origin;
   const mail = options.mail || sendMail;
+  const photos = options.photoStorage || createPhotoStorage();
+  if (!options.photoStorage)
+    app.addHook("onClose", async () => {
+      photos.close?.();
+    });
   const incomeDemoAvailable =
     (runtime.environment === "local" || preview) &&
     options.incomeDemo !== false;
   await app.register(cookie);
+  await app.register(multipart, {
+    limits: { fileSize: photoLimits.bytes, files: 1, fields: 0, parts: 1 },
+  });
   await app.register(rateLimit, {
     max: options.limits === false ? 100000 : 180,
     timeWindow: "1 minute",
@@ -178,14 +200,21 @@ export async function buildApp(
       .header("X-Frame-Options", "DENY");
     reply.header(
       "Content-Security-Policy",
-      "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
+      "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
     );
     if (secure) reply.header("Strict-Transport-Security", "max-age=31536000");
     if (r.url.startsWith("/api")) reply.header("Cache-Control", "no-store");
     if (["POST", "PUT", "PATCH", "DELETE"].includes(r.method)) {
       if (r.headers.origin !== origin)
         throw new Problem(403, "Origine della richiesta non consentita.");
-      if (!r.headers["content-type"]?.startsWith("application/json"))
+      const photoUpload =
+        r.method === "POST" &&
+        r.routeOptions.url === "/api/properties/:id/photos";
+      if (
+        photoUpload
+          ? !r.headers["content-type"]?.startsWith("multipart/form-data;")
+          : !r.headers["content-type"]?.startsWith("application/json")
+      )
         throw new Problem(415, "Formato richiesta non valido.");
     }
   });
@@ -230,6 +259,18 @@ export async function buildApp(
     }
   });
   app.setErrorHandler((error, _request, reply) => {
+    if ((error as { code?: string }).code === "FST_REQ_FILE_TOO_LARGE")
+      return reply
+        .code(413)
+        .send({ error: "Ogni foto può pesare al massimo 5 MB." });
+    if (
+      ["FST_FILES_LIMIT", "FST_FIELDS_LIMIT", "FST_PARTS_LIMIT"].includes(
+        (error as { code?: string }).code || "",
+      )
+    )
+      return reply
+        .code(400)
+        .send({ error: "Carica una foto alla volta, senza altri campi." });
     if (error instanceof z.ZodError)
       return reply.code(400).send({
         error: "Controlla i campi inseriti.",
@@ -557,14 +598,188 @@ export async function buildApp(
   });
   app.get("/api/properties", async (r) => {
     const u = actor(r, { role: "landlord" });
+    const properties = (
+      await db.query(
+        "SELECT * FROM properties WHERE owner_id=$1 ORDER BY created_at DESC",
+        [u.id],
+      )
+    ).rows;
+    const images = await propertyPhotos(
+      db,
+      properties.map((p) => p.id),
+    );
     return {
-      properties: (
-        await db.query(
-          "SELECT * FROM properties WHERE owner_id=$1 ORDER BY created_at DESC",
-          [u.id],
-        )
-      ).rows,
+      properties: properties.map((p) => ({
+        ...p,
+        photos: images.get(p.id) || [],
+      })),
     };
+  });
+  app.post(
+    "/api/properties/:id/photos",
+    { bodyLimit: photoLimits.bytes + 65536 },
+    async (r, reply) => {
+      const u = actor(r, { role: "landlord" }),
+        id = idParam(r);
+      requireThat(
+        (
+          await db.query(
+            "SELECT 1 FROM properties WHERE id=$1 AND owner_id=$2",
+            [id, u.id],
+          )
+        ).rowCount,
+        "Immobile non trovato.",
+        404,
+      );
+      let input: { body: Buffer; mimetype: string } | undefined;
+      for await (const part of r.parts()) {
+        requireThat(
+          part.type === "file" &&
+            ["photo", "file"].includes(part.fieldname) &&
+            !input,
+          "Carica una foto alla volta, senza altri campi.",
+          400,
+        );
+        if (part.type === "file")
+          input = { body: await part.toBuffer(), mimetype: part.mimetype };
+      }
+      requireThat(input, "Scegli una foto da caricare.", 400);
+      const image = await normalizePhoto(input!.body, input!.mimetype);
+      const photoId = r.headers["idempotency-key"]
+          ? uuid.parse(r.headers["idempotency-key"])
+          : randomUUID(),
+        key = photoObjectKey(photoId);
+      let attempted = false;
+      try {
+        const photo = await tx(db, async (c) => {
+          await lockUsers(c, [u.id]);
+          await active(c, u.id);
+          requireThat(
+            (
+              await c.query(
+                "SELECT id FROM properties WHERE id=$1 AND owner_id=$2 FOR UPDATE",
+                [id, u.id],
+              )
+            ).rowCount,
+            "Immobile non trovato.",
+            404,
+          );
+          // Serialize this token across owners/properties, including malicious collisions.
+          await c.query(
+            "SELECT pg_advisory_xact_lock(hashtextextended($1,0))",
+            [photoId],
+          );
+          const existing = (
+            await c.query("SELECT * FROM property_photos WHERE id=$1", [
+              photoId,
+            ])
+          ).rows[0];
+          if (existing) {
+            requireThat(
+              existing.property_id === id && !existing.deleted_at,
+              "Richiesta foto già utilizzata. Seleziona nuovamente la foto.",
+              409,
+            );
+            return photoView(existing);
+          }
+          const current = (
+            await c.query(
+              "SELECT count(*)::int AS count,coalesce(max(position),-1)+1 AS position FROM property_photos WHERE property_id=$1 AND deleted_at IS NULL",
+              [id],
+            )
+          ).rows[0];
+          requireThat(
+            current.count < photoLimits.count,
+            "Puoi caricare al massimo 6 foto per immobile.",
+            409,
+          );
+          attempted = true;
+          await photos.put(key, image.body);
+          const row = (
+            await c.query(
+              "INSERT INTO property_photos(id,property_id,object_key,width,height,byte_size,position) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING id,width,height,position",
+              [
+                photoId,
+                id,
+                key,
+                image.width,
+                image.height,
+                image.body.length,
+                current.position,
+              ],
+            )
+          ).rows[0];
+          await c.query(
+            "UPDATE properties SET revision=revision+1 WHERE id=$1",
+            [id],
+          );
+          await cancelPending(c, "property_id", id);
+          return photoView(row);
+        });
+        return reply.code(201).send({ photo });
+      } catch (error) {
+        if (attempted) {
+          // Cleanup checks references under the same token lock; a retry must
+          // never lose its newly committed object.
+          await db
+            .query(
+              "INSERT INTO photo_object_deletions(object_key) VALUES($1) ON CONFLICT DO NOTHING",
+              [key],
+            )
+            .catch(() => {});
+          await cleanupPhotoObjects(db, photos, [key]).catch(() => {});
+        }
+        throw error;
+      }
+    },
+  );
+  app.delete("/api/properties/:id/photos/:photoId", async (r) => {
+    const u = actor(r, { role: "landlord" }),
+      id = idParam(r),
+      photoId = uuid.parse((r.params as { photoId: string }).photoId);
+    const key = await tx(db, async (c) => {
+      await lockUsers(c, [u.id]);
+      await active(c, u.id);
+      requireThat(
+        (
+          await c.query(
+            "SELECT id FROM properties WHERE id=$1 AND owner_id=$2 FOR UPDATE",
+            [id, u.id],
+          )
+        ).rowCount,
+        "Immobile non trovato.",
+        404,
+      );
+      const removed = (
+        await c.query(
+          "UPDATE property_photos SET deleted_at=now() WHERE id=$1 AND property_id=$2 AND deleted_at IS NULL RETURNING object_key",
+          [photoId, id],
+        )
+      ).rows[0];
+      requireThat(removed, "Foto non trovata.", 404);
+      await c.query("UPDATE properties SET revision=revision+1 WHERE id=$1", [
+        id,
+      ]);
+      await cancelPending(c, "property_id", id);
+      return removed.object_key as string;
+    });
+    await cleanupPhotoObjects(db, photos, [key]).catch(() => {});
+    return { ok: true };
+  });
+  app.get("/api/property-photos/:id", async (r, reply) => {
+    const u = actor(r),
+      id = idParam(r);
+    const photo = (
+      await db.query(
+        `SELECT ph.* FROM property_photos ph JOIN properties p ON p.id=ph.property_id WHERE ph.id=$1 AND ((p.owner_id=$2 AND (ph.deleted_at IS NULL OR EXISTS(SELECT 1 FROM invitations i WHERE i.property_id=p.id AND i.status IN ('accepted','closed') AND i.property_snapshot->'photos' @> jsonb_build_array(jsonb_build_object('id',ph.id::text))))) OR EXISTS(SELECT 1 FROM invitations i WHERE i.property_id=p.id AND i.tenant_id=$2 AND ((i.status='pending' AND i.expires_at>now() AND p.status='published' AND p.authority_attested AND p.published_at>now()-interval '30 days' AND ph.deleted_at IS NULL) OR (i.status IN ('accepted','closed') AND i.property_snapshot->'photos' @> jsonb_build_array(jsonb_build_object('id',ph.id::text))))))`,
+        [id, u.id],
+      )
+    ).rows[0];
+    requireThat(photo, "Foto non disponibile.", 404);
+    return reply
+      .type("image/webp")
+      .header("Content-Disposition", 'inline; filename="immobile.webp"')
+      .send(await photos.get(photo.object_key));
   });
   app.post("/api/properties", async (r, reply) => {
     const u = actor(r, { role: "landlord" });
@@ -685,6 +900,7 @@ export async function buildApp(
       "Pubblica o riconferma questo immobile per vedere i profili.",
       400,
     );
+    p.photos = (await propertyPhotos(db, [p.id])).get(p.id) || [];
     const { rows } = await db.query(
       `SELECT p.user_id AS id,p.city,p.budget,p.move_in,p.duration,p.occupants,p.revision,md5(p.user_id::text || $8::text) AS sort_key FROM profiles p JOIN users u ON u.id=p.user_id WHERE p.status='published' AND u.suspended=false AND u.email_verified=true AND p.user_id<>$1 AND p.city=$2 AND p.budget>=$3 AND p.move_in>=$4 AND p.duration BETWEEN $5 AND $6 AND p.occupants<=$7 AND NOT EXISTS(SELECT 1 FROM blocks b WHERE (b.blocker_id=$1 AND b.blocked_id=p.user_id) OR(b.blocker_id=p.user_id AND b.blocked_id=$1)) AND NOT EXISTS(SELECT 1 FROM invitations i WHERE i.property_id=$8::uuid AND i.tenant_id=p.user_id) AND (md5(p.user_id::text || $8::text),p.user_id)>($9,$10::uuid) AND ($11::uuid IS NULL OR p.user_id=$11) ORDER BY md5(p.user_id::text || $8::text),p.user_id LIMIT 25`,
       [
@@ -765,6 +981,7 @@ export async function buildApp(
         compatibility(pf, p).compatible,
         "Preferenze non compatibili.",
       );
+      p.photos = (await propertyPhotos(c, [p.id])).get(p.id) || [];
       const result = await c.query(
         "INSERT INTO invitations(property_id,tenant_id,landlord_id,property_revision,profile_revision,property_snapshot) VALUES($1,$2,$3,$4,$5,$6) RETURNING id",
         [
@@ -800,7 +1017,21 @@ export async function buildApp(
     const profile = (
       await db.query("SELECT * FROM profiles WHERE user_id=$1", [u.id])
     ).rows[0];
+    const images = await propertyPhotos(
+      db,
+      rows.map((i) => i.property_id),
+    );
     return rows.map((i) => {
+      i.property.photos = images.get(i.property_id) || [];
+      if (
+        i.tenant_id === u.id &&
+        !(
+          i.status === "pending" &&
+          new Date(i.expires_at) > new Date() &&
+          currentProperty(i.property)
+        )
+      )
+        i.property.photos = [];
       const offeredProperty = ["accepted", "closed"].includes(i.status)
         ? i.property_snapshot
         : i.property;

@@ -724,6 +724,239 @@ summary:focus-visible {
   gap: 26px;
   align-items: start;
 }
+.required-mark {
+  color: #805e45;
+}
+.field-label {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.form-required-note {
+  font-size: 0.78rem !important;
+  margin: 0 0 26px;
+}
+.input-hint,
+.input-error {
+  font-size: 0.76rem;
+  line-height: 1.55;
+  font-weight: 400;
+}
+.input-hint {
+  color: var(--muted);
+}
+.input-error,
+.photo-error {
+  color: #922b21 !important;
+}
+.field [aria-invalid="true"] {
+  border-color: #ac4535;
+  background: #fff8f5;
+}
+.form-section {
+  border: 0;
+  border-top: 1px solid var(--border);
+  padding: 22px 0 0;
+  margin: 0 0 14px;
+  min-width: 0;
+}
+.form-section legend {
+  padding: 0 12px 0 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.form-section .optional {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 400;
+  margin-left: 8px;
+}
+.property-form {
+  max-width: 920px;
+}
+.description-count {
+  text-align: right;
+  font-size: 0.75rem !important;
+  margin: -12px 0 18px;
+}
+.authority-check {
+  padding: 18px;
+  background: #f0f3e9;
+  border-radius: 10px;
+}
+.form-actions {
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.photo-picker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 24px 18px;
+  border: 1px dashed #8caa93;
+  border-radius: 12px;
+  background: #f3f6ed;
+  cursor: pointer;
+}
+.photo-picker:hover,
+.photo-picker:focus-within {
+  border-color: var(--green);
+  background: #eaf0e2;
+}
+.photo-picker:focus-within {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+.photo-picker input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.photo-picker.disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.photo-picker.disabled input {
+  cursor: default;
+}
+.photo-picker .small-copy {
+  margin: 0;
+  font-size: 0.78rem !important;
+}
+.photo-picker-icon {
+  font-size: 1.7rem;
+  color: var(--green);
+  line-height: 1;
+}
+.photo-error,
+.photo-notice {
+  font-size: 0.82rem !important;
+  line-height: 1.6;
+  margin: 14px 0;
+  overflow-wrap: anywhere;
+}
+.photo-count {
+  font-size: 0.78rem !important;
+  margin: 18px 0 10px;
+}
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.photo-tile {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 0;
+  background: #fffefb;
+}
+.photo-tile > img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #e6e3d3;
+}
+.photo-tile figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 5px;
+  padding: 12px;
+  font-size: 0.8rem;
+}
+.photo-tile figcaption > span {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+.photo-tile .text-link {
+  margin-top: 3px;
+  min-height: 36px;
+}
+.property-art.has-photo {
+  height: 220px;
+  align-items: center;
+}
+.property-art.has-photo > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-cover-count {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  background: #fffefbf0;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.74rem;
+}
+.property-gallery {
+  margin-bottom: 22px;
+}
+.gallery-main {
+  display: block;
+  width: 100%;
+  max-height: 340px;
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  background: #e8e9df;
+  border-radius: 10px;
+}
+.gallery-thumbnails {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.gallery-thumbnails button {
+  width: 68px;
+  height: 54px;
+  padding: 3px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: #fffefb;
+}
+.gallery-thumbnails button[aria-pressed="true"] {
+  border-color: var(--green);
+}
+.gallery-thumbnails img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+@media (max-width: 700px) {
+  .photo-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .form-actions .button {
+    width: 100%;
+  }
+  .form-section legend {
+    font-size: 0.96rem;
+  }
+  .property-art.has-photo {
+    height: 190px;
+  }
+}
+@media (max-width: 360px) {
+  .photo-grid {
+    grid-template-columns: 1fr;
+  }
+}
 .preview {
   background: #eaf0e2;
 }
