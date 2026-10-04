@@ -750,11 +750,11 @@ function Landing() {
       </section>
       <section className="principles">
         <div className="container principle-row">
-          <span>Preferenze chiare</span>
+          <span>Sono i proprietari a cercarti</span>
           <i aria-hidden="true">✳</i>
-          <span>Inviti legati a un immobile</span>
+          <span>Proposte nel tuo budget</span>
           <i aria-hidden="true">✳</i>
-          <span>Condivisione sotto controllo</span>
+          <span>Parla direttamente con il proprietario</span>
         </div>
       </section>
       <RoleGuide />

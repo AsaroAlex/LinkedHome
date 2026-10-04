@@ -1646,14 +1646,16 @@ blockquote {
     font-size: 0.56rem;
   }
   .principle-row {
-    font-size: 0.61rem;
+    flex-direction: column;
+    font-size: 0.85rem;
     gap: 10px;
     padding-top: 17px;
     padding-bottom: 17px;
     align-items: center;
+    text-align: center;
   }
   .principle-row i {
-    font-size: 1rem;
+    display: none;
   }
   .how {
     padding-top: 50px;

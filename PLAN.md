@@ -137,3 +137,13 @@ Implementazione e revisione completate; passati 220 backend e 34 scenari browser
 distinti (38 esecuzioni), build/typecheck e audit. [Verifica](docs/operations/photo-forms-validation.md).
 Provisionato storage S3 sul progetto Railway esistente; il deploy e la verifica
 HTTPS completano l'aggiornamento richiesto sullo stesso dominio.
+
+## Copy della landing richiesto — 2026-10-04
+
+Sostituite le tre frasi generiche sotto la hero con ricerca avviata dai
+proprietari, compatibilità con il budget e conversazione diretta. Confronto
+mirato delle home ufficiali LocService/Spotahome/HousingAnywhere;
+[fonti e motivazione](docs/design/03-landing-copy.md). Leggibilità mobile
+migliorata; build, scenario landing, browser/accessibilità a quattro larghezze
+e revisione indipendente passati. Aggiornamento della preview Railway nel
+percorso iterativo già autorizzato.
