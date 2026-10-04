@@ -95,7 +95,7 @@ export function ProductFAQ() {
       <div>
         <span className="eyebrow">PRIMA DI INIZIARE</span>
         <h2 id="faq-heading">Le risposte alle prime domande.</h2>
-        <p>Visibilità, inviti e conversazioni: ecco cosa aspettarti.</p>
+        <p>Inviti, reddito e conversazioni: ecco cosa aspettarti.</p>
         <a href="/safeguards" className="text-link">
           Come funziona e cosa condividi →
         </a>
@@ -119,8 +119,12 @@ export function ProductFAQ() {
             "Confrontiamo città, costo mensile complessivo, date, durata e capienza. I criteri sono visibili. Identità, reddito e verifiche non vengono usati per assegnare un punteggio o dare più visibilità a una persona.",
           ],
           [
+            "Come funziona l’attestazione di reddito?",
+            "L’inquilino prepara un riepilogo delle entrate, controlla l’anteprima e sceglie con quale proprietario condividerlo, da un invito o da una conversazione. Il proprietario può valutare fascia mensile, fonte, periodo e scadenza insieme al canone. Nella demo il percorso usa dati sintetici; la verifica di redditi reali non è ancora collegata.",
+          ],
+          [
             "Posso firmare il contratto o pagare qui?",
-            "La piattaforma serve a incontrarsi e a parlare dell’immobile. Al momento non gestisce contratti, pagamenti, depositi o verifiche d’identità e reddito.",
+            "Puoi conoscere il proprietario, valutare l’immobile e concordare i prossimi passi. La firma del contratto, i pagamenti e i depositi avvengono al di fuori della piattaforma.",
           ],
         ].map(([question, answer]) => (
           <details key={question}>

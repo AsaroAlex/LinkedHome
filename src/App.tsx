@@ -660,6 +660,7 @@ export function App() {
   );
 }
 function Landing() {
+  const runtime = useContext(RuntimeContext);
   return (
     <>
       <section className="hero container">
@@ -760,28 +761,32 @@ function Landing() {
       <RoleGuide />
       <section className="container trust-section">
         <div>
-          <span className="eyebrow">
-            SPAZIO ALLA FIDUCIA, SENZA SCORCIATOIE
-          </span>
+          <span className="eyebrow">CONOSCI MEGLIO CHI ENTRA IN CASA</span>
           <h2>
-            Le persone non
+            Affitta con più
             <br />
-            sono un punteggio.
+            tranquillità.
           </h2>
         </div>
         <div>
           <p>
-            La compatibilità riguarda le preferenze e l’immobile. Nessuna
-            classifica di affidabilità, nessuna promessa sulla solvibilità.
+            Un’attestazione di reddito aiuta il proprietario a valutare le
+            entrate rispetto al canone: fascia mensile, fonte e periodo di
+            riferimento in un riepilogo chiaro.
           </p>
           <p>
-            Prima del match, il tuo nome e la tua email restano privati. Puoi
-            mettere in pausa il profilo, bloccare un contatto o segnalare un
-            problema.
+            L’inquilino controlla l’anteprima e sceglie con quale proprietario
+            condividerla. Più informazioni per conoscersi e decidere prima di
+            firmare.
           </p>
           <Link to="/safeguards" className="text-link">
-            Scopri cosa condividi <span aria-hidden="true">→</span>
+            Scopri l’attestazione di reddito <span aria-hidden="true">→</span>
           </Link>
+          {["local", "preview"].includes(runtime?.environment || "") && (
+            <p className="small-copy">
+              Nella demo puoi provare il percorso con dati sintetici.
+            </p>
+          )}
         </div>
       </section>
       <ProductFAQ />
@@ -794,10 +799,33 @@ function Safeguards() {
     <>
       <PageHeading
         eyebrow="Come funziona"
-        title="Come funzionano profili e inviti"
+        title="Profili, inviti e attestazione di reddito"
       >
         Tu scegli quando renderti visibile e con chi parlare.
       </PageHeading>
+      <article className="panel narrow">
+        <span className="eyebrow">LE INFORMAZIONI PER SCEGLIERE</span>
+        <h2>Entrate e canone, a confronto.</h2>
+        <p>
+          L’attestazione di reddito riassume la fascia di entrate nette mensili,
+          la fonte, il periodo osservato e la scadenza. Aiuta il proprietario a
+          valutare le informazioni economiche insieme al costo dell’immobile.
+        </p>
+        <p>
+          L’inquilino prepara l’attestazione nella sezione «Verifiche e
+          reddito», controlla l’anteprima e sceglie se condividerla da un invito
+          o da una conversazione. Il proprietario può consultarla nello stesso
+          invito. Ogni condivisione riguarda quel destinatario e può essere
+          revocata.
+        </p>
+        <p className="small-copy">
+          {["local", "preview"].includes(runtime?.environment || "")
+            ? "In questa demo puoi provare il percorso completo con dati sintetici. La verifica di redditi reali non è ancora collegata."
+            : "La verifica di redditi reali non è ancora disponibile in questo ambiente."}{" "}
+          Il riepilogo descrive le entrate di un periodo; non garantisce il
+          pagamento dei canoni futuri.
+        </p>
+      </article>
       <div className="three-grid">
         <article className="panel">
           <span className="step-number">01</span>
@@ -836,9 +864,8 @@ function Safeguards() {
         </p>
         <h2>Verifiche e segnalazioni</h2>
         <p>
-          {verificationInstructions(runtime)} I servizi di verifica d’identità e
-          reddito non sono disponibili. L’autorizzazione a offrire un immobile è
-          autodichiarata.
+          {verificationInstructions(runtime)} La verifica d’identità non è
+          disponibile. L’autorizzazione a offrire un immobile è autodichiarata.
         </p>
         <p>
           Una segnalazione rende visibili agli operatori la tua identità di
@@ -2745,6 +2772,27 @@ function VerificationPage({ user }: { user: User }) {
         </article>
       </div>
       {user.role !== "landlord" && <IncomeWorkspace />}
+      {user.role === "landlord" && (
+        <article className="panel income-section">
+          <span className="eyebrow">
+            CONOSCI MEGLIO IL TUO FUTURO INQUILINO
+          </span>
+          <h2>Valuta le entrate prima di scegliere.</h2>
+          <p>
+            Se l’inquilino condivide un’attestazione con te, puoi consultarne
+            fascia di entrate mensili, fonte, periodo e scadenza nell’invito
+            relativo al tuo immobile, anche prima di aprire una conversazione.
+          </p>
+          {["local", "preview"].includes(runtime?.environment || "") && (
+            <p className="small-copy">
+              Le attestazioni della demo contengono soltanto dati sintetici.
+            </p>
+          )}
+          <Link to="/invitations" className="text-link">
+            Vai ai tuoi inviti <span aria-hidden="true">→</span>
+          </Link>
+        </article>
+      )}
       {l.data?.checks.map((v: any) => (
         <article className="panel" key={v.id}>
           <h2>{v.kind === "identity" ? "Identità" : "Reddito"}</h2>

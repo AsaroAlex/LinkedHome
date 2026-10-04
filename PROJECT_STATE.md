@@ -72,7 +72,7 @@ Provisionato il bucket Railway `linkedhome-photos` (`88ac2af5-03e0-4447-9970-8be
 
 Feedback dell'utente sulla fascia «Preferenze chiare / Inviti legati a un immobile / Condivisione sotto controllo», ritenuta generica. Confrontate tramite la skill Search di Exa le home ufficiali di LocService, Spotahome e HousingAnywhere; adottati benefici concreti coerenti con il prodotto: «Sono i proprietari a cercarti», «Proposte nel tuo budget», «Parla direttamente con il proprietario». Fascia mobile su tre righe a0.85rem, al posto della precedente compressione a0.61rem. [Fonti e motivazione](docs/design/03-landing-copy.md).
 
-Build/typecheck e scenario browser della landing passati; browser reale1440/768/390/320px senza overflow, zero violazioni axe configurate ed errori console/rete, screenshot desktop/mobile ispezionati. Revisione indipendente senza blocchi. Dev preservato e pronto; backend/API, foto e flussi applicativi invariati. Pubblicazione dell'aggiornamento sul dominio Railway esistente in corso. Il contesto UI dell'utente ora indica il browser in-app aperto sulla home Railway: preservare la scheda corrente per il feedback.
+Build/typecheck e scenario browser della landing passati; browser reale1440/768/390/320px senza overflow, zero violazioni axe configurate ed errori console/rete, screenshot desktop/mobile ispezionati. Revisione indipendente senza blocchi. Dev preservato e pronto; backend/API, foto e flussi applicativi invariati. Pubblicato il commit `abef7de79da37d7b7195c5903cf1dedb621b9673` sul branch esistente; deploy Railway `fd459ee6-c48c-4f26-8729-2444ec1af177` **SUCCESS**. Verificati via HTTPS bundle aggiornato, presenza dei tre nuovi messaggi, rimozione dei precedenti e health200/preview; evidenza in `.local/landing-copy/railway-verification.json`. Il contesto UI dell'utente ora indica il browser in-app aperto sulla home Railway: preservare la scheda corrente per il feedback. Esito operativo salvato localmente dopo il deploy, senza avviare un deploy soltanto documentale.
 
 ## Verifiche storiche del primo MVP
 
@@ -232,3 +232,23 @@ Il commit `d566adb`, basato su `6d4805c`, salva le correzioni del follow-up loca
 Prima della riconciliazione con il remoto, il codice del follow-up ha superato build/typecheck, **73 test unitari/integrati** e **13 scenari browser**, bootstrap ripetuto e sonde di avvio compilato. In quella prova erano preservati 5 utenti, 2 profili, 1 immobile e 3 migrazioni; LCP sintetico desktop 308ms, mobile 2.312ms e CLS0. [Evidenza storica](docs/operations/evidence/mvp-2026-10-04/readiness.json) con hash del diff sorgente e screenshot. Questi risultati descrivono il sorgente precedente alla fusione e non la successiva integrazione LinkedHome/reddito/UX/SMTP.
 
 La richiesta **«Pusha che buildo in locale»** autorizza verifica e push ordinario sul branch remoto esistente. Integrata la storia remota fino a `8891fea`, conservando marchio LinkedHome, flusso reddito sintetico, UX, configurazione staging/SMTP, ricerca economica e registri della precedente pulizia dei branch. I risultati della verifica e pubblicazione del nuovo merge sono registrati separatamente; non è implicito un deploy, una PR, un acquisto o l’attivazione di provider reali.
+
+## Feedback browser: informazioni economiche — 2026-10-04
+
+L'utente vuole la valutazione economica come feature utile al proprietario e
+respinge la home «nessuna promessa sulla solvibilità». Sostituita la sezione con
+**«Affitta con più tranquillità»**, riepilogo entrate/canone e CTA alla
+spiegazione dell'attestazione. Aggiunta una FAQ, corrette le negazioni generiche
+del reddito e introdotto un pannello informativo per il proprietario in
+«Verifiche e reddito», con link agli inviti. La feature esistente resta
+facoltativa, con anteprima, consenso per destinatario/invito e revoca; nella
+preview usa dati sintetici, chiaramente indicati. Verifica di redditi reali
+ancora da collegare; nessuna nuova emissione, garanzia o modifica del ranking.
+
+Passati build/typecheck, scenario browser della landing e nove controlli UI:
+home/CTA informativo a1440/768/390/320px e area proprietario a320px con API
+simulate. Nessun overflow, violazione axe configurata o errore console/rete;
+screenshot ispezionati e revisione indipendente senza rilievi materiali.
+Backend, dati e supervisor dev preservati. [Dettagli](docs/design/03-landing-copy.md).
+Pubblicazione e verifica sullo stesso dominio Railway completano questa
+iterazione; la scheda è già aperta nel browser dell'utente.

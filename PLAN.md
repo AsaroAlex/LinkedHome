@@ -147,3 +147,14 @@ mirato delle home ufficiali LocService/Spotahome/HousingAnywhere;
 migliorata; build, scenario landing, browser/accessibilità a quattro larghezze
 e revisione indipendente passati. Aggiornamento della preview Railway nel
 percorso iterativo già autorizzato.
+
+## Reddito e tranquillità del proprietario — 2026-10-04
+
+Il feedback browser richiede di valorizzare la valutazione economica, evitando
+la negazione della solvibilità come messaggio della home. Presentata
+l'attestazione con entrate/canone, allineate FAQ e pagina informativa, reso
+visibile al proprietario il collegamento agli attestati negli inviti. Il flusso
+sintetico già esistente mantiene consenso, revoca e isolamento; l'emissione
+reale richiede ancora un servizio collegato. Build/typecheck, scenario landing,
+nove controlli browser responsive/accessibilità e revisione indipendente
+passati. Aggiornamento sul dominio Railway esistente.

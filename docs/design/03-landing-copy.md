@@ -32,3 +32,29 @@ fascia desktop/mobile ispezionati in `.local/landing-copy`. Revisione indipenden
 dei messaggi e del layout senza rilievi materiali. Nessun test backend rieseguito
 per questa modifica di testo/stile; la verifica220/34 della funzionalità foto
 rimane attribuita all'iterazione precedente.
+
+## Reddito come elemento per scegliere — feedback browser
+
+L'utente vuole che le informazioni economiche aiutino il proprietario a
+valutare l'affitto e ha respinto il messaggio principale «nessuna promessa
+sulla solvibilità». La home ora presenta **«Affitta con più tranquillità»** e
+spiega fascia di entrate, fonte e periodo, con un collegamento alla spiegazione
+dell'attestazione. La pagina informativa e una nuova FAQ descrivono il percorso;
+il proprietario trova anche un pannello in «Verifiche e reddito» che rimanda agli
+inviti dove può leggere le attestazioni condivise.
+
+La feature esistente permette già anteprima, consenso per destinatario/invito e
+revoca. La preview usa dati sintetici, indicati accanto al messaggio della home.
+Il controllo di redditi reali rimane da collegare; questo intervento non
+introduce scoring, controllo del credito o garanzie sui pagamenti. Il limite
+temporale delle evidenze rimane nella spiegazione dettagliata. Corrette le
+precedenti negazioni generiche della funzione reddito nelle FAQ e nella pagina
+informativa.
+
+Build/typecheck e scenario browser esistente della landing passati. Nove
+controlli browser aggiuntivi: home e destinazione del CTA a1440/768/390/320px,
+pannello proprietario a320px con sessione/API simulate. Nessun overflow,
+violazione axe nei criteri WCAG configurati o errore console/rete. Screenshot
+della sezione desktop/mobile ispezionati; revisione indipendente del testo e
+dei permessi senza rilievi materiali. Dati dev e logica di emissione/condivisione
+invariati. Evidenze temporanee ignorate in `.local/income-copy`.
