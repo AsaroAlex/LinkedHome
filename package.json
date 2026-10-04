@@ -20,6 +20,7 @@
     "test": "tsx scripts/test.ts",
     "test:unit": "vitest run tests/domain.test.ts",
     "test:e2e": "playwright test",
+    "test:e2e:preview": "playwright test --config=playwright.preview.config.ts",
     "test:e2e:experience": "playwright test --config=playwright.experience.config.ts",
     "check": "npm run build && npm test && npm run test:e2e && npm run test:e2e:experience",
     "deploy:check": "tsx scripts/deploy-check.ts"

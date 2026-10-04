@@ -22,20 +22,22 @@ import { cities } from "../server/domain";
 import type { User } from "../server/auth";
 import { IncomeWorkspace, InvitationIncome } from "./Income";
 type RuntimeConfig = {
-  environment: "local" | "staging" | "production";
-  mailTransport: "local" | "smtp";
+  environment: "local" | "preview" | "staging" | "production";
+  mailTransport: "local" | "smtp" | "disabled";
 };
 const RuntimeContext = createContext<RuntimeConfig | null>(null);
 function validRuntime(value: unknown): RuntimeConfig | null {
   if (!value || typeof value !== "object") return null;
   const config = value as Partial<RuntimeConfig>;
-  return ["local", "staging", "production"].includes(
+  return ["local", "preview", "staging", "production"].includes(
     config.environment || "",
-  ) && ["local", "smtp"].includes(config.mailTransport || "")
+  ) && ["local", "smtp", "disabled"].includes(config.mailTransport || "")
     ? (config as RuntimeConfig)
     : null;
 }
 function verificationInstructions(runtime: RuntimeConfig | null) {
+  if (runtime?.mailTransport === "disabled")
+    return "La preview usa account dimostrativi già confermati. Nessuna email viene inviata e nessuna identità o reddito reale viene verificato.";
   if (runtime?.mailTransport === "local")
     return "Il link è nel messaggio locale disponibile all’operatore. Nessuna email viene inviata: questa conferma non prova il controllo di una casella reale, l’identità o il reddito.";
   if (runtime?.mailTransport === "smtp")
@@ -353,7 +355,11 @@ export function App() {
       <a className="skip-link" href="#main">
         Vai al contenuto
       </a>
-      {runtime?.environment === "local" ? (
+      {runtime?.environment === "preview" ? (
+        <div className="environment">
+          Preview dimostrativa · usa solo dati di prova · nessuna email inviata
+        </div>
+      ) : runtime?.environment === "local" ? (
         <div className="environment">
           Ambiente dimostrativo · dati sintetici · nessun annuncio reale
         </div>
@@ -373,6 +379,9 @@ export function App() {
             {user ? (
               <>
                 <Link to="/dashboard">Il tuo spazio</Link>
+                {runtime?.environment === "preview" && (
+                  <Link to="/login">Cambia ruolo demo</Link>
+                )}
                 <Link to="/settings" className="account-link">
                   Account <Arrow />
                 </Link>
@@ -384,7 +393,10 @@ export function App() {
                 </Link>
                 <Link to="/login">Accedi</Link>
                 <Link to="/register" className="button small">
-                  Crea account <Arrow />
+                  {runtime?.environment === "preview"
+                    ? "Prova demo"
+                    : "Crea account"}{" "}
+                  <Arrow />
                 </Link>
               </>
             )}
@@ -480,7 +492,11 @@ export function App() {
         ) : path === "/login" || path === "/register" ? (
           <Auth key={path} register={path === "/register"} refresh={refresh} />
         ) : path === "/forgot" || path.startsWith("/account/") ? (
-          <Recovery key={path} path={path} refresh={refresh} />
+          runtime?.environment === "preview" ? (
+            <PreviewAccess refresh={refresh} />
+          ) : (
+            <Recovery key={path} path={path} refresh={refresh} />
+          )
         ) : path === "/dashboard" ? (
           <Dashboard user={user!} />
         ) : path === "/profile" ? (
@@ -521,9 +537,11 @@ export function App() {
           <p>
             {runtime?.environment === "local"
               ? "Prototipo locale · nome di lavoro"
-              : runtime?.environment === "staging"
-                ? "Ambiente di test · nome di lavoro"
-                : "Nome di lavoro"}
+              : runtime?.environment === "preview"
+                ? "Preview con dati sintetici · nessun annuncio reale"
+                : runtime?.environment === "staging"
+                  ? "Ambiente di test · nome di lavoro"
+                  : "Nome di lavoro"}
           </p>
         </div>
       </footer>
@@ -758,7 +776,10 @@ function Auth({
   register: boolean;
   refresh: () => Promise<void>;
 }) {
+  const runtime = useContext(RuntimeContext);
   const a = useAction();
+  if (runtime?.environment === "preview")
+    return <PreviewAccess refresh={refresh} />;
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const v = formValues(e.currentTarget);
@@ -836,6 +857,58 @@ function Auth({
           </Link>
         </p>
       </form>
+    </div>
+  );
+}
+function PreviewAccess({ refresh }: { refresh: () => Promise<void> }) {
+  const action = useAction();
+  async function enter(role: "tenant" | "landlord") {
+    await action.run(async () => {
+      await api("/auth/preview", "POST", { role });
+      await refresh();
+      go("/dashboard");
+    });
+  }
+  return (
+    <div className="auth-layout">
+      <div className="auth-intro">
+        <span className="eyebrow">PREVIEW DIMOSTRATIVA</span>
+        <h1 tabIndex={-1}>Prova LinkedHome</h1>
+        <p>
+          Esplora la ricerca di casa e gli inviti con un profilo e un immobile
+          di esempio. Usa soltanto dati di prova.
+        </p>
+        <div className="auth-art" aria-hidden="true">
+          <Mark />
+        </div>
+      </div>
+      <div className="panel auth-form">
+        <h2>Scegli un ruolo demo</h2>
+        <p>Passa da un ruolo all’altro per provare inviti e conversazioni.</p>
+        <ErrorBox text={action.error} />
+        <div className="preview-actions">
+          <button
+            type="button"
+            className="button full"
+            disabled={action.busy}
+            onClick={() => void enter("tenant")}
+          >
+            {action.busy ? "Un momento…" : "Prova come inquilino"}
+          </button>
+          <button
+            type="button"
+            className="button secondary full"
+            disabled={action.busy}
+            onClick={() => void enter("landlord")}
+          >
+            {action.busy ? "Un momento…" : "Prova come proprietario"}
+          </button>
+        </div>
+        <p className="small-copy">
+          Non serve un indirizzo email. Gli account sono dimostrativi, non
+          vengono inviate email e non ci sono annunci reali.
+        </p>
+      </div>
     </div>
   );
 }
@@ -2395,6 +2468,7 @@ function Settings({
   user: User;
   refresh: () => Promise<void>;
 }) {
+  const runtime = useContext(RuntimeContext);
   const a = useAction(),
     l = useLoad(user.suspended ? null : "/blocks"),
     [deleting, setDeleting] = useState(false);
@@ -2493,33 +2567,50 @@ function Settings({
             ))
           )}
         </section>
-        <section className="panel">
-          <h2>Elimina il tuo account</h2>
-          <p>
-            Rimuove profilo, immobili, messaggi inviati e conversazioni
-            collegate. Le altre persone potrebbero non vederle più. Non revoca
-            copie già scaricate. Le segnalazioni di altre persone conservano il
-            solo contesto selezionato. L’operatore elimina i casi più vecchi di
-            30 giorni tramite la pulizia periodica; la cancellazione non è
-            automatica.
-          </p>
-          {deleting ? (
-            <form onSubmit={remove}>
-              <Field label="Password attuale" type="password" name="password" />
-              <Field label="Scrivi ELIMINA per confermare" name="confirm" />
-              <button className="button danger" disabled={a.busy}>
-                Elimina definitivamente
+        {runtime?.environment === "preview" ? (
+          <section className="panel">
+            <h2>Account dimostrativo</h2>
+            <p>
+              Questo account non ha una password. Puoi cambiare ruolo demo per
+              provare l’altro lato della conversazione.
+            </p>
+            <Link to="/login" className="button secondary">
+              Scegli un ruolo demo
+            </Link>
+          </section>
+        ) : (
+          <section className="panel">
+            <h2>Elimina il tuo account</h2>
+            <p>
+              Rimuove profilo, immobili, messaggi inviati e conversazioni
+              collegate. Le altre persone potrebbero non vederle più. Non revoca
+              copie già scaricate. Le segnalazioni di altre persone conservano
+              il solo contesto selezionato. L’operatore elimina i casi più
+              vecchi di 30 giorni tramite la pulizia periodica; la cancellazione
+              non è automatica.
+            </p>
+            {deleting ? (
+              <form onSubmit={remove}>
+                <Field
+                  label="Password attuale"
+                  type="password"
+                  name="password"
+                />
+                <Field label="Scrivi ELIMINA per confermare" name="confirm" />
+                <button className="button danger" disabled={a.busy}>
+                  Elimina definitivamente
+                </button>
+              </form>
+            ) : (
+              <button
+                className="text-link danger-text"
+                onClick={() => setDeleting(true)}
+              >
+                Voglio eliminare l’account
               </button>
-            </form>
-          ) : (
-            <button
-              className="text-link danger-text"
-              onClick={() => setDeleting(true)}
-            >
-              Voglio eliminare l’account
-            </button>
-          )}
-        </section>
+            )}
+          </section>
+        )}
       </div>
     </>
   );

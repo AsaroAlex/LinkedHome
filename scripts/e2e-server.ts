@@ -35,6 +35,16 @@ await db.query("TRUNCATE users,events,audit_log RESTART IDENTITY CASCADE");
 const app = await buildApp(db, {
   origin: "http://127.0.0.1:3000",
   limits: false,
+  ...(process.env.LINKEDHOME_E2E_PREVIEW === "1"
+    ? {
+        runtime: {
+          environment: "preview" as const,
+          origin: "https://preview.example.test",
+          mailTransport: "disabled" as const,
+          trustedProxies: false as const,
+        },
+      }
+    : {}),
 });
 await app.listen({ host: "127.0.0.1", port: 3000 });
 console.log("Isolated E2E service ready.");

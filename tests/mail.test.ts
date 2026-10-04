@@ -66,6 +66,34 @@ describe("mail configuration", () => {
       );
     expect(() => validateMailConfiguration({}, true)).toThrow();
   });
+  it("accepts preview only with disabled mail and no SMTP credentials", () => {
+    expect(
+      validateMailConfiguration({
+        APP_ENV: "preview",
+        MAIL_TRANSPORT: "disabled",
+      }),
+    ).toEqual({ transport: "disabled" });
+    for (const MAIL_TRANSPORT of [undefined, "local", "smtp"])
+      expect(() =>
+        validateMailConfiguration({
+          ...environment,
+          APP_ENV: "preview",
+          MAIL_TRANSPORT,
+        }),
+      ).toThrow("Preview requires MAIL_TRANSPORT=disabled.");
+  });
+  it.each(["local", "staging", "production"])(
+    "refuses disabled mail in %s",
+    (APP_ENV) => {
+      expect(() =>
+        validateMailConfiguration({
+          ...environment,
+          APP_ENV,
+          MAIL_TRANSPORT: "disabled",
+        }),
+      ).toThrow("MAIL_TRANSPORT=disabled is available only in preview.");
+    },
+  );
   it.each([
     ["MAIL_TRANSPORT", "unexpected"],
     ["SMTP_HOST", ""],
@@ -106,6 +134,24 @@ describe("mail configuration", () => {
 });
 
 describe("transactional email", () => {
+  it("never sends or stores mail in the synthetic preview", async () => {
+    vi.stubEnv("APP_ENV", "preview");
+    vi.stubEnv("MAIL_TRANSPORT", "disabled");
+    await verifyMailTransport();
+    for (const purpose of ["verify", "reset"] as const)
+      await expect(sendMail(recipient, purpose, secret)).rejects.toThrow(
+        "Email is disabled in the synthetic preview.",
+      );
+    await expect(localMail(recipient, "verify", secret)).rejects.toThrow(
+      "Local mail is unavailable in deployed environments.",
+    );
+    expect(mocks.createTransport).not.toHaveBeenCalled();
+    expect(stub.verify).not.toHaveBeenCalled();
+    expect(stub.sendMail).not.toHaveBeenCalled();
+    await expect(readdir(mocks.localDir)).rejects.toMatchObject({
+      code: "ENOENT",
+    });
+  });
   it.each(["verify", "reset"] as const)(
     "builds %s text and HTML with a fragment token and no tracking",
     async (purpose) => {

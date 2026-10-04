@@ -12,7 +12,7 @@ try {
   const mail = validateMailConfiguration();
   if (runtime.environment === "local")
     throw new Error(
-      "Deployment preflight requires APP_ENV=staging or production.",
+      "Deployment preflight requires APP_ENV=preview, staging or production.",
     );
   if (process.argv.includes("--config-only")) {
     console.log(
@@ -27,11 +27,17 @@ try {
     } finally {
       await db.end();
     }
-    stage = "SMTP connection/authentication";
-    await verifyMailTransport(mail);
-    console.log(
-      "Deployment database/schema and SMTP authentication ready. No email sent; delivery, proxy trust and release gates require separate verification.",
-    );
+    if (runtime.environment === "preview") {
+      console.log(
+        "Synthetic preview database/schema ready. Email is disabled; no SMTP connection or message storage is available.",
+      );
+    } else {
+      stage = "SMTP connection/authentication";
+      await verifyMailTransport(mail);
+      console.log(
+        "Deployment database/schema and SMTP authentication ready. No email sent; delivery, proxy trust and release gates require separate verification.",
+      );
+    }
   }
   if (!runtime.trustedProxies)
     console.log(

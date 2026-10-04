@@ -29,6 +29,13 @@ import {
 import { sendMail } from "./mail.js";
 import type { PoolClient } from "pg";
 import {
+  createPreviewWorkspace,
+  findPreviewWorkspace,
+  previewCookieName,
+  previewLifetime,
+  type PreviewWorkspace,
+} from "./preview.js";
+import {
   demoIncomeResult,
   incomeAttestation,
   incomeSelect,
@@ -40,6 +47,7 @@ import {
 declare module "fastify" {
   interface FastifyRequest {
     actor: User | null;
+    previewWorkspace: PreviewWorkspace | null;
   }
 }
 const uuid = z.string().uuid();
@@ -143,6 +151,7 @@ export async function buildApp(
   } = {},
 ) {
   const runtime = options.runtime || readRuntimeConfiguration();
+  const preview = runtime.environment === "preview";
   const secure = runtime.environment !== "local";
   const cookieName = secure ? "__Host-soglia" : "soglia";
   const app = Fastify({
@@ -153,13 +162,15 @@ export async function buildApp(
   const origin = options.origin || runtime.origin;
   const mail = options.mail || sendMail;
   const incomeDemoAvailable =
-    runtime.environment === "local" && options.incomeDemo !== false;
+    (runtime.environment === "local" || preview) &&
+    options.incomeDemo !== false;
   await app.register(cookie);
   await app.register(rateLimit, {
     max: options.limits === false ? 100000 : 180,
     timeWindow: "1 minute",
   });
   app.decorateRequest("actor", null);
+  app.decorateRequest("previewWorkspace", null);
   app.addHook("onRequest", async (r, reply) => {
     reply
       .header("X-Content-Type-Options", "nosniff")
@@ -179,6 +190,22 @@ export async function buildApp(
     }
   });
   app.addHook("preHandler", async (r) => {
+    if (preview) {
+      const route = r.routeOptions.url;
+      if (
+        route?.startsWith("/api/auth/") &&
+        !["/api/auth/preview", "/api/auth/logout"].includes(route)
+      )
+        throw new Problem(
+          403,
+          "La preview usa solo account dimostrativi. Scegli un ruolo per entrare.",
+          "preview_only",
+        );
+      r.previewWorkspace = await findPreviewWorkspace(
+        db,
+        r.cookies[previewCookieName],
+      );
+    }
     const secret = r.cookies[cookieName];
     if (secret && /^[a-f0-9]{64}$/.test(secret)) {
       const { rows } = await db.query(
@@ -191,6 +218,15 @@ export async function buildApp(
         [digest(secret)],
       );
       r.actor = rows[0] || null;
+      if (
+        preview &&
+        (!r.previewWorkspace ||
+          ![
+            r.previewWorkspace.tenant_id,
+            r.previewWorkspace.landlord_id,
+          ].includes(r.actor?.id || ""))
+      )
+        r.actor = null;
     }
   });
   app.setErrorHandler((error, _request, reply) => {
@@ -267,6 +303,42 @@ export async function buildApp(
     mailTransport: runtime.mailTransport,
   }));
   app.get("/api/session", async (r) => ({ user: r.actor }));
+  app.post("/api/auth/preview", { config: authLimit }, async (r, reply) => {
+    if (!preview)
+      throw new Problem(403, "Accesso dimostrativo non disponibile.");
+    const { role } = z
+      .object({ role: z.enum(["tenant", "landlord"]) })
+      .strict()
+      .parse(r.body);
+    await tx(db, async (c) => {
+      let workspace = await findPreviewWorkspace(
+        c,
+        r.cookies[previewCookieName],
+      );
+      if (!workspace) {
+        const created = await createPreviewWorkspace(c);
+        workspace = created.workspace;
+        reply.setCookie(previewCookieName, created.secret, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          path: "/",
+          maxAge: previewLifetime,
+        });
+      }
+      if (r.actor && r.cookies[cookieName])
+        await c.query(
+          "DELETE FROM sessions WHERE token_hash=$1 AND user_id=$2",
+          [digest(r.cookies[cookieName]), r.actor.id],
+        );
+      await setSession(
+        c,
+        role === "tenant" ? workspace.tenant_id : workspace.landlord_id,
+        reply,
+      );
+    });
+    return { ok: true };
+  });
   app.post("/api/auth/register", { config: authLimit }, async (r, reply) => {
     const input = z
       .object({
@@ -614,7 +686,7 @@ export async function buildApp(
       400,
     );
     const { rows } = await db.query(
-      `SELECT p.user_id AS id,p.city,p.budget,p.move_in,p.duration,p.occupants,p.revision,md5(p.user_id::text || $8::text) AS sort_key FROM profiles p JOIN users u ON u.id=p.user_id WHERE p.status='published' AND u.suspended=false AND u.email_verified=true AND p.user_id<>$1 AND p.city=$2 AND p.budget>=$3 AND p.move_in>=$4 AND p.duration BETWEEN $5 AND $6 AND p.occupants<=$7 AND NOT EXISTS(SELECT 1 FROM blocks b WHERE (b.blocker_id=$1 AND b.blocked_id=p.user_id) OR(b.blocker_id=p.user_id AND b.blocked_id=$1)) AND NOT EXISTS(SELECT 1 FROM invitations i WHERE i.property_id=$8::uuid AND i.tenant_id=p.user_id) AND (md5(p.user_id::text || $8::text),p.user_id)>($9,$10::uuid) ORDER BY md5(p.user_id::text || $8::text),p.user_id LIMIT 25`,
+      `SELECT p.user_id AS id,p.city,p.budget,p.move_in,p.duration,p.occupants,p.revision,md5(p.user_id::text || $8::text) AS sort_key FROM profiles p JOIN users u ON u.id=p.user_id WHERE p.status='published' AND u.suspended=false AND u.email_verified=true AND p.user_id<>$1 AND p.city=$2 AND p.budget>=$3 AND p.move_in>=$4 AND p.duration BETWEEN $5 AND $6 AND p.occupants<=$7 AND NOT EXISTS(SELECT 1 FROM blocks b WHERE (b.blocker_id=$1 AND b.blocked_id=p.user_id) OR(b.blocker_id=p.user_id AND b.blocked_id=$1)) AND NOT EXISTS(SELECT 1 FROM invitations i WHERE i.property_id=$8::uuid AND i.tenant_id=p.user_id) AND (md5(p.user_id::text || $8::text),p.user_id)>($9,$10::uuid) AND ($11::uuid IS NULL OR p.user_id=$11) ORDER BY md5(p.user_id::text || $8::text),p.user_id LIMIT 25`,
       [
         u.id,
         p.city,
@@ -626,6 +698,7 @@ export async function buildApp(
         id,
         afterHash,
         afterId,
+        preview ? r.previewWorkspace!.tenant_id : null,
       ],
     );
     return {
@@ -651,6 +724,12 @@ export async function buildApp(
       })
       .strict()
       .parse(r.body);
+    if (preview)
+      requireThat(
+        b.tenant_id === r.previewWorkspace!.tenant_id,
+        "Profilo non disponibile in questa preview.",
+        403,
+      );
     requireThat(u.id !== b.tenant_id, "Non puoi invitare te stesso.", 400);
     const id = await tx(db, async (c) => {
       await lockUsers(c, [u.id, b.tenant_id]);
@@ -1145,7 +1224,7 @@ export async function buildApp(
     if (!incomeDemoAvailable)
       throw new Problem(
         503,
-        "Il simulatore è disponibile soltanto nella dimostrazione locale.",
+        "Il simulatore è disponibile soltanto nelle dimostrazioni con dati sintetici.",
         "provider_unavailable",
       );
     const result = demoIncomeResult(input.scenario, input.category);

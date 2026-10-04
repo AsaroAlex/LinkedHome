@@ -2,11 +2,11 @@ import { existsSync, readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { randomBytes } from "node:crypto";
 import path from "node:path";
 import { isIP } from "node:net";
-export type AppEnvironment = "local" | "staging" | "production";
+export type AppEnvironment = "local" | "preview" | "staging" | "production";
 export interface RuntimeConfiguration {
   environment: AppEnvironment;
   origin: string;
-  mailTransport: "local" | "smtp";
+  mailTransport: "local" | "disabled" | "smtp";
   trustedProxies: false | string[];
 }
 type Environment = Record<string, string | undefined>;
@@ -15,8 +15,8 @@ export function readRuntimeConfiguration(
   env: Environment = process.env,
 ): RuntimeConfiguration {
   const environment = env.APP_ENV || "local";
-  if (!["local", "staging", "production"].includes(environment))
-    throw new Error("APP_ENV must be local, staging or production.");
+  if (!["local", "preview", "staging", "production"].includes(environment))
+    throw new Error("APP_ENV must be local, preview, staging or production.");
   const deployed = environment !== "local";
   let origin: URL;
   try {
@@ -35,20 +35,24 @@ export function readRuntimeConfiguration(
     throw new Error("APP_ORIGIN must contain only an HTTP(S) origin.");
   if (deployed && (!env.APP_ORIGIN || origin.protocol !== "https:"))
     throw new Error(
-      "Staging and production require an explicit HTTPS APP_ORIGIN.",
+      "Preview, staging and production require an explicit HTTPS APP_ORIGIN.",
     );
   const mailTransport = env.MAIL_TRANSPORT || "local";
-  if (!["local", "smtp"].includes(mailTransport))
-    throw new Error("MAIL_TRANSPORT must be local or smtp.");
+  if (!["local", "disabled", "smtp"].includes(mailTransport))
+    throw new Error("MAIL_TRANSPORT must be local, disabled or smtp.");
+  if (environment === "preview" && mailTransport !== "disabled")
+    throw new Error("Preview requires MAIL_TRANSPORT=disabled.");
+  if (environment !== "preview" && mailTransport === "disabled")
+    throw new Error("MAIL_TRANSPORT=disabled is available only in preview.");
   if (deployed) {
-    if (mailTransport !== "smtp")
+    if (environment !== "preview" && mailTransport !== "smtp")
       throw new Error("Staging and production require MAIL_TRANSPORT=smtp.");
     let database: URL;
     try {
       database = new URL(env.DATABASE_URL || "");
     } catch {
       throw new Error(
-        "Staging and production require an external DATABASE_URL.",
+        "Preview, staging and production require an external DATABASE_URL.",
       );
     }
     if (
@@ -87,7 +91,7 @@ export function readRuntimeConfiguration(
   return {
     environment: environment as AppEnvironment,
     origin: origin.origin,
-    mailTransport: mailTransport as "local" | "smtp",
+    mailTransport: mailTransport as RuntimeConfiguration["mailTransport"],
     trustedProxies,
   };
 }
@@ -120,6 +124,6 @@ export function databaseUrl(name = "soglia"): string {
 }
 export const appOrigin = process.env.APP_ORIGIN || "http://127.0.0.1:3000";
 export const production = process.env.APP_ENV === "production";
-export const deployed = ["staging", "production"].includes(
+export const deployed = ["preview", "staging", "production"].includes(
   process.env.APP_ENV || "local",
 );

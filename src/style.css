@@ -1712,6 +1712,13 @@ blockquote {
   font-weight: 700;
   color: var(--muted);
 }
+
+.preview-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 24px 0;
+}
 .panel .draft-notice {
   padding: 12px 15px;
   border-left: 3px solid var(--clay);

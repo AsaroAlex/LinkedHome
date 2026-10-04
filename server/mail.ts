@@ -10,6 +10,7 @@ import { localDir, appOrigin } from "./config.js";
 export type MailPurpose = "verify" | "reset";
 export type MailConfiguration =
   | { transport: "local" }
+  | { transport: "disabled" }
   | {
       transport: "smtp";
       host: string;
@@ -21,7 +22,7 @@ export type MailConfiguration =
 
 type Environment = Record<string, string | undefined>;
 const deployedEnvironment = (env: Environment) =>
-  env.APP_ENV === "staging" || env.APP_ENV === "production";
+  ["preview", "staging", "production"].includes(env.APP_ENV || "local");
 const emailAddress = z.email().max(254);
 const validAddress = (address: string) =>
   emailAddress.safeParse(address).success;
@@ -32,13 +33,20 @@ export function validateMailConfiguration(
   deployed = deployedEnvironment(env),
 ): MailConfiguration {
   const transport = env.MAIL_TRANSPORT ?? "local";
+  if (env.APP_ENV === "preview") {
+    if (transport !== "disabled")
+      throw new Error("Preview requires MAIL_TRANSPORT=disabled.");
+    return { transport };
+  }
+  if (transport === "disabled")
+    throw new Error("MAIL_TRANSPORT=disabled is available only in preview.");
   if (transport === "local") {
     if (deployed)
       throw new Error("Deployed environments require MAIL_TRANSPORT=smtp.");
     return { transport };
   }
   if (transport !== "smtp")
-    throw new Error("MAIL_TRANSPORT must be local or smtp.");
+    throw new Error("MAIL_TRANSPORT must be local, disabled or smtp.");
   const required = (name: string) => {
     const value = env[name];
     if (!value || !value.trim() || /[\r\n\0]/.test(value))
@@ -201,6 +209,8 @@ export async function sendMail(
   secret: string,
 ): Promise<void> {
   const config = validateMailConfiguration();
+  if (config.transport === "disabled")
+    throw new Error("Email is disabled in the synthetic preview.");
   if (config.transport === "local") return localMail(to, purpose, secret);
   if (!validAddress(to)) throw new Error("Email recipient is invalid.");
   const url = accountUrl(purpose, secret);
@@ -235,7 +245,7 @@ export async function sendMail(
 export async function verifyMailTransport(
   config = validateMailConfiguration(),
 ): Promise<void> {
-  if (config.transport === "local") return;
+  if (config.transport !== "smtp") return;
   await withSmtp(
     config,
     (transport) => transport.verify(),

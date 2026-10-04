@@ -7,6 +7,11 @@ const deployment = {
   DATABASE_URL: "postgresql://app:placeholder@db.internal:5432/linkedhome",
   MAIL_TRANSPORT: "smtp",
 };
+const preview = {
+  ...deployment,
+  APP_ENV: "preview",
+  MAIL_TRANSPORT: "disabled",
+};
 
 describe("deployment configuration boundary", () => {
   it("preserves the explicit local default without trusting headers", () => {
@@ -35,6 +40,44 @@ describe("deployment configuration boundary", () => {
         delete env[key];
         expect(() => readRuntimeConfiguration(env)).toThrow();
       }
+    },
+  );
+  it("allows an HTTPS synthetic preview with external PostgreSQL and disabled mail", () => {
+    expect(readRuntimeConfiguration(preview)).toEqual({
+      environment: "preview",
+      origin: "https://staging.example.test",
+      mailTransport: "disabled",
+      trustedProxies: false,
+    });
+  });
+  it.each([
+    { APP_ORIGIN: undefined },
+    { APP_ORIGIN: "http://preview.example.test" },
+    { DATABASE_URL: undefined },
+    { DATABASE_URL: "file:///tmp/preview-db" },
+    { DATABASE_URL: "postgresql://db.internal/" },
+    { DATABASE_URL: "postgresql://db.internal/app?sslmode=no-verify" },
+    {
+      DATABASE_URL:
+        "postgresql://db.internal/app?uselibpqcompat=true&sslmode=require",
+    },
+    { MAIL_TRANSPORT: undefined },
+    { MAIL_TRANSPORT: "local" },
+    { MAIL_TRANSPORT: "smtp" },
+    { TRUST_PROXY: "true" },
+  ])("retains deployed safety checks for preview settings %j", (patch) => {
+    expect(() => readRuntimeConfiguration({ ...preview, ...patch })).toThrow();
+  });
+  it.each(["local", "staging", "production"])(
+    "refuses disabled mail outside preview in %s",
+    (APP_ENV) => {
+      expect(() =>
+        readRuntimeConfiguration({
+          ...deployment,
+          APP_ENV,
+          MAIL_TRANSPORT: "disabled",
+        }),
+      ).toThrow("MAIL_TRANSPORT=disabled is available only in preview.");
     },
   );
   it.each([

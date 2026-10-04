@@ -4,6 +4,32 @@ The repository supports an external PostgreSQL database and authenticated SMTP d
 
 ## Container
 
+### Synthetic Railway preview
+
+`APP_ENV=preview` is a separate hosted demo mode. Set `MAIL_TRANSPORT=disabled`,
+an explicit HTTPS `APP_ORIGIN`, an external `DATABASE_URL`, `HOST=0.0.0.0` and
+Railway's routed `PORT`. Keep the predeploy migration and full `deploy:check`
+steps. Preview checks the database/schema without opening an SMTP connection or
+writing mail files. Staging and production continue to require authenticated SMTP.
+
+The login page offers tenant and landlord demo roles. Each browser receives an
+opaque secure cookie identifying its own pair of synthetic accounts, profile and
+property; role switching preserves that demo workspace. No passwords or staff
+accounts are exposed. Registration, password login and email recovery are disabled
+in preview, and discovery/invitations are scoped to the demo pair. Use only test
+data. Existing local bootstrap/seed restrictions remain in place; the preview
+creates its accounts through the dedicated endpoint without resetting the database.
+
+The current service is `linkedhome-staging` in the `observant-ambition` project;
+the Railway environment is named `production` independently of `APP_ENV`.
+Its managed domain is `https://linkedhome-staging-production.up.railway.app`.
+This is a compiled deployment updated from the configured GitHub branch;
+the Codex development process still uses local HMR.
+
+Run `npm run test:e2e:preview` after a build to exercise the browser demo against
+the isolated local `soglia_e2e` database. It requires port3000 free and runs
+separately from the development supervisor and other database lifecycle suites.
+
 `Dockerfile` builds the frontend with Node 24 and installs production dependencies in a separate stage. The runtime runs as the `node` user and starts with `npm start`. It contains the application, migrations and the migrate/maintenance/preflight scripts; it does not contain embedded-database or demo-seed tooling, the local database, generated mail, environment files or research evidence. `tsx` is required at runtime because the server and scripts execute TypeScript.
 
 `DATABASE_URL` is mandatory in staging and production. The web process verifies the migration ledger and does not migrate, bootstrap or seed the external database. Run `npm run db:migrate` as a distinct deployment step, followed by `npm run deploy:check`. The preflight checks configuration, database migrations and SMTP connectivity/authentication without sending a message. Demo seeding is exclusively a local development operation.
