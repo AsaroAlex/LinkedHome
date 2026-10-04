@@ -3,14 +3,14 @@ import { api, dateLabel, useLoad } from "./api";
 import { brand } from "./brand";
 
 export const incomeLabels: Record<string, string> = {
-  not_requested: "Non richiesta",
+  not_requested: "Da iniziare",
   pending: "In corso",
-  completed: "Esempio completato",
+  completed: "Esempio pronto",
   insufficient: "Dati insufficienti",
-  failed: "Controllo non riuscito",
-  expired: "Scaduta",
-  revoked: "Revocata",
-  disputed: "Contestata",
+  failed: "Verifica non riuscita",
+  expired: "Da aggiornare",
+  revoked: "Riepilogo ritirato",
+  disputed: "Errore segnalato",
 };
 const categoryLabels: Record<string, string> = {
   employment: "Lavoro dipendente",
@@ -19,19 +19,19 @@ const categoryLabels: Record<string, string> = {
 };
 const recovery: Record<string, string> = {
   not_requested:
-    "Puoi ricevere inviti e aprire conversazioni senza un’attestazione.",
+    "Puoi ricevere inviti e parlare con i proprietari anche senza verificare il reddito.",
   pending:
     "Il controllo è in corso. Puoi continuare a usare il tuo profilo; nulla viene condiviso.",
   insufficient:
-    "Le evidenze non bastano per descrivere il periodo. Non è un giudizio sulla tua situazione economica. In un servizio reale servirebbe un’alternativa assistita.",
+    "I dati non bastano per descrivere le entrate del periodo. Questo non è un giudizio sulla tua situazione economica. Puoi provare un altro esempio.",
   failed:
     "Il controllo non è stato completato. Puoi riprovare; un problema tecnico non dice nulla sul tuo reddito.",
   expired:
-    "Il periodo di validità è terminato. Il proprietario non può più consultare l’esempio. Un aggiornamento richiederà una nuova scelta di condivisione.",
+    "Il riepilogo è scaduto e il proprietario non può più vederlo. Se ne prepari uno nuovo, dovrai scegliere di nuovo con chi condividerlo.",
   revoked:
-    "Hai ritirato l’attestazione: ogni accesso futuro è interrotto. Le copie già ottenute non possono essere richiamate.",
+    "Hai ritirato il riepilogo: i proprietari non possono più vederlo qui. Non puoi cancellare eventuali copie già salvate.",
   disputed:
-    "Hai contestato l’esito. Gli accessi sono interrotti fino a una nuova attestazione. Questa demo registra la contestazione e non offre una revisione da parte di un provider.",
+    "Hai segnalato un errore. Il riepilogo non è più visibile ai proprietari. Per condividerlo di nuovo devi prepararne uno nuovo. La demo salva la segnalazione, ma non prevede una revisione del risultato.",
 };
 
 function Feedback({ error, message }: { error: string; message: string }) {
@@ -79,12 +79,12 @@ export function IncomeSummary({ value }: { value: any }) {
   return (
     <div className="income-card">
       <p className="synthetic-label">
-        Esempio sintetico · nessun reddito reale verificato
+        Dati di esempio · nessun reddito reale verificato
       </p>
-      <h3>Attestazione dimostrativa di reddito</h3>
+      <h3>Riepilogo del reddito di esempio</h3>
       <dl className="income-summary">
         <div>
-          <dt>Entrate nette mensili nel periodo</dt>
+          <dt>Entrate nette al mese</dt>
           <dd>
             {value.summary?.monthly_net_band
               ? `€${value.summary.monthly_net_band.min}–${value.summary.monthly_net_band.max}`
@@ -98,7 +98,7 @@ export function IncomeSummary({ value }: { value: any }) {
           </dd>
         </div>
         <div>
-          <dt>Periodo di riferimento</dt>
+          <dt>Periodo considerato</dt>
           <dd>
             {value.period_from && value.period_to
               ? `${dateLabel(value.period_from)} – ${dateLabel(value.period_to)}`
@@ -106,11 +106,11 @@ export function IncomeSummary({ value }: { value: any }) {
           </dd>
         </div>
         <div>
-          <dt>Emittente</dt>
+          <dt>Chi ha preparato il riepilogo</dt>
           <dd>{value.provider || `Simulatore locale ${brand.name}`}</dd>
         </div>
         <div>
-          <dt>Fonte e controllo</dt>
+          <dt>Da dove arrivano i dati</dt>
           <dd>
             {value.source_description ||
               "Movimenti generati per la dimostrazione; nessun controllo su fonti reali"}
@@ -119,7 +119,9 @@ export function IncomeSummary({ value }: { value: any }) {
         <div>
           <dt>Data e scadenza</dt>
           <dd>
-            {value.checked_at ? dateLabel(value.checked_at) : "Non emessa"}
+            {value.checked_at
+              ? dateLabel(value.checked_at)
+              : "Data non disponibile"}
             {value.expires_at
               ? ` · valida fino al ${dateLabel(value.expires_at)}`
               : ""}
@@ -127,9 +129,9 @@ export function IncomeSummary({ value }: { value: any }) {
         </div>
       </dl>
       <p className="small-copy">
-        Descrive evidenze relative a un periodo. Non garantisce pagamenti
-        futuri. L’esempio non contiene documenti, datore di lavoro, conto
-        bancario o movimenti.
+        Mostra le entrate del periodo indicato. Non garantisce il pagamento
+        degli affitti futuri. L’esempio non contiene documenti, dati del datore
+        di lavoro o del conto bancario, né singoli movimenti.
       </p>
     </div>
   );
@@ -157,7 +159,7 @@ export function IncomeWorkspace() {
   if (l.error)
     return (
       <section className="panel income-section">
-        <h2>Attestazione di reddito</h2>
+        <h2>Verifica del reddito</h2>
         <p role="alert" className="alert error">
           {l.error}
         </p>
@@ -166,41 +168,45 @@ export function IncomeWorkspace() {
         </button>
       </section>
     );
-  if (!l.data) return <p role="status">Caricamento dell’attestazione…</p>;
+  if (!l.data)
+    return <p role="status">Caricamento della verifica del reddito…</p>;
   return (
     <section className="income-section" aria-labelledby="income-heading">
       <div className="income-intro">
         <span className="eyebrow">UNA SCELTA FACOLTATIVA</span>
         <h2 id="income-heading">Il reddito, solo quando scegli tu.</h2>
         <p>
-          Un’attestazione può aiutare un proprietario a comprendere le entrate
-          di un periodo. Prepararla non la pubblica: scegli cosa mostrare e a
-          quale proprietario, dall’invito o dalla conversazione.
+          La verifica del reddito prepara un riepilogo delle tue entrate. Prima
+          lo controlli, poi scegli se condividerlo con un proprietario
+          dall’invito o dalla conversazione. Prepararlo non lo rende pubblico.
         </p>
         <p className="disclosure">
           Puoi partecipare senza verifica. Non cambia la compatibilità o
           l’ordine dei profili.
         </p>
       </div>
-      <ol className="onboarding-steps" aria-label="Percorso dell’attestazione">
+      <ol
+        className="onboarding-steps"
+        aria-label="Come funziona la verifica del reddito"
+      >
         <li>
           <strong>Prepara</strong>
-          <span>Un controllo facoltativo</span>
+          <span>Un riepilogo delle entrate</span>
         </li>
         <li>
           <strong>Controlla</strong>
-          <span>Fonte, periodo e anteprima</span>
+          <span>Da dove arrivano i dati e a quale periodo si riferiscono</span>
         </li>
         <li>
           <strong>Scegli</strong>
-          <span>Un destinatario per volta</span>
+          <span>Con quale proprietario condividerlo</span>
         </li>
       </ol>
       <Feedback error={a.error} message={a.message} />
       <div className="income-layout">
         <article className="panel">
           <div className="panel-title">
-            <h3>La tua attestazione</h3>
+            <h3>La verifica del tuo reddito</h3>
             <span className="badge">
               {incomeLabels[l.data.status] || l.data.status}
             </span>
@@ -217,14 +223,14 @@ export function IncomeWorkspace() {
                   onClick={() => setContest(!contest)}
                   aria-expanded={contest}
                 >
-                  Contesta esito
+                  Segnala un errore
                 </button>
                 <button
                   className="text-link danger-text"
                   onClick={() => setConfirmRevoke(!confirmRevoke)}
                   aria-expanded={confirmRevoke}
                 >
-                  Ritira attestazione
+                  Ritira il riepilogo
                 </button>
               </div>
             )}
@@ -240,11 +246,11 @@ export function IncomeWorkspace() {
                   await api(`/income/${check.id}/dispute`, "POST", { reason });
                   setContest(false);
                   l.reload();
-                }, "Contestazione registrata. Gli accessi all’attestazione sono interrotti.");
+                }, "Errore segnalato. Il riepilogo non è più visibile ai proprietari.");
               }}
             >
               <label className="field">
-                <span>Motivo della contestazione</span>
+                <span>Che cosa non è corretto?</span>
                 <textarea
                   name="reason"
                   required
@@ -258,15 +264,16 @@ export function IncomeWorkspace() {
                 o documenti reali.
               </p>
               <button className="button secondary" disabled={a.busy}>
-                Conferma contestazione
+                Invia segnalazione
               </button>
             </form>
           )}
           {confirmRevoke && (
             <div className="income-share-panel">
               <p>
-                Interromperai tutti gli accessi futuri. Le copie già ottenute
-                non possono essere richiamate.
+                Tutti i proprietari con cui hai condiviso il riepilogo non
+                potranno più vederlo qui. Non puoi cancellare eventuali copie
+                già salvate.
               </p>
               <button
                 className="button secondary"
@@ -276,7 +283,7 @@ export function IncomeWorkspace() {
                     await api(`/income/${check.id}/revoke`, "POST");
                     setConfirmRevoke(false);
                     l.reload();
-                  }, "Attestazione ritirata. Gli accessi futuri sono interrotti.")
+                  }, "Riepilogo ritirato. I proprietari non possono più vederlo qui.")
                 }
               >
                 Conferma ritiro
@@ -284,27 +291,27 @@ export function IncomeWorkspace() {
             </div>
           )}
           <a className="text-link" href="/invitations">
-            Scegli un invito per condividere →
+            Scegli con chi condividere il riepilogo →
           </a>
         </article>
         <aside className="panel muted-panel">
           <span className="eyebrow">DISPONIBILITÀ DEL SERVIZIO</span>
           <h3>Verifica reale non disponibile</h3>
           <p>
-            Nessun servizio di verifica è collegato. Non è possibile emettere
-            un’attestazione reale o caricare documenti finanziari.
+            Nella demo puoi usare solo dati di esempio. La verifica del reddito
+            reale non è ancora disponibile e non puoi caricare documenti
+            finanziari.
           </p>
           <button className="button secondary full" disabled>
             Verifica reale non disponibile
           </button>
           <p className="field-hint">
-            Per una verifica reale serviranno un emittente identificabile,
-            copertura delle fonti italiane e assistenza per errori e redditi non
-            supportati. Costi e soggetto pagante restano da validare.
+            La verifica del reddito è facoltativa. Puoi comunque ricevere inviti
+            e parlare con i proprietari.
           </p>
           {l.data.demo_available && (
             <details className="income-demo">
-              <summary>Prova il percorso con dati sintetici</summary>
+              <summary>Prova con dati di esempio</summary>
               <p className="synthetic-label">
                 Solo esempi generati: non inserire il tuo reddito.
               </p>
@@ -318,13 +325,13 @@ export function IncomeWorkspace() {
                   </select>
                 </label>
                 <label className="field">
-                  <span>Esito da esplorare</span>
+                  <span>Risultato da provare</span>
                   <select name="scenario" defaultValue="completed">
-                    <option value="completed">Completata</option>
+                    <option value="completed">Esempio pronto</option>
                     <option value="pending">In corso</option>
                     <option value="insufficient">Dati insufficienti</option>
                     <option value="error">Errore tecnico</option>
-                    <option value="expired">Scaduta</option>
+                    <option value="expired">Riepilogo scaduto</option>
                   </select>
                 </label>
                 <p className="field-hint">
@@ -332,7 +339,7 @@ export function IncomeWorkspace() {
                   precedenti condivisioni.
                 </p>
                 <button className="button" disabled={a.busy}>
-                  Crea esempio sintetico
+                  Crea riepilogo di prova
                 </button>
               </form>
             </details>
@@ -340,16 +347,16 @@ export function IncomeWorkspace() {
         </aside>
       </div>
       <article className="panel income-shares">
-        <h3>Accessi che hai autorizzato</h3>
+        <h3>Con chi hai condiviso il riepilogo</h3>
         <p>
-          Ogni accesso riguarda un proprietario e un invito. Revoca, scadenza,
-          contestazione e chiusura dell’invito interrompono la consultazione
-          futura.
+          Ogni condivisione riguarda un proprietario e un invito. Il riepilogo
+          non è più visibile se lo ritiri, scade, segnali un errore o l’invito
+          viene chiuso. Puoi anche interrompere una singola condivisione.
         </p>
         {l.data.shares.length === 0 ? (
           <p>
-            Nessun accesso autorizzato. Il profilo pubblicato non condivide il
-            reddito.
+            Non hai condiviso il riepilogo con nessuno. Pubblicare il profilo
+            non rende visibile il tuo reddito.
           </p>
         ) : (
           <ul>
@@ -363,10 +370,10 @@ export function IncomeWorkspace() {
                   <p className="small-copy">
                     {s.recipient_label || "Proprietario di questo immobile"} ·{" "}
                     {s.revoked_at
-                      ? "Accesso revocato"
+                      ? "Condivisione interrotta"
                       : s.available === false
-                        ? "Accesso non più disponibile"
-                        : "Accesso autorizzato"}
+                        ? "Riepilogo non più visibile"
+                        : "Riepilogo condiviso"}
                   </p>
                 </div>
                 {!s.revoked_at && s.available !== false && (
@@ -377,10 +384,10 @@ export function IncomeWorkspace() {
                       void a.run(async () => {
                         await api(`/income/shares/${s.id}`, "DELETE");
                         l.reload();
-                      }, "Accesso futuro revocato per questo destinatario.")
+                      }, "Condivisione interrotta per questo proprietario.")
                     }
                   >
-                    Revoca accesso
+                    Interrompi la condivisione
                   </button>
                 )}
               </li>
@@ -444,14 +451,14 @@ export function InvitationIncome({
           ) : isTenant ? (
             <>
               <p>
-                <strong>Destinatario:</strong>{" "}
+                <strong>Con chi condividi:</strong>{" "}
                 {otherName || `Proprietario dell’immobile «${propertyTitle}»`} ·
                 invito {invitationId.slice(0, 8)}.
               </p>
               {shared ? (
                 <>
                   <p role="status">
-                    Hai autorizzato l’accesso a questo esempio per questo
+                    Hai condiviso questo esempio con il proprietario di questo
                     invito.
                   </p>
                   <IncomeSummary value={l.data.attestation} />
@@ -466,10 +473,10 @@ export function InvitationIncome({
                         );
                         setConsent(false);
                         l.reload();
-                      }, "Accesso futuro revocato per questo proprietario.")
+                      }, "Condivisione interrotta per questo proprietario.")
                     }
                   >
-                    Revoca accesso
+                    Interrompi la condivisione
                   </button>
                 </>
               ) : l.data?.can_share ? (
@@ -477,10 +484,10 @@ export function InvitationIncome({
                   <h3>Anteprima per questo proprietario</h3>
                   <IncomeSummary value={l.data.attestation} />
                   <p id={id}>
-                    Solo questo riepilogo sarà consultabile per questo invito.
-                    Nessun documento o conto viene condiviso. Puoi revocare
-                    l’accesso futuro; le copie già ottenute non possono essere
-                    richiamate.
+                    Solo il proprietario di questo invito potrà vedere il
+                    riepilogo. Nessun documento o conto viene condiviso. Puoi
+                    interrompere la condivisione quando vuoi, ma non puoi
+                    cancellare eventuali copie già salvate.
                   </p>
                   <label className="check-label">
                     <input
@@ -513,8 +520,8 @@ export function InvitationIncome({
               ) : (
                 <>
                   <p>
-                    Puoi continuare senza attestazione. Per condividere serve un
-                    esempio completato e in corso di validità.
+                    Puoi continuare senza verificare il reddito. Per condividere
+                    serve un esempio completato e in corso di validità.
                   </p>
                   <a className="text-link" href="/verification">
                     Prepara e controlla un esempio →
@@ -526,9 +533,9 @@ export function InvitationIncome({
             <IncomeSummary value={l.data.attestation} />
           ) : (
             <p>
-              Qui vedrai un’attestazione solo se la persona sceglie di
-              condividerla con te. La sua assenza non esprime un giudizio
-              economico: puoi continuare la conversazione.
+              Qui vedrai il riepilogo del reddito solo se la persona sceglie di
+              condividerlo con te. Se non c’è, non significa che la persona non
+              possa pagare l’affitto: puoi continuare la conversazione.
             </p>
           )}
         </div>

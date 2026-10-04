@@ -770,21 +770,21 @@ function Landing() {
         </div>
         <div>
           <p>
-            Un’attestazione di reddito aiuta il proprietario a valutare le
-            entrate rispetto al canone: fascia mensile, fonte e periodo di
-            riferimento in un riepilogo chiaro.
+            Un riepilogo del reddito aiuta il proprietario a confrontare le
+            entrate con l’affitto: la fascia mensile, da dove arrivano e il
+            periodo considerato.
           </p>
           <p>
             L’inquilino controlla l’anteprima e sceglie con quale proprietario
-            condividerla. Più informazioni per conoscersi e decidere prima di
+            condividerlo. Più informazioni per conoscersi e decidere prima di
             firmare.
           </p>
           <Link to="/safeguards" className="text-link">
-            Scopri l’attestazione di reddito <span aria-hidden="true">→</span>
+            Scopri la verifica del reddito <span aria-hidden="true">→</span>
           </Link>
           {["local", "preview"].includes(runtime?.environment || "") && (
             <p className="small-copy">
-              Nella demo puoi provare il percorso con dati sintetici.
+              Nella demo puoi provare il percorso con dati di esempio.
             </p>
           )}
         </div>
@@ -799,31 +799,32 @@ function Safeguards() {
     <>
       <PageHeading
         eyebrow="Come funziona"
-        title="Profili, inviti e attestazione di reddito"
+        title="Profili, inviti e verifica del reddito"
       >
         Tu scegli quando renderti visibile e con chi parlare.
       </PageHeading>
       <article className="panel narrow">
         <span className="eyebrow">LE INFORMAZIONI PER SCEGLIERE</span>
-        <h2>Entrate e canone, a confronto.</h2>
+        <h2>Entrate e affitto, a confronto.</h2>
         <p>
-          L’attestazione di reddito riassume la fascia di entrate nette mensili,
-          la fonte, il periodo osservato e la scadenza. Aiuta il proprietario a
-          valutare le informazioni economiche insieme al costo dell’immobile.
+          Il riepilogo del reddito mostra la fascia di entrate nette al mese, da
+          dove provengono, il periodo considerato e fino a quando il riepilogo è
+          valido. Aiuta il proprietario a confrontare queste informazioni con il
+          costo dell’affitto.
         </p>
         <p>
-          L’inquilino prepara l’attestazione nella sezione «Verifiche e
-          reddito», controlla l’anteprima e sceglie se condividerla da un invito
-          o da una conversazione. Il proprietario può consultarla nello stesso
-          invito. Ogni condivisione riguarda quel destinatario e può essere
-          revocata.
+          L’inquilino prepara il riepilogo nella sezione «Verifiche e reddito»,
+          guarda l’anteprima e sceglie se condividerlo da un invito o da una
+          conversazione. Il proprietario può leggerlo nello stesso invito. Ogni
+          condivisione riguarda solo il proprietario scelto. L’inquilino può
+          interromperla quando vuole.
         </p>
         <p className="small-copy">
           {["local", "preview"].includes(runtime?.environment || "")
-            ? "In questa demo puoi provare il percorso completo con dati sintetici. La verifica di redditi reali non è ancora collegata."
-            : "La verifica di redditi reali non è ancora disponibile in questo ambiente."}{" "}
-          Il riepilogo descrive le entrate di un periodo; non garantisce il
-          pagamento dei canoni futuri.
+            ? "In questa demo puoi provare il percorso completo con dati di esempio. La verifica del reddito reale non è ancora disponibile."
+            : "La verifica del reddito reale non è ancora disponibile in questo ambiente."}{" "}
+          Il riepilogo mostra le entrate di un periodo; non garantisce che
+          l’affitto venga pagato in futuro.
         </p>
       </article>
       <div className="three-grid">
@@ -2851,7 +2852,7 @@ function VerificationPage({ user }: { user: User }) {
     <>
       <PageHeading eyebrow="IL TUO ACCOUNT" title="Email e verifiche">
         Conferma l’email per pubblicare e contattare. Controlla qui quali
-        verifiche sono disponibili e cosa attestano.
+        verifiche sono disponibili e quali informazioni mostrano.
       </PageHeading>
       <ErrorBox text={l.error || a.error} />
       {a.message && <Notice>{a.message}</Notice>}
@@ -2890,8 +2891,8 @@ function VerificationPage({ user }: { user: User }) {
             in questo ambiente.
           </h2>
           <p>
-            Nessun provider è collegato. Non caricare documenti o dati
-            finanziari.
+            Nessun servizio di verifica è collegato. Non caricare documenti o
+            dati finanziari.
           </p>
           <span className="badge">Nessuna verifica d’identità disponibile</span>
           <p className="small-copy">
@@ -2908,13 +2909,14 @@ function VerificationPage({ user }: { user: User }) {
           </span>
           <h2>Valuta le entrate prima di scegliere.</h2>
           <p>
-            Se l’inquilino condivide un’attestazione con te, puoi consultarne
-            fascia di entrate mensili, fonte, periodo e scadenza nell’invito
-            relativo al tuo immobile, anche prima di aprire una conversazione.
+            Se l’inquilino condivide un riepilogo del reddito con te, puoi
+            leggere la fascia di entrate al mese, da dove arrivano, il periodo
+            considerato e fino a quando è valido. Lo trovi nell’invito per il
+            tuo immobile, anche prima di aprire una conversazione.
           </p>
           {["local", "preview"].includes(runtime?.environment || "") && (
             <p className="small-copy">
-              Le attestazioni della demo contengono soltanto dati sintetici.
+              I riepiloghi della demo contengono soltanto dati di esempio.
             </p>
           )}
           <Link to="/invitations" className="text-link">
@@ -2927,7 +2929,7 @@ function VerificationPage({ user }: { user: User }) {
           <h2>{v.kind === "identity" ? "Identità" : "Reddito"}</h2>
           <Badge status={v.status} />
           <p>
-            Provider: {v.provider || "non disponibile"}. Controllo:{" "}
+            Servizio di verifica: {v.provider || "non disponibile"}. Controllo:{" "}
             {v.checked_at ? dateLabel(v.checked_at) : "non disponibile"}.
             Scadenza:{" "}
             {v.expires_at ? dateLabel(v.expires_at) : "non disponibile"}.

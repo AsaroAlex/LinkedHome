@@ -205,3 +205,12 @@ collegate agli inviti. Primi passi con intro azzurra, lista bianca e CTA
 compatta; titoli delle altre card ridotti. Conteggi dalle API esistenti,
 nessun dato fittizio aggiunto al prodotto. Retry dei riepiloghi falliti e
 test funzionale dedicato; pubblicazione nella preview Railway esistente.
+
+## Italiano comune per la verifica del reddito — 2026-10-04
+
+Feedback «Che significa attestazione? Usa parole comuni in italiano».
+Processo chiamato «verifica del reddito», risultato «riepilogo del reddito».
+Semplificati titoli, azioni, stati, spiegazioni e messaggi d’errore; allineati
+workspace, inviti, conversazioni, homepage, FAQ e guida. API e consenso
+preservati. Build/typecheck, scenario landing e27 controlli UI con API
+simulate passati. Aggiornamento della stessa preview Railway autorizzata.

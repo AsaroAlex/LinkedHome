@@ -1515,7 +1515,7 @@ export async function buildApp(
       async (c, i, u) => {
         requireThat(
           i.tenant_id === u.id,
-          "Solo il titolare può condividere questa attestazione.",
+          "Solo la persona a cui si riferisce il reddito può condividere questo riepilogo.",
           403,
         );
         requireThat(
@@ -1525,11 +1525,11 @@ export async function buildApp(
         const check = await currentIncome(c, u.id);
         requireThat(
           check && incomeStatus(check) === "completed",
-          "Serve un’attestazione completata e non scaduta.",
+          "Serve un riepilogo del reddito completo e non scaduto.",
         );
         requireThat(
           check.id === input.attestation_id,
-          "L’attestazione è cambiata. Rileggi il riepilogo e conferma la condivisione.",
+          "Il riepilogo è cambiato. Rileggilo e conferma la condivisione.",
         );
         const existing = (
           await c.query(
@@ -1539,7 +1539,7 @@ export async function buildApp(
         ).rows[0];
         requireThat(
           !existing,
-          "L’attestazione è già condivisa per questo invito.",
+          "Il riepilogo è già condiviso per questo invito.",
         );
         const created = (
           await c.query(
@@ -1590,14 +1590,14 @@ export async function buildApp(
             [id, u.id],
           )
         ).rows[0];
-        requireThat(check, "Attestazione non trovata.", 404);
-        requireThat(check.status !== "REVOKED", "Attestazione già revocata.");
+        requireThat(check, "Riepilogo del reddito non trovato.", 404);
+        requireThat(check.status !== "REVOKED", "Riepilogo già ritirato.");
         if (action === "dispute")
           requireThat(
             ["VERIFIED", "INSUFFICIENT", "FAILED", "EXPIRED"].includes(
               check.status,
             ),
-            "Attestazione non contestabile.",
+            "Non puoi segnalare un errore per questo riepilogo.",
           );
         await c.query(
           "UPDATE verification_checks SET status=$3,dispute_reason=$4 WHERE id=$1 AND user_id=$2",

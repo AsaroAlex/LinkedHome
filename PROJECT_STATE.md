@@ -380,3 +380,39 @@ prove loading/error a320px con fallimenti di rete simulati intenzionalmente:
 nessun overflow, violazione axe o errore JavaScript. Screenshot desktop/mobile
 ispezionati e review indipendenti di stile e contenuti senza rilievi.
 Evidenze ignorate in `.local/dashboard-refresh`; dev preservato e pronto.
+
+Pubblicato `9eb45d07c5bae6c58763fa1cfbc0c5a6d6b9d74d`: web
+`2063a4dc-f5a4-4622-a4dc-9aa696de2a39` **SUCCESS**, una replica online senza
+crash, cron pronto, database online e nessun lavoro pending. HTTPS/health
+preview200, CSS `index-D6dUpZXj.css` e JS `index-BnL7umUG.js` verificati.
+Dashboard della build pubblica controllata con Chromium a1440/390px e API
+sintetiche simulate: nessun overflow, errore console/rete o violazione axe
+configurata; screenshot salvati. Esito operativo locale per evitare un deploy
+soltanto documentale. La scheda browser già aperta richiede aggiornamento per
+vedere il nuovo bundle.
+
+## Parole comuni nella verifica del reddito — 2026-10-04
+
+L’utente chiede termini comuni italiani al posto di «attestazione».
+Il titolo diventa «La verifica del tuo reddito»; il risultato condivisibile
+è il «riepilogo del reddito». Semplificati anche emittente/evidenze/provider,
+stati e azioni («Segnala un errore», «Interrompi la condivisione», «Ritira il
+riepilogo»). La demo usa «dati di esempio». Rimossi dettagli interni su futuri
+provider/costi dal pannello del servizio; limiti della demo e delle copie
+salvate restano espliciti. Landing, FAQ, guida, messaggi negli inviti e sette
+errori API allineati. Nessuna rinomina di campi/API, modifica a logica,
+layout, dati o requisiti di consenso. I testi per utenti dovranno continuare
+a distinguere il controllo dal risultato usando parole comuni.
+
+Build/typecheck e scenario landing experience passati. QA indipendente con
+API completamente simulate:27 controlli, tenant/both/landlord a1440/390/320px,
+otto stati, creazione di esempio, ritiro confermato, segnalazione e consenso
+per invito. Checkbox obbligatoria e reset verificati, come visibilità al
+proprietario dopo condivisione. Zero overflow, violazioni axe configurate,
+errori console/JavaScript e vecchi termini nelle viste controllate. Tutte le
+177 richieste API, inclusi cinque POST/DELETE, intercettate; nessuna scrittura
+DB. Screenshot mobile ispezionato. Evidenze ignorate in `.local/plain-income`.
+Aggiornati i locator della suite browser reddito alle nuove etichette;
+questa suite con database non rieseguita per una modifica solo di testi,
+preservando il dev attivo. Backend modificato soltanto nei sette messaggi
+d’errore: la QA verifica interfaccia/richieste, non riesegue gli handler DB.

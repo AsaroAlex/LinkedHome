@@ -123,8 +123,8 @@ export function ProductFAQ() {
             "Confrontiamo città, costo mensile complessivo, date, durata e capienza. I criteri sono visibili. Identità, reddito e verifiche non vengono usati per assegnare un punteggio o dare più visibilità a una persona.",
           ],
           [
-            "Come funziona l’attestazione di reddito?",
-            "L’inquilino prepara un riepilogo delle entrate, controlla l’anteprima e sceglie con quale proprietario condividerlo, da un invito o da una conversazione. Il proprietario può valutare fascia mensile, fonte, periodo e scadenza insieme al canone. Nella demo il percorso usa dati sintetici; la verifica di redditi reali non è ancora collegata.",
+            "Come funziona la verifica del reddito?",
+            "L’inquilino prepara un riepilogo del reddito, guarda l’anteprima e sceglie con quale proprietario condividerlo, da un invito o da una conversazione. Il proprietario vede la fascia di entrate al mese, da dove arrivano, il periodo considerato e fino a quando il riepilogo è valido. Può confrontare queste informazioni con l’affitto. Nella demo si usano dati di esempio; la verifica del reddito reale non è ancora disponibile.",
           ],
           [
             "Posso firmare il contratto o pagare qui?",

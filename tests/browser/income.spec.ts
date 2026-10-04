@@ -206,7 +206,7 @@ test("sharing requires a deliberate choice for one invitation and revocation rem
     }),
   ).toBeVisible();
   await expect(firstCard).toContainText(
-    "Esempio sintetico · nessun reddito reale verificato",
+    "Dati di esempio · nessun reddito reale verificato",
   );
   const preview = await call(
     fixture.tenantPage.request,
@@ -239,7 +239,7 @@ test("sharing requires a deliberate choice for one invitation and revocation rem
   await expect(share).toBeFocused();
   await fixture.tenantPage.keyboard.press("Enter");
   await expect(
-    firstCard.getByRole("button", { name: "Revoca accesso" }),
+    firstCard.getByRole("button", { name: "Interrompi la condivisione" }),
   ).toBeVisible();
   const granted = await call(
     page.request,
@@ -281,7 +281,7 @@ test("sharing requires a deliberate choice for one invitation and revocation rem
     .click();
   await expect(
     ownerCard.getByRole("heading", {
-      name: "Attestazione dimostrativa di reddito",
+      name: "Riepilogo del reddito di esempio",
     }),
   ).toBeVisible();
   await expect(ownerCard).toContainText("€2000–2499");
@@ -290,7 +290,9 @@ test("sharing requires a deliberate choice for one invitation and revocation rem
   await accessibility(page);
   await screenshot(page, "owner-preview-desktop");
 
-  await firstCard.getByRole("button", { name: "Revoca accesso" }).click();
+  await firstCard
+    .getByRole("button", { name: "Interrompi la condivisione" })
+    .click();
   await expect(consent).not.toBeChecked();
   await expect(share).toBeDisabled();
   const revoked = await call(
@@ -307,10 +309,12 @@ test("sharing requires a deliberate choice for one invitation and revocation rem
     .click();
   await expect(
     ownerCard.getByRole("heading", {
-      name: "Attestazione dimostrativa di reddito",
+      name: "Riepilogo del reddito di esempio",
     }),
   ).toHaveCount(0);
-  await expect(ownerCard).toContainText("Qui vedrai un’attestazione solo se");
+  await expect(ownerCard).toContainText(
+    "Qui vedrai il riepilogo del reddito solo se",
+  );
   await fixture.tenantContext.close();
 });
 
@@ -335,16 +339,16 @@ test("contesting an attestation interrupts a previously consented recipient's ac
   });
   await fixture.tenantPage.goto("/verification");
   await fixture.tenantPage
-    .getByRole("button", { name: "Contesta esito" })
+    .getByRole("button", { name: "Segnala un errore" })
     .click();
   await fixture.tenantPage
-    .getByLabel("Motivo della contestazione")
+    .getByLabel("Che cosa non è corretto?")
     .fill("Il periodo dell’esempio sintetico richiede una revisione.");
   await fixture.tenantPage
-    .getByRole("button", { name: "Conferma contestazione" })
+    .getByRole("button", { name: "Invia segnalazione" })
     .click();
   await expect(
-    fixture.tenantPage.getByText("Contestata", { exact: true }),
+    fixture.tenantPage.getByText("Errore segnalato", { exact: true }),
   ).toBeVisible();
   const contested = await call(
     fixture.tenantPage.request,
@@ -431,7 +435,7 @@ test("a replaced attestation cannot inherit consent from an older invitation pre
   await consent.check();
   await share.click();
   await expect(
-    invitationCard.getByRole("button", { name: "Revoca accesso" }),
+    invitationCard.getByRole("button", { name: "Interrompi la condivisione" }),
   ).toBeVisible();
   const granted = await call(
     page.request,
@@ -454,23 +458,23 @@ test("synthetic examples explain completed and recoverable states with an access
   });
   await expect(workspace).toBeVisible();
   await expect(
-    workspace.getByText("Non richiesta", { exact: true }),
+    workspace.getByText("Da iniziare", { exact: true }),
   ).toBeVisible();
   await expect(
     workspace.getByRole("button", { name: "Verifica reale non disponibile" }),
   ).toBeDisabled();
   await expect(page.locator('input[type="file"]')).toHaveCount(0);
   await workspace
-    .getByText("Prova il percorso con dati sintetici", { exact: true })
+    .getByText("Prova con dati di esempio", { exact: true })
     .click();
   const category = workspace.getByLabel("Tipo di esempio");
-  const scenario = workspace.getByLabel("Esito da esplorare");
+  const scenario = workspace.getByLabel("Risultato da provare");
   const create = workspace.getByRole("button", {
-    name: "Crea esempio sintetico",
+    name: "Crea riepilogo di prova",
   });
   const statusCard = workspace.getByRole("article").filter({
     has: page.getByRole("heading", {
-      name: "La tua attestazione",
+      name: "La verifica del tuo reddito",
       exact: true,
     }),
   });
@@ -479,14 +483,16 @@ test("synthetic examples explain completed and recoverable states with an access
   await scenario.selectOption("completed");
   await create.click();
   await expect(
-    statusCard.getByText("Esempio completato", { exact: true }),
+    statusCard.getByText("Esempio pronto", { exact: true }),
   ).toBeVisible();
   await expect(statusCard).toContainText("Lavoro autonomo");
   await expect(statusCard).toContainText("€2500–2999");
   await expect(statusCard).toContainText(
-    "Esempio sintetico · nessun reddito reale verificato",
+    "Dati di esempio · nessun reddito reale verificato",
   );
-  await expect(workspace).toContainText("Nessun accesso autorizzato");
+  await expect(workspace).toContainText(
+    "Non hai condiviso il riepilogo con nessuno",
+  );
   await accessibility(page);
   await screenshot(page, "workspace-desktop");
   await page.setViewportSize({ width: 390, height: 844 });
@@ -510,19 +516,19 @@ test("synthetic examples explain completed and recoverable states with an access
       scenario: "insufficient",
       status: "insufficient",
       label: "Dati insufficienti",
-      recovery: "Non è un giudizio sulla tua situazione economica",
+      recovery: "Questo non è un giudizio sulla tua situazione economica",
     },
     {
       scenario: "error",
       status: "failed",
-      label: "Controllo non riuscito",
+      label: "Verifica non riuscita",
       recovery: "un problema tecnico non dice nulla sul tuo reddito",
     },
     {
       scenario: "expired",
       status: "expired",
-      label: "Scaduta",
-      recovery: "Il periodo di validità è terminato",
+      label: "Da aggiornare",
+      recovery: "Il riepilogo è scaduto",
     },
   ];
   for (const outcome of outcomes) {
