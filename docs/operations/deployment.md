@@ -16,28 +16,32 @@ Ordinary builds:
 docker build -t linkedhome:RELEASE .
 ```
 
-In the managed development environment, the cloud runtime skill additionally requires its provided public CA to be mounted into networked build stages:
+The standard Dockerfile uses ordinary `RUN npm ci` instructions, without secret mounts, so builders that support only cache mounts can parse it. Keep certificate verification enabled. Builds must not receive SMTP credentials as build arguments.
 
-```sh
-docker build --secret id=proxy_ca,src="$CODEX_PROXY_CERT" -t linkedhome:RELEASE .
-```
+The managed Codex environment requires its provided public proxy CA for networked build stages. For verification there, make an untracked temporary copy of the Dockerfile outside the repository, add a BuildKit secret mount and `NODE_EXTRA_CA_CERTS` only to the two npm install instructions, and select that copy with Docker's `--file` option while retaining this repository as the build context. Supply the CA as a build secret to that verification build; do not copy it into a layer or alter the deployment Dockerfile. The temporary adaptation requires a builder that supports secret mounts. Remove the temporary file after verification.
 
-The CA mount is optional for other hosting environments and is not copied into the image. Keep certificate verification enabled. Builds must not receive SMTP credentials as build arguments.
+## Railway build and service selection
+
+The Railway Metal build log supplied on 2026-10-04 rejected `--mount=type=secret,id=proxy_ca` in both npm install instructions: that builder accepts cache mounts, but rejects this secret mount type. The failure occurred while parsing the Dockerfile, before dependency installation or application compilation. Removing those optional mounts from the standard Dockerfile addresses this build incompatibility; a successful Railway rebuild still needs to be checked on the service.
+
+The corrected Dockerfile passed `docker buildx build --check`. An image build using the managed-CA temporary adaptation passed dependency installation and typecheck/Vite; that image passed migrations, configuration preflight, web readiness/liveness/frontend/asset checks and the maintenance command against a disposable PostgreSQL18 container. The final image retained its non-root user and contained no local demo database or proxy CA. [Verification evidence](evidence/railway-metal-build-2026-10-04.json) records these checks and the pending Railway rebuild.
+
+The reported service, `linkedhome-staging-maintenance`, appeared under **Cron Runs** and was **Unexposed**. A maintenance job runs database cleanup and does not serve the frontend or an HTTP endpoint. Browser preview requires a separate web service running `npm start`, with a reachable URL and the configuration below. The Railway environment name `production` is separate from the application's `APP_ENV` setting. External database migrations and SMTP configuration remain explicit setup steps; a repaired image build does not complete them or make the local synthetic demo available in this deployment image.
 
 ## Required configuration
 
-| Variable | Value / constraint |
-| --- | --- |
-| `APP_ENV` | `staging` during infrastructure verification; `production` only for an operationally ready release |
-| `APP_ORIGIN` | The exact public HTTPS origin, without a path; links and origin checks depend on it |
-| `DATABASE_URL` | PostgreSQL connection string for the target environment; keep staging and production separate |
-| `HOST`, `PORT` | Containers use `0.0.0.0` and `3000` |
-| `MAIL_TRANSPORT` | `smtp` |
-| `SMTP_HOST` | Provider hostname, for example the hostname in the provider's authenticated SMTP settings |
-| `SMTP_PORT` | `465` for implicit TLS or `587` for mandatory STARTTLS |
+| Variable                     | Value / constraint                                                                                         |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `APP_ENV`                    | `staging` during infrastructure verification; `production` only for an operationally ready release         |
+| `APP_ORIGIN`                 | The exact public HTTPS origin, without a path; links and origin checks depend on it                        |
+| `DATABASE_URL`               | PostgreSQL connection string for the target environment; keep staging and production separate              |
+| `HOST`, `PORT`               | Containers use `0.0.0.0` and `3000`                                                                        |
+| `MAIL_TRANSPORT`             | `smtp`                                                                                                     |
+| `SMTP_HOST`                  | Provider hostname, for example the hostname in the provider's authenticated SMTP settings                  |
+| `SMTP_PORT`                  | `465` for implicit TLS or `587` for mandatory STARTTLS                                                     |
 | `SMTP_USER`, `SMTP_PASSWORD` | Provider-issued SMTP login and key; never use an ordinary account password unless required by the provider |
-| `MAIL_FROM` | A sender address verified by the provider on the selected domain |
-| `TRUST_PROXY` | `false` by default, or a comma-separated list of verified proxy IP addresses/CIDRs |
+| `MAIL_FROM`                  | A sender address verified by the provider on the selected domain                                           |
+| `TRUST_PROXY`                | `false` by default, or a comma-separated list of verified proxy IP addresses/CIDRs                         |
 
 For the recommended Brevo integration use `smtp-relay.brevo.com` and the console's SMTP login/key (the SMTP key differs from the API key). Activate transactional sending, verify the sender and publish Brevo's generated domain code, DKIM and DMARC records. Inspect SPF for the actual MAIL FROM route; do not add a second SPF record to an existing domain blindly. Keep provider tracking disabled for authentication links when configurable. Monitor daily quota and bounce suppression: the free plan queues messages after credits are exhausted, potentially delaying a 30-minute reset token beyond its expiry. Separate staging recipients from real customers and check delivery before real-user use. A successful SMTP authentication check does not prove inbox delivery.
 
@@ -106,6 +110,6 @@ Record the deployed image/commit and migration set. Reverting an image does not 
 
 ## Validation of these templates
 
-On 2026-10-03, the Blueprint passed JSON Schema validation against the [current official Render schema](https://render.com/schema/render.yaml.json). The normalized [schema snapshot](evidence/render-blueprint.schema.json) and [validation record with repeat commands](evidence/deployment-templates.json) are preserved. Compose passed `config --quiet` and topology checks with fake values in an external fixture file; no credentials were printed. Container build/runtime and Caddy certificate issuance were not verified here: the managed environment's Docker socket is inaccessible to the task user. The templates have not been applied to any hosting provider.
+On 2026-10-03, the Blueprint passed JSON Schema validation against the [current official Render schema](https://render.com/schema/render.yaml.json). The normalized [schema snapshot](evidence/render-blueprint.schema.json) and [validation record with repeat commands](evidence/deployment-templates.json) are preserved. Compose passed `config --quiet` and topology checks with fake values in an external fixture file; no credentials were printed. At that time, container build/runtime and Caddy certificate issuance were not verified because the managed environment's Docker socket was inaccessible to the task user. The templates had not been applied to any hosting provider by that validation work.
 
 Technical references checked on 2026-10-03: [Render Blueprint fields](https://render.com/docs/blueprint-spec), [pre-deploy commands](https://render.com/docs/deploys#pre-deploy-command), [PostgreSQL connections/access](https://render.com/docs/postgresql-creating-connecting), [cron jobs](https://render.com/docs/cronjobs).

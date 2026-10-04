@@ -2,20 +2,14 @@
 FROM node:24-bookworm-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-# Optional BuildKit CA mount supports the managed development environment.
-# Ordinary hosting builds do not need this secret.
-RUN --mount=type=secret,id=proxy_ca \
-    if [ -s /run/secrets/proxy_ca ]; then export NODE_EXTRA_CA_CERTS=/run/secrets/proxy_ca; fi; \
-    npm ci --strict-ssl=true
+RUN npm ci --strict-ssl=true
 COPY . .
 RUN npm run build
 
 FROM node:24-bookworm-slim AS runtime-dependencies
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN --mount=type=secret,id=proxy_ca \
-    if [ -s /run/secrets/proxy_ca ]; then export NODE_EXTRA_CA_CERTS=/run/secrets/proxy_ca; fi; \
-    npm ci --omit=dev --strict-ssl=true
+RUN npm ci --omit=dev --strict-ssl=true
 
 FROM node:24-bookworm-slim AS runtime
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=3000

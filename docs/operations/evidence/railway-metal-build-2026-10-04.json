@@ -1,0 +1,48 @@
+{
+  "verifiedAt": "2026-10-04T09:27:24.430Z",
+  "reportedFailure": {
+    "platform": "Railway Metal",
+    "service": "linkedhome-staging-maintenance",
+    "phase": "Dockerfile parsing",
+    "unsupportedInstruction": "RUN --mount=type=secret,id=proxy_ca",
+    "originalLines": [7, 16]
+  },
+  "change": {
+    "deployDockerfileUsesOrdinaryRun": true,
+    "lockedNpmInstall": true,
+    "tlsVerificationPreserved": true
+  },
+  "checks": {
+    "hostBuildTypecheck": true,
+    "dockerfileBuildxCheck": "pass, no warnings",
+    "containerImageBuilt": true,
+    "buildSource": "same source and runtime stages; temporary Dockerfile injects the managed public CA into the two networked npm instructions only",
+    "imageId": "sha256:884ea72b40f5fb46b1f5b6bd6f55b94bf305c12d5c67f339ccd8644706c93064",
+    "isolatedPostgresMigrations": true,
+    "configOnlyPreflight": true,
+    "containerReadinessStatus": 200,
+    "containerLivenessStatus": 200,
+    "containerFrontendStatus": 200,
+    "compiledJavascriptStatus": 200,
+    "maintenanceCommand": true,
+    "runtimeUserId": 1000,
+    "noEmbeddedDatabaseInImage": true,
+    "noLocalDemoDataInImage": true,
+    "noProxyCaInImage": true,
+    "fixtureCleanup": true,
+    "formatting": true,
+    "diffCheck": true
+  },
+  "currentDevelopment": {
+    "internalHealth": true,
+    "originalApplicationDataUntouched": true
+  },
+  "limits": [
+    "Railway itself has not rebuilt the patched source yet.",
+    "The reported maintenance cron service is unexposed and does not provide an application preview.",
+    "No Railway variables, resources, databases or service configuration changed.",
+    "Runtime smoke used a disposable PostgreSQL container and synthetic SMTP configuration; no connection to a real SMTP server.",
+    "Application tests unchanged; browser suites were not rerun for this Docker installation-instruction change.",
+    "Railway plugin now reports installed=true, but its service tools are not exposed in the current chat tool registry."
+  ]
+}
