@@ -465,3 +465,20 @@ nei due nuovi flussi, overflow320px o violazione axe configurata.
 Sei screenshot desktop/mobile salvati e ispezionati. Evidenze ignorate in
 `.local/move-in`; dev pronto e dati sintetici preservati. Pubblicazione
 nella preview Railway esistente, da verificare sul commit finale.
+
+
+Primo deploy `411cdb2` / `5244561e-82fb-45ce-8aa4-bcd05231fb48`
+fermato nel preflight: migrazioni applicate, ma `shared/move-in.ts` assente
+dallo stadio Docker runtime. Aggiunto `COPY shared`, verificata la chiusura
+delle importazioni di web/preflight/cron. Build Docker locale riuscita con
+CA di sessione montata solo nei passi npm; dipendenze di produzione e utente
+node. Smoke nel container senza rete/DB: import API/foto e matching del mese
+bisestile passato. File CA, log e immagine di prova restano fuori dal repo;
+il Dockerfile pubblicato non incorpora certificati di sessione.
+
+Regressione automatizzata aggiunta: `tests/runtime-files.test.ts` ricostruisce
+in una cartella temporanea i sorgenti runtime selezionati dal Dockerfile e
+importa realmente l'API in un processo isolato. Nessun avvio server o DB;
+non confronta una stringa COPY fissa. Test passato e typecheck finale
+riuscito. Le dipendenze installate sono riusate nel test; la verifica delle
+sole dipendenze production è invece quella del container costruito sopra.

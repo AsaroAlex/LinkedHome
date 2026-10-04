@@ -18,6 +18,7 @@ COPY --from=runtime-dependencies --chown=node:node /app/node_modules ./node_modu
 COPY --from=build --chown=node:node /app/package.json /app/package-lock.json ./
 COPY --from=build --chown=node:node /app/dist ./dist
 COPY --from=build --chown=node:node /app/server ./server
+COPY --from=build --chown=node:node /app/shared ./shared
 COPY --from=build --chown=node:node /app/src/brand.ts ./src/brand.ts
 COPY --from=build --chown=node:node /app/scripts/migrate.ts /app/scripts/maintenance.ts /app/scripts/deploy-check.ts ./scripts/
 COPY --from=build --chown=node:node /app/migrations ./migrations
