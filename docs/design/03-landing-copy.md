@@ -58,3 +58,30 @@ violazione axe nei criteri WCAG configurati o errore console/rete. Screenshot
 della sezione desktop/mobile ispezionati; revisione indipendente del testo e
 dei permessi senza rilievi materiali. Dati dev e logica di emissione/condivisione
 invariati. Evidenze temporanee ignorate in `.local/income-copy`.
+
+## FAQ più dirette — secondo feedback browser
+
+Il feedback riguarda titolo e introduzione delle FAQ, percepiti come generici.
+Confrontate tramite Exa tre pagine ufficiali:
+
+- [LocService](https://www.locservice.fr/): «Comment fonctionne LocService ?»;
+  domanda diretta sul modello di ricerca inversa.
+- [HousingAnywhere](https://housinganywhere.com/): «How does HousingAnywhere work?»;
+  domande sul funzionamento e sul passo successivo all'accettazione.
+- [Spotahome](https://www.spotahome.com/how-it-works): «Your questions, answered»;
+  introduzione breve e collegamento alla guida.
+
+Applicati titolo riconoscibile **«Domande frequenti»**, introduzione
+**«Come cercare casa o proporre il tuo immobile su LinkedHome.»** e CTA
+**«Come funziona LinkedHome →»**. La prima domanda ora spiega il funzionamento
+per entrambi i ruoli: preferenze/immobile, invito e chat dopo l'accettazione.
+Le altre risposte e la feature reddito dell'iterazione precedente sono
+conservate. Il riferimento alla visita riguarda l'accordo fra partecipanti;
+non introduce prenotazioni o assistenza di altri servizi.
+
+Build/typecheck e scenario browser esistente della landing passati. FAQ
+verificate con browser reale a1440/768/390/320px, apertura/chiusura da tastiera
+di tutte le domande e link alla guida. Nessun overflow, violazione axe
+configurata o errore console/rete. Screenshot desktop/mobile ispezionati e
+revisione indipendente senza rilievi materiali. Evidenze temporanee ignorate in
+`.local/faq-copy`; nessun cambiamento a backend o database.

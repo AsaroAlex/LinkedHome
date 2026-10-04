@@ -158,3 +158,12 @@ sintetico già esistente mantiene consenso, revoca e isolamento; l'emissione
 reale richiede ancora un servizio collegato. Build/typecheck, scenario landing,
 nove controlli browser responsive/accessibilità e revisione indipendente
 passati. Aggiornamento sul dominio Railway esistente.
+
+## FAQ ispirate ai competitor — 2026-10-04
+
+Alla seconda annotazione browser confrontate le FAQ ufficiali di LocService,
+HousingAnywhere e Spotahome. Titolo «Domande frequenti», intro per entrambi i
+ruoli, CTA esplicito e prima domanda sul funzionamento del servizio. Build,
+scenario landing e verifiche responsive/accessibilità/tastiera passati;
+revisione indipendente senza rilievi. [Fonti](docs/design/03-landing-copy.md).
+Pubblicazione nello stesso flusso Railway, preservando reddito, foto e form.

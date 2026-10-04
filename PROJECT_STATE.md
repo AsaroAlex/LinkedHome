@@ -250,5 +250,27 @@ home/CTA informativo a1440/768/390/320px e area proprietario a320px con API
 simulate. Nessun overflow, violazione axe configurata o errore console/rete;
 screenshot ispezionati e revisione indipendente senza rilievi materiali.
 Backend, dati e supervisor dev preservati. [Dettagli](docs/design/03-landing-copy.md).
-Pubblicazione e verifica sullo stesso dominio Railway completano questa
-iterazione; la scheda è già aperta nel browser dell'utente.
+Pubblicato il commit `a39766af7663c6949c93f5858dee57211d4a359c` sul branch
+esistente. Il deploy web `f20fd75e-5813-4194-8c46-e701e0e69c3f` è **SUCCESS**;
+HTTPS/health preview200 e bundle `index-D8fuYMXK.js` verificati: nuova home,
+FAQ e pannello proprietario presenti, vecchia negazione della solvibilità
+assente. Evidenza senza credenziali in `.local/income-copy/railway-verification.json`.
+La scheda è già aperta nel browser dell'utente. Questo esito operativo resta
+locale per evitare un deploy soltanto documentale.
+
+## Feedback browser: FAQ — 2026-10-04
+
+L'utente rifiuta titolo e sottotitolo generici delle FAQ e chiede di riprendere
+i competitor. Confrontate tre pagine ufficiali tramite Exa; la sezione ora usa
+**«Domande frequenti»**, **«Come cercare casa o proporre il tuo immobile su
+LinkedHome.»** e CTA **«Come funziona LinkedHome →»**. Una nuova prima domanda
+spiega i due ruoli, gli inviti e la chat dopo l'accettazione. Altre risposte,
+attestazione di reddito e modifiche precedenti conservate.
+
+Passati build/typecheck, scenario browser esistente della landing, controlli
+FAQ a1440/768/390/320px, tastiera su tutte le domande e collegamento alla guida.
+Nessun overflow, violazione axe configurata o errore console/rete; screenshot
+ispezionati e revisione indipendente senza rilievi materiali. Sorgente UI
+principale `src/experience.tsx`; [fonti e motivazione](docs/design/03-landing-copy.md).
+Dati e supervisor dev preservati. Aggiornamento della preview Railway
+esistente in corso; nessuna nuova infrastruttura o verifica finanziaria reale.

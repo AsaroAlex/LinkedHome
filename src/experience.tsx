@@ -94,14 +94,18 @@ export function ProductFAQ() {
     <section className="container product-faq" aria-labelledby="faq-heading">
       <div>
         <span className="eyebrow">PRIMA DI INIZIARE</span>
-        <h2 id="faq-heading">Le risposte alle prime domande.</h2>
-        <p>Inviti, reddito e conversazioni: ecco cosa aspettarti.</p>
+        <h2 id="faq-heading">Domande frequenti</h2>
+        <p>Come cercare casa o proporre il tuo immobile su LinkedHome.</p>
         <a href="/safeguards" className="text-link">
-          Come funziona e cosa condividi →
+          Come funziona LinkedHome →
         </a>
       </div>
       <div>
         {[
+          [
+            "Come funziona LinkedHome?",
+            "Se cerchi casa, pubblichi le tue preferenze e ricevi inviti dai proprietari. Se vuoi affittare, pubblichi l’immobile e contatti i profili compatibili. Quando l’invito viene accettato, potete scrivervi e organizzare una visita.",
+          ],
           [
             "Chi può vedere il mio profilo?",
             "Solo i proprietari autenticati con un immobile pertinente possono scoprire le preferenze che pubblichi. Vedono città, budget, data di ingresso, durata e numero di persone, con un identificatore al posto del tuo nome.",
