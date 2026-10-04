@@ -57,6 +57,32 @@ describe("development configuration", () => {
     expect(() => config({ CODESPACES: "true" })).toThrow("CODESPACE_NAME");
   });
 
+  it("uses the Replit editor preview for browser mutations and local mail links", () => {
+    const env = { REPLIT_DEV_DOMAIN: "linkedhome-demo.replit.dev" };
+    expect(config(env)).toEqual({
+      host: "0.0.0.0",
+      port: 3000,
+      apiPort: 3001,
+      origin: "https://linkedhome-demo.replit.dev",
+      allowedHosts: ["linkedhome-demo.replit.dev"],
+    });
+    expect(config(env, true)).toEqual(config(env));
+    expect(
+      config({ ...env, APP_ORIGIN: "https://custom.example.test" }).origin,
+    ).toBe("https://custom.example.test");
+  });
+
+  it.each([
+    "https://linkedhome-demo.replit.dev",
+    "linkedhome-demo.replit.dev/path",
+    "linkedhome-demo.replit.dev:3000",
+    "user@linkedhome-demo.replit.dev",
+    "linkedhome-demo.replit.dev?query=1",
+    "linkedhome-demo.replit.dev#fragment",
+  ])("rejects malformed preview domains: %s", (REPLIT_DEV_DOMAIN) => {
+    expect(() => config({ REPLIT_DEV_DOMAIN })).toThrow("REPLIT_DEV_DOMAIN");
+  });
+
   it.each([
     { DATABASE_URL: "postgresql://external.example.test/production" },
     { APP_ENV: "production" },
@@ -105,6 +131,7 @@ describe("development startup failures", () => {
             MAIL_TRANSPORT: "local",
             DATABASE_URL: "",
             CODESPACES: "false",
+            REPLIT_DEV_DOMAIN: "",
             DEV_HOST: "127.0.0.1",
             DEV_PORT: String(address.port === 3000 ? 3002 : 3000),
             DEV_API_PORT: String(address.port),

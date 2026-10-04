@@ -1,0 +1,71 @@
+{
+  "verifiedAt": "2026-10-04T08:51:29.094Z",
+  "source": {
+    "repository": "AsaroAlex/LinkedHome",
+    "defaultBranch": "claude/sweet-goldberg-5lwng7",
+    "public": true
+  },
+  "replit": {
+    "configuration": ".replit",
+    "module": "nodejs-24",
+    "moduleCatalogVerified": true,
+    "moduleCatalogSource": "https://github.com/replit/nixmodules/blob/main/pkgs/modules/default.nix",
+    "run": ["npm", "run", "dev:cloud"],
+    "forwardedPorts": [
+      {
+        "localPort": 3000,
+        "externalPort": 80
+      }
+    ],
+    "originVariable": "REPLIT_DEV_DOMAIN",
+    "appImported": false,
+    "actualRuntimeVerified": false,
+    "actualPreviewVerified": false
+  },
+  "checks": {
+    "build": true,
+    "typecheck": true,
+    "unitIntegrationTests": 187,
+    "developmentConfigTests": 23,
+    "privateFileRegressionTests": 1,
+    "protectedFixtureUrls": 24,
+    "protectedFixtureStatus": 403,
+    "publicFixtureIndexStatus": 200,
+    "publicFixtureModuleStatus": 200,
+    "formatting": true,
+    "diffCheck": true
+  },
+  "simulatedCloudRuntime": {
+    "environment": "managed Linux, using a simulated Replit preview domain on UI3100/API3101",
+    "htmlStatus": 200,
+    "healthStatus": 200,
+    "unapprovedHostStatus": 403,
+    "wrongOriginStatus": 403,
+    "loginStatus": 200,
+    "authenticatedSessionStatus": 200,
+    "logoutStatus": 200,
+    "privateRuntimePathsDenied": 4,
+    "portsReleasedAfterStop": [3100, 3101, 55432]
+  },
+  "finalDevelopment": {
+    "command": "npm run dev",
+    "health": true,
+    "frontend": true,
+    "privateFilesDenied": true,
+    "dataPreserved": true,
+    "dataCounts": {
+      "users": 5,
+      "profiles": 2,
+      "properties": 1,
+      "schema_migrations": 4
+    }
+  },
+  "limits": [
+    "The existing Codex cloud has no incoming preview URL.",
+    "The user must perform the initial GitHub import in Replit; the connector can inspect/update an existing app but cannot import a repository.",
+    "Node24 module availability is confirmed in the official catalog, not installed or tested in the user Replit workspace.",
+    "Open the actual preview in a new browser tab for authenticated testing; the editor iframe can block SameSite=Strict session cookies.",
+    "No production deployment, external database, SMTP or real-user data used.",
+    "Prior22 browser and11 experience checks were not repeated for this configuration-only follow-up."
+  ]
+}
