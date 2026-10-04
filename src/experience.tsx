@@ -285,6 +285,7 @@ export function NextSteps({
     (role !== "tenant" && !properties.data && !properties.error);
   const error = profile.error || properties.error;
   const next = steps.find((step) => !step.done);
+  const ready = !loading && !error && !next;
   return (
     <section className="panel onboarding" aria-labelledby="next-steps-heading">
       <div className="onboarding-intro">
@@ -295,11 +296,17 @@ export function NextSteps({
             : "È tutto pronto"}
         </h2>
         <p>
-          {role === "landlord"
-            ? "Prepara l’immobile, poi invita i profili compatibili."
-            : role === "both"
-              ? "Prepara la tua ricerca e i tuoi immobili, poi gestisci inviti e conversazioni."
-              : "Prepara la tua ricerca, poi valuta gli inviti ricevuti."}
+          {ready
+            ? role === "landlord"
+              ? "Il tuo immobile è pubblicato. Scegli i profili a cui proporlo."
+              : role === "both"
+                ? "Puoi ricevere proposte e invitare profili per il tuo immobile."
+                : "Il tuo profilo è pubblicato. Controlla gli inviti e parla con i proprietari."
+            : role === "landlord"
+              ? "Prepara l’immobile, poi invita i profili compatibili."
+              : role === "both"
+                ? "Prepara la tua ricerca e i tuoi immobili, poi gestisci inviti e conversazioni."
+                : "Prepara la tua ricerca, poi valuta gli inviti ricevuti."}
         </p>
       </div>
       {loading ? (

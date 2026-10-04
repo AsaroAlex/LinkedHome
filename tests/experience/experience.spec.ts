@@ -279,6 +279,34 @@ test("progress failures stay recoverable without claiming completion", async ({
   ).toBeVisible();
 });
 
+test("dashboard summary retries failed reads without inventing zero totals", async ({
+  page,
+}) => {
+  await fixtures(page, user);
+  let failing = true;
+  await page.route("**/api/dashboard", (route) =>
+    failing
+      ? route.abort("failed")
+      : route.fulfill({ json: { pending: 3, accepted: 2 } }),
+  );
+  await page.goto("/dashboard");
+  const summary = page.getByRole("region", { name: "La tua attività" });
+  const pending = summary.getByRole("link", { name: /Inviti in attesa/ });
+  const accepted = summary.getByRole("link", { name: /Inviti accettati/ });
+  await expect(pending).toContainText("—");
+  await expect(accepted).toContainText("—");
+  await expect(pending).toHaveAttribute("href", "/invitations");
+  await expect(accepted).toHaveAttribute("href", "/invitations");
+  const retry = page.getByRole("button", { name: "Ricarica il riepilogo" });
+  await expect(retry).toBeVisible();
+  failing = false;
+  await retry.click();
+  await expect(pending).toContainText("3");
+  await expect(accepted).toContainText("2");
+  await expect(retry).toHaveCount(0);
+  await accessible(page);
+});
+
 test("chat templates preserve drafts and require explicit send; failed sends retain text", async ({
   page,
 }) => {

@@ -347,3 +347,36 @@ API simulate (tenant completo/parziale/iniziale, landlord e doppio ruolo,
 1440/390/320px), screenshot completi/parziali ispezionati: nessun overflow,
 violazione axe configurata o errore console/rete. Review indipendente senza
 rilievi. Evidenze ignorate in `.local/progress-markers`; supervisor dev pronto.
+
+Pubblicato `8e53fe6ed8bebec610e5905d1090f63b3b12d015`: web
+`feb7ad42-c1d1-406f-ba06-96e4d8b97085` **SUCCESS**, una replica online senza
+crash, cron pronto e nessun lavoro pending. HTTPS/health preview200 e nuovi
+bundle CSS/JS verificati. Dashboard della build pubblica a390px con API
+sintetiche simulate: spunte centrate, nessun overflow, errore console/rete o
+violazione axe configurata. Evidenze `railway-verification.json` e
+`railway-browser.json` nella cartella ignorata. Esito operativo locale per
+evitare un secondo deploy soltanto documentale.
+
+## Dashboard con maggiore gerarchia visiva — 2026-10-04
+
+Feedback «Tutto molto piatto» sul saluto della dashboard. Aggiunta fascia
+blu con illustrazione architettonica SVG originale/decorativa, titolo più
+compatto, badge e azioni per tenant/landlord/both. Due card autonome per
+pending/accepted, collegate a `/invitations`; accepted è descritto come
+«Inviti accettati», aderendo alla query. Nessun numero o risultato inventato:
+dati mancanti mantengono «—», lettura fallita ripetibile con pulsante.
+Onboarding con intro azzurra, passi/divisori su bianco e CTA compatta; testo
+del profilo/immobile pronto soltanto dopo fetch riuscito e requisiti completi.
+Titoli delle card inferiori ridotti anche su mobile. CSS circoscritto alla
+dashboard, senza modifiche a API, dati, altre pagine o dipendenze.
+
+Build/typecheck passati; 12 scenari esperienza/mail-runtime passati, poi
+quattro scenari dashboard/progressi rieseguiti sulle rifiniture finali.
+Test funzionale aggiunto per errore/retry del riepilogo, conteggi sconosciuti
+e destinazione dei link. Nove controlli UI finali alle larghezze
+1440/768/390/320px, tutti i ruoli, nome lungo e email non confermata: nessun
+overflow, errore console/rete o violazione axe configurata. Due ulteriori
+prove loading/error a320px con fallimenti di rete simulati intenzionalmente:
+nessun overflow, violazione axe o errore JavaScript. Screenshot desktop/mobile
+ispezionati e review indipendenti di stile e contenuti senza rilievi.
+Evidenze ignorate in `.local/dashboard-refresh`; dev preservato e pronto.

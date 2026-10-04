@@ -196,3 +196,12 @@ conflitto CSS che annullava il centraggio; stati accessibili e numeri dei
 passaggi incompleti preservati. Build, tre scenari progressi e sette controlli
 UI responsive/accessibilità passati; regressione del centraggio coperta nel
 test esistente. Pubblicazione nella stessa preview Railway autorizzata.
+
+## Gerarchia e carattere della dashboard — 2026-10-04
+
+Feedback browser «Tutto molto piatto». Saluto su fascia blu con case SVG
+originali, testo/azioni specifici per ruolo, attività in due card autonome
+collegate agli inviti. Primi passi con intro azzurra, lista bianca e CTA
+compatta; titoli delle altre card ridotti. Conteggi dalle API esistenti,
+nessun dato fittizio aggiunto al prodotto. Retry dei riepiloghi falliti e
+test funzionale dedicato; pubblicazione nella preview Railway esistente.

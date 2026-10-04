@@ -1181,20 +1181,130 @@ function Recovery({
     </div>
   );
 }
+function DashboardIcon({ kind }: { kind: "invitation" | "message" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {kind === "invitation" ? (
+        <>
+          <rect x="3" y="5" width="18" height="14" rx="3" />
+          <path d="m3 7 9 6 9-6" />
+        </>
+      ) : (
+        <path d="M8 19 4 21V6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H8ZM8 8h8M8 12h5" />
+      )}
+    </svg>
+  );
+}
+function DashboardHomes() {
+  return (
+    <svg viewBox="0 0 400 270" aria-hidden="true" focusable="false">
+      <circle cx="245" cy="135" r="118" fill="#ffffff" opacity=".08" />
+      <path
+        d="M32 238h336M60 254h265"
+        stroke="#ffffff"
+        strokeOpacity=".2"
+        strokeWidth="2"
+      />
+      <path d="m74 117 72-45 72 45v120H74Z" fill="#d7eafb" />
+      <path
+        d="m74 117 72-45 72 45M94 237V130h104"
+        fill="none"
+        stroke="#a0c9eb"
+        strokeWidth="3"
+      />
+      <path d="M128 237v-55h36v55" fill="#006bb3" />
+      <rect x="106" y="133" width="28" height="29" rx="2" fill="#ffffff" />
+      <rect x="158" y="133" width="28" height="29" rx="2" fill="#ffffff" />
+      <path
+        d="M120 133v29M106 147h28M172 133v29M158 147h28"
+        stroke="#a0c9eb"
+        strokeWidth="2"
+      />
+      <path d="m204 69 99-26 42 25v169H204Z" fill="#ffffff" />
+      <path d="m303 43 42 25v169h-42Z" fill="#bedcf3" />
+      <path
+        d="M204 69h99v168M204 112h99M204 163h99M303 112h42M303 163h42"
+        fill="none"
+        stroke="#82b5dc"
+        strokeWidth="2"
+      />
+      <g fill="#006bb3">
+        <rect x="225" y="82" width="22" height="20" rx="2" />
+        <rect x="267" y="82" width="22" height="20" rx="2" />
+        <rect x="225" y="127" width="22" height="23" rx="2" />
+        <rect x="267" y="127" width="22" height="23" rx="2" />
+        <rect x="225" y="179" width="22" height="22" rx="2" />
+        <rect x="267" y="179" width="22" height="58" rx="2" />
+      </g>
+      <path d="M225 150h64M225 201h23" stroke="#d1a06e" strokeWidth="5" />
+      <path d="M57 237v-40M354 237v-45" stroke="#91b9d8" strokeWidth="3" />
+      <ellipse cx="57" cy="187" rx="14" ry="25" fill="#b5d8d4" />
+      <ellipse cx="354" cy="180" rx="13" ry="27" fill="#b5d8d4" />
+      <path
+        d="M40 237h23M345 237h24"
+        stroke="#ffffff"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
 function Dashboard({ user }: { user: User }) {
   const inv = useLoad("/dashboard"),
     runtime = useContext(RuntimeContext);
   const pending = inv.data?.pending ?? "—",
     accepted = inv.data?.accepted ?? "—";
+  const landlord = user.role === "landlord";
   return (
-    <>
-      <PageHeading
-        eyebrow="IL TUO SPAZIO"
-        title={`Ciao, ${user.display_name}.`}
+    <div className="dashboard">
+      <section
+        className="dashboard-welcome"
+        aria-labelledby="dashboard-heading"
       >
-        Gestisci la tua ricerca, gli immobili e le conversazioni da un unico
-        posto.
-      </PageHeading>
+        <div className="dashboard-welcome-copy">
+          <span className="dashboard-role">
+            <Mark />
+            {landlord
+              ? "I tuoi immobili"
+              : user.role === "both"
+                ? "Ricerca e immobili"
+                : "La tua ricerca"}
+          </span>
+          <h1 id="dashboard-heading" tabIndex={-1}>
+            Ciao, {user.display_name}.
+          </h1>
+          <p>
+            {landlord
+              ? "Mantieni disponibili i tuoi immobili e scegli chi invitare."
+              : user.role === "both"
+                ? "Gestisci la tua ricerca, proponi immobili e segui le conversazioni."
+                : "Aggiorna le preferenze e valuta le proposte dei proprietari."}
+          </p>
+          <div className="dashboard-welcome-actions">
+            <Link to={landlord ? "/properties" : "/profile"} className="button">
+              {landlord ? "Gestisci gli immobili" : "Gestisci la ricerca"}{" "}
+              <Arrow />
+            </Link>
+            {user.role === "both" && (
+              <Link to="/properties" className="text-link">
+                I tuoi immobili <Arrow />
+              </Link>
+            )}
+          </div>
+        </div>
+        <div className="dashboard-homes">
+          <DashboardHomes />
+        </div>
+      </section>
       {!user.email_verified && (
         <div className="alert">
           <strong>Conferma la tua email per pubblicare e contattare.</strong>{" "}
@@ -1202,27 +1312,46 @@ function Dashboard({ user }: { user: User }) {
           <Link to="/verification">Vai alle verifiche →</Link>
         </div>
       )}
+      <section className="dashboard-activity" aria-label="La tua attività">
+        <Link to="/invitations" className="dashboard-stat">
+          <span className="dashboard-stat-icon">
+            <DashboardIcon kind="invitation" />
+          </span>
+          <span className="dashboard-stat-copy">
+            <span className="dashboard-stat-label">Inviti in attesa</span>
+            <strong className="dashboard-stat-number">{pending}</strong>
+            <span className="dashboard-stat-detail">
+              {landlord
+                ? "In attesa di risposta"
+                : user.role === "both"
+                  ? "Proposte e inviti da seguire"
+                  : "Proposte da valutare"}
+            </span>
+          </span>
+          <Arrow />
+        </Link>
+        <Link to="/invitations" className="dashboard-stat">
+          <span className="dashboard-stat-icon">
+            <DashboardIcon kind="message" />
+          </span>
+          <span className="dashboard-stat-copy">
+            <span className="dashboard-stat-label">Inviti accettati</span>
+            <strong className="dashboard-stat-number">{accepted}</strong>
+            <span className="dashboard-stat-detail">Apri le conversazioni</span>
+          </span>
+          <Arrow />
+        </Link>
+      </section>
+      {inv.error && (
+        <div className="dashboard-summary-error">
+          <ErrorBox text={inv.error} />
+          <button className="button secondary" onClick={inv.reload}>
+            Ricarica il riepilogo
+          </button>
+        </div>
+      )}
       <NextSteps role={user.role} verified={user.email_verified} />
-      <div className="dashboard-stats">
-        <div>
-          <span className="stat-number">{pending}</span>
-          <span>Inviti in attesa</span>
-        </div>
-        <div>
-          <span className="stat-number">{accepted}</span>
-          <span>Conversazioni aperte</span>
-        </div>
-        <div className="stat-note">
-          <span aria-hidden="true">✳</span>
-          <p>
-            Le tue scelte restano tue.
-            <br />
-            Puoi fermarti quando vuoi.
-          </p>
-        </div>
-      </div>
-      <ErrorBox text={inv.error} />
-      <div className="two-grid">
+      <div className="two-grid dashboard-shortcuts">
         {user.role !== "landlord" && (
           <article className="feature-card">
             <span className="eyebrow">CERCO CASA</span>
@@ -1261,7 +1390,7 @@ function Dashboard({ user }: { user: User }) {
           </Link>
         </article>
       </div>
-    </>
+    </div>
   );
 }
 function ProfilePage() {
