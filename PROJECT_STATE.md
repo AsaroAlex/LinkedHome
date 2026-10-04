@@ -303,3 +303,21 @@ pagante finché non arriva un’indicazione diversa. Review indipendente del
 modello svolta; recepite le precisazioni su rimborsi separati, promozione
 gratuita limitata/atomica e margine per proprietario/coorte inclusi i contatti
 gratuiti. Dati e preview preservati.
+
+## Colori e stile immobiliare — 2026-10-04
+
+L’utente giudica la precedente palette simile ai siti di consulenze
+psicologiche e chiede riferimenti a idealista/Immobiliare.it. Confrontate le
+home ufficiali e il media kit Immobiliare.it. Scegliamo una palette coerente
+blu/bianco/ardesia/azzurro, con dettagli caldi limitati; sans già disponibile
+per titoli/marchio/prezzi e titolo mobile su due righe a390/320px. Aggiornati
+home, form/foto, dashboard, chat, reddito, favicon e theme-color. Corretto
+l’hover dei bottoni distruttivi. Flussi, API, dati e dipendenze preservati.
+
+Build/typecheck e11 scenari esperienza/mail-runtime passati; scenario landing
+rieseguito sul risultato finale. Sedici controlli UI e verifica finale home
+alle quattro larghezze, sette contrasti, focus e hover: nessun overflow,
+violazione axe configurata o errore console/rete. Viste autenticate con API
+simulate, senza scritture DB. Screenshot home/form ispezionati e review
+indipendente senza blocchi. [Dettagli](docs/design/04-real-estate-palette.md).
+Aggiornamento dello stesso dominio Railway in corso; supervisor dev attivo.

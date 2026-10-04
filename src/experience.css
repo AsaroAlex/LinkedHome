@@ -7,7 +7,7 @@
   width: fit-content;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: #eeefe6;
+  background: var(--surface-muted);
 }
 .role-switch button {
   padding: 12px 22px;
@@ -20,7 +20,7 @@
   font-weight: 600;
 }
 .role-switch button[aria-pressed="true"] {
-  background: var(--green);
+  background: var(--primary);
   color: white;
 }
 .guide-action {
@@ -76,11 +76,11 @@
   cursor: pointer;
 }
 .role-option:has(input:checked) {
-  background: #edf1e7;
-  border-color: var(--green);
+  background: var(--surface-soft);
+  border-color: var(--primary);
 }
 .role-option input {
-  accent-color: var(--green);
+  accent-color: var(--primary);
   width: 18px;
   height: 18px;
   margin: 0;
@@ -109,7 +109,7 @@
   top: 4px;
   bottom: 4px;
   padding: 6px 10px;
-  background: #f0f2e9;
+  background: var(--surface-muted);
   border: 0;
   border-radius: 5px;
   color: var(--ink);
@@ -149,13 +149,13 @@
   place-items: center;
   min-width: 30px;
   height: 30px;
-  border: 1px solid #aebbb0;
+  border: 1px solid var(--control-border);
   border-radius: 50%;
   font-size: 0.8rem;
 }
 .complete .progress-marker {
-  background: var(--green);
-  border-color: var(--green);
+  background: var(--primary);
+  border-color: var(--primary);
   color: white;
 }
 .onboarding-steps strong {
@@ -184,15 +184,15 @@
 }
 .quick-replies button {
   min-height: 44px;
-  border: 1px solid #b9c6bb;
+  border: 1px solid var(--control-border);
   border-radius: 8px;
   padding: 9px 12px;
-  background: #f4f5ef;
+  background: var(--surface-muted);
   color: var(--ink);
   font-size: 0.77rem;
 }
 .quick-replies button:hover {
-  background: #eaf0e3;
+  background: var(--surface-soft);
 }
 .message-count {
   text-align: right;
@@ -201,7 +201,7 @@
   color: var(--muted);
 }
 .chat-property {
-  background: #fffefb;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 16px;

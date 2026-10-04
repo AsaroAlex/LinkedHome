@@ -688,7 +688,7 @@ function Landing() {
           </div>
           <div className="hero-note">
             <span className="leaf" aria-hidden="true">
-              ✳
+              <Mark />
             </span>
             <span>
               Profilo privato fino alla pubblicazione.

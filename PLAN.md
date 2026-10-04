@@ -177,3 +177,13 @@ come promozione di lancio circoscritta,
 prezzo iniziale da testare 9,90 €. [Modello](docs/product/05-contact-monetization.md)
 e D-009 distinguono fatti, ipotesi, condizioni di pagamento e prova economica.
 Nessuna modifica UI, attivazione di billing o deploy impliciti nella proposta.
+
+## Palette immobiliare — 2026-10-04
+
+Richiesta di colori più vicini a idealista/Immobiliare.it. Applicati bianco,
+testo ardesia, blu per azioni/marchio, azzurro per informazioni e piccoli
+accenti caldi. Titoli sans e titolo mobile leggibile; aggiornati tutti i
+componenti, favicon e theme-color. Build/typecheck, 11 scenari browser,
+controlli responsive/contrasto e review indipendente passati.
+[Riferimenti e verifica](docs/design/04-real-estate-palette.md). Aggiornamento
+della preview Railway nel percorso iterativo già autorizzato.
