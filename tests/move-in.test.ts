@@ -380,6 +380,7 @@ describe("month and period move-in preferences", () => {
           "move_in_precision",
           "move_in_end",
           "duration",
+          "contract_preference",
           "occupants",
           "revision",
           "compatibility",

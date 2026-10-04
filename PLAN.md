@@ -227,3 +227,16 @@ Modifiche non salvate conservate anche mettendo in pausa il profilo.
 Migrazioni additive007/008 e nessuna nuova dipendenza. Build/typecheck,
 247 test backend,22 scenari browser principali verificati e14 esperienza
 passati; pubblicazione nella stessa preview Railway autorizzata.
+
+
+## Tipi di contratto nel profilo e negli immobili — 2026-10-04
+
+Feedback sulla durata generica: selezione di4+4,3+2,studenti universitari
+oppure transitorio, con spiegazioni brevi e opzione flessibile. Formula
+separata dalla permanenza numerica; stesso tipo offerto dall’immobile
+richiesto quando il profilo esprime una preferenza specifica. API, discovery,
+inviti e riepiloghi allineati; snapshot accettati/chiusi preservati.
+Migrazione009 aggiuntiva, durate preesistenti invariate. Build/typecheck,
+311 test backend,22 browser principali e17 esperienza passati. Fonti e
+semantica in [contract-preferences](docs/product/06-contract-preferences.md).
+Pubblicazione nella preview Railway esistente già autorizzata.

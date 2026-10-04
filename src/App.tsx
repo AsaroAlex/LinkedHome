@@ -27,6 +27,15 @@ import {
   moveInLabel,
   type MoveInPreferences,
 } from "../shared/move-in";
+import {
+  contractPreferences,
+  contractTypes,
+  contractPreferenceLabel,
+  contractTypeLabel,
+  contractHint,
+  type ContractPreference,
+  type ContractType,
+} from "../shared/contracts";
 import type { User } from "../server/auth";
 import { IncomeWorkspace, InvitationIncome } from "./Income";
 import {
@@ -838,8 +847,8 @@ function Safeguards() {
           <h2>Prima dell’invito</h2>
           <p>
             I proprietari con un immobile pubblicato vedono solo città, budget
-            totale, ingresso, durata e numero di persone. Il profilo usa un
-            identificatore, non il tuo nome.
+            totale, ingresso, contratto, permanenza e numero di persone. Il
+            profilo usa un identificatore, non il tuo nome.
           </p>
         </article>
         <article className="panel">
@@ -864,9 +873,9 @@ function Safeguards() {
       <div className="panel narrow">
         <h2>Cosa significa compatibile?</h2>
         <p>
-          Confrontiamo città, costo totale mensile, ingresso, durata e capienza.
-          Ogni criterio è spiegato; non usiamo reddito, età, origine, lingua o
-          verifiche per ordinare le persone.
+          Confrontiamo città, costo totale mensile, ingresso, contratto,
+          permanenza e capienza. Ogni criterio è spiegato; non usiamo reddito,
+          età, origine, lingua o verifiche per ordinare le persone.
         </p>
         <h2>Verifiche e segnalazioni</h2>
         <p>
@@ -1517,6 +1526,45 @@ function MoveInFields({ profile }: { profile: MoveInPreferences | null }) {
     </fieldset>
   );
 }
+function ContractChoice({
+  offered = false,
+  value,
+}: {
+  offered?: boolean;
+  value?: ContractPreference | ContractType;
+}) {
+  const [choice, setChoice] = useState(
+    value || (offered ? "unspecified" : "any"),
+  );
+  const name = offered ? "contract_type" : "contract_preference";
+  const options = offered ? contractTypes : contractPreferences;
+  return (
+    <Field
+      name={name}
+      label={offered ? "Tipo di contratto offerto" : "Che contratto cerchi?"}
+      hint={contractHint(choice)}
+    >
+      <select
+        name={name}
+        required
+        value={choice}
+        onChange={(event) =>
+          setChoice(
+            event.currentTarget.value as ContractPreference | ContractType,
+          )
+        }
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {offered
+              ? contractTypeLabel(option as ContractType)
+              : contractPreferenceLabel(option as ContractPreference)}
+          </option>
+        ))}
+      </select>
+    </Field>
+  );
+}
 function ProfilePage() {
   const l = useLoad("/profile"),
     a = useAction();
@@ -1543,6 +1591,7 @@ function ProfilePage() {
                 `${precision === "range" ? v.move_in_end : v.move_in}-01`,
               ),
         duration: Number(v.duration),
+        contract_preference: v.contract_preference,
         occupants: Number(v.occupants),
       });
       setDraft(null);
@@ -1590,6 +1639,7 @@ function ProfilePage() {
                   p.move_in_precision,
                   p.move_in_end,
                   p.duration,
+                  p.contract_preference,
                   p.occupants,
                 ])
               : "new-profile"
@@ -1617,16 +1667,17 @@ function ProfilePage() {
             <MoveInFields profile={p} />
           </fieldset>
           <fieldset className="form-section" disabled={a.busy}>
-            <legend>Durata e persone</legend>
+            <legend>Contratto e permanenza</legend>
+            <ContractChoice value={p?.contract_preference} />
             <div className="form-grid">
               <Field
                 name="duration"
-                label="Durata desiderata (mesi)"
+                label="Per quanti mesi cerchi casa?"
                 type="number"
                 value={draft?.duration ?? p?.duration ?? 12}
                 min={1}
                 max={120}
-                hint="Da 1 a 120 mesi. Potrai aggiornare la durata in seguito."
+                hint="È il periodo di permanenza che cerchi, distinto dalla durata del contratto. Da 1 a 120 mesi."
               />
               <Field
                 name="occupants"
@@ -1657,8 +1708,9 @@ function ProfilePage() {
           <span className="eyebrow">PRIMA DI PUBBLICARE</span>
           <h2>Anteprima delle preferenze</h2>
           <p>
-            Città, budget, ingresso, durata e numero di persone saranno visibili
-            ai proprietari autenticati con un immobile pertinente.
+            Città, budget, ingresso, contratto, permanenza e numero di persone
+            saranno visibili ai proprietari autenticati con un immobile
+            pertinente.
           </p>
           <p className="small-copy">
             L’anteprima mostra le ultime preferenze salvate. Salva le modifiche
@@ -1677,8 +1729,9 @@ function ProfilePage() {
                 Fino a €{p.budget} al mese · {p.occupants} persone
               </p>
               <p>
-                Ingresso: {moveInLabel(p)} · {p.duration} mesi
+                Ingresso: {moveInLabel(p)} · permanenza {p.duration} mesi
               </p>
+              <p>Contratto: {contractPreferenceLabel(p.contract_preference)}</p>
             </div>
           )}
           {p ? (
@@ -1945,23 +1998,24 @@ function PropertyForm({
           />
           <Field
             name="min_months"
-            label="Durata minima (mesi)"
+            label="Permanenza minima (mesi)"
             type="number"
             value={property?.min_months ?? 6}
             min={1}
             max={120}
-            hint="Il periodo minimo per cui offri l’immobile."
+            hint="La permanenza minima che cerchi, distinta dalla durata del contratto."
           />
           <Field
             name="max_months"
-            label="Durata massima (mesi)"
+            label="Permanenza massima (mesi)"
             type="number"
             value={property?.max_months ?? 36}
             min={1}
             max={120}
-            hint="Deve essere uguale o superiore alla durata minima."
+            hint="Deve essere uguale o superiore alla permanenza minima."
           />
         </div>
+        <ContractChoice offered value={property?.contract_type} />
       </fieldset>
       <fieldset className="form-section" disabled={busy}>
         <legend>Spazi e dotazioni</legend>
@@ -2161,6 +2215,9 @@ function PropertiesPage() {
                     <p>
                       {p.sqm} m² · {p.rooms} locali · fino a {p.capacity}{" "}
                       persone
+                    </p>
+                    <p className="small-copy">
+                      Contratto: {contractTypeLabel(p.contract_type)}
                     </p>
                     <p className="small-copy">
                       Disponibile dal {dateLabel(p.available_from)}.
@@ -2593,7 +2650,10 @@ function InvitationsPage({ user }: { user: User }) {
               <h2>{i.property.title}</h2>
               <p>
                 {i.property.area} · €{i.property.rent}/mese, spese incluse ·{" "}
-                {i.property.min_months}–{i.property.max_months} mesi
+                permanenza {i.property.min_months}–{i.property.max_months} mesi
+              </p>
+              <p className="small-copy">
+                Contratto: {contractTypeLabel(i.property.contract_type)}
               </p>
               <p className="small-copy">
                 Disponibile dal {dateLabel(i.property.available_from)} · fino a{" "}
@@ -2903,9 +2963,10 @@ function Conversation({ id, user }: { id: string; user: User }) {
               </p>
               <p>€{info.property.rent} / mese, spese obbligatorie incluse</p>
               <p>
-                Dal {dateLabel(info.property.available_from)} ·{" "}
+                Dal {dateLabel(info.property.available_from)} · permanenza{" "}
                 {info.property.min_months}–{info.property.max_months} mesi
               </p>
+              <p>Contratto: {contractTypeLabel(info.property.contract_type)}</p>
               {info.property_changed && (
                 <p>
                   I dettagli attuali sono cambiati. Qui vedi l’offerta

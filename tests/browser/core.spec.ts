@@ -200,12 +200,12 @@ test("landlord creates property, sees useful validation and publishes", async ({
     .getByLabel("Descrizione", { exact: true })
     .fill("Solo un esempio sintetico per provare la pubblicazione.");
   await page.getByLabel("Dichiaro di essere autorizzato").check();
-  await page.getByLabel("Durata minima (mesi)").fill("48");
+  await page.getByLabel("Permanenza minima (mesi)").fill("48");
   await page.getByRole("button", { name: "Salva immobile" }).click();
   await expect(page.getByRole("alert")).toContainText(
     "Durata massima inferiore alla minima",
   );
-  await page.getByLabel("Durata minima (mesi)").fill("6");
+  await page.getByLabel("Permanenza minima (mesi)").fill("6");
   await page.getByRole("button", { name: "Salva immobile" }).click();
   await page.getByRole("button", { name: "Pubblica", exact: true }).click();
   await expect(page.getByText("Pubblicato", { exact: true })).toBeVisible();

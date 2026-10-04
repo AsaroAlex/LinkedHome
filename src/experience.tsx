@@ -6,7 +6,7 @@ const guides = {
   tenant: [
     [
       "Indica cosa cerchi",
-      "Scegli città, budget complessivo, mese o periodo di ingresso, durata e numero di persone. Salva e pubblica il tuo profilo quando sei pronto.",
+      "Scegli città, budget complessivo, mese o periodo di ingresso, tipo di contratto, permanenza e numero di persone. Salva e pubblica il tuo profilo quando sei pronto.",
     ],
     [
       "Valuta gli inviti",
@@ -108,7 +108,7 @@ export function ProductFAQ() {
           ],
           [
             "Chi può vedere il mio profilo?",
-            "Solo i proprietari autenticati con un immobile pertinente possono scoprire le preferenze che pubblichi. Vedono città, budget, data di ingresso, durata e numero di persone, con un identificatore al posto del tuo nome.",
+            "Solo i proprietari autenticati con un immobile pertinente possono scoprire le preferenze che pubblichi. Vedono città, budget, periodo di ingresso, contratto, permanenza e numero di persone, con un identificatore al posto del tuo nome.",
           ],
           [
             "Accettare un invito mi impegna ad affittare?",
@@ -120,7 +120,7 @@ export function ProductFAQ() {
           ],
           [
             "Come vengono scelti i profili compatibili?",
-            "Confrontiamo città, costo mensile complessivo, date, durata e capienza. I criteri sono visibili. Identità, reddito e verifiche non vengono usati per assegnare un punteggio o dare più visibilità a una persona.",
+            "Confrontiamo città, costo mensile complessivo, ingresso, contratto, permanenza e capienza. I criteri sono visibili. Identità, reddito e verifiche non vengono usati per assegnare un punteggio o dare più visibilità a una persona.",
           ],
           [
             "Come funziona la verifica del reddito?",

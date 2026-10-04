@@ -122,6 +122,7 @@ Le versioni esatte e le dipendenze di tipo sono in `package.json`; `package-lock
 | `server/mail.ts`, `server/income.ts`                          | Adattatori posta, contratti reddito e simulatore sintetico.                             |
 | `migrations/`                                                 | Migrazioni SQL ordinate e ledger con checksum.                                          |
 | `shared/move-in.ts`                                            | Calendario e testi comuni per giorno, mese e periodo di ingresso.                       |
+| `shared/contracts.ts`                                          | Formule di contratto, spiegazioni e confronto delle preferenze dichiarate.              |
 | `scripts/`                                                    | Bootstrap, sviluppo, database, migrazioni, seed, test, manutenzione e preflight deploy. |
 | `tests/*.test.ts`                                             | Test unitari, API, configurazione, migrazioni e SMTP controllato.                       |
 | `tests/browser/`, `tests/experience/`                         | Flussi browser reali e flussi UX con API simulate.                                      |

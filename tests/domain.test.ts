@@ -6,6 +6,14 @@ import {
   verificationState,
 } from "../server/domain";
 import { endOfMonth, moveInEnd, moveInLabel } from "../shared/move-in";
+import {
+  contractPreferences,
+  contractTypes,
+  contractMatches,
+  contractPreferenceLabel,
+  contractTypeLabel,
+  contractHint,
+} from "../shared/contracts";
 const profile = {
   city: "Bologna" as const,
   budget: 850,
@@ -202,5 +210,141 @@ describe("move-in periods", () => {
     expect(profileInput.safeParse({ ...profile, ...change }).success).toBe(
       false,
     );
+  });
+});
+
+describe("contract preferences", () => {
+  it("keeps legacy durations and leaves missing contract fields optional", () => {
+    const parsedProfile = profileInput.parse(profile);
+    const parsedProperty = propertyInput.parse(property);
+    expect(parsedProfile.duration).toBe(12);
+    expect(parsedProfile.contract_preference).toBeUndefined();
+    expect(parsedProperty.min_months).toBe(6);
+    expect(parsedProperty.max_months).toBe(12);
+    expect(parsedProperty.contract_type).toBeUndefined();
+    expect(contractMatches(undefined, undefined)).toBe(true);
+    expect(compatibility(parsedProfile, parsedProperty).checks).toHaveLength(5);
+    expect(
+      compatibility(
+        { ...profile, contract_preference: "any" },
+        { ...property, contract_type: "unspecified" },
+      ).checks,
+    ).toHaveLength(5);
+  });
+
+  it.each(contractPreferences)(
+    "parses tenant preference %s without replacing intended stay months",
+    (contract_preference) => {
+      const parsed = profileInput.parse({
+        ...profile,
+        duration: 12,
+        contract_preference,
+      });
+      expect(parsed.contract_preference).toBe(contract_preference);
+      expect(parsed.duration).toBe(12);
+    },
+  );
+
+  it.each(contractTypes)(
+    "parses offered contract %s without replacing intended stay bounds",
+    (contract_type) => {
+      const parsed = propertyInput.parse({
+        ...property,
+        contract_type,
+      });
+      expect(parsed.contract_type).toBe(contract_type);
+      expect(parsed.min_months).toBe(6);
+      expect(parsed.max_months).toBe(12);
+    },
+  );
+
+  it.each(["unspecified", "short_term", "4+4", null])(
+    "rejects undeclared tenant contract %s",
+    (contract_preference) => {
+      expect(
+        profileInput.safeParse({ ...profile, contract_preference }).success,
+      ).toBe(false);
+    },
+  );
+
+  it.each(["any", "short_term", "4+4", null])(
+    "rejects undeclared offered contract %s",
+    (contract_type) => {
+      expect(
+        propertyInput.safeParse({ ...property, contract_type }).success,
+      ).toBe(false);
+    },
+  );
+
+  it.each(
+    contractPreferences.flatMap((preference) =>
+      contractTypes.map((type) => ({ preference, type })),
+    ),
+  )(
+    "matches $preference against $type consistently",
+    ({ preference, type }) => {
+      const expected = preference === "any" || preference === type;
+      expect(contractMatches(preference, type)).toBe(expected);
+      const result = compatibility(
+        { ...profile, contract_preference: preference },
+        { ...property, contract_type: type },
+      );
+      expect(result.compatible).toBe(expected);
+      const contract = result.checks.find((check) => check.key === "contract");
+      if (preference === "any" && type === "unspecified") {
+        expect(contract).toBeUndefined();
+      } else {
+        expect(contract).toMatchObject({
+          label: "Contratto",
+          matches: expected,
+        });
+        expect(contract?.detail).toContain(contractTypeLabel(type));
+        expect(contract?.detail).toContain(contractPreferenceLabel(preference));
+      }
+    },
+  );
+
+  it("does not infer a contract from an existing property duration", () => {
+    const result = compatibility(
+      { ...profile, contract_preference: "student" },
+      property,
+    );
+    expect(result.compatible).toBe(false);
+    expect(result.checks.filter((check) => !check.matches)).toEqual([
+      {
+        key: "contract",
+        label: "Contratto",
+        matches: false,
+        detail: "Da concordare · preferenza: Studenti universitari",
+      },
+    ]);
+  });
+
+  it("keeps intended stay compatibility independent of contract choice", () => {
+    const result = compatibility(
+      { ...profile, duration: 13, contract_preference: "four_plus_four" },
+      { ...property, contract_type: "four_plus_four" },
+    );
+    expect(result.compatible).toBe(false);
+    expect(result.checks.filter((check) => !check.matches)).toEqual([
+      {
+        key: "duration",
+        label: "Permanenza",
+        matches: false,
+        detail: "13 mesi · offerta 6–12",
+      },
+    ]);
+  });
+
+  it("uses familiar Italian labels and explains formal terms separately", () => {
+    expect(contractPreferenceLabel()).toBe("Sono flessibile");
+    expect(contractTypeLabel()).toBe("Da concordare");
+    expect(contractTypeLabel("four_plus_four")).toBe("4+4 · canone libero");
+    expect(contractTypeLabel("three_plus_two")).toBe("3+2 · canone concordato");
+    expect(contractHint("four_plus_four")).toContain("4 anni");
+    expect(contractHint("three_plus_two")).toContain("3 anni");
+    expect(contractHint("student")).toContain("6 a 36 mesi");
+    expect(contractHint("transitory")).toContain("18 mesi");
+    expect(contractHint("transitory")).toContain("esigenza temporanea");
   });
 });

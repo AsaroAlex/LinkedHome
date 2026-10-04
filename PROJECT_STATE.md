@@ -482,3 +482,63 @@ importa realmente l'API in un processo isolato. Nessun avvio server o DB;
 non confronta una stringa COPY fissa. Test passato e typecheck finale
 riuscito. Le dipendenze installate sono riusate nel test; la verifica delle
 sole dipendenze production è invece quella del container costruito sopra.
+
+
+Pubblicato il fix finale `fc7c70f8f0f79cba7c10dd61450de902eaf8f17e`:
+web `223d3f5b-e40d-4fea-a66d-0d201329382e` **SUCCESS**, una replica
+online senza crash; cron `3105c1a3-f264-4315-bd62-de4c8f3b045a` pronto,
+DB online, nessun warning/critical attivo o lavoro pending. I fallimenti
+storici restano nella finestra operativa; il deploy corrente è riuscito.
+Log preflight confermano migrazioni e storage privato pronti. Health/config
+HTTPS preview200 e hash dei due asset identici alla build locale finale.
+Form della build pubblica a390px verificato con sessione/profilo sintetici
+intercettati e config runtime reale: nuovo default mese, legacy giorno03,
+passaggio al periodo e selettori leggibili. Zero overflow, errori browser/
+rete inattesi o violazioni axe configurate. Nessuna scrittura nel DB pubblico
+per questi controlli. Evidenze Railway in `.local/move-in`; dev locale
+pronto. Aggiornare la scheda `/profile` per caricare il nuovo bundle.
+Esito operativo salvato localmente per evitare un deploy solo documentale.
+
+
+## Contratti distinti dalla permanenza — 2026-10-04
+
+Richiesta browser: distinguere studenti,4+4,3+2 e temporanei invece di una
+sola durata in mesi. Aggiunti `contract_preference` al profilo e
+`contract_type` all’immobile. Select nativo con descrizione dinamica in
+italiano; formule standard verificate su Legge431/1998 art2 e DM16/1/2017
+art2–3. Gli studenti sono universitari fuori sede; transitorio legato a
+esigenza temporanea. Dettagli e fonti in `docs/product/06-contract-preferences.md`.
+Permanenza numerica distinta dalla durata legale, senza auto36/48 o altre
+modifiche ai valori salvati. I contratti non vengono generati o verificati.
+
+Profilo precedente/payload senza campo: «Sono flessibile»; immobile:
+«Da concordare». Preferenza specifica richiede la stessa formula dell’offerta,
+quindi un tipo non definito non è dichiarato compatibile con una specifica.
+Query discovery e invio/accettazione inviti usano la stessa regola.
+Contratto incluso in proiezioni pubbliche e snapshot; inviti accettati/chiusi
+mantengono quello originale, snapshot vecchi senza formula non ereditano il
+tipo attuale. Modifiche annullano pending come prima. Tipo nei riepiloghi
+profilo, immobili, inviti e chat; privacy e guida aggiornate. Draft conservato
+alla pausa, con chiave form basata sulle preferenze salvate e non sullo stato.
+
+Migrazione009 solo additiva; supervisor dev fermato prima di scrivere il
+file. Review indipendente senza rilievi. Build/typecheck e311 test backend
+passati, con16 nuovi test API e matrice dei tipi. Prima esecuzione310/311:
+una fixture ripubblicava un profilo dopo l’edit, contando due revisioni;
+corretta per simulare il solo salvataggio del form, suite completa311/311.
+22 browser principali e17 esperienza passati. Tre nuovi scenari mockati
+coprono selezione/salvataggio/reload/pausa, proprietario e offerta in inviti/
+chat; zero errori console/rete inattesi, overflow320 o violazioni axe.
+Screenshot desktop/mobile ispezionati. Immagine Docker con dipendenze
+production costruita, helper shared incluso; import API e matching contratti
+verificati nel container senza rete/DB. Evidenze private in `.local/contracts`.
+
+
+Anche5/5 scenari browser preview/foto passati (persistenza/rimozione,
+retry senza duplicati, validazione profilo e ruoli demo). Riavviato il
+supervisor dev con HMR/watch: health locale200,9 migrazioni presenti.
+5 utenti,2 profili e1 immobile invariati; hash delle preferenze, date,
+durate, revisioni e dati immobile precedente identico prima/dopo.
+Nuovi campi preesistenti valorizzati soltanto ai default any/unspecified.
+Nessun segreto o dato sintetico generato tracciato. Deploy Railway da
+verificare sul commit finale, nello stesso percorso autorizzato.

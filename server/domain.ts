@@ -1,5 +1,12 @@
 import { z } from "zod";
 import { endOfMonth, moveInEnd, moveInLabel } from "../shared/move-in.js";
+import {
+  contractPreferences,
+  contractTypes,
+  contractMatches,
+  contractPreferenceLabel,
+  contractTypeLabel,
+} from "../shared/contracts.js";
 export const cities = [
   "Bologna",
   "Milano",
@@ -23,6 +30,7 @@ export const profileInput = z
     move_in_precision: z.enum(["day", "month", "range"]).optional(),
     move_in_end: day.nullable().optional(),
     duration: z.number().int().min(1).max(120),
+    contract_preference: z.enum(contractPreferences).optional(),
     occupants: z.number().int().min(1).max(12),
   })
   .strict()
@@ -89,6 +97,7 @@ export const propertyInput = z
     available_from: day,
     min_months: z.number().int().min(1).max(120),
     max_months: z.number().int().min(1).max(120),
+    contract_type: z.enum(contractTypes).optional(),
     capacity: z.number().int().min(1).max(12),
     sqm: z.number().int().min(10).max(2000),
     rooms: z.number().int().min(1).max(20),
@@ -129,7 +138,7 @@ export function compatibility(profile: Profile, property: Property) {
     },
     {
       key: "duration",
-      label: "Durata",
+      label: "Permanenza",
       matches:
         profile.duration >= property.min_months &&
         profile.duration <= property.max_months,
@@ -142,6 +151,19 @@ export function compatibility(profile: Profile, property: Property) {
       detail: `${profile.occupants} · capienza ${property.capacity}`,
     },
   ];
+  if (
+    (profile.contract_preference || "any") !== "any" ||
+    (property.contract_type || "unspecified") !== "unspecified"
+  )
+    checks.push({
+      key: "contract",
+      label: "Contratto",
+      matches: contractMatches(
+        profile.contract_preference,
+        property.contract_type,
+      ),
+      detail: `${contractTypeLabel(property.contract_type)} · preferenza: ${contractPreferenceLabel(profile.contract_preference)}`,
+    });
   return { compatible: checks.every((c) => c.matches), checks };
 }
 export function verificationState(

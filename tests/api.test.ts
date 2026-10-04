@@ -428,6 +428,7 @@ describe("publication and discovery privacy", () => {
         "budget",
         "city",
         "compatibility",
+        "contract_preference",
         "duration",
         "id",
         "move_in",

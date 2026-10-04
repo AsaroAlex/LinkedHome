@@ -90,8 +90,8 @@ test("property photos persist after reload and can be removed in a mobile form",
     .fill("Un immobile di esempio con una foto creata soltanto per il test.");
   await page.getByLabel("Costo totale mensile").fill("900");
   await page.getByLabel("Disponibile dal").fill("2027-01-15");
-  await page.getByLabel("Durata minima (mesi)").fill("6");
-  await page.getByLabel("Durata massima (mesi)").fill("24");
+  await page.getByLabel("Permanenza minima (mesi)").fill("6");
+  await page.getByLabel("Permanenza massima (mesi)").fill("24");
   await page.getByLabel("Capienza totale").fill("2");
   await page.getByLabel("Superficie").fill("65");
   await page.getByLabel("Numero locali").fill("3");

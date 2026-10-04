@@ -149,6 +149,7 @@ test("a new profile saves a whole month and a period across years before publica
         move_in_precision: "month",
         move_in_end: "2028-02-29",
         duration: 12,
+        contract_preference: "any",
         occupants: 1,
       },
     ]);
@@ -189,6 +190,7 @@ test("a new profile saves a whole month and a period across years before publica
       move_in_precision: "range",
       move_in_end: "2029-01-31",
       duration: 12,
+      contract_preference: "any",
       occupants: 1,
     });
   await expect(summary).toContainText("Ingresso: novembre 2028 – gennaio 2029");
@@ -297,6 +299,7 @@ test("legacy exact dates survive switching modes and saving a different budget",
         move_in_precision: "day",
         move_in_end: "2026-12-03",
         duration: 12,
+        contract_preference: "any",
         occupants: 2,
       },
     ]);
