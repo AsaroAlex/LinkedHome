@@ -4,6 +4,14 @@ The adopted local scope in [PLAN](../../PLAN.md) is implemented and verified wit
 
 The earlier completion evidence below retains its original names, source revisions and dates, including the LinkedHome brand checks. The separate local-MVP follow-up was tested before reconciliation with the newer remote history; the latest combined-source checks are recorded separately here.
 
+## Iterative development setup — 2026-10-04
+
+The development supervisor now bootstraps synthetic local data, keeps PostgreSQL running across API watch restarts and manages Vite HMR. Strict port/origin configuration supports local terminals, private forwarded previews and Codespaces. An occupied-port regression verifies a failing exit status without terminating the existing listener. Database-library signal hooks are delegated to the supervisor through their public API; repeated signals remain handled during cleanup.
+
+`npm run check` passed build/typecheck, **179 unit/integration tests in8 files**, **22 main browser checks** and **11 experience/mail-runtime checks**. After the final launcher/signal changes, typecheck and all16 development regressions passed again. Runtime checks verified browser CSS HMR, API and unchanged-SQL watch, login/session/logout through the Vite proxy, stable PostgreSQL during reload, exact forwarded origin, allowed/refused hosts, shutdown and restart. Original5 account IDs,2 profile owners,1 property and4 migrations were preserved. Ctrl+C freed all managed ports; the terminal wrapper reported interruption while direct supervisor SIGINT/SIGHUP checks exited0.
+
+The final `npm run dev` process is running on loopback3000 with API3001 and PostgreSQL55432. [Development evidence](evidence/development-2026-10-04.json) records outcomes and limits. The Dev Container Node24 image manifest exists for Linux amd64/arm64; actual container creation was not exercised. Cloud listener/origin configuration was checked through local requests; this host exposes no platform preview URL. No new dependency, external-service configuration, production write or deployment was introduced. See the [development guide](development.md) for manual access and the next iteration.
+
 ## Verified integration for local builds — 2026-10-04
 
 The user requested **«Pusha che buildo in locale»**. The combined source integrates local follow-up `d566adb` with remote `8891fea`, retaining LinkedHome branding, optional synthetic income, rental UX, SMTP/staging preparation and economics research. Conflicts in the application and documentation were reconciled; independent static backend/UI reviews found no material issue.

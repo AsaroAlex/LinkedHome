@@ -1,0 +1,17 @@
+{
+  "name": "LinkedHome development",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:5.2.1-24-bookworm",
+  "remoteUser": "node",
+  "containerEnv": {
+    "DEV_HOST": "0.0.0.0"
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "LinkedHome development",
+      "onAutoForward": "openBrowser",
+      "requireLocalPort": true
+    }
+  },
+  "postCreateCommand": "npm ci"
+}

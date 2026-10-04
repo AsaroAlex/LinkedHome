@@ -28,7 +28,9 @@ cd /workspace/LinkedHome
 npm start
 ```
 
-In alternativa `npm run dev` avvia Vite3000 e API3001, con proxy sullo stesso origin. Usare un processo gestito dal terminale e conservarne l’identificatore. Default HTTP su127.0.0.1; `APP_ORIGIN` deve corrispondere all’origin del browser. Non esporre pubblicamente questo ambiente sintetico. Staging/production richiedono origin HTTPS esplicito, PostgreSQL esterno e SMTP valido; non impostarli per avviare la demo locale.
+Per il workflow iterativo richiesto dall’utente usare `npm run dev`: bootstrap automatico e idempotente, PostgreSQL persistente, Vite/HMR sulla3000 e API/watch su loopback3001 con proxy sullo stesso origin. Usare un processo gestito dal terminale e conservarne l’identificatore. Default HTTP su127.0.0.1; `APP_ORIGIN` deve corrispondere all’origin del browser.
+
+Per un’anteprima cloud privata con un inoltro porte già disponibile, configurare l’esatto `APP_ORIGIN` in `.env.development.local` ed eseguire `npm run dev:cloud`: Vite ascolta su0.0.0.0, solo3000 va inoltrata; API e PostgreSQL rimangono su loopback. Codespaces deriva automaticamente l’origin e il repository include un Dev Container Node24. Vedere [development.md](development.md). Gli strumenti dell’attuale ambiente Codex non forniscono un URL web pubblico: l’avvio del processo non rende `127.0.0.1` raggiungibile dal computer dell’utente. Serve un inoltro della piattaforma oppure lo sviluppo locale. Staging/production richiedono origin HTTPS esplicito, PostgreSQL esterno e SMTP valido; non impostarli per avviare la demo locale.
 
 Verificare health, HTML e asset, poi login di un account sintetico e lettura dei suoi immobili/profili compatibili. Credenziali e cookie restano locali e non vanno stampati. Con il default `MAIL_TRANSPORT=local`, la posta di conferma/reset è in `.local/mail/`; nessuna email reale parte e nessun endpoint HTTP espone la casella. SMTP usa credenziali configurate separatamente e non va abilitato nei test automatici locali. Ctrl+C arresta i processi; riavvio e bootstrap conservano gli account. Non cancellare il cluster per rimediare a un errore di lock.
 

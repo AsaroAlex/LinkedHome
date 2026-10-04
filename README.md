@@ -6,6 +6,19 @@ A working local MVP of an Italy-first reverse rental marketplace: publish prefer
 
 Requirements: Node24, npm11, a supported non-root Linux/macOS environment. Docker is not required. The verified cloud target is Linux x64 with Node24.19.0/npm11.9.0.
 
+For iterative development with frontend hot reload and automatic API restarts:
+
+```bash
+npm ci
+npm run dev
+```
+
+Open `http://127.0.0.1:3000`. The command bootstraps the local database and synthetic accounts if needed, preserves existing data and manages Vite, the API and PostgreSQL. Keep its terminal running; Ctrl+C stops the services. See the [development guide](docs/operations/development.md) for private cloud previews, configurable ports, ignored `.env.development.local` settings and the included Node24 Dev Container/Codespaces setup. Codespaces derives its forwarded origin automatically; other cloud environments use `APP_ORIGIN=https://YOUR-PREVIEW-HOST npm run dev:cloud` and forward only frontend port3000.
+
+For the selected Replit-style workflow on macOS, open this same repository as a local Codex project and keep the preview beside the chat. Codex edits the local files directly; HMR/API watch apply changes without a push or manual build per iteration. The development guide includes the one-time handoff prompt and the optional desktop **Run** action. `AGENTS.md` and `PROJECT_STATE.md` preserve the working conventions and earlier fixes.
+
+To test the compiled application:
+
 ```bash
 npm ci
 npm run bootstrap
@@ -13,7 +26,7 @@ npm run build
 npm start
 ```
 
-Bootstrap creates an ignored `.local/` directory with a random PostgreSQL password, migrations and synthetic accounts. Credentials are in `.local/demo-accounts.json` with mode0600; they are never printed or committed. The database binds loopback on port55432 and the application on port3000. `npm start` serves the compiled app; `npm run dev` uses Vite on3000 and API on3001. Stop with Ctrl+C. Restarting preserves local data. Never remove `.local/postgres` to fix a startup error.
+Bootstrap creates an ignored `.local/` directory with a random PostgreSQL password, migrations and synthetic accounts. Credentials are in `.local/demo-accounts.json` with mode0600; they are never printed or committed. The database binds loopback on port55432 and the application on port3000. `npm start` serves the compiled app; `npm run dev` uses Vite on3000 and API on loopback3001 through Vite's proxy. Stop with Ctrl+C. Restarting preserves local data. Never remove `.local/postgres` to fix a startup error.
 
 Email messages are local files under `.local/mail/`, not deliveries to real addresses. Read the intended synthetic account's message locally to use its confirmation/reset link. There is no HTTP mailbox endpoint. Real identity/income providers, document uploads, payments and guarantees are unavailable. The optional income flow uses server-generated examples explicitly labelled synthetic, with private preview and invitation-specific sharing.
 
@@ -39,7 +52,9 @@ Integration tests use only the generated local `soglia_test` database; browser t
 
 The experience suite serves the built frontend on loopback3017 with mocked APIs and no PostgreSQL connection. It covers role selection, guided account setup, FAQ and editable chat starters. `npm run check` runs build, backend tests and both browser suites sequentially.
 
-Latest combined-source validation, 2026-10-04: frozen install, bootstrap, build/typecheck, **163 unit/integration tests**, **22 main browser checks** and **11 experience/mail-runtime checks** passed; dependency audit reported zero known vulnerabilities. [Integration evidence](docs/operations/evidence/mvp-push-2026-10-04/readiness.json) identifies both parents and the tested source diff. The merged fixes add retry for property/discovery/chat loads, readable network errors, the selected text in message reports and draft reset when the report or conversation changes. Earlier standalone follow-up results are retained in the validation history.
+Development setup validation, 2026-10-04: build/typecheck, **179 unit/integration tests**, **22 main browser checks** and **11 experience/mail-runtime checks** passed; HMR, API/SQL watch, session retention, shutdown/restart and data preservation were checked in the Linux cloud environment. [Development evidence](docs/operations/evidence/development-2026-10-04.json) records the tested outcomes and limits; startup on the user's Mac remains to be verified.
+
+The preceding combined-MVP integration passed frozen install, bootstrap, build/typecheck,163 unit/integration tests and the same browser configurations; its dependency audit reported zero known vulnerabilities. [Integration evidence](docs/operations/evidence/mvp-push-2026-10-04/readiness.json) identifies both parents and the tested source diff. The merged fixes add retry for property/discovery/chat loads, readable network errors, the selected text in message reports and draft reset when the report or conversation changes. Earlier standalone follow-up results are retained in the validation history.
 
 ## What is implemented
 

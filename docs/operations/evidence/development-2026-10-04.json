@@ -1,0 +1,74 @@
+{
+  "proxyHealth": true,
+  "browserLogin": true,
+  "apiWatch": true,
+  "sqlWatch": true,
+  "frontendHmr": true,
+  "sessionSurvivesRestart": true,
+  "postgresPidStable": 10571,
+  "dataCounts": {
+    "users": 5,
+    "profiles": 2,
+    "properties": 1,
+    "schema_migrations": 4
+  },
+  "browserErrors": 0,
+  "supervisorSigtermExit": 0,
+  "portsFreeAfterSigterm": [3000, 3001, 55432],
+  "cloudBindingVerifiedLocally": true,
+  "forwardedHostAllowed": true,
+  "unapprovedHostRefused": true,
+  "exactOriginPreserved": true,
+  "dotenvLoading": true,
+  "portsFreeAfterCtrlC": [3000, 3001, 55432],
+  "publicPreviewVerified": false,
+  "terminalCtrlCCompleted": true,
+  "terminalCommandExitReported": 1,
+  "directSupervisorSignalChecks": {
+    "SIGINT": {
+      "exit": 0,
+      "portsFree": true
+    },
+    "SIGHUP": {
+      "exit": 0,
+      "portsFree": true
+    }
+  },
+  "verifiedAt": "2026-10-04T00:01:47.479Z",
+  "stack": {
+    "node": "v24.19.0",
+    "frontend": "React / Vite",
+    "backend": "Fastify",
+    "database": "PostgreSQL 18"
+  },
+  "checks": {
+    "build": true,
+    "typecheck": true,
+    "unitIntegration": 179,
+    "browserMain": 22,
+    "browserExperienceMailRuntime": 11,
+    "developmentRegressionTests": 16,
+    "formatting": true,
+    "diffCheck": true
+  },
+  "devcontainer": {
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:5.2.1-24-bookworm",
+    "manifestVerified": true,
+    "platforms": ["linux/amd64", "linux/arm64"],
+    "containerStarted": false
+  },
+  "finalDevelopment": {
+    "command": "npm run dev",
+    "frontend": "http://127.0.0.1:3000",
+    "apiLoopbackPort": 3001,
+    "databaseLoopbackPort": 55432,
+    "health": true,
+    "dataPreserved": true
+  },
+  "limits": [
+    "Cloud binding and origin verified via local requests; no platform preview URL available.",
+    "Dev Container image manifest verified; actual container creation not exercised.",
+    "Terminal Ctrl+C stops services; terminal wrapper reported exit 1. Direct supervisor SIGINT and SIGHUP checks exit 0.",
+    "Final launcher signal changes verified by typecheck, development regression tests and runtime lifecycle after the full check."
+  ]
+}

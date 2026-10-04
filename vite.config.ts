@@ -1,12 +1,26 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    host: "127.0.0.1",
-    port: 3000,
-    strictPort: true,
-    proxy: { "/api": "http://127.0.0.1:3001" },
-  },
-  build: { sourcemap: false },
+import { readDevelopmentConfiguration } from "./scripts/dev-config.js";
+
+export default defineConfig(({ command, isPreview }) => {
+  const development =
+    command === "serve" && !isPreview
+      ? readDevelopmentConfiguration()
+      : undefined;
+  return {
+    plugins: [react()],
+    clearScreen: development ? false : undefined,
+    server: development
+      ? {
+          host: development.host,
+          port: development.port,
+          strictPort: true,
+          allowedHosts: development.allowedHosts,
+          proxy: {
+            "/api": `http://127.0.0.1:${development.apiPort}`,
+          },
+        }
+      : undefined,
+    build: { sourcemap: false },
+  };
 });
