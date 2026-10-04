@@ -38,6 +38,7 @@ import {
 } from "../shared/contracts";
 import type { User } from "../server/auth";
 import { IncomeWorkspace, InvitationIncome } from "./Income";
+import { ProfileAvatar, ProfilePhotoEditor } from "./ProfilePhoto";
 import {
   PhotoEditor,
   PropertyCover,
@@ -856,8 +857,8 @@ function Safeguards() {
           <h2>Quando accetti</h2>
           <p>
             Entrambe le parti vedono il nome scelto, che può essere uno
-            pseudonimo, e possono scriversi. Email e documenti non vengono
-            condivisi automaticamente.
+            pseudonimo, la foto del profilo se aggiunta, e possono scriversi.
+            Email e documenti non vengono condivisi automaticamente.
           </p>
         </article>
         <article className="panel">
@@ -1617,6 +1618,7 @@ function ProfilePage() {
       </PageHeading>
       <ErrorBox text={a.error} />
       {a.message && <Notice>{a.message}</Notice>}
+      <ProfilePhotoEditor initialPhoto={l.data.photo} onSaved={l.reload} />
       <div className="form-layout">
         <form
           className="panel"
@@ -1718,7 +1720,7 @@ function ProfilePage() {
           </p>
           <p>
             <strong>
-              Nome, email e verifiche restano esclusi dalla scoperta.
+              Nome, foto, email e verifiche restano esclusi dalla scoperta.
             </strong>
           </p>
           {p && (
@@ -2426,7 +2428,8 @@ function DiscoverPage() {
           )}
           <p className="disclosure">
             Quando un invito viene accettato, entrambi vedrete il nome scelto e
-            potrete scrivervi. Email e documenti restano privati.
+            la foto del profilo se aggiunta, e potrete scrivervi. Email e
+            documenti restano privati.
           </p>
           {l.error ? null : !l.data ? (
             <Loading />
@@ -2679,7 +2682,10 @@ function InvitationsPage({ user }: { user: User }) {
                 </p>
               )}
               {i.other_name && (
-                <p>
+                <p className="profile-contact">
+                  {i.other_photo && (
+                    <ProfileAvatar photo={i.other_photo} name={i.other_name} />
+                  )}
                   In conversazione con <strong>{i.other_name}</strong>
                 </p>
               )}
@@ -2692,8 +2698,9 @@ function InvitationsPage({ user }: { user: User }) {
               {i.status === "pending" && (
                 <p className="disclosure">
                   Accettando, condividi il nome scelto con l’altra persona e
-                  apri la chat. Nessuna email o documento viene condiviso. Scade
-                  il {dateLabel(i.expires_at)}.
+                  apri la chat. Se hai aggiunto una foto al profilo, sarà
+                  visibile al proprietario. Nessuna email o documento viene
+                  condiviso. Scade il {dateLabel(i.expires_at)}.
                 </p>
               )}
               {["pending", "accepted"].includes(i.status) && (
@@ -2815,6 +2822,12 @@ function Conversation({ id, user }: { id: string; user: User }) {
       >
         {info?.property.title}
       </PageHeading>
+      {info?.other_photo && info?.other_name && (
+        <div className="profile-contact conversation-contact">
+          <ProfileAvatar photo={info.other_photo} name={info.other_name} />
+          <strong>{info.other_name}</strong>
+        </div>
+      )}
       <ErrorBox text={l.error || inv.error || a.error} />
       {(l.error || inv.error) && (
         <button

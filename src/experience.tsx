@@ -112,7 +112,7 @@ export function ProductFAQ() {
           ],
           [
             "Accettare un invito mi impegna ad affittare?",
-            "No. Accettare apre una conversazione e rende visibile a entrambe le parti il nome scelto. Puoi chiedere informazioni e valutare l’immobile. L’invito non è una prenotazione o un contratto.",
+            "No. Accettare apre una conversazione e rende visibili il nome scelto e la foto del profilo, se l’hai aggiunta. Puoi chiedere informazioni e valutare l’immobile. L’invito non è una prenotazione o un contratto.",
           ],
           [
             "Posso interrompere la ricerca?",

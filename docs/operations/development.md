@@ -230,3 +230,32 @@ Se l'interfaccia risponde ma `/api/health` fallisce, controllare API/proxy e log
 Una porta occupata richiede l'identificazione del processo e del comando che lo ha avviato. Riutilizzare o fermare il proprio servizio, oppure scegliere `DEV_PORT`/`DEV_API_PORT` libere e coerenti con il forwarding e `APP_ORIGIN`. Non cancellare dati o uccidere indiscriminatamente processi per liberarla.
 
 Per dati apparentemente persi dopo refresh, verificare prima risposta del salvataggio, account/sessione, database corrente e lettura successiva. Per chat/inviti controllare lo stato dell'invito, revisioni, blocchi, sospensioni e scadenze; queste regole sono parte del comportamento corrente, non errori da aggirare.
+
+## Foto del profilo
+
+In `/profile` il riquadro «Foto del profilo» funziona separatamente dal form
+preferenze. Scegliere una foto mostra l’anteprima; «Salva foto» effettua
+l’upload. «Annulla» conserva la foto già salvata. «Cambia foto» e «Rimuovi
+foto» non cambiano la revisione del profilo né gli inviti in attesa.
+JPG, PNG e WebP, massimo5 MB; il server controlla il contenuto e ricodifica
+in WebP senza metadati. La foto può essere salvata prima delle preferenze.
+
+`GET /api/profile` include `photo`; upload e rimozione usano
+`POST` multipart e `DELETE /api/profile/photo`. Le immagini passano da
+`GET /api/profile-photos/:id`, con sessione e cache privata disabilitata.
+Solo il titolare e i contatti di inviti accettati/chiusi attivi e non
+bloccati possono leggerle; la scoperta anonima non include foto.
+Gli inviti accettati/chiusi includono `other_photo` per il contatto.
+La migrazione010 aggiunge il record corrente e i token di upload già usati:
+un retry con lo stesso token recupera il risultato corrente, mentre un
+vecchio token non ripristina una foto rimossa o sostituita. La coda comune
+di cleanup gestisce sostituzioni, rimozioni e cancellazioni dell’account.
+Non cambiare il namespace delle foto immobili o la loro retention nelle
+offerte accettate. Le stesse variabili dello storage privato servono per
+entrambi i tipi di immagine; non è necessaria una nuova configurazione.
+
+Regressioni specifiche: `tests/profile-photos.test.ts`,
+`tests/experience/profile-photo.spec.ts` e il flusso reale in
+`tests/preview-browser/preview.spec.ts`. Fermare il supervisor dev posseduto
+prima di creare/applicare migrazioni o avviare suite che gestiscono il DB;
+riavviarlo al termine e controllare i dati del database dell’app.

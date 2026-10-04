@@ -542,3 +542,59 @@ durate, revisioni e dati immobile precedente identico prima/dopo.
 Nuovi campi preesistenti valorizzati soltanto ai default any/unspecified.
 Nessun segreto o dato sintetico generato tracciato. Deploy Railway da
 verificare sul commit finale, nello stesso percorso autorizzato.
+
+
+Pubblicato `4a65a8dcaf017c094cf26fb81aff55f85e951436`: web
+`8affecc2-3a96-4f49-a53c-6eb45b86f621` **SUCCESS**, una replica online
+senza crash; cron `d775fbb9-ab37-449d-9788-e2b63e4727b3` pronto, DB
+online, nessun warning/critical attivo o lavoro pending. Preflight conferma
+migrazioni e storage privato pronti. Health/config HTTPS preview200 e hash
+JS `index-B84-NzKt.js`/CSS `index-DFbERW4G.css` identici alla build locale.
+QA della build pubblica con config reale e sole API GET session/profile/
+properties sintetiche intercettate: tutte le formule nel profilo, hint,
+12 mesi invariati, anteprima salvata intatta; proprietario da non definito
+a studenti senza modificare6–36. Zero scritture/tentativi POST/PUT pubblici,
+errori console/JavaScript/rete, overflow390px o violazioni axe configurate.
+Screenshot e metadati in `.local/contracts`; dev pronto e dati locali
+preservati. Aggiornare `/profile` per caricare il nuovo bundle. Esito
+operativo conservato localmente per evitare un deploy soltanto documentale.
+
+
+## Feedback sullo slogan della dashboard — 2026-10-04
+
+Annotazione «Le tue scelte restano tue. Puoi fermarti quando vuoi.»:
+la frase e il vecchio riquadro risultano già rimossi da `9eb45d0`.
+Nessun altro cambiamento di codice necessario. Verificati nuovamente
+health preview e bundle pubblici identici a `4a65a8d`; dashboard pubblica
+con API sintetiche a1440/390px senza quella frase, overflow, errori browser
+o violazioni axe configurate. Evidenze in `.local/dashboard-slogan`.
+Lo screenshot annotato mostra una versione precedente. Richiesta di
+riapertura browser tramite UI non confermata: attesa interrotta senza
+asserire una navigazione avvenuta. Per vedere la versione corrente usare
+`/dashboard?v=4a65a8d` o aggiornare la scheda. Dev e dati preservati,
+nessun nuovo push/deploy per una correzione già pubblicata.
+
+## Foto del profilo — 2026-10-04
+
+Feedback browser «Rendi possibile aggiungere una foto» sul profilo di
+ricerca. Aggiunta una foto facoltativa con anteprima, salvataggio esplicito,
+sostituzione, rimozione e recupero degli errori. Uploader separato dalle
+preferenze: non altera le modifiche non salvate, le revisioni o gli inviti.
+Una foto JPEG/PNG/WebP fino a5 MB, WebP normalizzato senza metadati nello
+storage privato esistente; può precedere il salvataggio delle preferenze.
+Titolare e contatti con invito accettato/chiuso, attivi e non bloccati,
+possono vederla. Non appare nella scoperta anonima. Avatar negli inviti e
+in chat, spiegazioni della condivisione aggiornate. Migrazione010 aggiuntiva,
+retry con token e cleanup persistente per sostituzioni/rimozioni/cascade.
+Build/typecheck,327 test backend,22 browser principali,5 preview e20
+experience passati. Un’asserzione della nuova fixture adattata all’header
+esplicito private,no-store; suite completa poi verde. Revisione indipendente
+su visibilità, retry, cleanup e ordine dei lock senza rilievi materiali.
+Immagine Docker production costruita e import API/helper foto/migrazione010
+verificati senza rete né DB. Screenshot mobile320 e controlli axe/layout,
+console/rete passati. Il flusso reale preview prova upload, refresh,
+scoperta senza foto, condivisione dopo match e rimozione anche dal lato
+proprietario. Dev riavviato con HMR/watch, health locale200;5 utenti,
+2 profili e1 immobile con hash dei dati e delle revisioni identico prima/dopo.
+Evidenze private in `.local/profile-photo`. Pubblicazione e verifica nella
+stessa preview Railway autorizzata sul commit finale.

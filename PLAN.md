@@ -240,3 +240,16 @@ Migrazione009 aggiuntiva, durate preesistenti invariate. Build/typecheck,
 311 test backend,22 browser principali e17 esperienza passati. Fonti e
 semantica in [contract-preferences](docs/product/06-contract-preferences.md).
 Pubblicazione nella preview Railway esistente già autorizzata.
+
+## Foto facoltativa nel profilo — 2026-10-04
+
+Il profilo di ricerca consente di scegliere una foto, vederne l’anteprima,
+salvarla, sostituirla e rimuoverla senza salvare o modificare le preferenze.
+Una sola immagine JPEG/PNG/WebP fino a5 MB, normalizzata senza metadati.
+Storage privato persistente già disponibile; visibilità limitata al titolare
+e ai contatti con conversazione accettata/chiusa, attivi e non bloccati.
+Nessuna foto nella scoperta anonima. Migrazione010 aggiuntiva, cleanup
+persistente e retry che non ripristinano foto precedenti. Build/typecheck,
+327 backend,22 browser principali,5 preview e20 experience passati;
+immagine Docker production e conservazione dei dati verificati.
+Pubblicazione nella stessa preview Railway autorizzata.

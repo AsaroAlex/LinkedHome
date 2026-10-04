@@ -8,7 +8,12 @@ export default defineConfig({
     {
       name: "experience",
       testDir: "tests/experience",
-      testMatch: ["experience.spec.ts", "move-in.spec.ts", "contracts.spec.ts"],
+      testMatch: [
+        "experience.spec.ts",
+        "move-in.spec.ts",
+        "contracts.spec.ts",
+        "profile-photo.spec.ts",
+      ],
     },
     {
       name: "mail-runtime",

@@ -908,6 +908,107 @@ summary:focus-visible {
   font-size: 0.78rem !important;
   margin: 18px 0 10px;
 }
+.profile-photo-panel {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 28px;
+  background: var(--surface-muted);
+}
+.profile-photo-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 144px;
+  text-align: center;
+}
+.profile-avatar {
+  display: inline-flex;
+  width: 120px;
+  height: 120px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 3px solid var(--surface);
+  border-radius: 50%;
+  background: var(--surface-soft);
+  color: var(--primary);
+  box-shadow: 0 0 0 1px var(--border);
+}
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.profile-avatar svg {
+  width: 72px;
+  height: 72px;
+}
+.profile-photo-controls {
+  min-width: 0;
+  flex: 1;
+}
+.profile-photo-controls h2 {
+  font-size: 1.35rem;
+}
+.profile-photo-optional {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.profile-photo-picker {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.profile-photo-picker input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.profile-photo-picker:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.profile-photo-picker.disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.profile-photo-controls .field-hint {
+  margin-bottom: 0;
+}
+.profile-contact {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.profile-contact .profile-avatar {
+  width: 44px;
+  height: 44px;
+  border-width: 2px;
+}
+.conversation-contact {
+  margin: -12px 0 24px;
+}
+@media (max-width: 600px) {
+  .profile-photo-panel {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .profile-photo-preview {
+    flex: 0 0 auto;
+    align-self: center;
+  }
+  .profile-photo-controls {
+    width: 100%;
+  }
+}
 .photo-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

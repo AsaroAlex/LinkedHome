@@ -50,7 +50,11 @@ import {
   normalizePhoto,
   photoLimits,
   photoObjectKey,
+  profilePhotoObjectKey,
   photoView,
+  profilePhotoView,
+  profilePhotoVisibility,
+  profilePhotos,
   propertyPhotos,
   cleanupPhotoObjects,
   type PhotoStorage,
@@ -210,7 +214,9 @@ export async function buildApp(
         throw new Problem(403, "Origine della richiesta non consentita.");
       const photoUpload =
         r.method === "POST" &&
-        r.routeOptions.url === "/api/properties/:id/photos";
+        ["/api/properties/:id/photos", "/api/profile/photo"].includes(
+          r.routeOptions.url || "",
+        );
       if (
         photoUpload
           ? !r.headers["content-type"]?.startsWith("multipart/form-data;")
@@ -558,11 +564,179 @@ export async function buildApp(
     );
   app.get("/api/profile", async (r) => {
     const u = actor(r);
+    const [profile, images] = await Promise.all([
+      db.query("SELECT * FROM profiles WHERE user_id=$1", [u.id]),
+      profilePhotos(db, u.id, [u.id]),
+    ]);
     return {
-      profile:
-        (await db.query("SELECT * FROM profiles WHERE user_id=$1", [u.id]))
-          .rows[0] || null,
+      profile: profile.rows[0] || null,
+      photo: images.get(u.id) || null,
     };
+  });
+  app.post(
+    "/api/profile/photo",
+    { bodyLimit: photoLimits.bytes + 65536 },
+    async (r, reply) => {
+      const u = actor(r, { role: "tenant" });
+      let input: { body: Buffer; mimetype: string } | undefined;
+      for await (const part of r.parts()) {
+        requireThat(
+          part.type === "file" &&
+            ["photo", "file"].includes(part.fieldname) &&
+            !input,
+          "Carica una foto alla volta, senza altri campi.",
+          400,
+        );
+        if (part.type === "file")
+          input = { body: await part.toBuffer(), mimetype: part.mimetype };
+      }
+      requireThat(input, "Scegli una foto da caricare.", 400);
+      const image = await normalizePhoto(input!.body, input!.mimetype);
+      const photoId = r.headers["idempotency-key"]
+          ? uuid.parse(r.headers["idempotency-key"])
+          : randomUUID(),
+        key = profilePhotoObjectKey(photoId);
+      let attempted = false;
+      try {
+        const result = await tx(db, async (c) => {
+          await lockUsers(c, [u.id]);
+          await active(c, u.id);
+          const previous = (
+            await c.query(
+              "SELECT id,object_key FROM profile_photos WHERE user_id=$1",
+              [u.id],
+            )
+          ).rows[0];
+          // Lock both the new token and the old object before replacing it.
+          // Cleanup cannot discard a stale queue entry during this update.
+          for (const id of [
+            ...new Set([photoId, previous?.id].filter(Boolean)),
+          ].sort())
+            await c.query(
+              "SELECT pg_advisory_xact_lock(hashtextextended($1,0))",
+              [id],
+            );
+          const used = (
+            await c.query(
+              "SELECT user_id FROM profile_photo_upload_requests WHERE id=$1",
+              [photoId],
+            )
+          ).rows[0];
+          if (used) {
+            const existing = (
+              await c.query(
+                "SELECT id,width,height FROM profile_photos WHERE id=$1 AND user_id=$2",
+                [photoId, u.id],
+              )
+            ).rows[0];
+            requireThat(
+              used.user_id === u.id && existing,
+              "Richiesta foto già utilizzata. Seleziona nuovamente la foto.",
+              409,
+            );
+            return { photo: profilePhotoView(existing), replacedKey: null };
+          }
+          // A failed previous attempt can leave an object awaiting cleanup.
+          // This token lock also guards cleanup and concurrent retries.
+          if (
+            (
+              await c.query(
+                "SELECT 1 FROM photo_object_deletions WHERE object_key=$1",
+                [key],
+              )
+            ).rowCount
+          )
+            await photos.delete(key);
+          attempted = true;
+          await photos.put(key, image.body);
+          await c.query(
+            "INSERT INTO profile_photo_upload_requests(id,user_id) VALUES($1,$2)",
+            [photoId, u.id],
+          );
+          const row = (
+            await c.query(
+              "INSERT INTO profile_photos(id,user_id,object_key,width,height,byte_size) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(user_id) DO UPDATE SET id=EXCLUDED.id,object_key=EXCLUDED.object_key,width=EXCLUDED.width,height=EXCLUDED.height,byte_size=EXCLUDED.byte_size,created_at=now() RETURNING id,width,height",
+              [
+                photoId,
+                u.id,
+                key,
+                image.width,
+                image.height,
+                image.body.length,
+              ],
+            )
+          ).rows[0];
+          await c.query(
+            "DELETE FROM photo_object_deletions WHERE object_key=$1",
+            [key],
+          );
+          return {
+            photo: profilePhotoView(row),
+            replacedKey: (previous?.object_key as string | undefined) || null,
+          };
+        });
+        if (result.replacedKey)
+          await cleanupPhotoObjects(db, photos, [result.replacedKey]).catch(
+            () => {},
+          );
+        return reply.code(201).send({ photo: result.photo });
+      } catch (error) {
+        if (attempted) {
+          await db
+            .query(
+              "INSERT INTO photo_object_deletions(object_key) VALUES($1) ON CONFLICT DO NOTHING",
+              [key],
+            )
+            .catch(() => {});
+          await cleanupPhotoObjects(db, photos, [key]).catch(() => {});
+        }
+        throw error;
+      }
+    },
+  );
+  app.delete("/api/profile/photo", async (r) => {
+    const u = actor(r, { role: "tenant" });
+    const key = await tx(db, async (c) => {
+      await lockUsers(c, [u.id]);
+      await active(c, u.id);
+      const current = (
+        await c.query("SELECT id FROM profile_photos WHERE user_id=$1", [u.id])
+      ).rows[0];
+      if (current)
+        await c.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [
+          current.id,
+        ]);
+      return (
+        await c.query(
+          "DELETE FROM profile_photos WHERE user_id=$1 RETURNING object_key",
+          [u.id],
+        )
+      ).rows[0]?.object_key as string | undefined;
+    });
+    if (key) await cleanupPhotoObjects(db, photos, [key]).catch(() => {});
+    return { ok: true };
+  });
+  app.get("/api/profile-photos/:id", async (r, reply) => {
+    const u = actor(r),
+      id = idParam(r);
+    const photo = (
+      await db.query(
+        `SELECT ph.object_key FROM profile_photos ph JOIN users subject ON subject.id=ph.user_id WHERE ph.id=$2 AND ($3::uuid[] IS NULL OR ph.user_id=ANY($3)) AND ${profilePhotoVisibility}`,
+        [
+          u.id,
+          id,
+          preview
+            ? [r.previewWorkspace!.tenant_id, r.previewWorkspace!.landlord_id]
+            : null,
+        ],
+      )
+    ).rows[0];
+    requireThat(photo, "Foto non disponibile.", 404);
+    return reply
+      .type("image/webp")
+      .header("Cache-Control", "private, no-store")
+      .header("Content-Disposition", 'inline; filename="profilo.webp"')
+      .send(await photos.get(photo.object_key));
   });
   app.put("/api/profile", async (r) => {
     const u = actor(r, { role: "tenant" });
@@ -1035,6 +1209,14 @@ export async function buildApp(
       db,
       rows.map((i) => i.property_id),
     );
+    const profileImages = await profilePhotos(
+      db,
+      u.id,
+      rows.map((i) => (i.tenant_id === u.id ? i.landlord_id : i.tenant_id)),
+      preview
+        ? [r.previewWorkspace!.tenant_id, r.previewWorkspace!.landlord_id]
+        : undefined,
+    );
     return rows.map((i) => {
       i.property.photos = images.get(i.property_id) || [];
       if (
@@ -1051,6 +1233,11 @@ export async function buildApp(
         : i.property;
       return {
         ...i,
+        other_photo: ["accepted", "closed"].includes(i.status)
+          ? profileImages.get(
+              i.tenant_id === u.id ? i.landlord_id : i.tenant_id,
+            ) || null
+          : null,
         property: publicProperty(offeredProperty),
         property_changed: i.property.revision !== i.property_revision,
         status:
@@ -1708,6 +1895,7 @@ export async function buildApp(
       appeals,
       income,
       incomeShares,
+      profilePhoto,
     ] = await Promise.all([
       db.query("SELECT * FROM profiles WHERE user_id=$1", [u.id]),
       db.query("SELECT * FROM properties WHERE owner_id=$1", [u.id]),
@@ -1742,6 +1930,9 @@ export async function buildApp(
         `${incomeSharesSelect} WHERE s.subject_id=$1 ORDER BY s.consented_at DESC,s.id DESC`,
         [u.id],
       ),
+      db.query("SELECT id,width,height FROM profile_photos WHERE user_id=$1", [
+        u.id,
+      ]),
     ]);
     return {
       account: {
@@ -1752,6 +1943,9 @@ export async function buildApp(
         email_verified: u.email_verified,
       },
       profile: profile.rows,
+      profile_photo: profilePhoto.rows[0]
+        ? profilePhotoView(profilePhoto.rows[0])
+        : null,
       properties: properties.rows,
       invitations: invitations.rows,
       messages: messages.rows,
@@ -1786,6 +1980,13 @@ export async function buildApp(
         await c.query("SELECT password_hash FROM users WHERE id=$1", [u.id])
       ).rows[0];
       requireThat(fresh?.password_hash === hash, "Credenziali cambiate.", 409);
+      const profilePhoto = (
+        await c.query("SELECT id FROM profile_photos WHERE user_id=$1", [u.id])
+      ).rows[0];
+      if (profilePhoto)
+        await c.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [
+          profilePhoto.id,
+        ]);
       await c.query("DELETE FROM users WHERE id=$1", [u.id]);
       await event(c, "account_deleted");
     });

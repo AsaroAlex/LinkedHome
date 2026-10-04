@@ -1,5 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
+import sharp from "sharp";
 
 async function browserApi(page: Page, path: string) {
   // Chromium sends Secure cookies to its trustworthy HTTP loopback origin;
@@ -138,6 +139,31 @@ test("synthetic preview preserves both roles through invitation and conversation
   await expect(page.getByLabel("Budget totale mensile")).toHaveValue(
     String(profile.budget),
   );
+  const photoEditor = page.getByRole("region", { name: "Foto del profilo" });
+  const syntheticPhoto = await sharp({
+    create: { width: 120, height: 160, channels: 3, background: "#4177aa" },
+  })
+    .png()
+    .toBuffer();
+  await photoEditor.getByLabel("Scegli una foto").setInputFiles({
+    name: "profilo-sintetico.png",
+    mimeType: "image/png",
+    buffer: syntheticPhoto,
+  });
+  await expect(photoEditor.getByText("Anteprima · da salvare")).toBeVisible();
+  await photoEditor.getByRole("button", { name: "Salva foto" }).click();
+  await expect(photoEditor.getByRole("status")).toHaveText("Foto salvata.");
+  const savedPhoto = (await browserApi(page, "/profile")).photo;
+  expect(savedPhoto.url).toMatch(/^\/api\/profile-photos\//);
+  expect((await browserApi(page, "/profile")).profile).toEqual(profile);
+  await page.reload();
+  const ownPhoto = photoEditor.getByAltText("La tua foto del profilo");
+  await expect(ownPhoto).toHaveAttribute("src", savedPhoto.url);
+  await expect
+    .poll(() =>
+      ownPhoto.evaluate((image: HTMLImageElement) => image.naturalWidth),
+    )
+    .toBeGreaterThan(0);
   for (const width of [390, 320]) {
     await page.setViewportSize({ width, height: 844 });
     await noOverflow(page);
@@ -172,6 +198,7 @@ test("synthetic preview preserves both roles through invitation and conversation
   await expect(tenantCard).toBeVisible();
   await expect(tenantCard).not.toContainText(tenant.email);
   await expect(tenantCard).not.toContainText(tenant.display_name);
+  await expect(tenantCard.locator(".profile-avatar")).toHaveCount(0);
   await noOverflow(page);
   await tenantCard
     .getByRole("button", { name: /Invita per questo immobile/ })
@@ -203,7 +230,28 @@ test("synthetic preview preserves both roles through invitation and conversation
     .click();
   await page.getByRole("link", { name: /Apri conversazione/ }).click();
   await expect(page.getByText(message, { exact: true })).toBeVisible();
+  const sharedPhoto = page.getByAltText(`Foto di ${tenant.display_name}`);
+  await expect(sharedPhoto).toHaveAttribute("src", savedPhoto.url);
+  await expect
+    .poll(() =>
+      sharedPhoto.evaluate((image: HTMLImageElement) => image.naturalWidth),
+    )
+    .toBeGreaterThan(0);
   await noOverflow(page);
+  expect((await switchRole(page, "tenant")).id).toBe(tenant.id);
+  await page.getByRole("link", { name: "Il mio profilo", exact: true }).click();
+  await page.getByRole("button", { name: "Rimuovi foto" }).click();
+  await expect(page.getByRole("status")).toHaveText("Foto rimossa.");
+  expect((await browserApi(page, "/profile")).photo).toBeNull();
+  expect((await browserApi(page, "/profile")).profile).toEqual(profile);
+  expect((await switchRole(page, "landlord")).id).toBe(landlord.id);
+  await page
+    .getByRole("link", { name: "Inviti e messaggi", exact: true })
+    .click();
+  await page.getByRole("link", { name: /Apri conversazione/ }).click();
+  await expect(page.getByAltText(`Foto di ${tenant.display_name}`)).toHaveCount(
+    0,
+  );
   await page.getByRole("link", { name: "Account", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Account dimostrativo" }),

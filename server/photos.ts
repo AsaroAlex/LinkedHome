@@ -26,6 +26,12 @@ export interface PropertyPhoto {
   height: number;
   position: number;
 }
+export interface ProfilePhoto {
+  id: string;
+  url: string;
+  width: number;
+  height: number;
+}
 export interface PhotoStorage {
   put(key: string, body: Buffer): Promise<void>;
   get(key: string): Promise<Buffer>;
@@ -93,22 +99,25 @@ export function readPhotoConfiguration(
   };
 }
 const validKey = (key: string) => {
-  if (!/^property-photos\/[a-f0-9-]{36}\.webp$/.test(key))
+  if (!/^(?:property|profile)-photos\/[a-f0-9-]{36}\.webp$/.test(key))
     throw new Error("Invalid photo object key.");
   return key;
 };
 export const photoObjectKey = (id: string = randomUUID()) =>
   `property-photos/${id}.webp`;
+export const profilePhotoObjectKey = (id: string = randomUUID()) =>
+  `profile-photos/${id}.webp`;
 export function createPhotoStorage(
   config = readPhotoConfiguration(),
 ): PhotoStorage {
   if (config.storage === "local") {
-    const directory = path.join(localDir, "property-photos");
-    const target = (key: string) =>
-      path.join(directory, path.basename(validKey(key)));
+    const target = (key: string) => path.join(localDir, validKey(key));
     return {
       async put(key, body) {
-        await mkdir(directory, { recursive: true, mode: 0o700 });
+        await mkdir(path.dirname(target(key)), {
+          recursive: true,
+          mode: 0o700,
+        });
         await writeFile(target(key), body, { mode: 0o600, flag: "wx" });
       },
       async get(key) {
@@ -212,6 +221,37 @@ export const photoView = (photo: any): PropertyPhoto => ({
   height: photo.height,
   position: photo.position,
 });
+export const profilePhotoView = (photo: any): ProfilePhoto => ({
+  id: photo.id,
+  url: `/api/profile-photos/${photo.id}`,
+  width: photo.width,
+  height: photo.height,
+});
+
+// Callers use aliases ph (photo) and subject (its owner), with $1 as viewer.
+// A photo is shared only after both parties have accepted a conversation.
+export const profilePhotoVisibility = `subject.suspended=false AND
+ (ph.user_id=$1 OR
+  (EXISTS(SELECT 1 FROM users viewer WHERE viewer.id=$1 AND viewer.suspended=false)
+   AND NOT EXISTS(SELECT 1 FROM blocks b WHERE (b.blocker_id=$1 AND b.blocked_id=ph.user_id) OR (b.blocker_id=ph.user_id AND b.blocked_id=$1))
+   AND EXISTS(SELECT 1 FROM invitations i WHERE i.status IN ('accepted','closed') AND
+    ((i.tenant_id=ph.user_id AND i.landlord_id=$1) OR (i.landlord_id=ph.user_id AND i.tenant_id=$1)))))`;
+
+export async function profilePhotos(
+  db: DB | PoolClient,
+  viewerId: string,
+  userIds: string[],
+  allowedUserIds?: string[],
+) {
+  const photos = new Map<string, ProfilePhoto>();
+  if (!userIds.length) return photos;
+  const { rows } = await db.query(
+    `SELECT ph.id,ph.user_id,ph.width,ph.height FROM profile_photos ph JOIN users subject ON subject.id=ph.user_id WHERE ph.user_id=ANY($2::uuid[]) AND ($3::uuid[] IS NULL OR ph.user_id=ANY($3)) AND ${profilePhotoVisibility}`,
+    [viewerId, userIds, allowedUserIds || null],
+  );
+  for (const row of rows) photos.set(row.user_id, profilePhotoView(row));
+  return photos;
+}
 export async function propertyPhotos(db: DB | PoolClient, ids: string[]) {
   const photos = new Map<string, PropertyPhoto[]>();
   if (!ids.length) return photos;
@@ -245,18 +285,16 @@ export async function cleanupPhotoObjects(
     try {
       validKey(object_key);
       const deleted = await tx(db, async (c) => {
-        const photoId = object_key.slice(
-          "property-photos/".length,
-          -".webp".length,
-        );
+        const photoId = path.basename(object_key, ".webp");
         await c.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [
           photoId,
         ]);
         // A successful retry may have reused an object previously queued after rollback.
         const referenced = (
-          await c.query("SELECT 1 FROM property_photos WHERE object_key=$1", [
-            object_key,
-          ])
+          await c.query(
+            "SELECT 1 FROM property_photos WHERE object_key=$1 UNION ALL SELECT 1 FROM profile_photos WHERE object_key=$1",
+            [object_key],
+          )
         ).rowCount;
         if (!referenced) await storage.delete(object_key);
         await c.query(
