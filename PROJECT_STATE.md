@@ -272,5 +272,34 @@ FAQ a1440/768/390/320px, tastiera su tutte le domande e collegamento alla guida.
 Nessun overflow, violazione axe configurata o errore console/rete; screenshot
 ispezionati e revisione indipendente senza rilievi materiali. Sorgente UI
 principale `src/experience.tsx`; [fonti e motivazione](docs/design/03-landing-copy.md).
-Dati e supervisor dev preservati. Aggiornamento della preview Railway
-esistente in corso; nessuna nuova infrastruttura o verifica finanziaria reale.
+Dati e supervisor dev preservati. Pubblicato il commit
+`340569b148b82e3448acab3a97506fcefecefbb5` sul branch esistente. Web
+`417e07ce-9654-43b1-b5a0-a78501601de3` **SUCCESS**, una replica online senza
+crash; cron `c055133c-ab8e-4091-a3ec-e4e30aae0aee` **SUCCESS**/`cronReady`.
+HTTPS e health preview200, bundle `index-CbriJTGg.js`: titolo/intro/nuova
+domanda presenti, vecchio titolo assente e sezione reddito conservata.
+Evidenza senza credenziali in `.local/faq-copy/railway-verification.json`.
+Esito operativo conservato localmente per evitare un deploy solo documentale.
+
+## Proposta di monetizzazione dell’incontro — 2026-10-04
+
+Il nuovo commento browser chiede «Trova un modo per monetizzare l’incontro tra
+le parti». Ricerca mirata su listini ufficiali LocService, HousingAnywhere,
+Spotahome e SpareRoom; confronto con il trigger `pending → accepted` esistente.
+La proposta D-009 lascia gratuito l’inquilino e fa pagare il proprietario per
+invito accettato: 9,90 € come prezzo da testare e primo incontro gratuito solo
+come promozione di lancio circoscritta, con periodo/platea/budget da definire.
+Rifiuto/scadenza/ritiro prima dell’accettazione non generano un contatto pagato;
+conversazione successiva inclusa. D-008 riguarda una distinta proposta per
+agenzie, mai implementata come pivot.
+
+Il [modello](docs/product/05-contact-monetization.md) include fonti, condizioni,
+limiti e prova del prezzo. Calcolo aritmetico rieseguito: con IVA 22% ipotetica e
+fee Stripe carte SEE standard, circa 7,72 € residui prima di tutti gli altri
+costi per contatto pagato; non è utile o prova di domanda. Nessun pagamento,
+provider, contatto esterno, UI o deploy attivati. La scelta del pagante è stata
+chiesta come preferenza facoltativa; la raccomandazione assume proprietario
+pagante finché non arriva un’indicazione diversa. Review indipendente del
+modello svolta; recepite le precisazioni su rimborsi separati, promozione
+gratuita limitata/atomica e margine per proprietario/coorte inclusi i contatti
+gratuiti. Dati e preview preservati.

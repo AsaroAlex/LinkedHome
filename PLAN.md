@@ -167,3 +167,13 @@ ruoli, CTA esplicito e prima domanda sul funzionamento del servizio. Build,
 scenario landing e verifiche responsive/accessibilità/tastiera passati;
 revisione indipendente senza rilievi. [Fonti](docs/design/03-landing-copy.md).
 Pubblicazione nello stesso flusso Railway, preservando reddito, foto e form.
+
+## Monetizzazione dell’incontro — 2026-10-04
+
+Richiesta browser: trovare un modello di ricavo per il contatto tra le parti.
+Confrontati listini ufficiali e flusso inviti attuale. Proposta: inquilino
+gratuito, proprietario pagante per invito accettato, primo incontro gratuito
+come promozione di lancio circoscritta,
+prezzo iniziale da testare 9,90 €. [Modello](docs/product/05-contact-monetization.md)
+e D-009 distinguono fatti, ipotesi, condizioni di pagamento e prova economica.
+Nessuna modifica UI, attivazione di billing o deploy impliciti nella proposta.
