@@ -570,8 +570,17 @@ export async function buildApp(
       await lockUsers(c, [u.id]);
       await active(c, u.id);
       await c.query(
-        `INSERT INTO profiles(user_id,city,budget,move_in,duration,occupants) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(user_id) DO UPDATE SET city=$2,budget=$3,move_in=$4,duration=$5,occupants=$6,revision=profiles.revision+1,updated_at=now()`,
-        [u.id, p.city, p.budget, p.move_in, p.duration, p.occupants],
+        `INSERT INTO profiles(user_id,city,budget,move_in,duration,occupants,move_in_precision,move_in_end) VALUES($1,$2,$3,$4,$5,$6,$7,$8) ON CONFLICT(user_id) DO UPDATE SET city=$2,budget=$3,move_in=$4,duration=$5,occupants=$6,move_in_precision=$7,move_in_end=$8,revision=profiles.revision+1,updated_at=now()`,
+        [
+          u.id,
+          p.city,
+          p.budget,
+          p.move_in,
+          p.duration,
+          p.occupants,
+          p.move_in_precision,
+          p.move_in_end,
+        ],
       );
       await cancelPending(c, "tenant_id", u.id);
     });
@@ -902,7 +911,7 @@ export async function buildApp(
     );
     p.photos = (await propertyPhotos(db, [p.id])).get(p.id) || [];
     const { rows } = await db.query(
-      `SELECT p.user_id AS id,p.city,p.budget,p.move_in,p.duration,p.occupants,p.revision,md5(p.user_id::text || $8::text) AS sort_key FROM profiles p JOIN users u ON u.id=p.user_id WHERE p.status='published' AND u.suspended=false AND u.email_verified=true AND p.user_id<>$1 AND p.city=$2 AND p.budget>=$3 AND p.move_in>=$4 AND p.duration BETWEEN $5 AND $6 AND p.occupants<=$7 AND NOT EXISTS(SELECT 1 FROM blocks b WHERE (b.blocker_id=$1 AND b.blocked_id=p.user_id) OR(b.blocker_id=p.user_id AND b.blocked_id=$1)) AND NOT EXISTS(SELECT 1 FROM invitations i WHERE i.property_id=$8::uuid AND i.tenant_id=p.user_id) AND (md5(p.user_id::text || $8::text),p.user_id)>($9,$10::uuid) AND ($11::uuid IS NULL OR p.user_id=$11) ORDER BY md5(p.user_id::text || $8::text),p.user_id LIMIT 25`,
+      `SELECT p.user_id AS id,p.city,p.budget,p.move_in,p.move_in_precision,p.move_in_end,p.duration,p.occupants,p.revision,md5(p.user_id::text || $8::text) AS sort_key FROM profiles p JOIN users u ON u.id=p.user_id WHERE p.status='published' AND u.suspended=false AND u.email_verified=true AND p.user_id<>$1 AND p.city=$2 AND p.budget>=$3 AND COALESCE(p.move_in_end,p.move_in)>=$4 AND p.duration BETWEEN $5 AND $6 AND p.occupants<=$7 AND NOT EXISTS(SELECT 1 FROM blocks b WHERE (b.blocker_id=$1 AND b.blocked_id=p.user_id) OR(b.blocker_id=p.user_id AND b.blocked_id=$1)) AND NOT EXISTS(SELECT 1 FROM invitations i WHERE i.property_id=$8::uuid AND i.tenant_id=p.user_id) AND (md5(p.user_id::text || $8::text),p.user_id)>($9,$10::uuid) AND ($11::uuid IS NULL OR p.user_id=$11) ORDER BY md5(p.user_id::text || $8::text),p.user_id LIMIT 25`,
       [
         u.id,
         p.city,

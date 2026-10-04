@@ -713,6 +713,45 @@ summary:focus-visible {
   font-size: 0.94rem;
   font-weight: 400;
 }
+.move-in-choice {
+  border: 0;
+  padding: 0;
+  margin: 8px 0 0;
+  min-width: 0;
+}
+.move-in-choice legend {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.move-in-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 20px;
+}
+.move-in-modes label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.move-in-modes label.selected {
+  border-color: var(--primary);
+  background: var(--surface-soft);
+  color: var(--primary);
+}
+.move-in-modes input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--primary);
+}
 .field textarea {
   resize: vertical;
   line-height: 1.6;

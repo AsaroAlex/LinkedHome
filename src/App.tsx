@@ -22,6 +22,11 @@ import {
   quickReplies,
 } from "./experience";
 import { cities } from "../server/domain";
+import {
+  endOfMonth,
+  moveInLabel,
+  type MoveInPreferences,
+} from "../shared/move-in";
 import type { User } from "../server/auth";
 import { IncomeWorkspace, InvitationIncome } from "./Income";
 import {
@@ -1394,6 +1399,124 @@ function Dashboard({ user }: { user: User }) {
     </div>
   );
 }
+function MoveInFields({ profile }: { profile: MoveInPreferences | null }) {
+  const [mode, setMode] = useState(
+    profile?.move_in_precision || (profile ? "day" : "month"),
+  );
+  const [exactDay, setExactDay] = useState(profile?.move_in || initialDay());
+  const [month, setMonth] = useState(exactDay.slice(0, 7));
+  const [lastMonth, setLastMonth] = useState(
+    (profile?.move_in_end || exactDay).slice(0, 7),
+  );
+  const legendId = useId();
+  const start = new Date();
+  start.setUTCDate(1);
+  const choices = new Set([month, lastMonth]);
+  for (let index = 0; index < 36; index++) {
+    const date = new Date(start);
+    date.setUTCMonth(start.getUTCMonth() + index);
+    choices.add(date.toISOString().slice(0, 7));
+  }
+  const months = [...choices].sort();
+  function options(after?: string) {
+    return months
+      .filter((value) => !after || value >= after)
+      .map((value) => (
+        <option key={value} value={value}>
+          {moveInLabel({ move_in: `${value}-01`, move_in_precision: "month" })}
+        </option>
+      ));
+  }
+  return (
+    <fieldset className="move-in-choice" aria-describedby={`${legendId}-hint`}>
+      <legend id={legendId}>Quando vorresti entrare?</legend>
+      <p id={`${legendId}-hint`} className="field-hint">
+        Puoi scegliere solo il mese o un periodo. Il giorno si concorda con il
+        proprietario.
+      </p>
+      <div className="move-in-modes">
+        {(
+          [
+            ["month", "Un mese"],
+            ["range", "Un periodo"],
+            ["day", "Un giorno preciso"],
+          ] as const
+        ).map(([value, label]) => (
+          <label key={value} className={mode === value ? "selected" : ""}>
+            <input
+              type="radio"
+              name="move_in_precision"
+              value={value}
+              checked={mode === value}
+              onChange={() => setMode(value)}
+            />
+            {label}
+          </label>
+        ))}
+      </div>
+      <div className="form-grid">
+        {mode === "day" ? (
+          <Field
+            name="move_in"
+            label="Giorno di ingresso"
+            hint="Usa una data precisa solo se la conosci già."
+          >
+            <input
+              name="move_in"
+              type="date"
+              required
+              value={exactDay}
+              onChange={(event) => {
+                setExactDay(event.currentTarget.value);
+                if (event.currentTarget.value)
+                  setMonth(event.currentTarget.value.slice(0, 7));
+              }}
+            />
+          </Field>
+        ) : (
+          <Field
+            name="move_in"
+            label={mode === "range" ? "Dal mese" : "Mese di ingresso"}
+            hint={
+              mode === "month"
+                ? "Va bene entrare in qualsiasi giorno di questo mese."
+                : undefined
+            }
+          >
+            <select
+              name="move_in"
+              required
+              value={month}
+              onChange={(event) => {
+                setMonth(event.currentTarget.value);
+                if (lastMonth < event.currentTarget.value)
+                  setLastMonth(event.currentTarget.value);
+              }}
+            >
+              {options()}
+            </select>
+          </Field>
+        )}
+        {mode === "range" && (
+          <Field
+            name="move_in_end"
+            label="Al mese"
+            hint="Il periodo comprende anche tutto il mese finale."
+          >
+            <select
+              name="move_in_end"
+              required
+              value={lastMonth < month ? month : lastMonth}
+              onChange={(event) => setLastMonth(event.currentTarget.value)}
+            >
+              {options(month)}
+            </select>
+          </Field>
+        )}
+      </div>
+    </fieldset>
+  );
+}
 function ProfilePage() {
   const l = useLoad("/profile"),
     a = useAction();
@@ -1406,9 +1529,19 @@ function ProfilePage() {
     e.preventDefault();
     const v = formValues(e.currentTarget);
     await a.run(async () => {
+      const precision = String(v.move_in_precision);
+      const start = precision === "day" ? String(v.move_in) : `${v.move_in}-01`;
       await api("/profile", "PUT", {
-        ...v,
+        city: v.city,
         budget: Number(v.budget),
+        move_in: start,
+        move_in_precision: precision,
+        move_in_end:
+          precision === "day"
+            ? start
+            : endOfMonth(
+                `${precision === "range" ? v.move_in_end : v.move_in}-01`,
+              ),
         duration: Number(v.duration),
         occupants: Number(v.occupants),
       });
@@ -1448,7 +1581,19 @@ function ProfilePage() {
               ),
             )
           }
-          key={p?.revision || 0}
+          key={
+            p
+              ? JSON.stringify([
+                  p.city,
+                  p.budget,
+                  p.move_in,
+                  p.move_in_precision,
+                  p.move_in_end,
+                  p.duration,
+                  p.occupants,
+                ])
+              : "new-profile"
+          }
         >
           <div className="panel-title">
             <h2>Le tue preferenze</h2>
@@ -1468,14 +1613,8 @@ function ProfilePage() {
                 max={20000}
                 hint="Indica il totale che puoi spendere ogni mese, comprese le spese obbligatorie."
               />
-              <Field
-                name="move_in"
-                label="Giorno desiderato di ingresso"
-                type="date"
-                value={draft?.move_in ?? p?.move_in ?? initialDay()}
-                hint="Il primo giorno da cui vorresti entrare in casa."
-              />
             </div>
+            <MoveInFields profile={p} />
           </fieldset>
           <fieldset className="form-section" disabled={a.busy}>
             <legend>Durata e persone</legend>
@@ -1538,7 +1677,7 @@ function ProfilePage() {
                 Fino a €{p.budget} al mese · {p.occupants} persone
               </p>
               <p>
-                Dal {dateLabel(p.move_in)} · {p.duration} mesi
+                Ingresso: {moveInLabel(p)} · {p.duration} mesi
               </p>
             </div>
           )}

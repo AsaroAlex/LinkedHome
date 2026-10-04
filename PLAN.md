@@ -214,3 +214,16 @@ Semplificati titoli, azioni, stati, spiegazioni e messaggi d’errore; allineati
 workspace, inviti, conversazioni, homepage, FAQ e guida. API e consenso
 preservati. Build/typecheck, scenario landing e27 controlli UI con API
 simulate passati. Aggiornamento della stessa preview Railway autorizzata.
+
+
+## Mese o periodo di ingresso — 2026-10-04
+
+Il feedback sul giorno preciso richiede una scelta più immediata. Nuovi
+profili con «Un mese» predefinito; alternative «Un periodo» tra due mesi e
+«Un giorno preciso». Selettori mese/anno in italiano, anteprima aderente alla
+scelta e fine mese inclusiva negli abbinamenti, invio e accettazione inviti.
+Date preesistenti e payload API legacy mantengono il giorno originale.
+Modifiche non salvate conservate anche mettendo in pausa il profilo.
+Migrazioni additive007/008 e nessuna nuova dipendenza. Build/typecheck,
+247 test backend,22 scenari browser principali verificati e14 esperienza
+passati; pubblicazione nella stessa preview Railway autorizzata.

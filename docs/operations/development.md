@@ -120,7 +120,8 @@ Le versioni esatte e le dipendenze di tipo sono in `package.json`; `package-lock
 | `server/auth.ts`, `server/domain.ts`                          | Hash/token e contratti/compatibilità del dominio.                                       |
 | `server/db.ts`, `server/config.ts`                            | Pool PostgreSQL, transazioni, lock ordinati e validazione runtime.                      |
 | `server/mail.ts`, `server/income.ts`                          | Adattatori posta, contratti reddito e simulatore sintetico.                             |
-| `migrations/`                                                 | Quattro migrazioni SQL ordinate e ledger con checksum.                                  |
+| `migrations/`                                                 | Migrazioni SQL ordinate e ledger con checksum.                                          |
+| `shared/move-in.ts`                                            | Calendario e testi comuni per giorno, mese e periodo di ingresso.                       |
 | `scripts/`                                                    | Bootstrap, sviluppo, database, migrazioni, seed, test, manutenzione e preflight deploy. |
 | `tests/*.test.ts`                                             | Test unitari, API, configurazione, migrazioni e SMTP controllato.                       |
 | `tests/browser/`, `tests/experience/`                         | Flussi browser reali e flussi UX con API simulate.                                      |
@@ -144,6 +145,8 @@ Le versioni esatte e le dipendenze di tipo sono in `package.json`; `package-lock
 Il supervisor dev possiede il database per l'intera sessione. Un riavvio API lo riusa e non lo spegne: questo evita che il reload interrompa connessioni di altri processi. Chi trova già avviato il cluster locale lo riusa senza acquisirne lo shutdown. Il salvataggio frontend usa Fast Refresh; le nuove migrazioni SQL locali vengono rilevate dal watcher backend e applicate al riavvio.
 
 Le migrazioni sono verificate con SHA-256, ledger `schema_migrations`, lock PostgreSQL globale e transazione per file. Aggiungi un nuovo file SQL per un cambiamento di schema: modificare un file già applicato provoca un errore di checksum. Le migrazioni devono preservare i dati sintetici esistenti. Non cancellare il cluster o i file di lock per aggirare un errore: lo script può recuperare soltanto lock del proprio cluster dopo aver provato che il processo registrato è morto.
+
+Prima di creare o rifinire una nuova migrazione, arresta soltanto il supervisor dev posseduto dalla sessione: il watcher può applicare immediatamente il primo salvataggio. Riprendi il dev dopo aver completato il file e i test. Se una versione è già applicata, conserva quel file byte per byte e aggiungi una migrazione correttiva; non riscrivere il checksum del ledger.
 
 Database distinti:
 

@@ -416,3 +416,52 @@ Aggiornati i locator della suite browser reddito alle nuove etichette;
 questa suite con database non rieseguita per una modifica solo di testi,
 preservando il dev attivo. Backend modificato soltanto nei sette messaggi
 d’errore: la QA verifica interfaccia/richieste, non riesegue gli handler DB.
+
+Pubblicato `8faefc26cd8b0b409f0a695b92a2ef80a1d910fa`: web
+`6f563b09-4b5e-444b-923a-e8dac50ffc5d` **SUCCESS**, una replica online senza
+crash; cron pronto, DB online e nessun lavoro pending. Health preview200 e
+bundle `index-CY6EstsN.js` verificati, senza «attestazione». Pagina verifiche
+della build pubblica a390px con API simulate: nuovo titolo visibile, nessun
+vecchio termine, overflow, errore console o violazione axe configurata.
+Evidenze Railway in `.local/plain-income`; dev locale ancora pronto. Esito
+operativo conservato locale per evitare un deploy soltanto documentale.
+
+
+## Ingresso per mese o periodo — 2026-10-04
+
+Feedback sul campo «Giorno desiderato di ingresso»: nuove preferenze con
+mese predefinito, intervallo tra due mesi oppure giorno preciso. Mesi/anni
+in italiano in un select nativo,36 mesi disponibili più eventuali valori
+salvati fuori intervallo. Fine del mese inclusiva: una casa disponibile il
+15 dicembre è compatibile con «dicembre», ma una dal1 gennaio non lo è.
+Calendario e formattazione comuni in `shared/move-in.ts`; API valida e
+normalizza inizio/fine e precisione. Discovery SQL e compatibilità inviti
+usano lo stesso limite finale. Date/payload legacy restano precisi; vecchio
+testo di compatibilità del giorno preservato. Pubblicazione dirty bloccata,
+anteprima degli ultimi dati salvati e annullamento pending alla modifica;
+conversazioni accettate preservate, come prima.
+
+Review indipendente ha rilevato la perdita del nuovo draft calendario alla
+pausa: la chiave del form ora dipende dalle preferenze, non dalla revisione
+di stato. Regressione UI coperta, incluso il giorno ricordato durante i
+toggle. Nessuna nuova dipendenza, modifica ai redditi o a foto/pagamenti.
+
+Il watcher locale ha applicato007 al primo salvataggio, prima di una
+rifinitura del cast calendario SQL. Ripristinato il file byte per byte al
+checksum originale e aggiunta008 correttiva transazionale; nessuna modifica
+al ledger o reset del cluster. Dev fermato per i test DB e riavviato con
+HMR/watch. Otto migrazioni applicate;5 utenti,2 profili,1 immobile e hash
+completo dei campi data identici prima/dopo. Procedura documentata in
+`docs/operations/development.md` per evitare altri salvataggi intermedi.
+
+Build/typecheck e247 test backend passati. Suite browser principale:
+21/22 passati inizialmente, unico fallimento un locator del vecchio testo
+«provider» sostituito nel lavoro precedente; aggiornato al testo italiano
+corrente e tutti e quattro i test mail-runtime rieseguiti con successo.
+Totale22 scenari principali verificati.14/14 esperienza passati, inclusi
+due nuovi flussi mese bisestile/reload, periodo tra anni/pubblicazione e
+legacy/toggle/pausa/budget. Nessun errore console/JavaScript/rete inatteso
+nei due nuovi flussi, overflow320px o violazione axe configurata.
+Sei screenshot desktop/mobile salvati e ispezionati. Evidenze ignorate in
+`.local/move-in`; dev pronto e dati sintetici preservati. Pubblicazione
+nella preview Railway esistente, da verificare sul commit finale.

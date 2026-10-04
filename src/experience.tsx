@@ -6,7 +6,7 @@ const guides = {
   tenant: [
     [
       "Indica cosa cerchi",
-      "Scegli città, budget complessivo, data di ingresso, durata e numero di persone. Salva e pubblica il tuo profilo quando sei pronto.",
+      "Scegli città, budget complessivo, mese o periodo di ingresso, durata e numero di persone. Salva e pubblica il tuo profilo quando sei pronto.",
     ],
     [
       "Valuta gli inviti",

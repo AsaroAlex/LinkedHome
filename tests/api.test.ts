@@ -431,6 +431,8 @@ describe("publication and discovery privacy", () => {
         "duration",
         "id",
         "move_in",
+        "move_in_precision",
+        "move_in_end",
         "occupants",
         "revision",
       ].sort(),

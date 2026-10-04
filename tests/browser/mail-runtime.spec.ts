@@ -91,7 +91,9 @@ test("SMTP signup and resend use mailbox instructions and one runtime request", 
   );
   await expect(page.locator("body")).not.toContainText("dati sintetici");
   await expect(page.locator("body")).not.toContainText("messaggio locale");
-  await expect(page.getByText("Nessun provider è collegato.")).toBeVisible();
+  await expect(
+    page.getByText("Nessun servizio di verifica è collegato."),
+  ).toBeVisible();
   expect(configRequests).toBe(1);
 });
 
