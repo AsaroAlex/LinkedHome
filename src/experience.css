@@ -144,19 +144,29 @@
   gap: 12px;
   margin-bottom: 18px;
 }
-.progress-marker {
+.onboarding-steps .progress-marker {
   display: grid;
   place-items: center;
-  min-width: 30px;
+  flex: 0 0 30px;
+  width: 30px;
   height: 30px;
+  padding: 0;
   border: 1px solid var(--control-border);
   border-radius: 50%;
+  color: var(--muted);
   font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.progress-marker svg {
+  display: block;
+  width: 18px;
+  height: 18px;
 }
 .complete .progress-marker {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
+  background: var(--surface-soft);
+  border-color: var(--border);
+  color: var(--primary);
 }
 .onboarding-steps strong {
   font-size: 0.87rem;

@@ -320,4 +320,30 @@ alle quattro larghezze, sette contrasti, focus e hover: nessun overflow,
 violazione axe configurata o errore console/rete. Viste autenticate con API
 simulate, senza scritture DB. Screenshot home/form ispezionati e review
 indipendente senza blocchi. [Dettagli](docs/design/04-real-estate-palette.md).
-Aggiornamento dello stesso dominio Railway in corso; supervisor dev attivo.
+Pubblicato il commit `3a5be9319266ec43e23831d19a1a63db249662a0` sul branch
+esistente. Web `8509a445-f426-4cd1-9e5a-94b62425a147` **SUCCESS**, una replica
+online senza crash; cron `cronReady`, database online e nessun lavoro pending.
+HTTPS/health preview200, CSS `index-BusrCaxZ.css`, theme-color e favicon
+verificati: nuova palette presente, vecchi verde/crema assenti. Verificata
+anche la home pubblica con Chromium a390px: blu `rgb(0,107,179)`, fondo bianco,
+titoli sans e nessun overflow. Evidenze ignorate senza credenziali in
+`.local/real-estate-palette/railway-verification.json` e `railway-browser.json`.
+Supervisor dev attivo. Questo esito operativo resta locale per evitare un
+deploy soltanto documentale.
+
+## Spunte dei progressi dashboard — 2026-10-04
+
+Il feedback «Spunte inguardabili» riguarda i primi passi nella dashboard.
+La regola `.onboarding-steps span { display:block }` prevaleva sul grid del
+marker e annullava il centraggio. Corretto con selector specifico, box fisso
+30x30 senza compressione, SVG18px arrotondato e blu su cerchio azzurro.
+Marker con ruolo immagine/etichetta di stato, SVG e numeri decorativi nascosti
+agli screen reader. I passaggi da fare mantengono numero e bordo neutro.
+Nessuna modifica ai criteri di completamento o ai dati.
+
+Build/typecheck e tre scenari progressi passati. Il test tenant ora verifica
+anche stati accessibili e centraggio reale a320px. Sette verifiche UI con
+API simulate (tenant completo/parziale/iniziale, landlord e doppio ruolo,
+1440/390/320px), screenshot completi/parziali ispezionati: nessun overflow,
+violazione axe configurata o errore console/rete. Review indipendente senza
+rilievi. Evidenze ignorate in `.local/progress-markers`; supervisor dev pronto.

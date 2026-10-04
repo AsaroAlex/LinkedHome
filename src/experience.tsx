@@ -326,9 +326,25 @@ export function NextSteps({
               <li key={step.title} className={step.done ? "complete" : ""}>
                 <span
                   className="progress-marker"
+                  role="img"
                   aria-label={step.done ? "Completato" : "Da completare"}
                 >
-                  {step.done ? "✓" : index + 1}
+                  {step.done ? (
+                    <svg
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="m4 10 4 4 8-8" />
+                    </svg>
+                  ) : (
+                    <span aria-hidden="true">{index + 1}</span>
+                  )}
                 </span>
                 <div>
                   <strong>{step.title}</strong>

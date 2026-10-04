@@ -181,6 +181,12 @@ test("tenant progress follows verification and deliberate profile publication", 
   await expect(
     progress.getByRole("link", { name: "Prepara il tuo profilo" }),
   ).toHaveAttribute("href", "/profile");
+  await expect(
+    progress.getByRole("img", { name: "Completato", exact: true }),
+  ).toHaveCount(1);
+  await expect(
+    progress.getByRole("img", { name: "Da completare", exact: true }),
+  ).toHaveCount(1);
   published = true;
   await page.reload();
   const complete = page.getByRole("region", { name: "È tutto pronto" });
@@ -189,6 +195,23 @@ test("tenant progress follows verification and deliberate profile publication", 
   ).toHaveAttribute("href", "/invitations");
   expect(propertyRequests).toBe(0);
   await page.setViewportSize({ width: 320, height: 740 });
+  const marker = complete
+    .getByRole("img", { name: "Completato", exact: true })
+    .first();
+  const markerBox = await marker.boundingBox();
+  const iconBox = await marker.locator("svg").boundingBox();
+  expect(markerBox).not.toBeNull();
+  expect(iconBox).not.toBeNull();
+  expect(
+    Math.abs(
+      markerBox!.x + markerBox!.width / 2 - iconBox!.x - iconBox!.width / 2,
+    ),
+  ).toBeLessThan(0.5);
+  expect(
+    Math.abs(
+      markerBox!.y + markerBox!.height / 2 - iconBox!.y - iconBox!.height / 2,
+    ),
+  ).toBeLessThan(0.5);
   await accessible(page);
 });
 

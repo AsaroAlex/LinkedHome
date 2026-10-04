@@ -187,3 +187,12 @@ componenti, favicon e theme-color. Build/typecheck, 11 scenari browser,
 controlli responsive/contrasto e review indipendente passati.
 [Riferimenti e verifica](docs/design/04-real-estate-palette.md). Aggiornamento
 della preview Railway nel percorso iterativo già autorizzato.
+
+## Spunte dei progressi dashboard — 2026-10-04
+
+Feedback browser «Spunte inguardabili». Sostituito il carattere testuale con
+SVG a tratto arrotondato, cerchio azzurro e geometria fissa. Corretto il
+conflitto CSS che annullava il centraggio; stati accessibili e numeri dei
+passaggi incompleti preservati. Build, tre scenari progressi e sette controlli
+UI responsive/accessibilità passati; regressione del centraggio coperta nel
+test esistente. Pubblicazione nella stessa preview Railway autorizzata.
