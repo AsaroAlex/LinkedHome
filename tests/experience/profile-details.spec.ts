@@ -9,6 +9,7 @@ type Details = {
   pets_details?: string;
   furnishing_preference?: string;
   housing_needs?: string[];
+  accessibility_needs?: string[];
   about?: string;
 };
 type Profile = Details & {
@@ -59,6 +60,7 @@ const details = {
   pets_details: "Vivo con un cane piccolo abituato a stare in appartamento.",
   furnishing_preference: "partly_furnished",
   housing_needs: ["elevator", "outdoor_space"],
+  accessibility_needs: [],
   about:
     "Mi trasferisco a Bologna e cerco una casa dove fermarmi per un periodo.",
 };
@@ -201,6 +203,7 @@ test("optional details persist after a photo upload, an unsaved pause and a deli
 }) => {
   const { state, image } = await fixtures(page);
   await page.goto("/profile");
+  await page.locator(".housing-needs-more > summary").click();
   const fields = inputs(page);
   await expect(
     page.getByRole("group", { name: "Qualcosa in più su di te", exact: true }),

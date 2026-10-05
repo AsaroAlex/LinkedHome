@@ -17,6 +17,7 @@ export default defineConfig({
         "household-photos.spec.ts",
         "publication.spec.ts",
         "locations.spec.ts",
+        "housing-needs.spec.ts",
       ],
     },
     {

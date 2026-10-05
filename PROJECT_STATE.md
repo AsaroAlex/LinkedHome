@@ -949,3 +949,50 @@ senza problemi. Dati applicativi preesistenti invariati:5 utenti,2 profili,
 1 immobile e digest delle preferenze/condizioni identico prima e dopo.
 Dev78870 con HMR/watch pronto, health200. Evidenze `.local/move-in-simple`.
 Pubblicazione nella stessa istanza Railway autorizzata sul commit finale.
+
+Pubblicato `f25b817a0123193c1709b3fdaeed2aa0f56fa822`: web
+`8507817b-c0ac-4ecc-8a71-0c8c1bcdca40` SUCCESS/online con una replica e
+zero crash; cron `4b14e208-7c15-46bd-8037-bc93b709d205` SUCCESS/cronReady,
+DB online, nessun warning/critical, failure o pending. Health/config
+HTTPS200 preview e mail disabled; JS `index-D-vrhS_W.js` e CSS
+`index-CjcoMyvK.css` identici alla build locale.
+
+Browser pubblico reale passato: budget conserva il giorno storico,
+scorciatoia prossimo mese salva mese/fine mese al reload, disclosure non
+rende dirty, periodo e giorno preciso persistono, bozze indipendenti e
+campi attivi visibili anche con disclosure chiusa. Screenshot mensile
+320/390/1440px controllati, axe e overflow passati, zero errori console/rete.
+Scritture soltanto nel nuovo workspace sintetico isolato della verifica,
+nessuna email reale; nessuna nuova migrazione. Dev78870 HMR/watch pronto,
+health200. Evidenze `.local/move-in-simple`. Esito operativo conservato
+localmente per evitare deploy documentale; aggiornare `/profile?v=f25b817`.
+
+
+## Caratteristiche della casa e accessibilità — 2026-10-05
+
+Feedback: ampliare le tre scelte del profilo con filtri immobiliari utili e
+una domanda per chi ha esigenze di accessibilità. Catalogo di 22 caratteristiche
+pubbliche ispirato alle categorie Idealista/Immobiliare.it, sei frequenti e
+altre 16 in gruppi espandibili. Le tre chiavi storiche restano valide.
+
+Domanda facoltativa «Ti serve una casa accessibile?» con sei esigenze
+funzionali, senza disabilità o diagnosi: ingresso/casa senza gradini o scale,
+ascensore per sedia a rotelle, passaggi ampi, bagno e doccia accessibili.
+Campo distinto e privato, escluso discovery/compatibilità/ordine; condiviso
+solo nei contatti accettati/chiusi, revocato da blocco/sospensione/workspace.
+Omissione API preserva, [] cancella; array vuoto omesso dai dettagli condivisi.
+Migrazione014 aggiuntiva, nessuna riscrittura dei dati precedenti. Bozze
+conservate su foto/gruppo/pausa/retry. Riepilogo privato separato; testi
+di condivisione e errori italiani aggiornati. Review indipendente senza
+rilievi. Dettagli/riferimenti in docs/product/09-housing-needs.md.
+
+Build/typecheck e format passati;518 test backend in21 file,42 scenari UI,
+10 flussi preview reali e22 browser principali tutti passati. Screenshot
+320/390/1440 ispezionati, axe/tastiera/overflow e console/rete puliti.
+Il flusso reale verifica salvataggio/reload/export, nessun dato privato
+in discovery, condivisione dopo accettazione e revoca con cancellazione
+delle scelte o blocco anche dopo chiusura. Nessuna nuova dipendenza.
+Dati preesistenti invariati (5 utenti,2 profili,1 immobile): digest di tutte
+le righe applicative identico, nuovo campo vuoto sui profili precedenti.
+Dev HMR/watch riavviato, frontend/API health200. Evidenze private in
+.local/housing-needs. Aggiornamento della stessa istanza Railway autorizzata.

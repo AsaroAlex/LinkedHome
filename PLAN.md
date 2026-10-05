@@ -349,5 +349,31 @@ nuovi profili. Nessuna modifica a schema/API/criteri degli inviti.
 
 Build/typecheck,6 regressioni specifiche,39 UI,9 preview browser reali e22
 browser principali verificati. Layout mobile/tastiera e screenshot passati;
-dati preesistenti conservati e dev HMR pronto. Completare deploy e flusso
-pubblico sullo stesso sito Railway autorizzato.
+dati preesistenti conservati e dev HMR pronto. Deploy web/cron SUCCESS su
+f25b817 e flusso pubblico reale passato per mese/periodo/giorno, date
+storiche, bozze e salvataggio/reload. Screenshot mobile/desktop verificati.
+Esito conservato localmente dopo il deploy.
+
+
+## Caratteristiche della casa e accessibilità — 2026-10-05
+
+Aggiunte 22 scelte immobiliari in gruppi, sei frequenti e altre espandibili,
+con valori storici conservati. Domanda facoltativa sulle esigenze concrete
+di accessibilità: sei scelte private fino all'invito accettato, nessuna
+diagnosi, criterio di ranking o modifica alla compatibilità.
+Migrazione014, validazione API/DB, omissione conserva e [] cancella.
+Condivisione protetta nei contatti accettati/chiusi e riepiloghi separati.
+Verificare API/privacy, browser reali, mobile e dati precedenti; aggiornare
+la stessa istanza Railway autorizzata. Riferimenti e perimetro in
+docs/product/09-housing-needs.md.
+
+Build/typecheck e format passati;518 test backend in21 file,42 scenari UI,
+10 flussi preview reali e22 browser principali tutti passati. Screenshot
+320/390/1440 ispezionati, axe/tastiera/overflow e console/rete puliti.
+Il flusso reale verifica salvataggio/reload/export, nessun dato privato
+in discovery, condivisione dopo accettazione e revoca con cancellazione
+delle scelte o blocco anche dopo chiusura. Nessuna nuova dipendenza.
+Dati preesistenti invariati (5 utenti,2 profili,1 immobile): digest di tutte
+le righe applicative identico, nuovo campo vuoto sui profili precedenti.
+Dev HMR/watch riavviato, frontend/API health200. Evidenze private in
+.local/housing-needs. Aggiornamento della stessa istanza Railway autorizzata.

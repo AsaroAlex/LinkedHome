@@ -756,7 +756,7 @@ export async function buildApp(
       await lockUsers(c, [u.id]);
       await active(c, u.id);
       await c.query(
-        `INSERT INTO profiles(user_id,city,budget,move_in,duration,occupants,move_in_precision,move_in_end,contract_preference,pets,pets_details,furnishing_preference,housing_needs,about,locations) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,COALESCE($10::text,'unspecified'),COALESCE($11::text,''),COALESCE($12::text,'any'),COALESCE($13::text[],'{}'::text[]),COALESCE($14::text,''),$15::jsonb) ON CONFLICT(user_id) DO UPDATE SET city=$2,budget=$3,move_in=$4,duration=$5,occupants=$6,move_in_precision=$7,move_in_end=$8,contract_preference=$9,pets=COALESCE($10,profiles.pets),pets_details=COALESCE($11,profiles.pets_details),furnishing_preference=COALESCE($12,profiles.furnishing_preference),housing_needs=COALESCE($13,profiles.housing_needs),about=COALESCE($14,profiles.about),locations=CASE WHEN $16::boolean THEN $15::jsonb WHEN profiles.city=$2 THEN profiles.locations ELSE NULL END,revision=profiles.revision+1,updated_at=now()`,
+        `INSERT INTO profiles(user_id,city,budget,move_in,duration,occupants,move_in_precision,move_in_end,contract_preference,pets,pets_details,furnishing_preference,housing_needs,about,locations,accessibility_needs) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,COALESCE($10::text,'unspecified'),COALESCE($11::text,''),COALESCE($12::text,'any'),COALESCE($13::text[],'{}'::text[]),COALESCE($14::text,''),$15::jsonb,COALESCE($17::text[],'{}'::text[])) ON CONFLICT(user_id) DO UPDATE SET city=$2,budget=$3,move_in=$4,duration=$5,occupants=$6,move_in_precision=$7,move_in_end=$8,contract_preference=$9,pets=COALESCE($10,profiles.pets),pets_details=COALESCE($11,profiles.pets_details),furnishing_preference=COALESCE($12,profiles.furnishing_preference),housing_needs=COALESCE($13,profiles.housing_needs),about=COALESCE($14,profiles.about),locations=CASE WHEN $16::boolean THEN $15::jsonb WHEN profiles.city=$2 THEN profiles.locations ELSE NULL END,accessibility_needs=COALESCE($17,profiles.accessibility_needs),revision=profiles.revision+1,updated_at=now()`,
         [
           u.id,
           p.city,
@@ -774,6 +774,7 @@ export async function buildApp(
           p.about ?? null,
           p.locations ? JSON.stringify(p.locations) : null,
           p.locations !== undefined,
+          p.accessibility_needs ?? null,
         ],
       );
       await cancelPending(c, "tenant_id", u.id);
@@ -1238,7 +1239,7 @@ export async function buildApp(
         : undefined,
     );
     const { rows: sharedDetails } = await db.query(
-      `SELECT i.id AS invitation_id,p.pets,p.pets_details,p.furnishing_preference,p.housing_needs,p.about FROM invitations i JOIN profiles p ON p.user_id=i.tenant_id JOIN users tenant ON tenant.id=i.tenant_id JOIN users landlord ON landlord.id=i.landlord_id WHERE i.id=ANY($2::uuid[]) AND (i.tenant_id=$1 OR i.landlord_id=$1) AND i.status IN ('accepted','closed') AND tenant.suspended=false AND landlord.suspended=false AND NOT EXISTS(SELECT 1 FROM blocks b WHERE (b.blocker_id=i.tenant_id AND b.blocked_id=i.landlord_id) OR (b.blocker_id=i.landlord_id AND b.blocked_id=i.tenant_id)) AND ($3::uuid[] IS NULL OR (i.tenant_id=ANY($3) AND i.landlord_id=ANY($3)))`,
+      `SELECT i.id AS invitation_id,p.pets,p.pets_details,p.furnishing_preference,p.housing_needs,p.accessibility_needs,p.about FROM invitations i JOIN profiles p ON p.user_id=i.tenant_id JOIN users tenant ON tenant.id=i.tenant_id JOIN users landlord ON landlord.id=i.landlord_id WHERE i.id=ANY($2::uuid[]) AND (i.tenant_id=$1 OR i.landlord_id=$1) AND i.status IN ('accepted','closed') AND tenant.suspended=false AND landlord.suspended=false AND NOT EXISTS(SELECT 1 FROM blocks b WHERE (b.blocker_id=i.tenant_id AND b.blocked_id=i.landlord_id) OR (b.blocker_id=i.landlord_id AND b.blocked_id=i.tenant_id)) AND ($3::uuid[] IS NULL OR (i.tenant_id=ANY($3) AND i.landlord_id=ANY($3)))`,
       [
         u.id,
         rows
@@ -1250,10 +1251,15 @@ export async function buildApp(
       ],
     );
     const tenantDetails = new Map(
-      sharedDetails.map(({ invitation_id, ...details }) => [
-        invitation_id,
-        details,
-      ]),
+      sharedDetails.map(
+        ({ invitation_id, accessibility_needs, ...details }) => [
+          invitation_id,
+          {
+            ...details,
+            ...(accessibility_needs.length ? { accessibility_needs } : {}),
+          },
+        ],
+      ),
     );
     const tenantHouseholds = await sharedTenantHouseholds(
       db,

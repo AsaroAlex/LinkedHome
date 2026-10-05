@@ -31,7 +31,8 @@ const fields: Record<string, string> = {
   pets: "Scegli una delle opzioni sugli animali domestici.",
   pets_details: "Usa al massimo 200 caratteri per i dettagli sugli animali.",
   furnishing_preference: "Scegli una delle opzioni per l’arredamento.",
-  housing_needs: "Scegli tra ascensore, spazio esterno e posto auto.",
+  housing_needs: "Controlla le caratteristiche della casa selezionate.",
+  accessibility_needs: "Controlla le esigenze di accessibilità selezionate.",
   about: "Usa al massimo 600 caratteri per la presentazione.",
   capacity: "Capienza: inserisci un numero intero da 1 a 12.",
   sqm: "Superficie: inserisci un valore da 10 a 2.000 m².",
@@ -89,9 +90,7 @@ export async function api<T = any>(
       message:
         d.message === "Durata massima inferiore alla minima"
           ? `${d.message}. Controlla la durata ${d.field === "min_months" ? "minima" : "massima"}.`
-          : (d.field?.startsWith("locations")
-              ? fields.locations
-              : fields[d.field]) ||
+          : fields[d.field?.split(".")[0]] ||
             (d.field ? `Controlla il campo ${d.field}.` : d.message),
     }));
     throw new ApiError(data.error || "Operazione non riuscita.", details);

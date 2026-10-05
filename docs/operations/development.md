@@ -402,3 +402,27 @@ Regressioni experience/move-in e preview-browser/move-in; QA privata in
 Quando main ed experience girano in parallelo, usare `--output` con
 directory indipendenti in `.local/`: il default main pulisce `test-results`
 e può cancellare le trace della sottodirectory experience durante la prova.
+
+
+## Caratteristiche della casa e accessibilità
+
+Catalogo condiviso 22 housingNeeds pubbliche e 6 accessibilityNeeds private
+in shared/profile-details.ts; source UX in src/ProfileDetails.tsx e
+CSS dedicato src/profile-needs.css. Sei scelte frequenti, altre in details
+con gruppi. Checkbox sempre montate anche a details chiusi e incluse in
+FormData prima che useAction disabiliti il form.
+
+accessibility_needs nel formkey conserva bozze durante foto/gruppo/pausa,
+ma rimonta i controlli dopo salvataggio effettivo. Summary mostra accessibilità
+solo con personal=true; anteprima pubblica e discovery la omettono.
+Migrazione014 amplia il vincolo storico e aggiunge array default vuoto.
+API opzionale conserva valori quando omesso; [] cancella. La stessa query
+protetta dei tenant_details condivide il campo solo accepted/closed e
+soltanto se non vuoto; nessun nuovo dato in discovery o matching.
+
+Regressioni housing-needs-domain/API, experience/housing-needs e
+preview-browser/housing-needs. Output Playwright indipendenti in
+.local/housing-needs; suite con DB soltanto in sequenza, supervisor dev
+posseduto fermato prima e riavviato dopo. Snapshot privato confronta tutte
+le righe applicative preesistenti escludendo la colonna aggiuntiva (che
+deve restare vuota); nessun reset del cluster o variazione del runtime.

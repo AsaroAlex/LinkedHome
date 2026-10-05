@@ -878,9 +878,9 @@ function Safeguards() {
             Entrambe le parti vedono il nome scelto, che può essere uno
             pseudonimo, e possono scriversi. Il proprietario vede anche le foto
             e i nomi del gruppo nell’opzione scelta, se aggiunti. La
-            presentazione e i dettagli sugli animali diventano visibili ai
-            contatti accettati. Email e documenti non vengono condivisi
-            automaticamente.
+            presentazione, i dettagli sugli animali e le esigenze di
+            accessibilità diventano visibili ai contatti accettati. Email e
+            documenti non vengono condivisi automaticamente.
           </p>
         </article>
         <article className="panel">
@@ -1668,6 +1668,9 @@ function ProfilePage() {
     e.preventDefault();
     const v = formValues(e.currentTarget);
     const needs = new FormData(e.currentTarget).getAll("housing_needs");
+    const accessibility = new FormData(e.currentTarget).getAll(
+      "accessibility_needs",
+    );
     await a.run(async () => {
       const precision = String(v.move_in_precision);
       const start = precision === "day" ? String(v.move_in) : `${v.move_in}-01`;
@@ -1692,6 +1695,7 @@ function ProfilePage() {
         pets_details: v.pets_details || "",
         furnishing_preference: v.furnishing_preference,
         housing_needs: needs,
+        accessibility_needs: accessibility,
         about: v.about || "",
       });
       setDraft(null);
@@ -1752,6 +1756,7 @@ function ProfilePage() {
                   p.pets_details,
                   p.furnishing_preference,
                   p.housing_needs,
+                  p.accessibility_needs,
                   p.about,
                 ])
               : "new-profile"
@@ -1821,8 +1826,8 @@ function ProfilePage() {
           </p>
           <p>
             <strong>
-              Nomi e foto del gruppo, presentazione, email e verifiche restano
-              esclusi dalla scoperta.
+              Nomi e foto del gruppo, presentazione, esigenze di accessibilità,
+              email e verifiche restano esclusi dalla scoperta.
             </strong>
           </p>
           {p && (
@@ -1839,9 +1844,11 @@ function ProfilePage() {
               </p>
               <p>Contratto: {contractPreferenceLabel(p.contract_preference)}</p>
               <ProfileDetailsSummary details={p} />
-              {(p.about || p.pets_details) && (
+              {(p.about ||
+                p.pets_details ||
+                p.accessibility_needs?.length > 0) && (
                 <details className="saved-private-details">
-                  <summary>Presentazione condivisa dopo l’invito</summary>
+                  <summary>Informazioni condivise dopo l’invito</summary>
                   <ProfileDetailsSummary details={p} personal />
                 </details>
               )}
@@ -2830,8 +2837,8 @@ function InvitationsPage({ user }: { user: User }) {
               {i.status === "pending" && (
                 <p className="disclosure">
                   {i.tenant_id === user.id
-                    ? "Accettando, condividi il nome scelto e apri la chat. Il proprietario vedrà anche le foto e i nomi delle persone nella modalità scelta, la presentazione e i dettagli sugli animali, se li hai aggiunti."
-                    : "Se l’inquilino accetta, vedrete il nome scelto e aprirete la chat. Potrai vedere le foto e i nomi delle persone nella modalità scelta, la presentazione e i dettagli sugli animali, se li ha aggiunti."}{" "}
+                    ? "Accettando, condividi il nome scelto e apri la chat. Il proprietario vedrà anche le foto e i nomi delle persone nella modalità scelta, la presentazione, i dettagli sugli animali e le esigenze di accessibilità, se li hai aggiunti."
+                    : "Se l’inquilino accetta, vedrete il nome scelto e aprirete la chat. Potrai vedere le foto e i nomi delle persone nella modalità scelta, la presentazione, i dettagli sugli animali e le esigenze di accessibilità, se li ha aggiunti."}{" "}
                   Nessuna email o documento viene condiviso. Scade il{" "}
                   {dateLabel(i.expires_at)}.
                 </p>

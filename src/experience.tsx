@@ -105,11 +105,11 @@ export function ProductFAQ() {
           ],
           [
             "Chi può vedere il mio profilo?",
-            "Solo i proprietari autenticati con un immobile pertinente possono scoprire le preferenze che pubblichi: città e zone scelte, budget, ingresso, contratto e numero di persone. I mesi di permanenza servono per la scelta flessibile, studenti e transitorio. Se li indichi, vedono anche animali, arredamento ed esigenze della casa. Il tuo nome, la foto e la presentazione diventano visibili quando accetti un invito.",
+            "Solo i proprietari autenticati con un immobile pertinente possono scoprire le preferenze che pubblichi: città e zone scelte, budget, ingresso, contratto e numero di persone. I mesi di permanenza servono per la scelta flessibile, studenti e transitorio. Se li indichi, vedono anche animali, arredamento ed esigenze della casa. Il tuo nome, le foto, la presentazione e le eventuali esigenze di accessibilità diventano visibili quando accetti un invito.",
           ],
           [
             "Accettare un invito mi impegna ad affittare?",
-            "No. Accettare apre una conversazione e rende visibili il nome scelto, la foto e la presentazione del profilo, se le hai aggiunte. Puoi chiedere informazioni e valutare l’immobile. L’invito non è una prenotazione o un contratto.",
+            "No. Accettare apre una conversazione e rende visibili il nome scelto, le foto, la presentazione e le eventuali esigenze di accessibilità del profilo. Puoi chiedere informazioni e valutare l’immobile. L’invito non è una prenotazione o un contratto.",
           ],
           [
             "Posso interrompere la ricerca?",

@@ -12,6 +12,7 @@ import {
   petsOptions,
   furnishingPreferences,
   housingNeeds,
+  accessibilityNeeds,
 } from "../shared/profile-details.js";
 import {
   cities,
@@ -65,10 +66,18 @@ export const profileInput = z
     furnishing_preference: z.enum(furnishingPreferences).optional(),
     housing_needs: z
       .array(z.enum(housingNeeds))
-      .max(3)
+      .max(housingNeeds.length)
       .refine(
         (needs) => new Set(needs).size === needs.length,
         "Scegli ogni esigenza una sola volta.",
+      )
+      .optional(),
+    accessibility_needs: z
+      .array(z.enum(accessibilityNeeds))
+      .max(accessibilityNeeds.length)
+      .refine(
+        (needs) => new Set(needs).size === needs.length,
+        "Scegli ogni esigenza di accessibilità una sola volta.",
       )
       .optional(),
     about: z.string().trim().max(600).optional(),

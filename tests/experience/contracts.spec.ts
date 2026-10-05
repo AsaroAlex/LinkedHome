@@ -252,6 +252,7 @@ test("long contracts hide stay length while preserving temporary drafts and unsa
         pets_details: "",
         furnishing_preference: "any",
         housing_needs: [],
+        accessibility_needs: [],
         about: "",
       },
     ]);

@@ -426,6 +426,7 @@ describe("optional profile details", () => {
       "pets_details",
       "furnishing_preference",
       "housing_needs",
+      "accessibility_needs",
       "about",
     ])
       expect(parsed).not.toHaveProperty(field);
@@ -459,12 +460,12 @@ describe("optional profile details", () => {
     expect(parsed).toMatchObject({
       pets_details: "Un cane di taglia piccola.",
       about: "Cerco una casa vicino all’università.",
-      housing_needs: ["elevator", "outdoor_space", "parking"],
+      housing_needs: [...housingNeeds],
     });
     expect(compatibility(parsed, property)).toEqual(
       compatibility(profile, property),
     );
-    expect(housingNeeds.map(housingNeedLabel)).toEqual([
+    expect(housingNeeds.slice(0, 3).map(housingNeedLabel)).toEqual([
       "Ascensore",
       "Balcone, terrazzo o giardino",
       "Posto auto",

@@ -297,6 +297,7 @@ test("multiple cities and zones survive photo, household and pause reloads befor
         pets_details: "Un cane piccolo.",
         furnishing_preference: "any",
         housing_needs: [],
+        accessibility_needs: [],
         about: "Cerchiamo casa in due città.",
       },
     ]);
