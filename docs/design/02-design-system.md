@@ -20,3 +20,12 @@ Visual direction: an editorial Italian home journal with clear transactional con
 Components: text/icon brand, navigation tabs, primary/secondary/destructive buttons, labelled input/select/textarea, summary stat, status pill with text, tenant/property card, criterion list, timeline/message bubble, empty state, form alert and confirmation panel. All have visible focus and disabled/loading/error states. Decorative elements hidden from assistive technology. Minimum44px principal controls. Honour reduced motion; no animation required to understand content.
 
 Visual QA must inspect desktop and narrow mobile screenshots of landing, dashboard, forms, discovery, invitation/chat and staff. Automated axe checks supplement human layout inspection; neither proves full WCAG conformance.
+
+## Current direction — 2026-10-05
+
+The real estate palette uses a white canvas, navy text (#203246), blue
+actions (#006bb3), pale blue surfaces (#eaf3fb) and sans-serif headings.
+Decorative accents share the primary blue: hero emphasis, brand dot,
+section rules and step markers. The former brown accent is retired.
+Warning, success and error colors retain their separate semantic tokens;
+draft notices use the warning color for both text and border.

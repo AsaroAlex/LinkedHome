@@ -266,3 +266,10 @@ preservate cambiando formula, caricando foto e mettendo in pausa. Nessun
 nuovo filtro automatico sui dettagli. Build/typecheck,380 backend e23
 experience,6 preview e22 browser principali passati. Runtime Docker e dati
 locali verificati. Pubblicazione nella stessa preview Railway autorizzata.
+
+## Accenti blu — 2026-10-05
+
+Il marrone residuo del titolo homepage e degli accenti del marchio viene
+sostituito dal blu primario. Avvisi di bozza con il proprio token warning.
+Build/typecheck e controlli browser homepage desktop/mobile passati;
+pubblicazione nella stessa preview Railway autorizzata.

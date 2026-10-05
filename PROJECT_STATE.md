@@ -657,3 +657,31 @@ Supervisor dev riavviato con HMR/watch, health locale200;5 utenti,2 profili
 e1 immobile preservati, hash dati/revisioni/durate identico prima/dopo.
 Nuovi campi solo ai default. Evidenze private in `.local/profile-details`.
 Deploy nella stessa preview Railway autorizzata sul commit finale.
+
+Pubblicato `03d5991a032629036b9730b9d0741fc22e9bc1a5`: web
+`213206f4-c0df-4f46-969e-5034f3e696b9` SUCCESS, una replica online senza
+crash; cron `7b8bd9e5-477a-4c50-a25b-5f6961b70ff2` SUCCESS/cronReady,
+DB online, nessun warning/critical attivo o pending. Migrazioni e preflight
+storage privato pronti. Health/config HTTPS preview200 e hashJS
+`index-BnbsQsyS.js`/CSS `index-BG6mlpf8.css` identici alla build locale.
+Nuovo flusso browser reale sulla preview pubblica, senza API intercettate,
+1/1 passato:4+4 senza mesi, tutti i nuovi campi persistenti dopo refresh,
+selezioni multiple, discovery compatibile anche con offerta24–60 mesi e
+senza testi privati; invito, accettazione e presentazione/dettagli visibili
+nelle card e nella chat del proprietario. Zero errori console/rete o
+overflow320px. Solo nuovo workspace e dati sintetici, nessuna email inviata.
+Evidenze in `.local/profile-details`. Dev locale health200 e HMR/watch
+pronto. Esito operativo conservato localmente per evitare un deploy solo
+documentale. Aggiornare `/profile?v=03d5991` per vedere il form corrente.
+
+## Accenti blu coerenti — 2026-10-05
+
+Feedback sul marrone di «da te.» nella homepage. Il token decorativo accent
+ora usa il blu primario del marchio, allineando titolo, punto del logo,
+lineette, asterischi e numeri dei passaggi. Il bordo degli avvisi di bozza
+usa invece il token warning, coerente con testo e sfondo. Nessun cambio
+ai dati o ai flussi. Build/typecheck passati; browser reale sulla homepage
+a1440/390/320px con colori calcolati uguali al primario, zero overflow,
+violazioni axe o errori console/rete. Screenshot controllati; review
+indipendente positiva. Evidenze private in `.local/blue-accent`.
+Pubblicazione nella stessa preview Railway autorizzata sul commit finale.

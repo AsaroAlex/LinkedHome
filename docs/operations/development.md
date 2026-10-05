@@ -285,3 +285,12 @@ blocco nella chat ricarica anche i dettagli dell’invito per nasconderli.
 Riepiloghi ed export restano riferiti al profilo corrente, non allo snapshot
 immobiliare. Regressioni: domain/contract/profile-details API, experience
 contracts/move-in/profile-details e preview-browser/profile-details.
+
+## Colori del marchio
+
+Gli accenti decorativi in `src/style.css` usano `--accent: var(--primary)`.
+I colori di avvisi, errori e conferme restano nei rispettivi token semantici;
+in particolare testo e bordo degli avvisi di bozza usano `--warning`.
+Per cambi soltanto cromatici verificare build/typecheck, colori calcolati,
+contrasto, screenshot desktop/mobile, console e rete senza modificare dati
+o riavviare il database. QA privata dell’iterazione in `.local/blue-accent`.

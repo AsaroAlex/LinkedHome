@@ -16,7 +16,7 @@
   --muted: #5b6877;
   --primary: #006bb3;
   --primary-hover: #00558f;
-  --accent: #9c4a10;
+  --accent: var(--primary);
   --page: #ffffff;
   --surface: #ffffff;
   --surface-muted: #f4f7fa;
@@ -2427,7 +2427,7 @@ blockquote {
 }
 .panel .draft-notice {
   padding: 12px 15px;
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--warning);
   border-radius: 0 8px 8px 0;
   background: var(--warning-soft);
   color: var(--warning);
