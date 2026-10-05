@@ -1,0 +1,200 @@
+.property-amenities-fields {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.property-amenities-fields > .field-hint {
+  margin-bottom: 14px;
+  font-size: 0.82rem;
+}
+.property-amenities-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.property-amenities-options label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  min-width: 0;
+  padding: 11px 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.property-amenities-options label:has(input:checked) {
+  background: var(--surface-soft);
+  border-color: var(--primary);
+}
+.property-amenities-options label:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.property-amenities-options input {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--primary);
+}
+.property-amenities-options span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.property-amenities-more {
+  min-width: 0;
+  margin-top: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.property-amenities-more > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 12px;
+  min-height: 48px;
+  padding: 13px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+.property-amenities-more > summary::-webkit-details-marker {
+  display: none;
+}
+.property-amenities-more > summary::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  margin: -4px 2px 0 auto;
+}
+.property-amenities-more[open] > summary::after {
+  transform: rotate(225deg);
+  margin-top: 4px;
+}
+.property-amenities-more > summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -3px;
+}
+.property-amenities-count {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+.property-amenities-groups {
+  display: grid;
+  gap: 20px;
+  padding: 16px 13px;
+  border-top: 1px solid var(--border);
+}
+.property-amenities-group {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.property-amenities-group legend {
+  padding: 0;
+  margin-bottom: 9px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.property-amenities-notes-field {
+  margin: 22px 0 0;
+}
+.property-amenities-notes-field textarea {
+  resize: vertical;
+}
+.property-amenities-prefill {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+.property-amenities-prefill .button {
+  min-height: 48px;
+  flex-shrink: 0;
+  padding: 11px 14px;
+  font-size: 0.85rem;
+}
+.property-amenities-prefill .field-hint {
+  min-width: 0;
+  margin: 0;
+  font-size: 0.8rem;
+}
+.property-amenities-notice {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--surface-soft);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.property-amenities-summary {
+  padding-top: 14px;
+  margin: 14px 0;
+  border-top: 1px solid var(--border);
+  min-width: 0;
+}
+.property-amenities-summary h3 {
+  font-size: 0.9rem;
+  margin: 0 0 10px;
+}
+.property-amenities-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.property-amenities-tags li {
+  font-size: 0.75rem;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: var(--surface-muted);
+  overflow-wrap: anywhere;
+}
+.property-amenities-notes {
+  margin: 12px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.85rem;
+}
+@media (max-width: 600px) {
+  .property-amenities-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .property-amenities-more > summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .property-amenities-more > summary::after {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .property-amenities-count {
+    grid-column: 1;
+    grid-row: 2;
+    margin-left: 0;
+  }
+  .property-amenities-prefill {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+}

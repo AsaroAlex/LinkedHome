@@ -48,6 +48,10 @@ import {
   PropertyAddressSummary,
 } from "./PropertyAddress";
 import {
+  PropertyAmenitiesFields,
+  PropertyAmenitiesSummary,
+} from "./PropertyAmenities";
+import {
   PhotoEditor,
   PropertyCover,
   PropertyGallery,
@@ -1991,6 +1995,7 @@ function PropertyForm({
         sqm: Number(v.sqm),
         rooms: Number(v.rooms),
         furnished: v.furnished === "on",
+        amenities: new FormData(e.currentTarget).getAll("amenities"),
         authority_attested: v.authority_attested === "on",
       };
     setPhotoError("");
@@ -2156,7 +2161,7 @@ function PropertyForm({
         <ContractChoice offered value={property?.contract_type} />
       </fieldset>
       <fieldset className="form-section" disabled={busy}>
-        <legend>Spazi e dotazioni</legend>
+        <legend>Spazi e arredo</legend>
         <div className="form-grid">
           <Field
             name="capacity"
@@ -2192,6 +2197,13 @@ function PropertyForm({
           />{" "}
           Arredato
         </label>
+      </fieldset>
+      <fieldset className="form-section" disabled={busy}>
+        <legend>Dotazioni della casa</legend>
+        <PropertyAmenitiesFields
+          property={property}
+          description={description}
+        />
       </fieldset>
       <PhotoEditor
         photos={photos}
@@ -2358,6 +2370,7 @@ function PropertiesPage() {
                     <p className="small-copy">
                       Contratto: {contractTypeLabel(p.contract_type)}
                     </p>
+                    <PropertyAmenitiesSummary property={p} />
                     <p className="small-copy">
                       Disponibile dal {dateLabel(p.available_from)}.
                       Autorizzazione autodichiarata.
@@ -2806,6 +2819,7 @@ function InvitationsPage({ user }: { user: User }) {
                 {i.property.furnished ? "Arredato" : "Non arredato"}
               </p>
               <p>{i.property.description}</p>
+              <PropertyAmenitiesSummary property={i.property} />
               {i.property_changed &&
                 ["accepted", "closed"].includes(i.status) && (
                   <p className="disclosure">
@@ -3133,6 +3147,7 @@ function Conversation({ id, user }: { id: string; user: User }) {
                 {info.property.min_months}–{info.property.max_months} mesi
               </p>
               <p>Contratto: {contractTypeLabel(info.property.contract_type)}</p>
+              <PropertyAmenitiesSummary property={info.property} />
               {info.property_changed && (
                 <p>
                   I dettagli attuali sono cambiati. Qui vedi l’offerta

@@ -451,3 +451,15 @@ originale, senza acquisire quello aggiornato. Verificare anche i payload
 JSON, omissione dei campi nei client precedenti, blocco/sospensione,
 errori e retry foto. Suite DB seriali, fixture UX su3017 separata; evidenze
 private in `.local/property-address`.
+
+Dotazioni dell’immobile: `shared/property-amenities.ts` contiene il
+catalogo e il riconoscimento locale del testo; `src/PropertyAmenities.tsx`
+mantiene checkbox e note. `Precompila dal testo` è un’azione esplicita,
+aggiunge alle selezioni manuali e non modifica descrizione o note.
+Il form legge `FormData.getAll("amenities")` prima di disabilitare i
+controlli; lo stesso payload entra nel fingerprint dei retry foto.
+Migrazione016 additiva, omissione dei campi conserva i valori, array/testo
+vuoti li cancellano. Snapshot accettati restano originali e non ricevono
+dotazioni da dati attuali. Specifica
+[11-property-amenities](../product/11-property-amenities.md); prove con
+API/SQL, parser, fixture UX e browser reali in `.local/property-amenities`.

@@ -151,6 +151,8 @@ const publicProperty = (p: any, policy = p, allowed = true) => ({
   sqm: p.sqm,
   rooms: p.rooms,
   furnished: p.furnished,
+  amenities: p.amenities || [],
+  amenities_details: p.amenities_details || "",
   status: p.status,
   revision: p.revision,
   published_at: p.published_at,
@@ -994,7 +996,7 @@ export async function buildApp(
       await lockUsers(c, [u.id]);
       await active(c, u.id);
       const result = await c.query(
-        "INSERT INTO properties(owner_id,title,city,area,description,rent,available_from,min_months,max_months,capacity,sqm,rooms,furnished,authority_attested,contract_type,street,street_number,address_visibility) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18) RETURNING id",
+        "INSERT INTO properties(owner_id,title,city,area,description,rent,available_from,min_months,max_months,capacity,sqm,rooms,furnished,authority_attested,contract_type,street,street_number,address_visibility,amenities,amenities_details) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20) RETURNING id",
         [
           u.id,
           p.title,
@@ -1014,6 +1016,8 @@ export async function buildApp(
           p.street ?? "",
           p.street_number ?? "",
           p.address_visibility ?? "area",
+          p.amenities ?? [],
+          p.amenities_details ?? "",
         ],
       );
       return result.rows[0].id;
@@ -1045,9 +1049,15 @@ export async function buildApp(
           body.address_visibility === undefined
             ? prior.address_visibility
             : body.address_visibility,
+        amenities:
+          body.amenities === undefined ? prior.amenities : body.amenities,
+        amenities_details:
+          body.amenities_details === undefined
+            ? prior.amenities_details
+            : body.amenities_details,
       });
       const result = await c.query(
-        "UPDATE properties SET title=$3,city=$4,area=$5,description=$6,rent=$7,available_from=$8,min_months=$9,max_months=$10,capacity=$11,sqm=$12,rooms=$13,furnished=$14,authority_attested=$15,contract_type=$16,street=$17,street_number=$18,address_visibility=$19,revision=revision+1 WHERE id=$1 AND owner_id=$2 RETURNING id",
+        "UPDATE properties SET title=$3,city=$4,area=$5,description=$6,rent=$7,available_from=$8,min_months=$9,max_months=$10,capacity=$11,sqm=$12,rooms=$13,furnished=$14,authority_attested=$15,contract_type=$16,street=$17,street_number=$18,address_visibility=$19,amenities=$20,amenities_details=$21,revision=revision+1 WHERE id=$1 AND owner_id=$2 RETURNING id",
         [
           id,
           u.id,
@@ -1068,6 +1078,8 @@ export async function buildApp(
           p.street,
           p.street_number,
           p.address_visibility,
+          p.amenities,
+          p.amenities_details,
         ],
       );
       requireThat(result.rowCount, "Immobile non trovato.", 404);

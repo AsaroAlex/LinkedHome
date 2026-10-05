@@ -78,7 +78,8 @@ test("property photos persist after reload and can be removed in a mobile form",
   for (const legend of [
     "Posizione e descrizione",
     "Costi e disponibilità",
-    "Spazi e dotazioni",
+    "Spazi e arredo",
+    "Dotazioni della casa",
   ])
     await expect(page.getByRole("group", { name: legend })).toBeVisible();
 

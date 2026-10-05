@@ -37,6 +37,9 @@ const fields: Record<string, string> = {
   pets_details: "Usa al massimo 200 caratteri per i dettagli sugli animali.",
   furnishing_preference: "Scegli una delle opzioni per l’arredamento.",
   housing_needs: "Controlla le caratteristiche della casa selezionate.",
+  amenities: "Controlla le dotazioni della casa selezionate.",
+  amenities_details:
+    "Usa al massimo 600 caratteri per le informazioni sulle dotazioni.",
   accessibility_needs: "Controlla le esigenze di accessibilità selezionate.",
   about: "Usa al massimo 600 caratteri per la presentazione.",
   capacity: "Capienza: inserisci un numero intero da 1 a 12.",

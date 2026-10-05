@@ -497,3 +497,63 @@ su3000/3001; snapshot dei dati locali preesistenti invariato (5 utenti,
 2 profili,1 immobile; nuovi campi vuoti e solo quartiere). Frontend e
 health200. Aggiornamento Railway sulla stessa branch autorizzata;
 nessuna modifica a runtime, posta, bucket o account reali.
+
+
+Pubblicato832193779850241d45e7bd6cbf2fc76fdc7f867d: web
+5ab84cb7-301c-4902-b95c-1ecabe2717c5 SUCCESS/online; cron
+51887e3b-7755-42b4-94a3-7ec9b6f6a795 SUCCESS/cronReady, DB online.
+Nessun problema o lavoro pending. Health/config HTTPS200; JS
+index-DMPInUtk.js e CSSindex-tgzxLIIF.css identici alla build locale.
+
+Due flussi browser pubblici reali passati: indirizzo privato salvato e
+preservato nell’export del proprietario, assente da inviti pending e raw
+snapshot; indirizzo completo condiviso e originale conservato dopo
+accettazione; ritorno a solo quartiere, blocco e snapshot storici
+proteggono entrambe le uscite JSON. Offerta accettata senza indirizzo
+non acquisisce quello nuovo. Screenshot320/390/1440 ispezionati, Axe,
+overflow, console e rete puliti. Scritture soltanto in nuovi workspace
+sintetici isolati, nessuna email reale. Review indipendente privacy senza
+problemi. Dev94385 con HMR/watch pronto, health200; dati locali
+preesistenti invariati. Evidenze .local/property-address. Esito conservato
+localmente per evitare deploy documentale; /properties?v=8321937.
+
+
+## Dotazioni della casa e precompilazione dal testo — 2026-10-05
+
+Feedback proprietario: selezionare le dotazioni oppure descriverle e
+precompilare le scelte, con possibilità di aggiungere e modificare.
+Nuova sezione «Dotazioni della casa» separata da «Spazi e arredo».
+Catalogo27 di caratteristiche della casa (21 specifiche e6 funzionali
+accessibilità), sei frequenti e altre per gruppi; note libere600 caratteri.
+«Precompila dal testo» legge descrizione e note soltanto su clic, propone
+selezioni modificabili e conserva quelle manuali. Estrazione locale con
+sinonimi, negazioni e indicazioni future/ambigue trattate conservativamente.
+Nessun provider esterno, nessuna inferenza automatica sull’arredo.
+
+Nuovi campi amenities/amenities_details opzionali in API e additivi in016.
+Valori iniziali vuoti, omissione per campo conserva il precedente in
+modifica. Schede, inviti e chat mostrano le dotazioni salvate; snapshot
+accepted/closed conserva l’offerta originale senza fallback ai dati nuovi.
+Dati locali fotografati prima delle modifiche; dev94385 fermato prima
+che il watcher possa applicare la nuova migrazione. Nessun cambio matching,
+SMTP, runtime, bucket o dati reali. Test e deployment stessa istanza Railway
+in corso; evidenze private .local/property-amenities.
+Specifica docs/product/11-property-amenities.md.
+
+
+Build/typecheck finali passati;727 test unit/API/SQL,48 scenari UX e
+13 flussi browser preview tutti passati. Precompilazione esplicita,
+negazioni, correzioni e scelte manuali, note multilinea, omissione legacy,
+errori/retry foto e snapshot originali verificati. Review indipendente
+ha individuato box-doccia come falso garage: regex corretta,123 unit del
+catalogo/parser passati e caso aggiunto al browser reale. Screenshot
+320/390/1440 ispezionati, Axe/overflow/console/rete puliti. Nessuna
+nuova dipendenza. Suite browser principale22 e aggiornamento Railway
+in corso; evidenze private .local/property-amenities.
+
+
+Suite browser principale22/22 passata. Dev con HMR/watch riavviato
+su3000/3001, frontend e health200. Snapshot privato conferma dati locali
+preesistenti invariati (5 utenti,2 profili,1 immobile; nuovi campi vuoti).
+Aggiornamento della stessa istanza Railway/branch autorizzata, con
+migrazione016 additiva; runtime, posta e bucket invariati.

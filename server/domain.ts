@@ -22,6 +22,7 @@ import {
   searchLocations,
 } from "../shared/locations.js";
 import { addressVisibilities } from "../shared/property-address.js";
+import { propertyAmenities } from "../shared/property-amenities.js";
 export { cities } from "../shared/locations.js";
 const searchLocationInput = z
   .object({
@@ -205,6 +206,24 @@ export const propertyInput = z
     sqm: z.number().int().min(10).max(2000),
     rooms: z.number().int().min(1).max(20),
     furnished: z.boolean(),
+    amenities: z
+      .array(z.enum(propertyAmenities))
+      .max(propertyAmenities.length)
+      .refine(
+        (values) => new Set(values).size === values.length,
+        "Scegli ogni dotazione una sola volta.",
+      )
+      .optional(),
+    amenities_details: z
+      .string()
+      .refine(
+        (value) =>
+          !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f]/.test(value),
+        "Le informazioni sulle dotazioni non possono contenere caratteri di controllo.",
+      )
+      .trim()
+      .max(600)
+      .optional(),
     authority_attested: z.boolean(),
   })
   .strict()
