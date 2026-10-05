@@ -1176,3 +1176,44 @@ su3000/3001, frontend e health200. Snapshot privato conferma dati locali
 preesistenti invariati (5 utenti,2 profili,1 immobile; nuovi campi vuoti).
 Aggiornamento della stessa istanza Railway/branch autorizzata, con
 migrazione016 additiva; runtime, posta e bucket invariati.
+
+
+Pubblicato031cc014a59bf15fd8ea35cc43ea19cf34d69f9a: web
+b0588f43-7c30-4e1b-b57c-d6faa8685076 SUCCESS/online; cron
+185c1057-5e4a-4d98-9a26-4fd085d06f13 SUCCESS/cronReady, DB online.
+Nessun problema o lavoro pending. Health/config HTTPS200; JS
+index-BqnER-_b.js e CSSindex-v8xpJVzZ.css identici alla build locale.
+
+Browser pubblico reale passato: default vuoti; precompilazione da
+Descrizione+note con ascensore negato e box-doccia non scambiato per
+garage; selezioni manuali conservate, proposte rimosse/aggiunte, note
+salvate, export e reload coerenti anche con pannello chiuso. Invito e
+chat condividono le dotazioni e note originali; modifica successiva del
+proprietario non riscrive l’offerta accettata. Indirizzo privato della
+stessa casa ancora assente dalle due uscite JSON. Screenshot320/390/1440
+ispezionati, Axe/overflow/console/rete puliti. Scritture soltanto in un
+nuovo workspace sintetico isolato, nessuna email reale. Dev101325 con
+HMR/watch pronto, health200; snapshot locale preesistente invariato.
+Evidenze .local/property-amenities. Esito conservato localmente per
+evitare deploy documentale; /properties?v=031cc01.
+
+
+## Foto all’inizio del modulo immobile — 2026-10-05
+
+Feedback: portare in alto le foto dell’immobile. La sezione esistente,
+con anteprime e rimozione, precede ora «Posizione e descrizione» sia in
+creazione sia in modifica. Il modulo si apre dall’inizio anche quando
+«Modifica» viene premuto su una scheda in basso; il focus sul titolo
+non scorre oltre le foto. Caricamento, limiti, salvataggio e retry
+conservano lo stesso flusso. Nessun cambio API, schema o dipendenze.
+
+Build/typecheck passati; due scenari UX mirati su errori, dati salvati e
+retry foto passati. Verifica browser reale su upload/reload/rimozione e
+retry in corso, prima dell’aggiornamento della stessa istanza Railway.
+Evidenze private in .local/photos-first.
+
+
+Due flussi browser reali mirati passati: caricamento, normalizzazione WebP,
+persistenza dopo reload e rimozione da mobile; risposta upload persa e
+retry senza duplicati. Dev con HMR/watch riavviato su3000/3001, health e
+frontend200. Build finale JSindex-DYOonVqG.js; aggiornamento Railway in corso.

@@ -463,3 +463,12 @@ vuoti li cancellano. Snapshot accettati restano originali e non ricevono
 dotazioni da dati attuali. Specifica
 [11-property-amenities](../product/11-property-amenities.md); prove con
 API/SQL, parser, fixture UX e browser reali in `.local/property-amenities`.
+
+
+Nel modulo immobile le foto precedono posizione e descrizione. All’apertura
+scorrere all’inizio del form, poi dare focus al titolo con preventScroll:
+non usare il primo input generico, che è il caricamento foto. Per modifiche
+di sola posizione UI bastano build/typecheck e flussi foto pertinenti
+(upload, reload, rimozione e retry), più prova mobile sul sito aggiornato.
+Non aggiungere test che rispecchiano soltanto l’ordine del markup.
+Evidenze private in `.local/photos-first`.

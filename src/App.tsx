@@ -1922,7 +1922,10 @@ function PropertyForm({
     [description, setDescription] = useState(property?.description || "");
   const busy = a.busy || photoBusy;
   useEffect(() => {
-    formRef.current?.querySelector<HTMLInputElement>("input")?.focus();
+    formRef.current?.scrollIntoView({ block: "start" });
+    formRef.current
+      ?.querySelector<HTMLInputElement>('input[name="title"]')
+      ?.focus({ preventScroll: true });
     const urls = objectUrls.current;
     return () => urls.forEach((url) => URL.revokeObjectURL(url));
   }, []);
@@ -2071,6 +2074,22 @@ function PropertyForm({
         I campi con * sono obbligatori. Le foto sono facoltative.
       </p>
       <ErrorBox text={a.error} />
+      <PhotoEditor
+        photos={photos}
+        selected={selected}
+        busy={busy}
+        error={photoError}
+        notice={photoNotice}
+        onChoose={choose}
+        onRemove={(id, saved) => void removePhoto(id, saved)}
+      />
+      {photos.length > 0 && (
+        <p className="field-hint">
+          Rimuovere una foto salvata aggiorna subito l’immobile e annulla gli
+          inviti in attesa. Le altre modifiche e le nuove foto si salvano con il
+          pulsante qui sotto.
+        </p>
+      )}
       <fieldset className="form-section" disabled={busy}>
         <legend>Posizione e descrizione</legend>
         <Field
@@ -2205,22 +2224,6 @@ function PropertyForm({
           description={description}
         />
       </fieldset>
-      <PhotoEditor
-        photos={photos}
-        selected={selected}
-        busy={busy}
-        error={photoError}
-        notice={photoNotice}
-        onChoose={choose}
-        onRemove={(id, saved) => void removePhoto(id, saved)}
-      />
-      {photos.length > 0 && (
-        <p className="field-hint">
-          Rimuovere una foto salvata aggiorna subito l’immobile e annulla gli
-          inviti in attesa. Le altre modifiche e le nuove foto si salvano con il
-          pulsante qui sotto.
-        </p>
-      )}
       <label className="check-label authority-check">
         <input
           type="checkbox"
