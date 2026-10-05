@@ -33,12 +33,14 @@ import {
   contractPreferenceLabel,
   contractTypeLabel,
   contractHint,
+  durationRequired,
   type ContractPreference,
   type ContractType,
 } from "../shared/contracts";
 import type { User } from "../server/auth";
 import { IncomeWorkspace, InvitationIncome } from "./Income";
 import { ProfileAvatar, ProfilePhotoEditor } from "./ProfilePhoto";
+import { ProfileDetailsFields, ProfileDetailsSummary } from "./ProfileDetails";
 import {
   PhotoEditor,
   PropertyCover,
@@ -848,8 +850,10 @@ function Safeguards() {
           <h2>Prima dell’invito</h2>
           <p>
             I proprietari con un immobile pubblicato vedono solo città, budget
-            totale, ingresso, contratto, permanenza e numero di persone. Il
-            profilo usa un identificatore, non il tuo nome.
+            totale, ingresso, contratto, permanenza quando serve e numero di
+            persone. Se li indichi, vedono anche animali, arredamento ed
+            esigenze della casa. Il profilo usa un identificatore al posto del
+            tuo nome.
           </p>
         </article>
         <article className="panel">
@@ -857,8 +861,10 @@ function Safeguards() {
           <h2>Quando accetti</h2>
           <p>
             Entrambe le parti vedono il nome scelto, che può essere uno
-            pseudonimo, la foto del profilo se aggiunta, e possono scriversi.
-            Email e documenti non vengono condivisi automaticamente.
+            pseudonimo, la foto del profilo se aggiunta, e possono scriversi. La
+            presentazione e i dettagli sugli animali diventano visibili ai
+            contatti accettati. Email e documenti non vengono condivisi
+            automaticamente.
           </p>
         </article>
         <article className="panel">
@@ -1530,9 +1536,11 @@ function MoveInFields({ profile }: { profile: MoveInPreferences | null }) {
 function ContractChoice({
   offered = false,
   value,
+  onChange,
 }: {
   offered?: boolean;
   value?: ContractPreference | ContractType;
+  onChange?: (value: ContractPreference | ContractType) => void;
 }) {
   const [choice, setChoice] = useState(
     value || (offered ? "unspecified" : "any"),
@@ -1549,11 +1557,12 @@ function ContractChoice({
         name={name}
         required
         value={choice}
-        onChange={(event) =>
-          setChoice(
-            event.currentTarget.value as ContractPreference | ContractType,
-          )
-        }
+        onChange={(event) => {
+          const next = event.currentTarget.value as
+            ContractPreference | ContractType;
+          setChoice(next);
+          onChange?.(next);
+        }}
       >
         {options.map((option) => (
           <option key={option} value={option}>
@@ -1564,6 +1573,50 @@ function ContractChoice({
         ))}
       </select>
     </Field>
+  );
+}
+function ProfileContractFields({ profile }: { profile?: any }) {
+  const [contract, setContract] = useState<ContractPreference>(
+    profile?.contract_preference || "any",
+  );
+  const [months, setMonths] = useState(String(profile?.duration ?? 12));
+  return (
+    <>
+      <ContractChoice
+        value={contract}
+        onChange={(value) => setContract(value as ContractPreference)}
+      />
+      <div className="form-grid">
+        {durationRequired(contract) && (
+          <Field
+            name="duration"
+            label="Per quanti mesi cerchi casa?"
+            hint="Indica il periodo di permanenza che cerchi, da 1 a 120 mesi."
+          >
+            <input
+              name="duration"
+              type="number"
+              required
+              min={1}
+              max={120}
+              step={1}
+              inputMode="numeric"
+              value={months}
+              onChange={(event) => setMonths(event.currentTarget.value)}
+            />
+          </Field>
+        )}
+        <Field
+          name="occupants"
+          label="Numero totale di persone"
+          type="number"
+          value={profile?.occupants ?? 1}
+          min={1}
+          max={12}
+          hint="Conta tutte le persone che abiteranno con te, te compreso."
+        />
+      </div>
+    </>
   );
 }
 function ProfilePage() {
@@ -1577,6 +1630,7 @@ function ProfilePage() {
   async function save(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const v = formValues(e.currentTarget);
+    const needs = new FormData(e.currentTarget).getAll("housing_needs");
     await a.run(async () => {
       const precision = String(v.move_in_precision);
       const start = precision === "day" ? String(v.move_in) : `${v.move_in}-01`;
@@ -1591,9 +1645,16 @@ function ProfilePage() {
             : endOfMonth(
                 `${precision === "range" ? v.move_in_end : v.move_in}-01`,
               ),
-        duration: Number(v.duration),
+        duration: durationRequired(v.contract_preference as ContractPreference)
+          ? Number(v.duration)
+          : null,
         contract_preference: v.contract_preference,
         occupants: Number(v.occupants),
+        pets: v.pets,
+        pets_details: v.pets_details || "",
+        furnishing_preference: v.furnishing_preference,
+        housing_needs: needs,
+        about: v.about || "",
       });
       setDraft(null);
       l.reload();
@@ -1643,6 +1704,11 @@ function ProfilePage() {
                   p.duration,
                   p.contract_preference,
                   p.occupants,
+                  p.pets,
+                  p.pets_details,
+                  p.furnishing_preference,
+                  p.housing_needs,
+                  p.about,
                 ])
               : "new-profile"
           }
@@ -1670,27 +1736,11 @@ function ProfilePage() {
           </fieldset>
           <fieldset className="form-section" disabled={a.busy}>
             <legend>Contratto e permanenza</legend>
-            <ContractChoice value={p?.contract_preference} />
-            <div className="form-grid">
-              <Field
-                name="duration"
-                label="Per quanti mesi cerchi casa?"
-                type="number"
-                value={draft?.duration ?? p?.duration ?? 12}
-                min={1}
-                max={120}
-                hint="È il periodo di permanenza che cerchi, distinto dalla durata del contratto. Da 1 a 120 mesi."
-              />
-              <Field
-                name="occupants"
-                label="Numero totale di persone"
-                type="number"
-                value={draft?.occupants ?? p?.occupants ?? 1}
-                min={1}
-                max={12}
-                hint="Conta tutte le persone che abiteranno con te, te compreso."
-              />
-            </div>
+            <ProfileContractFields profile={p} />
+          </fieldset>
+          <fieldset className="form-section" disabled={a.busy}>
+            <legend>Qualcosa in più su di te</legend>
+            <ProfileDetailsFields profile={p} />
           </fieldset>
           <p className="field-hint">
             Una modifica annulla gli inviti ancora in attesa. Le conversazioni
@@ -1712,7 +1762,8 @@ function ProfilePage() {
           <p>
             Città, budget, ingresso, contratto, permanenza e numero di persone
             saranno visibili ai proprietari autenticati con un immobile
-            pertinente.
+            pertinente. Se li indichi, vedranno anche animali, arredamento ed
+            esigenze della casa.
           </p>
           <p className="small-copy">
             L’anteprima mostra le ultime preferenze salvate. Salva le modifiche
@@ -1720,7 +1771,8 @@ function ProfilePage() {
           </p>
           <p>
             <strong>
-              Nome, foto, email e verifiche restano esclusi dalla scoperta.
+              Nome, foto, presentazione, email e verifiche restano esclusi dalla
+              scoperta.
             </strong>
           </p>
           {p && (
@@ -1731,9 +1783,18 @@ function ProfilePage() {
                 Fino a €{p.budget} al mese · {p.occupants} persone
               </p>
               <p>
-                Ingresso: {moveInLabel(p)} · permanenza {p.duration} mesi
+                Ingresso: {moveInLabel(p)}
+                {durationRequired(p.contract_preference) &&
+                  p.duration != null && <> · permanenza {p.duration} mesi</>}
               </p>
               <p>Contratto: {contractPreferenceLabel(p.contract_preference)}</p>
+              <ProfileDetailsSummary details={p} />
+              {(p.about || p.pets_details) && (
+                <details className="saved-private-details">
+                  <summary>Presentazione condivisa dopo l’invito</summary>
+                  <ProfileDetailsSummary details={p} personal />
+                </details>
+              )}
             </div>
           )}
           {p ? (
@@ -2460,6 +2521,7 @@ function DiscoverPage() {
                   <h2>{p.alias}</h2>
                   <p className="muted">Cerca a {p.city}</p>
                   <Checks value={p.compatibility} />
+                  <ProfileDetailsSummary details={p} />
                   <button
                     className="button full"
                     disabled={a.busy}
@@ -2689,6 +2751,10 @@ function InvitationsPage({ user }: { user: User }) {
                   In conversazione con <strong>{i.other_name}</strong>
                 </p>
               )}
+              {["accepted", "closed"].includes(i.status) &&
+                i.tenant_details && (
+                  <ProfileDetailsSummary details={i.tenant_details} personal />
+                )}
               {i.compatibility && (
                 <details>
                   <summary>Confronto con le preferenze attuali</summary>
@@ -2697,10 +2763,11 @@ function InvitationsPage({ user }: { user: User }) {
               )}
               {i.status === "pending" && (
                 <p className="disclosure">
-                  Accettando, condividi il nome scelto con l’altra persona e
-                  apri la chat. Se hai aggiunto una foto al profilo, sarà
-                  visibile al proprietario. Nessuna email o documento viene
-                  condiviso. Scade il {dateLabel(i.expires_at)}.
+                  {i.tenant_id === user.id
+                    ? "Accettando, condividi il nome scelto e apri la chat. Il proprietario vedrà anche la foto, la presentazione e i dettagli sugli animali, se li hai aggiunti."
+                    : "Se l’inquilino accetta, vedrete il nome scelto e aprirete la chat. Potrai leggere la presentazione e i dettagli sugli animali e vedere la foto, se li ha aggiunti."}{" "}
+                  Nessuna email o documento viene condiviso. Scade il{" "}
+                  {dateLabel(i.expires_at)}.
                 </p>
               )}
               {["pending", "accepted"].includes(i.status) && (
@@ -2967,6 +3034,10 @@ function Conversation({ id, user }: { id: string; user: User }) {
           {a.message && <Notice>{a.message}</Notice>}
         </section>
         <aside className="panel chat-aside">
+          {info?.tenant_details &&
+            ["accepted", "closed"].includes(info.status) && (
+              <ProfileDetailsSummary details={info.tenant_details} personal />
+            )}
           {info && (
             <div className="chat-property">
               <span className="eyebrow">L’IMMOBILE DELL’INVITO</span>
@@ -3019,6 +3090,7 @@ function Conversation({ id, user }: { id: string; user: User }) {
               a.run(async () => {
                 await api("/blocks", "POST", { invitation_id: id });
                 l.reload();
+                inv.reload();
               }, "Contatto bloccato.")
             }
           >

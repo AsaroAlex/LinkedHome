@@ -8,7 +8,7 @@ type Preferences = {
   move_in: string;
   move_in_precision?: "day" | "month" | "range";
   move_in_end?: string | null;
-  duration: number;
+  duration: number | null;
   occupants: number;
   contract_preference?: string;
 };
@@ -190,7 +190,7 @@ async function screenshots(page: Page, name: string) {
   });
 }
 
-test("tenant contract choice saves separately from stay length and survives an unsaved pause", async ({
+test("long contracts hide stay length while preserving temporary drafts and unsaved changes during a pause", async ({
   page,
 }) => {
   const state = await fixtures(page, {
@@ -220,15 +220,16 @@ test("tenant contract choice saves separately from stay length and survives an u
     "Transitorio",
   ]);
   await expect(summary).toContainText("Contratto: Sono flessibile");
+  await duration.fill("18");
   await contract.selectOption("four_plus_four");
-  await expect(duration).toHaveValue("12");
+  await expect(duration).toHaveCount(0);
   await expect(
     page.getByText("Durata iniziale di 4 anni, con rinnovo di altri 4 anni.", {
       exact: true,
     }),
   ).toBeVisible();
   await contract.selectOption("student");
-  await expect(duration).toHaveValue("12");
+  await expect(duration).toHaveValue("18");
   await expect(summary).toContainText("Contratto: Sono flessibile");
   await accessibleOnMobile(page);
   await page
@@ -243,15 +244,20 @@ test("tenant contract choice saves separately from stay length and survives an u
         move_in: "2026-12-03",
         move_in_precision: "day",
         move_in_end: "2026-12-03",
-        duration: 12,
+        duration: 18,
         occupants: 2,
         contract_preference: "student",
+        pets: "unspecified",
+        pets_details: "",
+        furnishing_preference: "any",
+        housing_needs: [],
+        about: "",
       },
     ]);
   await expect(summary).toContainText("Contratto: Studenti universitari");
   await page.reload();
   await expect(contract).toHaveValue("student");
-  await expect(duration).toHaveValue("12");
+  await expect(duration).toHaveValue("18");
   await contract.selectOption("three_plus_two");
   await page
     .getByRole("button", {
@@ -261,7 +267,7 @@ test("tenant contract choice saves separately from stay length and survives an u
     .click();
   await expect.poll(() => state.publications).toEqual(["paused"]);
   await expect(contract).toHaveValue("three_plus_two");
-  await expect(duration).toHaveValue("12");
+  await expect(duration).toHaveCount(0);
   await expect(summary).toContainText("Contratto: Studenti universitari");
   await expect(
     page.getByText("Modifiche non salvate.", { exact: false }),
@@ -274,6 +280,28 @@ test("tenant contract choice saves separately from stay length and survives an u
   ).toBeDisabled();
   expect(state.saves).toHaveLength(1);
   await accessibleOnMobile(page);
+  await page
+    .getByRole("button", { name: "Salva preferenze", exact: true })
+    .click();
+  await expect
+    .poll(() => state.saves.at(-1))
+    .toMatchObject({
+      contract_preference: "three_plus_two",
+      duration: null,
+    });
+  await expect(summary).toContainText("Contratto: 3+2 · canone concordato");
+  await expect(summary).not.toContainText("null mesi");
+  await expect(summary).not.toContainText("permanenza 18 mesi");
+  await page.reload();
+  await expect(contract).toHaveValue("three_plus_two");
+  await expect(duration).toHaveCount(0);
+  await expect(summary).not.toContainText("null mesi");
+  await expect(
+    page.getByRole("button", {
+      name: "Pubblica queste preferenze",
+      exact: true,
+    }),
+  ).toBeEnabled();
   await screenshots(page, "tenant-contract");
   expect(state.browserErrors).toEqual([]);
   expect(state.failedRequests).toEqual([]);

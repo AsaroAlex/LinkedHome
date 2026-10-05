@@ -13,6 +13,7 @@ export default defineConfig({
         "move-in.spec.ts",
         "contracts.spec.ts",
         "profile-photo.spec.ts",
+        "profile-details.spec.ts",
       ],
     },
     {

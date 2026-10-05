@@ -108,11 +108,11 @@ export function ProductFAQ() {
           ],
           [
             "Chi può vedere il mio profilo?",
-            "Solo i proprietari autenticati con un immobile pertinente possono scoprire le preferenze che pubblichi. Vedono città, budget, periodo di ingresso, contratto, permanenza e numero di persone, con un identificatore al posto del tuo nome.",
+            "Solo i proprietari autenticati con un immobile pertinente possono scoprire le preferenze che pubblichi: città, budget, ingresso, contratto e numero di persone. I mesi di permanenza servono per la scelta flessibile, studenti e transitorio. Se li indichi, vedono anche animali, arredamento ed esigenze della casa. Il tuo nome, la foto e la presentazione diventano visibili quando accetti un invito.",
           ],
           [
             "Accettare un invito mi impegna ad affittare?",
-            "No. Accettare apre una conversazione e rende visibili il nome scelto e la foto del profilo, se l’hai aggiunta. Puoi chiedere informazioni e valutare l’immobile. L’invito non è una prenotazione o un contratto.",
+            "No. Accettare apre una conversazione e rende visibili il nome scelto, la foto e la presentazione del profilo, se le hai aggiunte. Puoi chiedere informazioni e valutare l’immobile. L’invito non è una prenotazione o un contratto.",
           ],
           [
             "Posso interrompere la ricerca?",
@@ -120,7 +120,7 @@ export function ProductFAQ() {
           ],
           [
             "Come vengono scelti i profili compatibili?",
-            "Confrontiamo città, costo mensile complessivo, ingresso, contratto, permanenza e capienza. I criteri sono visibili. Identità, reddito e verifiche non vengono usati per assegnare un punteggio o dare più visibilità a una persona.",
+            "Confrontiamo città, costo mensile complessivo, ingresso, contratto e capienza. La permanenza in mesi conta per scelta flessibile, studenti e transitorio; per 4+4 e 3+2 vale la formula del contratto. Animali, arredamento ed esigenze della casa aiutano il proprietario a valutare il profilo e non cambiano l’ordine dei risultati. Identità, reddito e verifiche non vengono usati per assegnare un punteggio o dare più visibilità a una persona.",
           ],
           [
             "Come funziona la verifica del reddito?",

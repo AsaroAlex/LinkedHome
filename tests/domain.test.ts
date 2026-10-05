@@ -13,7 +13,16 @@ import {
   contractPreferenceLabel,
   contractTypeLabel,
   contractHint,
+  durationRequired,
 } from "../shared/contracts";
+import {
+  petsOptions,
+  furnishingPreferences,
+  housingNeeds,
+  petsLabel,
+  furnishingPreferenceLabel,
+  housingNeedLabel,
+} from "../shared/profile-details";
 const profile = {
   city: "Bologna" as const,
   budget: 850,
@@ -233,7 +242,7 @@ describe("contract preferences", () => {
   });
 
   it.each(contractPreferences)(
-    "parses tenant preference %s without replacing intended stay months",
+    "parses tenant preference %s and normalizes irrelevant month counts",
     (contract_preference) => {
       const parsed = profileInput.parse({
         ...profile,
@@ -241,7 +250,9 @@ describe("contract preferences", () => {
         contract_preference,
       });
       expect(parsed.contract_preference).toBe(contract_preference);
-      expect(parsed.duration).toBe(12);
+      expect(parsed.duration).toBe(
+        durationRequired(contract_preference) ? 12 : null,
+      );
     },
   );
 
@@ -322,8 +333,8 @@ describe("contract preferences", () => {
 
   it("keeps intended stay compatibility independent of contract choice", () => {
     const result = compatibility(
-      { ...profile, duration: 13, contract_preference: "four_plus_four" },
-      { ...property, contract_type: "four_plus_four" },
+      { ...profile, duration: 13, contract_preference: "transitory" },
+      { ...property, contract_type: "transitory" },
     );
     expect(result.compatible).toBe(false);
     expect(result.checks.filter((check) => !check.matches)).toEqual([
@@ -346,5 +357,155 @@ describe("contract preferences", () => {
     expect(contractHint("student")).toContain("6 a 36 mesi");
     expect(contractHint("transitory")).toContain("18 mesi");
     expect(contractHint("transitory")).toContain("esigenza temporanea");
+  });
+});
+
+describe("conditional month counts", () => {
+  it.each(["four_plus_four", "three_plus_two"] as const)(
+    "accepts an omitted, null or legacy duration for %s without keeping hidden months",
+    (contract_preference) => {
+      for (const duration of [undefined, null, 12]) {
+        const parsed = profileInput.parse({
+          ...profile,
+          contract_preference,
+          duration,
+        });
+        expect(parsed.duration).toBeNull();
+        expect(durationRequired(contract_preference)).toBe(false);
+        const offered = {
+          ...property,
+          contract_type: contract_preference,
+          min_months: 48,
+          max_months: 96,
+        };
+        expect(compatibility(parsed, offered).compatible).toBe(true);
+        expect(
+          compatibility(parsed, offered).checks.some(
+            (check) => check.key === "duration",
+          ),
+        ).toBe(false);
+        expect(
+          compatibility(
+            { ...profile, contract_preference, duration: 1 },
+            offered,
+          ).compatible,
+        ).toBe(true);
+      }
+    },
+  );
+
+  it.each([undefined, "any", "student", "transitory"] as const)(
+    "requires a real month count for %s",
+    (contract_preference) => {
+      expect(durationRequired(contract_preference)).toBe(true);
+      for (const duration of [undefined, null, 0, 121, "12"])
+        expect(
+          profileInput.safeParse({ ...profile, contract_preference, duration })
+            .success,
+        ).toBe(false);
+      for (const duration of [1, 120])
+        expect(
+          profileInput.parse({ ...profile, contract_preference, duration })
+            .duration,
+        ).toBe(duration);
+      expect(
+        compatibility(
+          { ...profile, contract_preference, duration: null },
+          property,
+        ).checks.find((check) => check.key === "duration")?.matches,
+      ).toBe(false);
+    },
+  );
+});
+
+describe("optional profile details", () => {
+  it("keeps omitted details absent so persistence can preserve saved values", () => {
+    const parsed = profileInput.parse(profile);
+    for (const field of [
+      "pets",
+      "pets_details",
+      "furnishing_preference",
+      "housing_needs",
+      "about",
+    ])
+      expect(parsed).not.toHaveProperty(field);
+  });
+
+  it.each(petsOptions)("accepts declared animals %s", (pets) => {
+    expect(profileInput.parse({ ...profile, pets }).pets).toBe(pets);
+    expect(petsLabel(pets)).toBeTruthy();
+  });
+
+  it.each(furnishingPreferences)(
+    "accepts furnishing preference %s",
+    (furnishing_preference) => {
+      expect(
+        profileInput.parse({ ...profile, furnishing_preference })
+          .furnishing_preference,
+      ).toBe(furnishing_preference);
+      expect(furnishingPreferenceLabel(furnishing_preference)).toBeTruthy();
+    },
+  );
+
+  it("accepts unique useful housing needs without adding a compatibility criterion", () => {
+    const parsed = profileInput.parse({
+      ...profile,
+      pets: "dog",
+      pets_details: "  Un cane di taglia piccola.  ",
+      furnishing_preference: "partly_furnished",
+      housing_needs: [...housingNeeds],
+      about: "  Cerco una casa vicino all’università.  ",
+    });
+    expect(parsed).toMatchObject({
+      pets_details: "Un cane di taglia piccola.",
+      about: "Cerco una casa vicino all’università.",
+      housing_needs: ["elevator", "outdoor_space", "parking"],
+    });
+    expect(compatibility(parsed, property)).toEqual(
+      compatibility(profile, property),
+    );
+    expect(housingNeeds.map(housingNeedLabel)).toEqual([
+      "Ascensore",
+      "Balcone, terrazzo o giardino",
+      "Posto auto",
+    ]);
+  });
+
+  it("accepts explicit empty details and the documented length boundaries", () => {
+    expect(
+      profileInput.parse({
+        ...profile,
+        pets_details: "",
+        about: "",
+        housing_needs: [],
+      }),
+    ).toMatchObject({ pets_details: "", about: "", housing_needs: [] });
+    expect(
+      profileInput.safeParse({
+        ...profile,
+        pets_details: "a".repeat(200),
+        about: "b".repeat(600),
+      }).success,
+    ).toBe(true);
+  });
+
+  it.each([
+    { pets: "yes" },
+    { pets: null },
+    { pets_details: "a".repeat(201) },
+    { pets_details: null },
+    { furnishing_preference: "partial" },
+    { furnishing_preference: null },
+    { housing_needs: ["elevator", "elevator"] },
+    { housing_needs: ["garden"] },
+    { housing_needs: ["elevator", "outdoor_space", "parking", "elevator"] },
+    { housing_needs: null },
+    { about: "a".repeat(601) },
+    { about: null },
+    { nationality: "any" },
+  ])("rejects undeclared or malformed details %j", (details) => {
+    expect(profileInput.safeParse({ ...profile, ...details }).success).toBe(
+      false,
+    );
   });
 });

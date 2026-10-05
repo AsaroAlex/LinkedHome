@@ -126,13 +126,17 @@ async function ownProperty(id: string) {
   expect(response.statusCode).toBe(200);
   return response.json().properties.find((p: any) => p.id === id);
 }
-async function property(contract?: Contract | "unspecified") {
+async function property(
+  contract?: Contract | "unspecified",
+  patch: Record<string, unknown> = {},
+) {
   const response = await request(
     "POST",
     "/properties",
     {
       ...offer,
       ...(contract === undefined ? {} : { contract_type: contract }),
+      ...patch,
     },
     landlord,
   );
@@ -207,12 +211,16 @@ beforeEach(async () => {
 
 describe("rental contract preferences", () => {
   it.each(types)(
-    "persists %s independently of intended stay and property stay limits",
+    "persists %s with the appropriate duration while preserving property stay limits",
     async (contract) => {
       const profile = await saveProfile(contract, false);
       const p = await property(contract);
+      const duration = ["four_plus_four", "three_plus_two"].includes(contract)
+        ? null
+        : 12;
       expect(profile).toMatchObject({
         ...preferences,
+        duration,
         contract_preference: contract,
         status: "draft",
       });
@@ -228,7 +236,7 @@ describe("rental contract preferences", () => {
             [tenant.id],
           )
         ).rows[0],
-      ).toEqual({ duration: 12, contract_preference: contract });
+      ).toEqual({ duration, contract_preference: contract });
       expect(
         (
           await db.query(
@@ -368,7 +376,9 @@ describe("rental contract preferences", () => {
       expect(candidate).toMatchObject({
         id: tenant.id,
         contract_preference: contract,
-        duration: 12,
+        duration: ["four_plus_four", "three_plus_two"].includes(contract)
+          ? null
+          : 12,
         compatibility: { compatible: true },
       });
       expect(
@@ -387,6 +397,9 @@ describe("rental contract preferences", () => {
           "move_in_end",
           "duration",
           "contract_preference",
+          "pets",
+          "furnishing_preference",
+          "housing_needs",
           "occupants",
           "revision",
           "compatibility",
@@ -416,6 +429,183 @@ describe("rental contract preferences", () => {
       );
     },
   );
+
+  it.each(["four_plus_four", "three_plus_two"] as const)(
+    "accepts omitted, null and legacy numeric duration for %s without filtering by an old month count",
+    async (contract) => {
+      const { duration: _duration, ...withoutDuration } = preferences;
+      for (const durationInput of [{}, { duration: null }, { duration: 12 }]) {
+        expect(
+          (
+            await request(
+              "PUT",
+              "/profile",
+              {
+                ...withoutDuration,
+                ...durationInput,
+                contract_preference: contract,
+              },
+              tenant,
+            )
+          ).statusCode,
+        ).toBe(200);
+        expect(await ownProfile()).toMatchObject({
+          contract_preference: contract,
+          duration: null,
+        });
+      }
+      expect(
+        (
+          await request(
+            "POST",
+            "/profile/status",
+            { status: "published" },
+            tenant,
+          )
+        ).statusCode,
+      ).toBe(200);
+      const profile = await ownProfile();
+      const p = await property(contract, { min_months: 24, max_months: 60 });
+      const discovery = await discover(p);
+      expect(discovery.statusCode).toBe(200);
+      expect(discovery.json().profiles).toHaveLength(1);
+      expect(discovery.json().profiles[0].duration).toBeNull();
+      expect(
+        discovery
+          .json()
+          .profiles[0].compatibility.checks.some(
+            (check: any) => check.key === "duration",
+          ),
+      ).toBe(false);
+      const sent = await invite(p, profile);
+      expect(sent.statusCode).toBe(201);
+      expect((await accept(sent.json().id, p, profile)).statusCode).toBe(200);
+    },
+  );
+
+  it.each(["four_plus_four", "three_plus_two"] as const)(
+    "preserves a legacy numeric %s preference on reads and skips its month filter",
+    async (contract) => {
+      await db.query(
+        "INSERT INTO profiles(user_id,city,budget,move_in,duration,occupants,contract_preference,status,published_at) VALUES($1,'Bologna',1100,'2028-01-15',12,2,$2,'published',now())",
+        [tenant.id, contract],
+      );
+      const profile = await ownProfile();
+      expect(profile.duration).toBe(12);
+      const p = await property(contract, { min_months: 24, max_months: 60 });
+      const response = await discover(p);
+      expect(response.json().profiles).toHaveLength(1);
+      expect(
+        response
+          .json()
+          .profiles[0].compatibility.checks.some(
+            (check: any) => check.key === "duration",
+          ),
+      ).toBe(false);
+      const sent = await invite(p, profile);
+      expect(sent.statusCode).toBe(201);
+      expect((await accept(sent.json().id, p, profile)).statusCode).toBe(200);
+      expect((await ownProfile()).duration).toBe(12);
+    },
+  );
+
+  it.each(["any", "student", "transitory"] as const)(
+    "still requires a numeric stay duration for %s and applies its month limits",
+    async (contract) => {
+      const profile = await saveProfile(contract);
+      const p = await property(contract === "any" ? "unspecified" : contract);
+      const sent = await invite(p, profile);
+      expect(sent.statusCode).toBe(201);
+      const { duration: _duration, ...withoutDuration } = preferences;
+      const before = (
+        await db.query("SELECT * FROM profiles WHERE user_id=$1", [tenant.id])
+      ).rows[0];
+      for (const durationInput of [{}, { duration: null }]) {
+        expect(
+          (
+            await request(
+              "PUT",
+              "/profile",
+              {
+                ...withoutDuration,
+                ...durationInput,
+                contract_preference: contract,
+              },
+              tenant,
+            )
+          ).statusCode,
+        ).toBe(400);
+        expect(
+          (
+            await db.query("SELECT * FROM profiles WHERE user_id=$1", [
+              tenant.id,
+            ])
+          ).rows[0],
+        ).toEqual(before);
+        expect(
+          (
+            await db.query("SELECT status FROM invitations WHERE id=$1", [
+              sent.json().id,
+            ])
+          ).rows[0].status,
+        ).toBe("pending");
+      }
+      const tooLong = await property(
+        contract === "any" ? "unspecified" : contract,
+        { min_months: 18, max_months: 36 },
+      );
+      expect((await discover(tooLong)).json().profiles).toHaveLength(0);
+      expect((await invite(tooLong, profile)).statusCode).toBe(409);
+      expect((await accept(sent.json().id, p, profile)).statusCode).toBe(200);
+    },
+  );
+
+  it("keeps calendar, budget, city and capacity checks for a long contract without a stay duration", async () => {
+    await saveProfile("four_plus_four");
+    expect(
+      (
+        await request(
+          "PUT",
+          "/profile",
+          {
+            ...preferences,
+            duration: null,
+            contract_preference: "four_plus_four",
+            move_in: "2028-01-01",
+            move_in_precision: "range",
+            move_in_end: "2028-02-29",
+          },
+          tenant,
+        )
+      ).statusCode,
+    ).toBe(200);
+    const profile = await ownProfile();
+    const accepted = await property("four_plus_four", {
+      min_months: 24,
+      max_months: 60,
+      available_from: "2028-02-29",
+    });
+    expect((await discover(accepted)).json().profiles).toHaveLength(1);
+    for (const patch of [
+      { available_from: "2028-03-01" },
+      { rent: 1200 },
+      { city: "Roma" },
+      { capacity: 1 },
+    ]) {
+      const rejected = await property("four_plus_four", {
+        min_months: 24,
+        max_months: 60,
+        ...patch,
+      });
+      expect((await discover(rejected)).json().profiles).toHaveLength(0);
+      expect((await invite(rejected, profile)).statusCode).toBe(409);
+    }
+    const sent = await invite(accepted, profile);
+    expect(sent.statusCode).toBe(201);
+    expect((await accept(sent.json().id, accepted, profile)).statusCode).toBe(
+      200,
+    );
+  });
 
   it("lets a flexible profile meet every offered contract including one to be agreed", async () => {
     const profile = await saveProfile("any");

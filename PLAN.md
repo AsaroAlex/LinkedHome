@@ -253,3 +253,16 @@ persistente e retry che non ripristinano foto precedenti. Build/typecheck,
 327 backend,22 browser principali,5 preview e20 experience passati;
 immagine Docker production e conservazione dei dati verificati.
 Pubblicazione nella stessa preview Railway autorizzata.
+
+## Durata condizionale e informazioni del profilo — 2026-10-05
+
+Feedback: chiedere i mesi solo quando servono e aggiungere animali e altre
+informazioni utili. Campo mesi nascosto per4+4/3+2; nuovi salvataggi null e
+criterio numerico escluso da discovery/inviti per queste formule. Durate
+storiche preservate dalla migrazione011. Informazioni facoltative su animali,
+arredamento, ascensore, spazio esterno e posto auto; presentazione e dettagli
+animali condivisi solo dopo accettazione, con controlli di accesso. Bozze
+preservate cambiando formula, caricando foto e mettendo in pausa. Nessun
+nuovo filtro automatico sui dettagli. Build/typecheck,380 backend e23
+experience,6 preview e22 browser principali passati. Runtime Docker e dati
+locali verificati. Pubblicazione nella stessa preview Railway autorizzata.

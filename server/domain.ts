@@ -6,7 +6,13 @@ import {
   contractMatches,
   contractPreferenceLabel,
   contractTypeLabel,
+  durationRequired,
 } from "../shared/contracts.js";
+import {
+  petsOptions,
+  furnishingPreferences,
+  housingNeeds,
+} from "../shared/profile-details.js";
 export const cities = [
   "Bologna",
   "Milano",
@@ -29,12 +35,33 @@ export const profileInput = z
     move_in: day,
     move_in_precision: z.enum(["day", "month", "range"]).optional(),
     move_in_end: day.nullable().optional(),
-    duration: z.number().int().min(1).max(120),
+    duration: z.number().int().min(1).max(120).nullable().optional(),
     contract_preference: z.enum(contractPreferences).optional(),
+    pets: z.enum(petsOptions).optional(),
+    pets_details: z.string().trim().max(200).optional(),
+    furnishing_preference: z.enum(furnishingPreferences).optional(),
+    housing_needs: z
+      .array(z.enum(housingNeeds))
+      .max(3)
+      .refine(
+        (needs) => new Set(needs).size === needs.length,
+        "Scegli ogni esigenza una sola volta.",
+      )
+      .optional(),
+    about: z.string().trim().max(600).optional(),
     occupants: z.number().int().min(1).max(12),
   })
   .strict()
   .superRefine((profile, context) => {
+    if (
+      durationRequired(profile.contract_preference) &&
+      profile.duration == null
+    )
+      context.addIssue({
+        code: "custom",
+        path: ["duration"],
+        message: "Indica per quanti mesi cerchi casa.",
+      });
     if (
       !day.safeParse(profile.move_in).success ||
       (profile.move_in_end && !day.safeParse(profile.move_in_end).success)
@@ -81,6 +108,9 @@ export const profileInput = z
   })
   .transform((profile) => ({
     ...profile,
+    duration: durationRequired(profile.contract_preference)
+      ? profile.duration!
+      : null,
     move_in_precision: profile.move_in_precision || ("day" as const),
     move_in_end:
       profile.move_in_precision === "month"
@@ -136,14 +166,19 @@ export function compatibility(profile: Profile, property: Property) {
           : profile.move_in
       }`,
     },
-    {
-      key: "duration",
-      label: "Permanenza",
-      matches:
-        profile.duration >= property.min_months &&
-        profile.duration <= property.max_months,
-      detail: `${profile.duration} mesi · offerta ${property.min_months}–${property.max_months}`,
-    },
+    ...(durationRequired(profile.contract_preference)
+      ? [
+          {
+            key: "duration",
+            label: "Permanenza",
+            matches:
+              typeof profile.duration === "number" &&
+              profile.duration >= property.min_months &&
+              profile.duration <= property.max_months,
+            detail: `${profile.duration} mesi · offerta ${property.min_months}–${property.max_months}`,
+          },
+        ]
+      : []),
     {
       key: "occupants",
       label: "Persone",

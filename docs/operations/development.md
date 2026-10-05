@@ -259,3 +259,29 @@ Regressioni specifiche: `tests/profile-photos.test.ts`,
 `tests/preview-browser/preview.spec.ts`. Fermare il supervisor dev posseduto
 prima di creare/applicare migrazioni o avviare suite che gestiscono il DB;
 riavviarlo al termine e controllare i dati del database dell’app.
+
+## Durata condizionale e dettagli del profilo
+
+`shared/contracts.durationRequired` stabilisce se chiedere i mesi: false
+per4+4 e3+2, true per scelta flessibile, studenti e transitorio. Il parser
+accetta anche payload long precedenti con un numero ma normalizza i nuovi
+salvataggi a `null`. La migrazione011 conserva i numeri delle righe precedenti.
+Matching in TypeScript e SQL ignorano entrambi i mesi per le formule lunghe;
+le altre formule richiedono1–120. Non valorizzare una durata nascosta36/48.
+
+`shared/profile-details.ts` centralizza animali, arredamento e tre esigenze
+della casa. `src/ProfileDetails.tsx` gestisce input e riepiloghi. Il form usa
+`FormData.getAll('housing_needs')` per conservare le selezioni multiple;
+la chiave del form include tutti i dati salvati e resta invariata durante
+foto/pausa, così le modifiche non salvate non spariscono. I campi facoltativi
+sono validati lato server; PUT che li omettono preservano i valori precedenti,
+stringhe vuote e array vuoto li cancellano esplicitamente.
+
+Discovery include soltanto pets/furnishing_preference/housing_needs tra i
+nuovi campi. `tenant_details` contiene i cinque dettagli correnti soltanto
+negli inviti accettati/chiusi, con parti attive, non bloccate e del medesimo
+workspace preview. Testi liberi assenti da discovery/inviti pending. Il
+blocco nella chat ricarica anche i dettagli dell’invito per nasconderli.
+Riepiloghi ed export restano riferiti al profilo corrente, non allo snapshot
+immobiliare. Regressioni: domain/contract/profile-details API, experience
+contracts/move-in/profile-details e preview-browser/profile-details.

@@ -17,6 +17,10 @@ export const contractTypes = [
 export type ContractPreference = (typeof contractPreferences)[number];
 export type ContractType = (typeof contractTypes)[number];
 
+export function durationRequired(preference?: ContractPreference) {
+  return preference !== "four_plus_four" && preference !== "three_plus_two";
+}
+
 const labels = {
   any: "Sono flessibile",
   unspecified: "Da concordare",

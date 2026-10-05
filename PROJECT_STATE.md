@@ -598,3 +598,62 @@ proprietario. Dev riavviato con HMR/watch, health locale200;5 utenti,
 2 profili e1 immobile con hash dei dati e delle revisioni identico prima/dopo.
 Evidenze private in `.local/profile-photo`. Pubblicazione e verifica nella
 stessa preview Railway autorizzata sul commit finale.
+
+Pubblicato `e2f4bdbe2ea35d84960034dab154c4e679a37dc1`: web
+`bf8cb518-e242-47a2-aaa7-bb53392bfc79` SUCCESS, una replica online senza
+crash; cron `59093572-e515-4431-8e03-20e035932185` SUCCESS/cronReady,
+DB online e nessun warning/critical attivo o lavoro pending. Migrazioni e
+preflight storage privato passati. Health/config HTTPS preview200 e bundle
+JS `index-DNwan2Up.js`/CSS `index-YbHV1Cf5.css` identici alla build locale.
+Il flusso browser reale sulla preview pubblica, senza API intercettate, passa:
+nuovo workspace sintetico, upload nello storage persistente, refresh con
+immagine leggibile, preferenze/revisione invariate, discovery anonima senza
+foto, invito/accettazione/chat, immagine visibile al proprietario e rimozione
+verificata da entrambi i lati. Nessun errore console/rete o overflow nei
+viewport320/390; zero dati personali reali o email inviate. Nuovo oggetto
+foto del test rimosso tramite il prodotto; solo account/dati sintetici del
+workspace di prova. Evidenze in `.local/profile-photo`, test pubblico1/1.
+Dev locale resta pronto con HMR/watch e health200. Esito operativo conservato
+localmente per evitare un deploy soltanto documentale. Aggiornare `/profile`
+oppure usare `/profile?v=e2f4bdb` per vedere la nuova funzionalità.
+
+## Ripresa del ciclo feedback — 2026-10-05
+
+Richiesta «Riprendi». Confermati checkout e2f4bdb e foto profilo già
+pubblicata: stessa deployment web SUCCESS/online, una replica senza crash,
+DB online, cron con ultima esecuzione riuscita, nessun warning/critical
+attivo o lavoro pending. Health/config HTTPS preview200 e hash bundle
+identici alla build locale. Supervisor40573 ancora attivo con API watch,
+Vite/HMR e PostgreSQL loopback; health API/proxy e client Vite200,
+accesso HTTP ai dati privati `.local` negato403. Nessun nuovo test o deploy
+necessario per riprendere. Dati e modifiche preesistenti conservati.
+Tentativo di apertura del profilo nel pannello browser destro non eseguito:
+`codex_app.open_in_codex` restituisce «No handler registered for tool».
+Il sito resta raggiungibile via `/profile?v=e2f4bdb`; nessuna apertura
+laterale dichiarata come riuscita. Pronto per nuovi feedback dell’utente.
+
+## Durata condizionale e dettagli del profilo — 2026-10-05
+
+Feedback «Quanti mesi cerchi casa… solo quando serve… non4+4» e richiesta
+animali/altre informazioni. Mesi nascosti per4+4 e3+2, nuovi salvataggi null,
+criterio numerico escluso coerentemente dal matching e dalla discovery.
+Scelta flessibile/studenti/transitorio richiedono la permanenza indicativa.
+Migrazione011 mantiene le durate esistenti; non aggiunge valori nascosti36/48.
+Aggiunti animali, arredamento, ascensore, spazio esterno, posto auto,
+presentazione e dettagli sugli animali. Scelte strutturate nella scoperta;
+testi liberi solo al titolare e dopo accettazione, con controlli su blocchi,
+sospensioni e workspace. LegacyPUT preservano i campi omessi; UI permette
+cancellazione esplicita. Riepiloghi profilo/discovery/inviti/chat e copy
+condivisione allineati. La bozza sopravvive a cambi formula/foto/pausa.
+Build/typecheck,380 backend e23 experience passati. Una nuova fixture export
+corretta per leggere il primo profilo dall’array esistente; suite completa
+poi verde. Review indipendente positiva, copyinvito corretto per non
+subordinare presentazione alla foto. Passati anche6 scenari preview con browser reale e22 browser principali.
+Il nuovo flusso esercita4+4 senza mesi, roundtrip/reload dei5extra, selezioni
+multiple, discovery senza testi privati, invito/accettazione e chat con
+presentazione/dettagli. Immagine Docker production costruita, import API,
+helper e migrazione011 verificati senza rete/DB. Formattazione/diffpassati.
+Supervisor dev riavviato con HMR/watch, health locale200;5 utenti,2 profili
+e1 immobile preservati, hash dati/revisioni/durate identico prima/dopo.
+Nuovi campi solo ai default. Evidenze private in `.local/profile-details`.
+Deploy nella stessa preview Railway autorizzata sul commit finale.
