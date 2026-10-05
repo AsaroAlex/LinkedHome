@@ -299,3 +299,9 @@ Lista con icone, righe allineate e divisori orizzontali su mobile; tre
 colonne e separatori verticali su desktop. Copy invariato. Build/typecheck,
 scenario landing e QA browser responsive/accessibilità passati.
 Aggiornamento della stessa preview Railway autorizzata.
+
+## Duplicazione del titolo FAQ — 2026-10-05
+
+Rimuovere il link introduttivo che ripete la prima domanda espandibile.
+Build/typecheck, scenario landing e controlli reali mobile/desktop passati.
+Aggiornamento della stessa preview Railway autorizzata.

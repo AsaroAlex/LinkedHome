@@ -766,3 +766,28 @@ zero overflow, errori console/rete o violazioni axe; screenshot mobile e
 desktop controllati. Nessun cambiamento a dati o API; dev60272 con HMR
 riutilizzato e lasciato pronto. Evidenze private in `.local/mobile-benefits`.
 Pubblicazione nella stessa preview Railway autorizzata sul commit finale.
+
+Fascia vantaggi pubblicata `fc4eb3d27dc8b645d7b1e3e6da3bfda6472b71ea`:
+web `a878d0a5-56cb-4620-b0fb-42fdd9e0a74f` SUCCESS/online, una replica senza
+crash; cron `985e9c17-2c63-4ce4-bfa8-53c82154f6f3` SUCCESS/cronReady,
+DB online e nessun warning/critical o pending. Health/config HTTPS
+preview200, JS `index-11Ri2YQ_.js` e CSS `index-CS1L1i4p.css` identici alla
+build locale. Browser pubblico320/390/650/768/1440px: tre voci con icone,
+divisori orizzontali mobile e verticali desktop, zero overflow/errori o
+violazioni axe. Evidenze in `.local/mobile-benefits`; nessuna scrittura
+dati. Dev60272 continua con HMR/watch e health200. Esito conservato
+localmente per evitare un deploy soltanto documentale. Aggiornare la
+homepage con `/?v=fc4eb3d`.
+
+## Frase ripetuta nelle FAQ — 2026-10-05
+
+Feedback sulla coppia link «Come funziona LinkedHome →» e prima domanda
+«Come funziona LinkedHome?». Rimosso soltanto il link introduttivo di
+`ProductFAQ`; la domanda espandibile resta l’unica voce nella sezione.
+La guida è raggiungibile dagli altri collegamenti esistenti. Build/typecheck
+e scenario landing passati. Browser reale320/390/650/1440px: nessun link
+duplicato, domanda unica e toggle da tastiera funzionante, zero overflow,
+errori console/rete o violazioni axe. Screenshot mobile controllato e review
+indipendente senza rilievi. Nessuna modifica a dati/API; dev60272 con HMR
+riutilizzato e pronto. Evidenze private in `.local/faq-copy`.
+Pubblicazione nella stessa preview Railway autorizzata sul commit finale.

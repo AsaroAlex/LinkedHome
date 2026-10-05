@@ -327,3 +327,11 @@ a righe allineate a sinistra con divisori orizzontali. Conservare il padding
 di `.container` e `role=list` per la semantica con list-style disabilitato.
 Per le verifiche visuali usare HMR senza riavviare il database; evidenze
 private dell’iterazione in `.local/mobile-benefits`.
+
+## Testi delle FAQ
+
+`ProductFAQ` in `src/experience.tsx` mostra la domanda «Come funziona
+LinkedHome?» una sola volta, come summary espandibile. Evitare un link
+introduttivo con la stessa frase; i collegamenti alla guida sono già
+disponibili altrove. Verifica privata `.local/faq-copy`: apertura da tastiera,
+assenza duplicato e layout/accessibilità mobile/desktop, senza scritture DB.

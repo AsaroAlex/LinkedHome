@@ -96,9 +96,6 @@ export function ProductFAQ() {
         <span className="eyebrow">PRIMA DI INIZIARE</span>
         <h2 id="faq-heading">Domande frequenti</h2>
         <p>Come cercare casa o proporre il tuo immobile su LinkedHome.</p>
-        <a href="/safeguards" className="text-link">
-          Come funziona LinkedHome →
-        </a>
       </div>
       <div>
         {[
