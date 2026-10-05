@@ -65,6 +65,7 @@ import {
   sharedTenantHouseholds,
 } from "./household.js";
 import { canonicalArea, searchLocations } from "../shared/locations.js";
+import { publicAddress } from "../shared/property-address.js";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -135,7 +136,7 @@ async function cancelPending(
     [id],
   );
 }
-const publicProperty = (p: any) => ({
+const publicProperty = (p: any, policy = p, allowed = true) => ({
   id: p.id,
   title: p.title,
   city: p.city,
@@ -155,6 +156,7 @@ const publicProperty = (p: any) => ({
   published_at: p.published_at,
   authority_attested: p.authority_attested,
   photos: p.photos || [],
+  ...publicAddress(p, policy, allowed),
 });
 const currentProperty = (p: any) =>
   p &&
@@ -992,7 +994,7 @@ export async function buildApp(
       await lockUsers(c, [u.id]);
       await active(c, u.id);
       const result = await c.query(
-        "INSERT INTO properties(owner_id,title,city,area,description,rent,available_from,min_months,max_months,capacity,sqm,rooms,furnished,authority_attested,contract_type) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING id",
+        "INSERT INTO properties(owner_id,title,city,area,description,rent,available_from,min_months,max_months,capacity,sqm,rooms,furnished,authority_attested,contract_type,street,street_number,address_visibility) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18) RETURNING id",
         [
           u.id,
           p.title,
@@ -1009,6 +1011,9 @@ export async function buildApp(
           p.furnished,
           p.authority_attested,
           p.contract_type || "unspecified",
+          p.street ?? "",
+          p.street_number ?? "",
+          p.address_visibility ?? "area",
         ],
       );
       return result.rows[0].id;
@@ -1017,13 +1022,32 @@ export async function buildApp(
   });
   app.put("/api/properties/:id", async (r) => {
     const u = actor(r, { role: "landlord" }),
-      id = idParam(r),
-      p = propertyInput.parse(r.body);
+      id = idParam(r);
     await tx(db, async (c) => {
       await lockUsers(c, [u.id]);
       await active(c, u.id);
+      const prior = (
+        await c.query(
+          "SELECT * FROM properties WHERE id=$1 AND owner_id=$2 FOR UPDATE",
+          [id, u.id],
+        )
+      ).rows[0];
+      requireThat(prior, "Immobile non trovato.", 404);
+      const body = z.object({}).passthrough().parse(r.body);
+      const p = propertyInput.parse({
+        ...body,
+        street: body.street === undefined ? prior.street : body.street,
+        street_number:
+          body.street_number === undefined
+            ? prior.street_number
+            : body.street_number,
+        address_visibility:
+          body.address_visibility === undefined
+            ? prior.address_visibility
+            : body.address_visibility,
+      });
       const result = await c.query(
-        "UPDATE properties SET title=$3,city=$4,area=$5,description=$6,rent=$7,available_from=$8,min_months=$9,max_months=$10,capacity=$11,sqm=$12,rooms=$13,furnished=$14,authority_attested=$15,contract_type=$16,revision=revision+1 WHERE id=$1 AND owner_id=$2 RETURNING id",
+        "UPDATE properties SET title=$3,city=$4,area=$5,description=$6,rent=$7,available_from=$8,min_months=$9,max_months=$10,capacity=$11,sqm=$12,rooms=$13,furnished=$14,authority_attested=$15,contract_type=$16,street=$17,street_number=$18,address_visibility=$19,revision=revision+1 WHERE id=$1 AND owner_id=$2 RETURNING id",
         [
           id,
           u.id,
@@ -1041,6 +1065,9 @@ export async function buildApp(
           p.furnished,
           p.authority_attested,
           p.contract_type || "unspecified",
+          p.street,
+          p.street_number,
+          p.address_visibility,
         ],
       );
       requireThat(result.rowCount, "Immobile non trovato.", 404);
@@ -1210,7 +1237,7 @@ export async function buildApp(
   async function invitationView(r: FastifyRequest, onlyId?: string) {
     const u = actor(r);
     const { rows } = await db.query(
-      `SELECT i.*,row_to_json(p) AS property,CASE WHEN i.status IN ('accepted','closed') THEN other.display_name ELSE NULL END AS other_name FROM invitations i JOIN properties p ON p.id=i.property_id JOIN users other ON other.id=CASE WHEN i.tenant_id=$1 THEN i.landlord_id ELSE i.tenant_id END WHERE (i.tenant_id=$1 OR i.landlord_id=$1) AND ($3::uuid IS NULL OR i.id=$3) ORDER BY i.created_at DESC,i.id DESC LIMIT 100 OFFSET $2`,
+      `SELECT i.*,row_to_json(p) AS property,CASE WHEN i.status IN ('accepted','closed') THEN other.display_name ELSE NULL END AS other_name,(tenant.suspended=false AND landlord.suspended=false AND NOT EXISTS(SELECT 1 FROM blocks b WHERE (b.blocker_id=i.tenant_id AND b.blocked_id=i.landlord_id) OR (b.blocker_id=i.landlord_id AND b.blocked_id=i.tenant_id)) AND ($4::uuid[] IS NULL OR (i.tenant_id=ANY($4) AND i.landlord_id=ANY($4)))) AS address_contact_allowed FROM invitations i JOIN properties p ON p.id=i.property_id JOIN users tenant ON tenant.id=i.tenant_id JOIN users landlord ON landlord.id=i.landlord_id JOIN users other ON other.id=CASE WHEN i.tenant_id=$1 THEN i.landlord_id ELSE i.tenant_id END WHERE (i.tenant_id=$1 OR i.landlord_id=$1) AND ($3::uuid IS NULL OR i.id=$3) ORDER BY i.created_at DESC,i.id DESC LIMIT 100 OFFSET $2`,
       [
         u.id,
         z.coerce
@@ -1221,6 +1248,9 @@ export async function buildApp(
           .default(0)
           .parse((r.query as any).page) * 100,
         onlyId || null,
+        preview
+          ? [r.previewWorkspace!.tenant_id, r.previewWorkspace!.landlord_id]
+          : null,
       ],
     );
     const profile = (
@@ -1271,7 +1301,7 @@ export async function buildApp(
         ? [r.previewWorkspace!.tenant_id, r.previewWorkspace!.landlord_id]
         : undefined,
     );
-    return rows.map((i) => {
+    return rows.map(({ address_contact_allowed, ...i }) => {
       i.property.photos = images.get(i.property_id) || [];
       if (
         i.tenant_id === u.id &&
@@ -1285,8 +1315,19 @@ export async function buildApp(
       const offeredProperty = ["accepted", "closed"].includes(i.status)
         ? i.property_snapshot
         : i.property;
+      const addressAllowed =
+        address_contact_allowed &&
+        (["accepted", "closed"].includes(i.status) ||
+          (i.status === "pending" &&
+            new Date(i.expires_at) > new Date() &&
+            currentProperty(i.property)));
       return {
         ...i,
+        property_snapshot: publicProperty(
+          i.property_snapshot,
+          i.property,
+          addressAllowed,
+        ),
         tenant_details: tenantDetails.get(i.id) || null,
         tenant_household: tenantHouseholds.get(i.id) || null,
         other_photo: ["accepted", "closed"].includes(i.status)
@@ -1294,7 +1335,7 @@ export async function buildApp(
               i.tenant_id === u.id ? i.landlord_id : i.tenant_id,
             ) || null
           : null,
-        property: publicProperty(offeredProperty),
+        property: publicProperty(offeredProperty, i.property, addressAllowed),
         property_changed: i.property.revision !== i.property_revision,
         status:
           i.status === "pending"

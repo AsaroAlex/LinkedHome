@@ -137,6 +137,7 @@ test("property photos persist after reload and can be removed in a mobile form",
   });
   await expect(card).toBeVisible();
   const cover = card.getByAltText(`Copertina di ${title}`);
+  await cover.scrollIntoViewIfNeeded();
   await expect(cover).toBeVisible();
   await expect
     .poll(() => cover.evaluate((image: HTMLImageElement) => image.naturalWidth))

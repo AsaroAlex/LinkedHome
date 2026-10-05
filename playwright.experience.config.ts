@@ -18,6 +18,7 @@ export default defineConfig({
         "publication.spec.ts",
         "locations.spec.ts",
         "housing-needs.spec.ts",
+        "property-address.spec.ts",
       ],
     },
     {

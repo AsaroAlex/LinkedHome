@@ -443,3 +443,57 @@ Build/typecheck e due scenari UI (guida e dashboard proprietario) passati.
 Dev HMR/watch85322 rimasto attivo, health200. Modifiche solo ai testi;
 essuna migrazione o nuova dipendenza. Aggiornamento della stessa istanza
 Railway autorizzata. Evidenze private .local/availability-copy.
+
+Pubblicato5c308f9ae07738112041214cc0a6311f116bacaa: web
+f3f3d3ff-e162-4c23-b116-9e0c9cbebc4f SUCCESS/online; cron
+762f2f00-0ba7-4ecf-b54e-8a09db8d0688 SUCCESS/cronReady, DB online,
+nessun problema o pending. Health/config HTTPS200; JSindex-B-jLRPyZ.js
+e CSSindex-KbvGKVlO.css identici alla build locale.
+Browser pubblico reale passato: invito inviato prima della conferma;
+nuovo pulsante aggiorna published_at per30 giorni e conserva revision,
+available_from, stato pending ed expires_at dell'invito. Riquadro e
+successo spiegano30 giorni; screenshot320/390/1440 ispezionati, axe e
+overflow passati, console/rete senza errori. Scritture soltanto nel nuovo
+workspace sintetico isolato, nessuna email reale. Dev85322 HMR/watch
+attivo, health200. Evidenze .local/availability-copy. Esito conservato
+localmente per evitare deploy documentale; /properties?v=5c308f9.
+
+
+## Indirizzo completo o solo quartiere — 2026-10-05
+
+Feedback: salvare via e numero civico e scegliere se mostrarli oppure
+condividere solo un’indicazione della posizione. Aggiunti i campi e due
+scelte native «Solo quartiere» / «Indirizzo completo», con anteprima.
+La scelta iniziale conserva solo città e zona; il proprietario vede
+sempre il proprio indirizzo salvato. Via e civico diventano obbligatori
+solo quando si sceglie di condividerli.
+
+Migrazione015 additiva; API conserva ogni campo omesso dai client
+precedenti. La visibilità è applicata server-side anche al raw snapshot
+dell’invito. Le offerte accettate conservano l’indirizzo originale:
+modificarlo non cambia la conversazione precedente; passare a solo
+quartiere lo nasconde ovunque. Un’offerta inizialmente senza indirizzo
+non lo acquisisce dopo. Blocco, sospensione e workspace impediscono
+la condivisione. Nessuna geocodifica o modifica al matching delle zone.
+
+Specifica docs/product/10-property-address.md. Verifica in corso con
+build, unit/API/SQL, fixture UX, browser reali, conservazione dei dati
+locali e deployment sulla stessa istanza Railway autorizzata.
+Evidenze private .local/property-address.
+
+
+Build/typecheck finali passati.592 test unit/API/SQL passati;45 scenari
+experience verificati (42 regressioni e3 nuovi). I12 scenari browser
+preview sono verificati: dopo la correzione delle etichette obbligatorie
+coerenti con Field e lo scroll della copertina lazy nel test, i5 scenari
+foto/indirizzo interessati sono tutti passati. Indirizzo testato in
+pending/accepted/closed, raw snapshot, revoca, blocco e offerte storiche;
+screenshot320/390/1440 ispezionati, Axe e console/rete puliti.
+Nessuna nuova dipendenza. Suite browser principale e deploy in corso.
+
+
+Suite browser principale22/22 passata. Dev con HMR/watch riavviato
+su3000/3001; snapshot dei dati locali preesistenti invariato (5 utenti,
+2 profili,1 immobile; nuovi campi vuoti e solo quartiere). Frontend e
+health200. Aggiornamento Railway sulla stessa branch autorizzata;
+nessuna modifica a runtime, posta, bucket o account reali.

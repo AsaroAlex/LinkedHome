@@ -1,0 +1,146 @@
+.property-address-fields {
+  min-width: 0;
+  margin-bottom: 24px;
+}
+.property-address-inputs {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(110px, 1fr);
+  gap: 16px;
+}
+.property-address-visibility {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  min-width: 0;
+}
+.property-address-visibility legend {
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 8px;
+}
+.property-address-visibility > .field-hint {
+  font-size: 0.82rem;
+  margin-bottom: 14px;
+}
+.property-address-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.property-address-choices > label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  background: var(--surface);
+  cursor: pointer;
+}
+.property-address-choices > label:has(input:checked) {
+  border-color: var(--primary);
+  background: var(--surface-soft);
+}
+.property-address-choices > label:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.property-address-choices input {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+  accent-color: var(--primary);
+}
+.property-address-choice-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.property-address-choice-text small {
+  color: var(--muted);
+  font-size: 0.77rem;
+  font-weight: 400;
+}
+.property-address-preview {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px;
+  margin-top: 14px;
+  border-radius: 8px;
+  background: var(--surface-muted);
+}
+.property-address-preview > div {
+  min-width: 0;
+}
+.property-address-preview-icon {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+.property-address-preview-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.property-address-preview p {
+  margin: 3px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  font-weight: 550;
+  overflow-wrap: anywhere;
+}
+.property-address-history-hint {
+  margin: 12px 0 0;
+  font-size: 0.8rem;
+}
+.property-address-summary {
+  margin: 14px 0;
+  min-width: 0;
+}
+.property-address-value {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  margin: 0;
+}
+.property-address-value svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  color: var(--primary);
+}
+.property-address-value span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.property-address-summary-visibility {
+  font-size: 0.76rem;
+  line-height: 1.4;
+  color: var(--muted);
+  margin: 5px 0 0;
+}
+@media (max-width: 600px) {
+  .property-address-inputs,
+  .property-address-choices {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .property-address-inputs {
+    gap: 0;
+  }
+}

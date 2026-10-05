@@ -21,6 +21,7 @@ import {
   locationsLabel,
   searchLocations,
 } from "../shared/locations.js";
+import { addressVisibilities } from "../shared/property-address.js";
 export { cities } from "../shared/locations.js";
 const searchLocationInput = z
   .object({
@@ -171,6 +172,29 @@ export const propertyInput = z
     title: z.string().trim().min(5).max(100),
     city: z.enum(cities),
     area: z.string().trim().min(2).max(60),
+    street: z
+      .string()
+      .refine(
+        (value) => !/[\u0000-\u001f\u007f-\u009f]/.test(value),
+        "La via non può contenere caratteri di controllo.",
+      )
+      .trim()
+      .max(120)
+      .refine(
+        (value) => value.length === 0 || value.length >= 2,
+        "Indica almeno due caratteri per la via.",
+      )
+      .optional(),
+    street_number: z
+      .string()
+      .refine(
+        (value) => !/[\u0000-\u001f\u007f-\u009f]/.test(value),
+        "Il numero civico non può contenere caratteri di controllo.",
+      )
+      .trim()
+      .max(20)
+      .optional(),
+    address_visibility: z.enum(addressVisibilities).optional(),
     description: z.string().trim().min(10).max(1500),
     rent: z.number().int().min(100).max(20000),
     available_from: day,
@@ -187,7 +211,22 @@ export const propertyInput = z
   .refine(
     (p) => p.max_months >= p.min_months,
     "Durata massima inferiore alla minima",
-  );
+  )
+  .superRefine((property, context) => {
+    if (property.address_visibility !== "exact") return;
+    if (!property.street)
+      context.addIssue({
+        code: "custom",
+        path: ["street"],
+        message: "Indica la via per mostrare l’indirizzo completo.",
+      });
+    if (!property.street_number)
+      context.addIssue({
+        code: "custom",
+        path: ["street_number"],
+        message: "Indica il numero civico per mostrare l’indirizzo completo.",
+      });
+  });
 export type Profile = z.input<typeof profileInput>;
 export type Property = z.infer<typeof propertyInput>;
 export function compatibility(profile: Profile, property: Property) {

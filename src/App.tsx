@@ -44,6 +44,10 @@ import { ProfileAvatar } from "./ProfilePhoto";
 import { ProfileHouseholdEditor, HouseholdSummary } from "./ProfileHousehold";
 import { ProfileDetailsFields, ProfileDetailsSummary } from "./ProfileDetails";
 import {
+  PropertyAddressFields,
+  PropertyAddressSummary,
+} from "./PropertyAddress";
+import {
   PhotoEditor,
   PropertyCover,
   PropertyGallery,
@@ -2075,7 +2079,7 @@ function PropertyForm({
           <City value={property?.city} onChange={setAreaCity} />
           <Field
             name="area"
-            label="Quartiere o zona (senza indirizzo preciso)"
+            label="Quartiere o zona"
             hint="Scegli una zona suggerita o indicane un’altra, da 2 a 60 caratteri."
           >
             <input
@@ -2093,6 +2097,7 @@ function PropertyForm({
             id="property-area-suggestions"
           />
         </div>
+        <PropertyAddressFields property={property} />
         <Field name="description" label="Descrizione">
           <textarea
             name="description"
@@ -2341,6 +2346,7 @@ function PropertiesPage() {
                       )}
                     </div>
                     <h2>{p.title}</h2>
+                    <PropertyAddressSummary property={p} owner />
                     <p className="price">
                       €{p.rent}
                       <small> / mese, spese incluse</small>
@@ -2783,6 +2789,7 @@ function InvitationsPage({ user }: { user: User }) {
                 title={i.property.title}
               />
               <h2>{i.property.title}</h2>
+              <PropertyAddressSummary property={i.property} />
               <p>
                 {i.property.area} · €{i.property.rent}/mese, spese incluse ·{" "}
                 permanenza {i.property.min_months}–{i.property.max_months} mesi
@@ -3119,6 +3126,7 @@ function Conversation({ id, user }: { id: string; user: User }) {
               <p>
                 {info.property.city} · {info.property.area}
               </p>
+              <PropertyAddressSummary property={info.property} />
               <p>€{info.property.rent} / mese, spese obbligatorie incluse</p>
               <p>
                 Dal {dateLabel(info.property.available_from)} · permanenza{" "}

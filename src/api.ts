@@ -11,6 +11,11 @@ const fields: Record<string, string> = {
   display_name: "Nome: usa da 2 a 60 caratteri.",
   title: "Titolo: usa da 5 a 100 caratteri.",
   area: "Zona: usa da 2 a 60 caratteri.",
+  street:
+    "Via o piazza: usa da 2 a 120 caratteri per mostrare l’indirizzo completo.",
+  street_number: "Indica il numero civico, per esempio 12, 12/A oppure SNC.",
+  address_visibility:
+    "Scegli se mostrare solo il quartiere o l’indirizzo completo.",
   locations: "Scegli almeno una città e controlla le zone selezionate.",
   description: "Descrizione: usa da 10 a 1500 caratteri.",
   password: "Password: usa da 12 a 128 caratteri.",

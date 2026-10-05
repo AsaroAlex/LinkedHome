@@ -323,7 +323,7 @@ test("landlord creates and edits the offered contract without replacing the stay
   await expect(contract).toHaveValue("unspecified");
   await page.getByLabel("Titolo", { exact: true }).fill(property.title);
   await page
-    .getByLabel("Quartiere o zona (senza indirizzo preciso)", { exact: true })
+    .getByLabel("Quartiere o zona", { exact: true })
     .fill(property.area);
   await page
     .getByLabel("Descrizione", { exact: true })

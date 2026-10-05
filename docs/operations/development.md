@@ -440,3 +440,14 @@ senza cambiare revision o cancellare pending; la scadenza14 giorni degli
 inviti è indipendente. UI «Sì, è ancora disponibile» e spiegazione30 giorni.
 Non introdurre promemoria, verifica terza parte o rinnovo degli inviti
 nel copy. Evidenze della verifica mirata in .local/availability-copy.
+
+L’indirizzo dell’immobile è definito in
+[10-property-address](../product/10-property-address.md). La migrazione015
+mantiene i dati precedenti e inizializza la visibilità a solo quartiere.
+Il proprietario conserva via e civico; le risposte degli inviti filtrano
+sia `property` sia `property_snapshot` usando la visibilità corrente e
+l’accesso al contatto. Le offerte accettate conservano l’indirizzo
+originale, senza acquisire quello aggiornato. Verificare anche i payload
+JSON, omissione dei campi nei client precedenti, blocco/sospensione,
+errori e retry foto. Suite DB seriali, fixture UX su3017 separata; evidenze
+private in `.local/property-address`.
