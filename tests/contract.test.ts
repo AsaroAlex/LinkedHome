@@ -391,6 +391,7 @@ describe("rental contract preferences", () => {
           "id",
           "alias",
           "city",
+          "locations",
           "budget",
           "move_in",
           "move_in_precision",

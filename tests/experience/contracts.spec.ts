@@ -240,6 +240,7 @@ test("long contracts hide stay length while preserving temporary drafts and unsa
     .toEqual([
       {
         city: "Bologna",
+        locations: [{ city: "Bologna", areas: [] }],
         budget: 1100,
         move_in: "2026-12-03",
         move_in_precision: "day",

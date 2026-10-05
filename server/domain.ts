@@ -13,14 +13,36 @@ import {
   furnishingPreferences,
   housingNeeds,
 } from "../shared/profile-details.js";
-export const cities = [
-  "Bologna",
-  "Milano",
-  "Roma",
-  "Torino",
-  "Firenze",
-  "Padova",
-] as const;
+import {
+  cities,
+  areasForCity,
+  canonicalArea,
+  locationsLabel,
+  searchLocations,
+} from "../shared/locations.js";
+export { cities } from "../shared/locations.js";
+const searchLocationInput = z
+  .object({
+    city: z.enum(cities),
+    areas: z
+      .array(z.string().min(1).max(60))
+      .max(20)
+      .refine(
+        (areas) => new Set(areas).size === areas.length,
+        "Scegli ogni zona una sola volta.",
+      ),
+  })
+  .strict()
+  .superRefine((location, context) => {
+    location.areas.forEach((area, index) => {
+      if (!areasForCity(location.city).includes(area))
+        context.addIssue({
+          code: "custom",
+          path: ["areas", index],
+          message: "Scegli una delle zone disponibili per questa città.",
+        });
+    });
+  });
 export const day = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/)
@@ -31,6 +53,7 @@ export const day = z
 export const profileInput = z
   .object({
     city: z.enum(cities),
+    locations: z.array(searchLocationInput).min(1).max(6).optional(),
     budget: z.number().int().min(100).max(20000),
     move_in: day,
     move_in_precision: z.enum(["day", "month", "range"]).optional(),
@@ -53,6 +76,23 @@ export const profileInput = z
   })
   .strict()
   .superRefine((profile, context) => {
+    if (profile.locations) {
+      if (
+        new Set(profile.locations.map((location) => location.city)).size !==
+        profile.locations.length
+      )
+        context.addIssue({
+          code: "custom",
+          path: ["locations"],
+          message: "Scegli ogni città una sola volta.",
+        });
+      if (profile.locations[0]?.city !== profile.city)
+        context.addIssue({
+          code: "custom",
+          path: ["city"],
+          message: "La città principale deve essere la prima città scelta.",
+        });
+    }
     if (
       durationRequired(profile.contract_preference) &&
       profile.duration == null
@@ -142,13 +182,32 @@ export const propertyInput = z
 export type Profile = z.input<typeof profileInput>;
 export type Property = z.infer<typeof propertyInput>;
 export function compatibility(profile: Profile, property: Property) {
+  const locations = searchLocations(profile);
+  const selectedLocation = locations.find(
+    (location) => location.city === property.city,
+  );
   const checks = [
     {
       key: "city",
       label: "Città",
-      matches: profile.city === property.city,
-      detail: `${profile.city} · ${property.city}`,
+      matches: Boolean(selectedLocation),
+      detail:
+        locations.length === 1 && !locations[0].areas.length
+          ? `${locations[0].city} · ${property.city}`
+          : `${locationsLabel(profile)} · immobile a ${property.city}`,
     },
+    ...(selectedLocation?.areas.length
+      ? [
+          {
+            key: "zone",
+            label: "Zona",
+            matches: selectedLocation.areas.includes(
+              canonicalArea(property.city, property.area) || "",
+            ),
+            detail: `${property.area} · zone scelte: ${selectedLocation.areas.join(", ")}`,
+          },
+        ]
+      : []),
     {
       key: "budget",
       label: "Costo mensile totale",

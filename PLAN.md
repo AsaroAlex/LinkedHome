@@ -321,3 +321,17 @@ passati, QA reale mobile/desktop senza errori. Piano del lancio Railway in
 `docs/operations/publication.md`, con database pulito separato, SMTP, contatti
 e prove effettive. La richiesta attuale prepara il lancio e aggiorna i testi
 dell’istanza corrente; non apre registrazioni reali.
+
+## Più città e zone — 2026-10-05
+
+Il profilo consente più città e quartieri per ciascuna, oppure tutta la
+città. Catalogo condiviso con i suggerimenti del form immobile. Preferenze
+persistenti e criteri applicati prima della paginazione, all’invio e
+all’accettazione degli inviti. Migrazione013 aggiuntiva, profili storici e
+client precedenti conservati; bozze indipendenti da foto/gruppo/pausa.
+
+Build/typecheck,156 unitari,451 casi backend,35 casi UI,8 flussi preview e22
+browser principali verificati. Dati preesistenti conservati e dev HMR pronto.
+QA visiva responsive verificata; correzione dei titoli città a320px.
+Completare deploy e flusso pubblico reale sulla stessa istanza Railway autorizzata.
+Perimetro e limiti del catalogo in `docs/product/08-location-search.md`.

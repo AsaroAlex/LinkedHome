@@ -356,3 +356,28 @@ Il piano operativo corrente è `publication.md`; `index.html` conserva
 noindex durante questa fase. Regressioni UI in experience/publication.spec.ts
 e mail-runtime, senza possedere il DB. QA reale privata `.local/publication-ready`
 riutilizza HMR e sole richieste in lettura.
+
+## Ricerca in più città e zone
+
+`shared/locations.ts` contiene città, quartieri, alias espliciti e helper
+di fallback, riepilogo e matching. `src/ProfileLocations.tsx` usa schede
+per città, disclosure native, radio e checkbox; hidden `city`/`locations`
+sono letti dal form solo al salvataggio. La chiave del form include le
+locations salvate, ma resta stabile durante foto, gruppo e pausa. Ricerca
+testuale delle zone e selezione della prossima città non salvano il form.
+`PropertyAreaSuggestions` suggerisce gli stessi quartieri tramite datalist.
+
+Migrazione013 aggiunge JSONB nullable: non backfillare i vecchi profili.
+API accetta le zone canoniche e rifiuta città/zone duplicate o discordanza
+con la prima città. Omissione del campo preserva il JSONB se la città
+storica è invariata; cambia a ricerca singola se il client cambia città.
+Discovery SQL deve applicare città/zone prima di ORDER/LIMIT/cursore.
+Zone sconosciute corrispondono solo a ricerca nell’intera città. Mantieni
+lo stesso criterio negli inviti con l’helper condiviso.
+
+Regressioni in location-domain/profile-locations, experience/locations e
+preview-browser/locations; fixture esistenti inviano ora una ricerca con
+una città e `areas: []`. Le allowlist discovery aggiungono solo locations;
+nessuna estensione a dati personali. Evidenze private `.local/locations`.
+Suite con DB solo in sequenza, dev posseduto fermato e poi riavviato,
+con verifica del digest dei dati applicativi preesistenti.

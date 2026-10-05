@@ -21,7 +21,8 @@ import {
   NextSteps,
   quickReplies,
 } from "./experience";
-import { cities } from "../server/domain";
+import { cities, locationsLabel } from "../shared/locations";
+import { LocationSelector, PropertyAreaSuggestions } from "./ProfileLocations";
 import {
   endOfMonth,
   moveInLabel,
@@ -344,10 +345,20 @@ function Field({
     </div>
   );
 }
-function City({ value }: { value?: string }) {
+function City({
+  value,
+  onChange,
+}: {
+  value?: string;
+  onChange?: (city: string) => void;
+}) {
   return (
     <Field name="city" label="Città">
-      <select name="city" defaultValue={value || "Bologna"}>
+      <select
+        name="city"
+        defaultValue={value || "Bologna"}
+        onChange={(event) => onChange?.(event.currentTarget.value)}
+      >
         {cities.map((c) => (
           <option key={c}>{c}</option>
         ))}
@@ -853,11 +864,11 @@ function Safeguards() {
           <span className="step-number">01</span>
           <h2>Prima dell’invito</h2>
           <p>
-            I proprietari con un immobile pubblicato vedono solo città, budget
-            totale, ingresso, contratto, permanenza quando serve e numero di
-            persone. Se li indichi, vedono anche animali, arredamento ed
-            esigenze della casa. Il profilo usa un identificatore al posto del
-            tuo nome.
+            I proprietari con un immobile pubblicato vedono solo città e zone
+            scelte, budget totale, ingresso, contratto, permanenza quando serve
+            e numero di persone. Se li indichi, vedono anche animali,
+            arredamento ed esigenze della casa. Il profilo usa un identificatore
+            al posto del tuo nome.
           </p>
         </article>
         <article className="panel">
@@ -885,9 +896,9 @@ function Safeguards() {
       <div className="panel narrow">
         <h2>Cosa significa compatibile?</h2>
         <p>
-          Confrontiamo città, costo totale mensile, ingresso, contratto,
-          permanenza e capienza. Ogni criterio è spiegato; non usiamo reddito,
-          età, origine, lingua o verifiche per ordinare le persone.
+          Confrontiamo città e zone scelte, costo totale mensile, ingresso,
+          contratto, permanenza e capienza. Ogni criterio è spiegato; non usiamo
+          reddito, età, origine, lingua o verifiche per ordinare le persone.
         </p>
         <h2>Verifiche e segnalazioni</h2>
         <p>
@@ -1363,8 +1374,9 @@ function Dashboard({ user }: { user: User }) {
             <span className="eyebrow">CERCO CASA</span>
             <h2>Il tuo profilo di ricerca</h2>
             <p>
-              Aggiorna città, budget e date. Pubblica le preferenze per ricevere
-              inviti; mettile in pausa quando vuoi interrompere la ricerca.
+              Aggiorna città, zone, budget e date. Pubblica le preferenze per
+              ricevere inviti; mettile in pausa quando vuoi interrompere la
+              ricerca.
             </p>
             <Link to="/profile" className="button">
               Gestisci il tuo profilo <Arrow />
@@ -1620,6 +1632,7 @@ function ProfilePage() {
       const start = precision === "day" ? String(v.move_in) : `${v.move_in}-01`;
       await api("/profile", "PUT", {
         city: v.city,
+        locations: JSON.parse(String(v.locations)),
         budget: Number(v.budget),
         move_in: start,
         move_in_precision: precision,
@@ -1686,6 +1699,7 @@ function ProfilePage() {
             p
               ? JSON.stringify([
                   p.city,
+                  p.locations,
                   p.budget,
                   p.move_in,
                   p.move_in_precision,
@@ -1709,8 +1723,11 @@ function ProfilePage() {
           <p className="form-required-note">I campi con * sono obbligatori.</p>
           <fieldset className="form-section" disabled={a.busy}>
             <legend>Dove e quando</legend>
+            <LocationSelector
+              profile={p || { city: "Bologna" }}
+              onChange={() => setDraft((current) => current ?? {})}
+            />
             <div className="form-grid">
-              <City value={draft?.city ?? p?.city} />
               <Field
                 name="budget"
                 label="Budget totale mensile (€), spese obbligatorie incluse"
@@ -1749,8 +1766,8 @@ function ProfilePage() {
           <span className="eyebrow">PRIMA DI PUBBLICARE</span>
           <h2>Anteprima delle preferenze</h2>
           <p>
-            Città, budget, ingresso, contratto, permanenza e numero di persone
-            saranno visibili ai proprietari autenticati con un immobile
+            Città e zone, budget, ingresso, contratto, permanenza e numero di
+            persone saranno visibili ai proprietari autenticati con un immobile
             pertinente. Se li indichi, vedranno anche animali, arredamento ed
             esigenze della casa.
           </p>
@@ -1767,7 +1784,7 @@ function ProfilePage() {
           {p && (
             <div className="profile-summary">
               <span className="summary-label">Preferenze salvate</span>
-              <strong>{p.city}</strong>
+              <strong>{locationsLabel(p)}</strong>
               <p>
                 Fino a €{p.budget} al mese · {p.occupants} persone
               </p>
@@ -1842,6 +1859,7 @@ function PropertyForm({
     [photoBusy, setPhotoBusy] = useState(false),
     [progress, setProgress] = useState(""),
     [created, setCreated] = useState(false),
+    [areaCity, setAreaCity] = useState(property?.city || "Bologna"),
     [description, setDescription] = useState(property?.description || "");
   const busy = a.busy || photoBusy;
   useEffect(() => {
@@ -2003,13 +2021,25 @@ function PropertyForm({
           hint="Un titolo chiaro, da 5 a 100 caratteri."
         />
         <div className="form-grid">
-          <City value={property?.city} />
+          <City value={property?.city} onChange={setAreaCity} />
           <Field
             name="area"
             label="Quartiere o zona (senza indirizzo preciso)"
-            value={property?.area}
-            placeholder="Es. Saragozza"
-            hint="Indica soltanto la zona, da 2 a 60 caratteri."
+            hint="Scegli una zona suggerita o indicane un’altra, da 2 a 60 caratteri."
+          >
+            <input
+              name="area"
+              required
+              minLength={2}
+              maxLength={60}
+              defaultValue={property?.area || ""}
+              placeholder="Es. Saragozza"
+              list="property-area-suggestions"
+            />
+          </Field>
+          <PropertyAreaSuggestions
+            city={areaCity}
+            id="property-area-suggestions"
           />
         </div>
         <Field name="description" label="Descrizione">
@@ -2508,7 +2538,7 @@ function DiscoverPage() {
                     <span className="badge">Preferenze compatibili</span>
                   </div>
                   <h2>{p.alias}</h2>
-                  <p className="muted">Cerca a {p.city}</p>
+                  <p className="muted">Cerca: {locationsLabel(p)}</p>
                   <Checks value={p.compatibility} />
                   <ProfileDetailsSummary details={p} />
                   <button

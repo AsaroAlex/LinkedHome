@@ -144,6 +144,7 @@ test("a new profile saves a whole month and a period across years before publica
     .toEqual([
       {
         city: "Bologna",
+        locations: [{ city: "Bologna", areas: [] }],
         budget: 1000,
         move_in: "2028-02-01",
         move_in_precision: "month",
@@ -190,6 +191,7 @@ test("a new profile saves a whole month and a period across years before publica
     .poll(() => state.saves.at(-1))
     .toEqual({
       city: "Bologna",
+      locations: [{ city: "Bologna", areas: [] }],
       budget: 1000,
       move_in: "2028-11-01",
       move_in_precision: "range",
@@ -304,6 +306,7 @@ test("legacy exact dates survive switching modes and saving a different budget",
     .toEqual([
       {
         city: "Bologna",
+        locations: [{ city: "Bologna", areas: [] }],
         budget: 1200,
         move_in: "2026-12-03",
         move_in_precision: "day",

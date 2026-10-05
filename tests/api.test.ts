@@ -427,6 +427,7 @@ describe("publication and discovery privacy", () => {
         "alias",
         "budget",
         "city",
+        "locations",
         "compatibility",
         "contract_preference",
         "pets",

@@ -278,6 +278,7 @@ test("optional details persist after a photo upload, an unsaved pause and a deli
     .toEqual([
       {
         city: "Bologna",
+        locations: [{ city: "Bologna", areas: [] }],
         budget: 1250,
         move_in: "2026-12-03",
         move_in_precision: "day",

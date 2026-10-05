@@ -6,7 +6,7 @@ const guides = {
   tenant: [
     [
       "Indica cosa cerchi",
-      "Scegli città, budget complessivo, mese o periodo di ingresso, tipo di contratto, permanenza e numero di persone. Salva e pubblica il tuo profilo quando sei pronto.",
+      "Scegli una o più città e le zone, budget complessivo, mese o periodo di ingresso, tipo di contratto, permanenza e numero di persone. Salva e pubblica il tuo profilo quando sei pronto.",
     ],
     [
       "Valuta gli inviti",
@@ -105,7 +105,7 @@ export function ProductFAQ() {
           ],
           [
             "Chi può vedere il mio profilo?",
-            "Solo i proprietari autenticati con un immobile pertinente possono scoprire le preferenze che pubblichi: città, budget, ingresso, contratto e numero di persone. I mesi di permanenza servono per la scelta flessibile, studenti e transitorio. Se li indichi, vedono anche animali, arredamento ed esigenze della casa. Il tuo nome, la foto e la presentazione diventano visibili quando accetti un invito.",
+            "Solo i proprietari autenticati con un immobile pertinente possono scoprire le preferenze che pubblichi: città e zone scelte, budget, ingresso, contratto e numero di persone. I mesi di permanenza servono per la scelta flessibile, studenti e transitorio. Se li indichi, vedono anche animali, arredamento ed esigenze della casa. Il tuo nome, la foto e la presentazione diventano visibili quando accetti un invito.",
           ],
           [
             "Accettare un invito mi impegna ad affittare?",
@@ -117,7 +117,7 @@ export function ProductFAQ() {
           ],
           [
             "Come vengono scelti i profili compatibili?",
-            "Confrontiamo città, costo mensile complessivo, ingresso, contratto e capienza. La permanenza in mesi conta per scelta flessibile, studenti e transitorio; per 4+4 e 3+2 vale la formula del contratto. Animali, arredamento ed esigenze della casa aiutano il proprietario a valutare il profilo e non cambiano l’ordine dei risultati. Identità, reddito e verifiche non vengono usati per assegnare un punteggio o dare più visibilità a una persona.",
+            "Confrontiamo le città e le zone scelte, costo mensile complessivo, ingresso, contratto e capienza. La permanenza in mesi conta per scelta flessibile, studenti e transitorio; per 4+4 e 3+2 vale la formula del contratto. Animali, arredamento ed esigenze della casa aiutano il proprietario a valutare il profilo e non cambiano l’ordine dei risultati. Identità, reddito e verifiche non vengono usati per assegnare un punteggio o dare più visibilità a una persona.",
           ],
           [
             "Come funziona la verifica del reddito?",

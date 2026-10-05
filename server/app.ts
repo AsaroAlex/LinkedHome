@@ -64,6 +64,7 @@ import {
   registerHouseholdRoutes,
   sharedTenantHouseholds,
 } from "./household.js";
+import { canonicalArea, searchLocations } from "../shared/locations.js";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -755,7 +756,7 @@ export async function buildApp(
       await lockUsers(c, [u.id]);
       await active(c, u.id);
       await c.query(
-        `INSERT INTO profiles(user_id,city,budget,move_in,duration,occupants,move_in_precision,move_in_end,contract_preference,pets,pets_details,furnishing_preference,housing_needs,about) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,COALESCE($10::text,'unspecified'),COALESCE($11::text,''),COALESCE($12::text,'any'),COALESCE($13::text[],'{}'::text[]),COALESCE($14::text,'')) ON CONFLICT(user_id) DO UPDATE SET city=$2,budget=$3,move_in=$4,duration=$5,occupants=$6,move_in_precision=$7,move_in_end=$8,contract_preference=$9,pets=COALESCE($10,profiles.pets),pets_details=COALESCE($11,profiles.pets_details),furnishing_preference=COALESCE($12,profiles.furnishing_preference),housing_needs=COALESCE($13,profiles.housing_needs),about=COALESCE($14,profiles.about),revision=profiles.revision+1,updated_at=now()`,
+        `INSERT INTO profiles(user_id,city,budget,move_in,duration,occupants,move_in_precision,move_in_end,contract_preference,pets,pets_details,furnishing_preference,housing_needs,about,locations) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,COALESCE($10::text,'unspecified'),COALESCE($11::text,''),COALESCE($12::text,'any'),COALESCE($13::text[],'{}'::text[]),COALESCE($14::text,''),$15::jsonb) ON CONFLICT(user_id) DO UPDATE SET city=$2,budget=$3,move_in=$4,duration=$5,occupants=$6,move_in_precision=$7,move_in_end=$8,contract_preference=$9,pets=COALESCE($10,profiles.pets),pets_details=COALESCE($11,profiles.pets_details),furnishing_preference=COALESCE($12,profiles.furnishing_preference),housing_needs=COALESCE($13,profiles.housing_needs),about=COALESCE($14,profiles.about),locations=CASE WHEN $16::boolean THEN $15::jsonb WHEN profiles.city=$2 THEN profiles.locations ELSE NULL END,revision=profiles.revision+1,updated_at=now()`,
         [
           u.id,
           p.city,
@@ -771,6 +772,8 @@ export async function buildApp(
           p.furnishing_preference ?? null,
           p.housing_needs ?? null,
           p.about ?? null,
+          p.locations ? JSON.stringify(p.locations) : null,
+          p.locations !== undefined,
         ],
       );
       await cancelPending(c, "tenant_id", u.id);
@@ -1104,7 +1107,7 @@ export async function buildApp(
     );
     p.photos = (await propertyPhotos(db, [p.id])).get(p.id) || [];
     const { rows } = await db.query(
-      `SELECT p.user_id AS id,p.city,p.budget,p.move_in,p.move_in_precision,p.move_in_end,p.duration,p.contract_preference,p.pets,p.furnishing_preference,p.housing_needs,p.occupants,p.revision,md5(p.user_id::text || $8::text) AS sort_key FROM profiles p JOIN users u ON u.id=p.user_id WHERE p.status='published' AND u.suspended=false AND u.email_verified=true AND p.user_id<>$1 AND p.city=$2 AND p.budget>=$3 AND COALESCE(p.move_in_end,p.move_in)>=$4 AND (p.contract_preference IN ('four_plus_four','three_plus_two') OR p.duration BETWEEN $5 AND $6) AND p.occupants<=$7 AND (p.contract_preference='any' OR p.contract_preference=$12::text) AND NOT EXISTS(SELECT 1 FROM blocks b WHERE (b.blocker_id=$1 AND b.blocked_id=p.user_id) OR(b.blocker_id=p.user_id AND b.blocked_id=$1)) AND NOT EXISTS(SELECT 1 FROM invitations i WHERE i.property_id=$8::uuid AND i.tenant_id=p.user_id) AND (md5(p.user_id::text || $8::text),p.user_id)>($9,$10::uuid) AND ($11::uuid IS NULL OR p.user_id=$11) ORDER BY md5(p.user_id::text || $8::text),p.user_id LIMIT 25`,
+      `SELECT p.user_id AS id,p.city,p.locations,p.budget,p.move_in,p.move_in_precision,p.move_in_end,p.duration,p.contract_preference,p.pets,p.furnishing_preference,p.housing_needs,p.occupants,p.revision,md5(p.user_id::text || $8::text) AS sort_key FROM profiles p JOIN users u ON u.id=p.user_id WHERE p.status='published' AND u.suspended=false AND u.email_verified=true AND p.user_id<>$1 AND ((p.locations IS NULL AND p.city=$2) OR EXISTS(SELECT 1 FROM jsonb_array_elements(COALESCE(p.locations,'[]'::jsonb)) location WHERE location->>'city'=$2 AND (jsonb_array_length(location->'areas')=0 OR ($13::text IS NOT NULL AND location->'areas' ? $13::text)))) AND p.budget>=$3 AND COALESCE(p.move_in_end,p.move_in)>=$4 AND (p.contract_preference IN ('four_plus_four','three_plus_two') OR p.duration BETWEEN $5 AND $6) AND p.occupants<=$7 AND (p.contract_preference='any' OR p.contract_preference=$12::text) AND NOT EXISTS(SELECT 1 FROM blocks b WHERE (b.blocker_id=$1 AND b.blocked_id=p.user_id) OR(b.blocker_id=p.user_id AND b.blocked_id=$1)) AND NOT EXISTS(SELECT 1 FROM invitations i WHERE i.property_id=$8::uuid AND i.tenant_id=p.user_id) AND (md5(p.user_id::text || $8::text),p.user_id)>($9,$10::uuid) AND ($11::uuid IS NULL OR p.user_id=$11) ORDER BY md5(p.user_id::text || $8::text),p.user_id LIMIT 25`,
       [
         u.id,
         p.city,
@@ -1118,12 +1121,14 @@ export async function buildApp(
         afterId,
         preview ? r.previewWorkspace!.tenant_id : null,
         p.contract_type || "unspecified",
+        canonicalArea(p.city, p.area),
       ],
     );
     return {
       property: publicProperty(p),
       profiles: rows.slice(0, 24).map(({ sort_key, ...pf }) => ({
         ...pf,
+        locations: searchLocations(pf),
         alias: `Profilo ${pf.id.slice(0, 6).toUpperCase()}`,
         compatibility: compatibility(pf, p),
       })),

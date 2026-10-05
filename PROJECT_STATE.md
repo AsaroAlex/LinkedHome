@@ -862,3 +862,48 @@ Review indipendente senza blocchi al deploy; corrette nel piano le risposte
 403 dell’accesso di prova in produzione e il percorso /api/income/checks.
 Dopo l’ultima pulizia della hero ripassati7 casi browser, build/typecheck
 e QA HMR responsive completa. Nessuna nuova dipendenza o modifica server.
+
+Pubblicato `f8c8a1ec5eeeb6069f5d681be4ee97208b73f91d`: web
+`0f4ee2ed-bc21-49b2-a7ee-424dabd0ffc7` SUCCESS/online, una replica senza
+crash; cron `107e868a-864e-4f32-89fe-23fd91a75917` SUCCESS/cronReady, DB
+online, nessun warning/critical o pending. Health/config HTTPS preview200
+e mail disabled confermati; JS `index-DJRdR3un.js` e CSS
+`index-CS1L1i4p.css` identici alla build locale. Browser pubblico reale
+320/390/1440px su homepage, guida e accesso: testi pubblici senza riferimenti
+al test, accesso ancora esplicitamente di prova, link/footer/metadati
+corretti, nessun overflow/errori/violazioni axe o richiesta mutativa.
+Screenshot footer pubblico mobile controllato; noindex conservato.
+Dev60272 con HMR/watch pronto, health200; nessuna migrazione o scrittura
+dati/email reale. Evidenze `.local/publication-ready`. Risultato operativo
+conservato localmente per evitare deploy documentale. Aggiornare
+`/?v=f8c8a1e`; piano di lancio disponibile in `docs/operations/publication.md`.
+
+## Più città e zone nella ricerca — 2026-10-05
+
+Feedback sul campo città del profilo: consentire più città e un selettore
+di zone. `LocationSelector` mostra una scheda per ogni città, selezione
+«Tutta la città» oppure quartieri, ricerca testuale e riepilogo. Catalogo
+condiviso delle sei città già disponibili; suggerimenti coerenti anche
+nel form immobile. Nessuna mappa o confine geografico simulato. Budget,
+contratto, ingresso e persone valgono per tutte le città della ricerca.
+
+Migrazione013 aggiuntiva con `profiles.locations` JSONB nullable, senza
+riscrivere i profili. Null conserva la città storica; client che omettono
+locations mantengono le scelte se la città principale resta la stessa.
+Schema rigoroso e alias espliciti. Discovery filtra città/zone prima della
+paginazione; invio e accettazione degli inviti applicano gli stessi criteri.
+Foto, nomi, email e presentazione restano esclusi dalla scoperta.
+Bozze conservate durante foto, gruppo, pausa e retry di salvataggio.
+
+Build/typecheck,156 test unitari,451 casi backend verificati tra suite
+completa e83 regressioni ripassate,35 casi UI verificati tra suite completa
+e2 nuovi casi ripassati,8 flussi browser preview reali e22 browser principali
+passati. Dati applicativi locali invariati:5 utenti,2 profili,1 immobile e
+digest delle preferenze/condizioni identico prima e dopo; nuova colonna
+null per entrambi i profili storici. Dev72642 con HMR/watch pronto, health200.
+Review indipendente senza rilievi. QA visiva320/390/1440px: corretti a320px
+il nome città spezzato e la freccia delle zone isolata su una riga; rimozione
+compatta con nome accessibile e target44px. Ultima build ripassata.
+Pubblicazione nella stessa istanza Railway già autorizzata sul commit finale.
+Dettagli in `docs/product/08-location-search.md`; evidenze private in
+`.local/locations`. Nessuna nuova dipendenza o cambio di runtime.

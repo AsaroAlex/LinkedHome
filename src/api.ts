@@ -11,6 +11,7 @@ const fields: Record<string, string> = {
   display_name: "Nome: usa da 2 a 60 caratteri.",
   title: "Titolo: usa da 5 a 100 caratteri.",
   area: "Zona: usa da 2 a 60 caratteri.",
+  locations: "Scegli almeno una città e controlla le zone selezionate.",
   description: "Descrizione: usa da 10 a 1500 caratteri.",
   password: "Password: usa da 12 a 128 caratteri.",
   details: "Descrizione del problema: usa da 5 a 500 caratteri.",
@@ -88,7 +89,9 @@ export async function api<T = any>(
       message:
         d.message === "Durata massima inferiore alla minima"
           ? `${d.message}. Controlla la durata ${d.field === "min_months" ? "minima" : "massima"}.`
-          : fields[d.field] ||
+          : (d.field?.startsWith("locations")
+              ? fields.locations
+              : fields[d.field]) ||
             (d.field ? `Controlla il campo ${d.field}.` : d.message),
     }));
     throw new ApiError(data.error || "Operazione non riuscita.", details);
