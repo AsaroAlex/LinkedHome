@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(certutil -A -d sql:/root/.pki/nssdb:*)",
+      "Bash(certutil -L -d sql:/root/.pki/nssdb)"
+    ]
+  }
+}
