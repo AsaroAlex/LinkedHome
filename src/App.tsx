@@ -67,7 +67,7 @@ function validRuntime(value: unknown): RuntimeConfig | null {
 }
 function verificationInstructions(runtime: RuntimeConfig | null) {
   if (runtime?.mailTransport === "disabled")
-    return "La preview usa account dimostrativi già confermati. Nessuna email viene inviata e nessuna identità o reddito reale viene verificato.";
+    return "Gli account di prova hanno già l’email confermata. Nessuna email viene inviata e nessuna identità o reddito reale viene verificato.";
   if (runtime?.mailTransport === "local")
     return "Il link è nel messaggio locale disponibile all’operatore. Nessuna email viene inviata: questa conferma non prova il controllo di una casella reale, l’identità o il reddito.";
   if (runtime?.mailTransport === "smtp")
@@ -484,15 +484,12 @@ export function App() {
       <a className="skip-link" href="#main">
         Vai al contenuto
       </a>
-      {runtime?.environment === "preview" ? (
+      {privatePath &&
+      ["local", "preview"].includes(runtime?.environment || "") ? (
         <div className="environment">
-          Preview dimostrativa · usa solo dati di prova · nessuna email inviata
+          Area di prova · usa solo dati di esempio · nessuna email inviata
         </div>
-      ) : runtime?.environment === "local" ? (
-        <div className="environment">
-          Ambiente dimostrativo · dati sintetici · nessun annuncio reale
-        </div>
-      ) : runtime?.environment === "staging" ? (
+      ) : privatePath && runtime?.environment === "staging" ? (
         <div className="environment">
           Ambiente di test · non usare dati o documenti reali
         </div>
@@ -509,7 +506,7 @@ export function App() {
               <>
                 <Link to="/dashboard">Il tuo spazio</Link>
                 {runtime?.environment === "preview" && (
-                  <Link to="/login">Cambia ruolo demo</Link>
+                  <Link to="/login">Cambia ruolo</Link>
                 )}
                 <Link to="/settings" className="account-link">
                   Account <Arrow />
@@ -523,7 +520,7 @@ export function App() {
                 <Link to="/login">Accedi</Link>
                 <Link to="/register" className="button small">
                   {runtime?.environment === "preview"
-                    ? "Prova demo"
+                    ? "Inizia"
                     : "Crea account"}{" "}
                   <Arrow />
                 </Link>
@@ -664,13 +661,7 @@ export function App() {
         <div>
           <Link to="/safeguards">Controllo e trasparenza</Link>
           <p>
-            {runtime?.environment === "local"
-              ? "Prototipo locale · nome di lavoro"
-              : runtime?.environment === "preview"
-                ? "Preview con dati sintetici · nessun annuncio reale"
-                : runtime?.environment === "staging"
-                  ? "Ambiente di test · nome di lavoro"
-                  : "Nome di lavoro"}
+            © {new Date().getFullYear()} {brand.name}
           </p>
         </div>
       </footer>
@@ -678,7 +669,6 @@ export function App() {
   );
 }
 function Landing() {
-  const runtime = useContext(RuntimeContext);
   return (
     <>
       <section className="hero container">
@@ -762,9 +752,6 @@ function Landing() {
               </small>
             </div>
           </div>
-          <span className="visual-caption">
-            Esempio illustrativo · nessuna offerta reale
-          </span>
         </div>
       </section>
       <section className="principles" aria-label="I vantaggi di LinkedHome">
@@ -824,11 +811,6 @@ function Landing() {
           <Link to="/safeguards" className="text-link">
             Scopri la verifica del reddito <span aria-hidden="true">→</span>
           </Link>
-          {["local", "preview"].includes(runtime?.environment || "") && (
-            <p className="small-copy">
-              Nella demo puoi provare il percorso con dati di esempio.
-            </p>
-          )}
         </div>
       </section>
       <ProductFAQ />
@@ -836,7 +818,6 @@ function Landing() {
   );
 }
 function Safeguards() {
-  const runtime = useContext(RuntimeContext);
   return (
     <>
       <PageHeading
@@ -862,11 +843,9 @@ function Safeguards() {
           interromperla quando vuole.
         </p>
         <p className="small-copy">
-          {["local", "preview"].includes(runtime?.environment || "")
-            ? "In questa demo puoi provare il percorso completo con dati di esempio. La verifica del reddito reale non è ancora disponibile."
-            : "La verifica del reddito reale non è ancora disponibile in questo ambiente."}{" "}
-          Il riepilogo mostra le entrate di un periodo; non garantisce che
-          l’affitto venga pagato in futuro.
+          La verifica del reddito reale non è ancora disponibile. Il riepilogo
+          mostra le entrate di un periodo; non garantisce che l’affitto venga
+          pagato in futuro.
         </p>
       </article>
       <div className="three-grid">
@@ -912,42 +891,21 @@ function Safeguards() {
         </p>
         <h2>Verifiche e segnalazioni</h2>
         <p>
-          {verificationInstructions(runtime)} La verifica d’identità non è
-          disponibile. L’autorizzazione a offrire un immobile è autodichiarata.
+          Confermare l’email serve a verificare l’indirizzo, non l’identità o il
+          reddito. La verifica d’identità non è disponibile. L’autorizzazione a
+          offrire un immobile è autodichiarata.
         </p>
         <p>
           Una segnalazione rende visibili agli operatori la tua identità di
           account, l’invito, il motivo e l’eventuale messaggio selezionato. Non
           apre l’intera conversazione.
         </p>
-        {runtime?.environment === "local" ? (
-          <>
-            <h2>Una dimostrazione locale</h2>
-            <p>
-              Questo ambiente contiene esempi sintetici: non caricare dati o
-              documenti reali. Non è un servizio aperto al pubblico. Prima del
-              lancio serviranno un titolare operativo, assistenza e condizioni e
-              informative definitive.
-            </p>
-          </>
-        ) : runtime?.environment === "staging" ? (
-          <>
-            <h2>Un ambiente di test</h2>
-            <p>
-              Usa questo ambiente per provare il servizio con dati di esempio.
-              Non caricare dati o documenti reali.
-            </p>
-          </>
-        ) : (
-          <>
-            <h2>Il controllo resta tuo</h2>
-            <p>
-              Pubblica solo le preferenze e gli immobili che vuoi condividere.
-              Non inserire documenti, credenziali bancarie o dati finanziari nei
-              messaggi. Non gestiamo pagamenti o contratti di affitto.
-            </p>
-          </>
-        )}
+        <h2>Il controllo resta tuo</h2>
+        <p>
+          Pubblica solo le preferenze e gli immobili che vuoi condividere. Non
+          inserire documenti, credenziali bancarie o dati finanziari nei
+          messaggi. Non gestiamo pagamenti o contratti di affitto.
+        </p>
         <Link to="/register" className="button">
           Crea il tuo spazio
         </Link>
@@ -1068,7 +1026,7 @@ function PreviewAccess({ refresh }: { refresh: () => Promise<void> }) {
   return (
     <div className="auth-layout">
       <div className="auth-intro">
-        <span className="eyebrow">PREVIEW DIMOSTRATIVA</span>
+        <span className="eyebrow">AREA DI PROVA</span>
         <h1 tabIndex={-1}>Prova LinkedHome</h1>
         <p>
           Esplora la ricerca di casa e gli inviti con un profilo e un immobile
@@ -1079,7 +1037,7 @@ function PreviewAccess({ refresh }: { refresh: () => Promise<void> }) {
         </div>
       </div>
       <div className="panel auth-form">
-        <h2>Scegli un ruolo demo</h2>
+        <h2>Scegli come provare il sito</h2>
         <p>Passa da un ruolo all’altro per provare inviti e conversazioni.</p>
         <ErrorBox text={action.error} />
         <div className="preview-actions">
@@ -1101,8 +1059,8 @@ function PreviewAccess({ refresh }: { refresh: () => Promise<void> }) {
           </button>
         </div>
         <p className="small-copy">
-          Non serve un indirizzo email. Gli account sono dimostrativi, non
-          vengono inviate email e non ci sono annunci reali.
+          Non serve un indirizzo email. Gli account sono di prova, non vengono
+          inviate email e non ci sono annunci reali.
         </p>
       </div>
     </div>
@@ -3236,7 +3194,7 @@ function VerificationPage({ user }: { user: User }) {
           </p>
           {["local", "preview"].includes(runtime?.environment || "") && (
             <p className="small-copy">
-              I riepiloghi della demo contengono soltanto dati di esempio.
+              I riepiloghi di prova contengono soltanto dati di esempio.
             </p>
           )}
           <Link to="/invitations" className="text-link">
@@ -3386,13 +3344,13 @@ function Settings({
         </section>
         {runtime?.environment === "preview" ? (
           <section className="panel">
-            <h2>Account dimostrativo</h2>
+            <h2>Account di prova</h2>
             <p>
-              Questo account non ha una password. Puoi cambiare ruolo demo per
+              Questo account non ha una password. Puoi cambiare ruolo per
               provare l’altro lato della conversazione.
             </p>
             <Link to="/login" className="button secondary">
-              Scegli un ruolo demo
+              Scegli un ruolo
             </Link>
           </section>
         ) : (

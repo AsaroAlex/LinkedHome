@@ -814,3 +814,51 @@ funzionante, nessun overflow, errore console/rete o violazione axe.
 Review indipendente senza rilievi; nessuna modifica a dati/API.
 Dev60272 HMR/watch riutilizzato e pronto; evidenze `.local/footer-copy`.
 Pubblicazione nella stessa preview Railway autorizzata sul commit finale.
+
+Pubblicato `937894f2951b7d0cc73e0f090aeecee30670db34`: web
+`30bf3510-ea8d-4431-9afc-627aaee244ad` SUCCESS/online, una replica senza
+crash; cron `81a8e612-349e-4513-a37b-0500a8370044` SUCCESS/cronReady,
+DB online, nessun warning/critical o pending. Health/config HTTPS preview200;
+JS `index-CXFdPpMi.js` e CSS `index-CS1L1i4p.css` identici alla build locale.
+Browser pubblico320/390/1440px: nuova frase unica nel footer, vecchio copy
+assente, collegamento alla guida funzionante, zero overflow/errori o
+violazioni axe. Evidenze `.local/footer-copy`, nessuna scrittura DB o email.
+Dev60272 HMR/watch pronto con health200. Esito conservato localmente
+per evitare un deploy documentale; aggiornare `/?v=937894f`.
+
+## Preparazione alla pubblicazione — 2026-10-05
+
+Richiesta di eliminare i riferimenti alla preview e preparare il lancio.
+Homepage, footer, guida pubblica e metadati ora presentano il prodotto senza
+etichette preview/demo/prototipo o «nome di lavoro». Rimossa la didascalia
+di prova della hero; le schede restano chiaramente esempi di profilo/invito.
+Footer con copyright LinkedHome. Rimossi anche i testi demo che comparivano impropriamente in
+produzione nelle FAQ e nel percorso reddito. La disponibilità del reddito
+reale resta dichiarata; gli esempi finanziari restano identificati.
+Accesso e workspace di prova riconoscibili in italiano comune, senza
+modificare auth, isolamento, dati, credenziali o runtime Railway. La barra
+dell’ambiente compare solo nei percorsi privati non produttivi.
+
+Build/typecheck,7 regressioni browser nuove,4 scenari mail/runtime esistenti
+e landing1 passati (12 totali, API simulate, nessuna email inviata).
+Browser reale HMR320/390/1440px su homepage, guida e accesso: nessun
+vecchio riferimento sulle pagine pubbliche, footer/link funzionanti,
+zero overflow/errori console/rete/violazioni axe o richieste mutative.
+Screenshot mobile controllati; dev60272 con HMR/watch mantenuto.
+Evidenze private `.local/publication-ready`; nessuna scrittura dati.
+
+Audit infrastruttura in sola lettura: web/DB online, cron pronto, nessun
+problema/pending; sito ancora APP_ENV=preview con email disabilitate e
+solo dominio Railway. Piano concreto in `docs/operations/publication.md`:
+produzione separata con DB vuoto e storage privato, SMTP/mittente e prove
+di consegna, contatti/informative e configurazione operativa. Non convertire
+il database sintetico alla produzione. Noindex resta durante la preparazione.
+Domanda inviata sui dati di dominio, mittente/assistenza e titolare; nessuna
+credenziale richiesta in chat. Nuovi servizi, acquisti, email reali e apertura
+agli utenti reali non eseguiti. Pubblicazione dei testi nella stessa istanza
+Railway già autorizzata sul commit finale.
+
+Review indipendente senza blocchi al deploy; corrette nel piano le risposte
+403 dell’accesso di prova in produzione e il percorso /api/income/checks.
+Dopo l’ultima pulizia della hero ripassati7 casi browser, build/typecheck
+e QA HMR responsive completa. Nessuna nuova dipendenza o modifica server.

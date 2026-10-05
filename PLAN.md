@@ -311,3 +311,13 @@ Aggiornamento della stessa preview Railway autorizzata.
 Rendere concreto il vantaggio: «Cerchi casa. I proprietari cercano te.»
 Build/typecheck, scenario landing e QA browser mobile/desktop passati.
 Aggiornamento della stessa preview Railway autorizzata.
+
+## Preparazione alla pubblicazione — 2026-10-05
+
+Pulizia completata di homepage/footer/guida/metadati e testi che citavano
+la demo in produzione. Accessi di prova ed esempi finanziari restano
+riconoscibili; nessun cambio a runtime o dati. Build/typecheck e12 test UI
+passati, QA reale mobile/desktop senza errori. Piano del lancio Railway in
+`docs/operations/publication.md`, con database pulito separato, SMTP, contatti
+e prove effettive. La richiesta attuale prepara il lancio e aggiorna i testi
+dell’istanza corrente; non apre registrazioni reali.

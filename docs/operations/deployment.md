@@ -1,6 +1,6 @@
 # Deployment preparation
 
-The repository supports an external PostgreSQL database and authenticated SMTP delivery. The default deployment templates use `APP_ENV=staging` and HTTPS, and are intended for explicitly created synthetic test accounts. They do not seed accounts. Infrastructure preparation does not resolve the real-user release conditions in [release-checklist.md](release-checklist.md). No hosting account, database, domain, certificate or external email was provisioned by this work.
+The repository supports an external PostgreSQL database and authenticated SMTP delivery. The default deployment templates use `APP_ENV=staging` and HTTPS, and are intended for explicitly created synthetic test accounts. They do not seed accounts. Infrastructure preparation does not resolve the real-user release conditions in [release-checklist.md](release-checklist.md). The initial template work did not provision infrastructure. The current Railway deployment described below is operational with isolated test accounts; [publication.md](publication.md) defines the separate real-user destination and remaining launch work.
 
 ## Container
 
@@ -50,8 +50,8 @@ An authenticated owner can upload up to six JPEG, PNG or WebP photos per propert
 with a maximum input size of 5 MiB per file. The API decodes, rotates, resizes and
 re-encodes images as WebP, stripping original metadata. Objects are private; image
 URLs go through the authenticated API with property/invitation authorization.
-The first photo is the cover. Preview workspaces remain isolated. Use synthetic
-photos in this demo, consistent with its existing synthetic-data banner.
+The first photo is the cover. Preview workspaces remain isolated. Use only test
+photos in this environment; the access page and private workspace identify the test context.
 
 Photo changes invalidate pending invitations with the property's other revisions.
 Accepted offer snapshots retain their original photos. Object deletion is retried

@@ -47,7 +47,7 @@ async function chooseRole(page: Page, role: "tenant" | "landlord") {
 }
 
 async function switchRole(page: Page, role: "tenant" | "landlord") {
-  await page.getByRole("link", { name: "Cambia ruolo demo" }).click();
+  await page.getByRole("link", { name: "Cambia ruolo", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Prova LinkedHome" }),
   ).toBeVisible();
@@ -89,8 +89,14 @@ test("synthetic preview preserves both roles through invitation and conversation
   await expect(
     page.getByRole("heading", { name: "Prova LinkedHome" }),
   ).toBeVisible();
-  await expect(page.locator(".environment")).toContainText(/dati di prova/);
-  await expect(page.locator(".environment")).toContainText(/email/i);
+  await expect(page.locator(".environment")).toHaveCount(0);
+  await expect(page.getByText("AREA DI PROVA", { exact: true })).toBeVisible();
+  await expect(page.getByRole("main")).toContainText(
+    "Gli account sono di prova",
+  );
+  await expect(page.getByRole("main")).toContainText(
+    "non vengono inviate email",
+  );
   await expect(page.getByLabel("Email", { exact: true })).toHaveCount(0);
   await mkdir(".local/preview-browser", { recursive: true });
   await page.setViewportSize({ width: 320, height: 740 });
@@ -101,6 +107,10 @@ test("synthetic preview preserves both roles through invitation and conversation
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   const tenant = await chooseRole(page, "tenant");
+  await expect(page.locator(".environment")).toContainText("Area di prova");
+  await expect(page.locator(".environment")).toContainText(
+    "nessuna email inviata",
+  );
   await expect(
     page.getByRole("heading", {
       name: `Ciao, ${tenant.display_name}.`,
@@ -254,10 +264,10 @@ test("synthetic preview preserves both roles through invitation and conversation
   );
   await page.getByRole("link", { name: "Account", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Account dimostrativo" }),
+    page.getByRole("heading", { name: "Account di prova" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Scegli un ruolo demo" }),
+    page.getByRole("link", { name: "Scegli un ruolo", exact: true }),
   ).toHaveAttribute("href", "/login");
   await expect(
     page.getByRole("button", { name: "Voglio eliminare l’account" }),

@@ -31,7 +31,7 @@ const recovery: Record<string, string> = {
   revoked:
     "Hai ritirato il riepilogo: i proprietari non possono più vederlo qui. Non puoi cancellare eventuali copie già salvate.",
   disputed:
-    "Hai segnalato un errore. Il riepilogo non è più visibile ai proprietari. Per condividerlo di nuovo devi prepararne uno nuovo. La demo salva la segnalazione, ma non prevede una revisione del risultato.",
+    "Hai segnalato un errore. Il riepilogo non è più visibile ai proprietari. Per condividerlo di nuovo devi prepararne uno nuovo. La segnalazione viene salvata; non è prevista una revisione del risultato di esempio.",
 };
 
 function Feedback({ error, message }: { error: string; message: string }) {
@@ -298,9 +298,8 @@ export function IncomeWorkspace() {
           <span className="eyebrow">DISPONIBILITÀ DEL SERVIZIO</span>
           <h3>Verifica reale non disponibile</h3>
           <p>
-            Nella demo puoi usare solo dati di esempio. La verifica del reddito
-            reale non è ancora disponibile e non puoi caricare documenti
-            finanziari.
+            La verifica del reddito reale non è ancora disponibile. Non puoi
+            caricare documenti finanziari.
           </p>
           <button className="button secondary full" disabled>
             Verifica reale non disponibile

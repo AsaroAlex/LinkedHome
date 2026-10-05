@@ -343,3 +343,16 @@ cercano te.», coerente con la scoperta dei profili pubblicati e gli inviti
 dei proprietari. Per cambi di copy riutilizzare HMR e verificare il testo
 sulle pagine, layout mobile/desktop e link esistenti senza scritture DB.
 Evidenze private dell’iterazione in `.local/footer-copy`.
+
+## Preparazione dei testi per la pubblicazione
+
+`src/App.tsx` mantiene i testi di ambiente soltanto nei percorsi privati
+non produttivi e nell’accesso di prova; le pagine pubbliche usano copy e
+footer condivisi indipendenti dal runtime. `src/experience.tsx` e
+`src/Income.tsx` dichiarano le funzioni non disponibili senza riferimenti
+a demo in produzione. Non rimuovere le etichette degli esempi finanziari
+o cambiare APP_ENV per nascondere avvisi: l’isolamento è parte dell’auth.
+Il piano operativo corrente è `publication.md`; `index.html` conserva
+noindex durante questa fase. Regressioni UI in experience/publication.spec.ts
+e mail-runtime, senza possedere il DB. QA reale privata `.local/publication-ready`
+riutilizza HMR e sole richieste in lettura.

@@ -15,6 +15,7 @@ export default defineConfig({
         "profile-photo.spec.ts",
         "profile-details.spec.ts",
         "household-photos.spec.ts",
+        "publication.spec.ts",
       ],
     },
     {
