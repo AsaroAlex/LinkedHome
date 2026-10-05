@@ -305,3 +305,9 @@ Aggiornamento della stessa preview Railway autorizzata.
 Rimuovere il link introduttivo che ripete la prima domanda espandibile.
 Build/typecheck, scenario landing e controlli reali mobile/desktop passati.
 Aggiornamento della stessa preview Railway autorizzata.
+
+## Frase del footer — 2026-10-05
+
+Rendere concreto il vantaggio: «Cerchi casa. I proprietari cercano te.»
+Build/typecheck, scenario landing e QA browser mobile/desktop passati.
+Aggiornamento della stessa preview Railway autorizzata.

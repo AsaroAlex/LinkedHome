@@ -335,3 +335,11 @@ LinkedHome?» una sola volta, come summary espandibile. Evitare un link
 introduttivo con la stessa frase; i collegamenti alla guida sono già
 disponibili altrove. Verifica privata `.local/faq-copy`: apertura da tastiera,
 assenza duplicato e layout/accessibilità mobile/desktop, senza scritture DB.
+
+## Testo del footer
+
+Il footer condiviso in `src/App.tsx` usa «Cerchi casa. I proprietari
+cercano te.», coerente con la scoperta dei profili pubblicati e gli inviti
+dei proprietari. Per cambi di copy riutilizzare HMR e verificare il testo
+sulle pagine, layout mobile/desktop e link esistenti senza scritture DB.
+Evidenze private dell’iterazione in `.local/footer-copy`.

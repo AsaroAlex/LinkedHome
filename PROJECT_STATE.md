@@ -791,3 +791,26 @@ errori console/rete o violazioni axe. Screenshot mobile controllato e review
 indipendente senza rilievi. Nessuna modifica a dati/API; dev60272 con HMR
 riutilizzato e pronto. Evidenze private in `.local/faq-copy`.
 Pubblicazione nella stessa preview Railway autorizzata sul commit finale.
+
+Pubblicato `74e427b1cbb248696fccce92af7359d2bb5e2848`: web
+`eab33320-b69b-4187-8b1a-c65bd696e62e` SUCCESS/online, una replica senza
+crash; cron `6f38a9d7-dfcd-40ad-9c3b-10bd69d979a0` SUCCESS/cronReady,
+DB online, nessun warning/critical o pending. Health/config HTTPS preview200
+e asset JS `index-DsG9JE_f.js`/CSS `index-CS1L1i4p.css` identici alla build
+locale. Browser pubblico320/390/650/1440px: duplicato assente, domanda
+unica e toggle da tastiera funzionante, zero errori/overflow/violazioni axe.
+Nessuna scrittura DB o email, dev60272 HMR/watch pronto con health200.
+Esito conservato localmente per evitare deploy documentale; aggiornare
+`/?v=74e427b` per vedere la sezione corrente.
+
+## Frase del footer — 2026-10-05
+
+Sostituito il testo generico «Profili, immobili e inviti. Il primo contatto
+parte da qui.» con «Cerchi casa. I proprietari cercano te.», che esprime
+il vantaggio del prodotto. Stessa frase nel footer condiviso delle pagine.
+Build/typecheck e scenario landing esistente passati. Browser reale
+320/390/1440px: nuovo testo unico, vecchio testo assente, link alla guida
+funzionante, nessun overflow, errore console/rete o violazione axe.
+Review indipendente senza rilievi; nessuna modifica a dati/API.
+Dev60272 HMR/watch riutilizzato e pronto; evidenze `.local/footer-copy`.
+Pubblicazione nella stessa preview Railway autorizzata sul commit finale.

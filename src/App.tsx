@@ -659,7 +659,7 @@ export function App() {
             <Mark />
             {brand.name}.
           </Link>
-          <p>Profili, immobili e inviti. Il primo contatto parte da qui.</p>
+          <p>Cerchi casa. I proprietari cercano te.</p>
         </div>
         <div>
           <Link to="/safeguards">Controllo e trasparenza</Link>
