@@ -318,3 +318,12 @@ Regressioni: `tests/household-photos.test.ts`, experience/household-photos
 e preview-browser/household-photos. Evidenze private `.local/household-photos`.
 Per le suite con DB fermare soltanto il dev posseduto e poi riavviarlo,
 verificando che i dati dell’app siano invariati.
+
+## Fascia vantaggi della homepage
+
+`section.principles` contiene una lista `.principle-row` a tre colonne,
+con icone SVG decorative e divisori verticali. Sotto700px la lista passa
+a righe allineate a sinistra con divisori orizzontali. Conservare il padding
+di `.container` e `role=list` per la semantica con list-style disabilitato.
+Per le verifiche visuali usare HMR senza riavviare il database; evidenze
+private dell’iterazione in `.local/mobile-benefits`.

@@ -734,3 +734,35 @@ Supervisor dev60272 riavviato con API watch, Vite/HMR e migrazione012;
 health locale200. Conservati5 utenti,2 profili e1 immobile, hash di dati,
 revisioni e preferenze identico prima/dopo. Nessun dato dell’app cancellato.
 Pubblicazione e prova browser reale sulla preview sul commit finale.
+
+Pubblicato `7b12b525303d9762dc1c7d61a2f23d12d8122368`: web
+`81b6fe48-0fe5-4e11-9ffc-807f94b9b170` SUCCESS/online, una replica senza
+crash; cron `c17a5a04-6abe-4a74-8717-a3518509982e` SUCCESS/cronReady,
+DB online, nessun warning/critical o pending. Migrazioni e preflight storage
+privato pronti. Health/config HTTPS preview200; JS `index-B8bo41Hp.js` e
+CSS `index-B85J2ebA.css` identici alla build locale. Flusso browser reale
+sul sito pubblico, senza API intercettate,1/1 passato: foto principale
+di gruppo, scelta individuale, persona/foto persistenti dopo refresh,
+discovery anonima senza nomi/immagini, invito/accettazione/chat con membri,
+ritorno gruppo che nasconde metadata e nega URL foto404, ritorno individuale
+che ripristina le schede, rimozione finale di foto/persona/foto principale.
+Console/rete/layout320px e axe verificati; richieste404 di privacy attese.
+Solo nuovo workspace sintetico, nessuna email inviata; oggetti caricati dal
+test rimossi via prodotto. Evidenze in `.local/household-photos`.
+Dev locale60272 resta pronto con HMR/watch e health200. Esito operativo
+conservato localmente per evitare un deploy solo documentale. Aggiornare
+`/profile?v=7b12b52` per provare entrambe le opzioni; homepage blu confermata.
+
+## Vantaggi della homepage separati su mobile — 2026-10-05
+
+Feedback sulle tre frasi percepite come testo senza struttura. La fascia
+ora è una lista di tre vantaggi con icone SVG, testo allineato a sinistra
+e divisori orizzontali sotto700px. Desktop su tre colonne con divisori
+verticali. Sostituite le vecchie regole che centravano le frasi e nascondevano
+gli asterischi; stessi testi e token della palette. Lista accessibile e
+icone decorative. Build/typecheck e scenario landing esistente passati.
+Browser reale320/390/650/768/1440px: layout e divisori calcolati corretti,
+zero overflow, errori console/rete o violazioni axe; screenshot mobile e
+desktop controllati. Nessun cambiamento a dati o API; dev60272 con HMR
+riutilizzato e lasciato pronto. Evidenze private in `.local/mobile-benefits`.
+Pubblicazione nella stessa preview Railway autorizzata sul commit finale.

@@ -767,14 +767,38 @@ function Landing() {
           </span>
         </div>
       </section>
-      <section className="principles">
-        <div className="container principle-row">
-          <span>Sono i proprietari a cercarti</span>
-          <i aria-hidden="true">✳</i>
-          <span>Proposte nel tuo budget</span>
-          <i aria-hidden="true">✳</i>
-          <span>Parla direttamente con il proprietario</span>
-        </div>
+      <section className="principles" aria-label="I vantaggi di LinkedHome">
+        <ul className="container principle-row" role="list">
+          <li>
+            <span className="principle-icon" aria-hidden="true">
+              <DashboardIcon kind="invitation" />
+            </span>
+            <span>Sono i proprietari a cercarti</span>
+          </li>
+          <li>
+            <span className="principle-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                focusable="false"
+              >
+                <rect x="3" y="5" width="18" height="15" rx="3" />
+                <path d="M3 9h18M16 13h5v4h-5a2 2 0 0 1 0-4Z" />
+              </svg>
+            </span>
+            <span>Proposte nel tuo budget</span>
+          </li>
+          <li>
+            <span className="principle-icon" aria-hidden="true">
+              <DashboardIcon kind="message" />
+            </span>
+            <span>Parla direttamente con il proprietario</span>
+          </li>
+        </ul>
       </section>
       <RoleGuide />
       <section className="container trust-section">

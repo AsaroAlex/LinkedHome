@@ -292,3 +292,10 @@ experience e3 casi mirati,7 flussi preview e22 browser principali passati.
 Review indipendente, packaging Docker, screenshot/accessibilità mobile e
 conservazione dati verificati; dev con HMR/watch pronto. Pubblicazione
 nella stessa preview Railway autorizzata.
+
+## Tre vantaggi leggibili su mobile — 2026-10-05
+
+Lista con icone, righe allineate e divisori orizzontali su mobile; tre
+colonne e separatori verticali su desktop. Copy invariato. Build/typecheck,
+scenario landing e QA browser responsive/accessibilità passati.
+Aggiornamento della stessa preview Railway autorizzata.
