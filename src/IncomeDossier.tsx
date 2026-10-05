@@ -6,10 +6,13 @@ import {
   incomeSources,
   sourceLabels,
   euroToCents,
+  euroInputPattern,
   centsToEuros,
   formatIncomeCents,
   incomeMonthLabel,
   incomeTotals,
+  incomeVerification,
+  incomeCheckTolerancePercent,
   incomeDossierInput,
   incomeReviewInput,
   type IncomePerson,
@@ -17,6 +20,8 @@ import {
   type IncomeSource,
   type IncomeTotals,
   type IncomeComparison,
+  type IncomeVerification,
+  type PersonIncomeCheck,
 } from "../shared/income-dossier";
 import "./income-dossier.css";
 
@@ -67,6 +72,7 @@ type InvitationData = {
   share: Share | null;
   can_share: boolean;
   comparison: IncomeComparison | null;
+  verification?: IncomeVerification | null;
   reviews: Review[];
 };
 type PersonDraft = Omit<IncomePerson, "monthly_net_cents"> & { amount: string };
@@ -180,6 +186,74 @@ function Totals({
   );
 }
 
+function checkLabel(check: PersonIncomeCheck) {
+  switch (check.status) {
+    case "confirmed":
+      return check.declared_cents === null
+        ? "Importo letto dal proprietario"
+        : "Confermato dal controllo del proprietario";
+    case "lower":
+      return "Il documento mostra meno del dichiarato";
+    case "to_review":
+      return "Documento da controllare";
+    case "no_income":
+      return "Nessuna entrata da verificare";
+    default:
+      return "Solo dichiarato, senza documenti";
+  }
+}
+function VerificationTotals({
+  verification,
+}: {
+  verification: IncomeVerification;
+}) {
+  const guarantor = verification.people.find((person) => person.guarantor);
+  return (
+    <div
+      className="income-dossier-verification"
+      role="group"
+      aria-label="Verifica del reddito"
+    >
+      <span className="income-dossier-total-label">Verifica del reddito</span>
+      <strong className="income-dossier-verified-value">
+        {verification.verified_count ? (
+          <>
+            {formatIncomeCents(verification.verified_total_cents)}
+            <small> netti / mese verificati</small>
+          </>
+        ) : (
+          "Nessun reddito ancora verificato"
+        )}
+      </strong>
+      <p className="income-dossier-coverage">
+        {verification.complete
+          ? `Verificato per ${verification.total_count === 1 ? "l’affittuario" : `tutti i ${verification.total_count} affittuari`}.`
+          : `Verificato per ${verification.verified_count} su ${verification.total_count} affittuari.`}
+      </p>
+      {verification.percent_of_verified_income !== null && (
+        <p className="income-dossier-verified-percent">
+          Affitto:{" "}
+          <strong>
+            {verification.percent_of_verified_income.toLocaleString("it-IT")}%
+            del reddito verificato
+          </strong>
+        </p>
+      )}
+      {guarantor && guarantor.verified_cents !== null && (
+        <p className="small-copy">
+          Garante, separato: {formatIncomeCents(guarantor.verified_cents)} netti
+          / mese verificati.
+        </p>
+      )}
+      <p className="field-hint">
+        Per ogni persona vale il minore tra netto dichiarato e netto letto nel
+        documento dal proprietario. Il documento conferma la dichiarazione se
+        mostra almeno il {100 - incomeCheckTolerancePercent}% del dichiarato.
+      </p>
+    </div>
+  );
+}
+
 function PersonFields({
   person,
   title,
@@ -255,7 +329,7 @@ function PersonFields({
             id={`${id}-amount`}
             type="text"
             inputMode="decimal"
-            pattern="[0-9]+([.,][0-9]{1,2})?"
+            pattern={euroInputPattern}
             maxLength={12}
             value={person.amount}
             disabled={["no_income", "not_specified"].includes(person.source)}
@@ -582,7 +656,7 @@ function DossierEditor({
       )
     ) {
       setError(
-        "Controlla gli importi: usa euro e al massimo due decimali, fino a 100.000 €.",
+        "Controlla gli importi: scrivi ad esempio 1500 oppure 1.500,50, fino a 100.000 €.",
       );
       return;
     }
@@ -944,11 +1018,7 @@ function ReviewForm({
   const id = useId();
   const [documentId, setDocumentId] = useState(documents[0]?.id || "");
   const [downloaded, setDownloaded] = useState<Set<string>>(new Set());
-  const [amount, setAmount] = useState(
-    person.monthly_net_cents === null
-      ? ""
-      : String(centsToEuros(person.monthly_net_cents)),
-  );
+  const [amount, setAmount] = useState("");
   const [from, setFrom] = useState(person.period_from),
     [to, setTo] = useState(person.period_to);
   const [confirm, setConfirm] = useState(false),
@@ -1049,17 +1119,23 @@ function ReviewForm({
           >
             <div className="field">
               <label htmlFor={`${id}-amount`}>
-                Netto letto nel documento (€)
+                Netto al mese letto nel documento (€)
               </label>
               <input
                 id={`${id}-amount`}
                 type="text"
                 inputMode="decimal"
-                pattern="[0-9]+([.,][0-9]{1,2})?"
+                pattern={euroInputPattern}
+                maxLength={12}
                 required
                 value={amount}
                 onChange={(e) => setAmount(e.currentTarget.value)}
+                aria-describedby={`${id}-amount-help`}
               />
+              <small className="input-hint" id={`${id}-amount-help`}>
+                Scrivi l’importo che leggi. Per un documento annuale indica la
+                media mensile: netto annuo diviso 12.
+              </small>
             </div>
             <div className="income-person-grid">
               <div className="field">
@@ -1113,6 +1189,7 @@ function ReviewForm({
 function DossierSummary({
   dossier,
   comparison,
+  verification,
   reviews = [],
   share,
   owner = false,
@@ -1120,15 +1197,18 @@ function DossierSummary({
 }: {
   dossier: Dossier;
   comparison?: IncomeComparison | null;
+  verification?: IncomeVerification | null;
   reviews?: Review[];
   share?: Share | null;
   owner?: boolean;
   onReviewed?: () => void;
 }) {
+  const checked = verification ?? incomeVerification(dossier, reviews, null);
   return (
     <div className="income-dossier-summary">
       <SyntheticNotice synthetic={dossier.synthetic} />
       <Totals totals={dossier.totals} comparison={comparison} />
+      <VerificationTotals verification={checked} />
       {[
         ...dossier.tenants,
         ...(dossier.guarantor ? [dossier.guarantor] : []),
@@ -1144,6 +1224,9 @@ function DossierSummary({
               value.person_id === person.id &&
               value.revision === dossier.revision,
           );
+        const check = checked.people.find(
+          (value) => value.person_id === person.id,
+        );
         return (
           <section
             className={`income-dossier-person ${guarantor ? "income-dossier-guarantor" : ""}`}
@@ -1155,13 +1238,13 @@ function DossierSummary({
                 {person.label}
                 {guarantor && <small> · Garante</small>}
               </h3>
-              <span className="income-dossier-person-status">
-                {review
-                  ? "Documento controllato da questo proprietario"
-                  : documents.length
-                    ? "Documento caricato"
-                    : "Dichiarato"}
-              </span>
+              {check && (
+                <span
+                  className={`income-dossier-person-status income-check-${check.status}`}
+                >
+                  {checkLabel(check)}
+                </span>
+              )}
             </div>
             <strong className="income-person-amount">
               {person.monthly_net_cents === null
@@ -1185,6 +1268,16 @@ function DossierSummary({
                 · {incomeMonthLabel(review.period_from)} –{" "}
                 {incomeMonthLabel(review.period_to)}. Controllo manuale
                 registrato il {dateLabel(review.reviewed_at)}.
+                {check?.verified_cents != null && (
+                  <>
+                    {" "}
+                    Reddito verificato:{" "}
+                    <strong>
+                      {formatIncomeCents(check.verified_cents)} netti / mese
+                    </strong>
+                    .
+                  </>
+                )}
               </p>
             )}
             {owner && share ? (
@@ -1324,6 +1417,7 @@ export function InvitationIncomeDossier({
                   <DossierSummary
                     dossier={l.data.dossier}
                     comparison={l.data.comparison}
+                    verification={l.data.verification}
                     reviews={l.data.reviews}
                   />
                   {shared ? (
@@ -1401,6 +1495,7 @@ export function InvitationIncomeDossier({
             <DossierSummary
               dossier={l.data.dossier}
               comparison={l.data.comparison}
+              verification={l.data.verification}
               reviews={l.data.reviews}
               share={l.data.share}
               owner

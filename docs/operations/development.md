@@ -229,6 +229,16 @@ Se l'interfaccia risponde ma `/api/health` fallisce, controllare API/proxy e log
 
 Una porta occupata richiede l'identificazione del processo e del comando che lo ha avviato. Riutilizzare o fermare il proprio servizio, oppure scegliere `DEV_PORT`/`DEV_API_PORT` libere e coerenti con il forwarding e `APP_ORIGIN`. Non cancellare dati o uccidere indiscriminatamente processi per liberarla.
 
+In un container che esegue come root (per esempio una sessione cloud) il
+PostgreSQL embedded rifiuta l’avvio. Senza modificare il codice: inizializzare
+un cluster fuori dal checkout con i binari di `@embedded-postgres/linux-x64`
+come utente `postgres` (utente `soglia`, password e porta da
+`.local/database.json`, `scram-sha-256`, ascolto solo su `127.0.0.1`), creare
+i database `soglia` e `soglia_test`; `startDatabase` lo trova con il probe e
+non lo arresta. npm11 può saltare i postinstall di esbuild ed embedded-postgres
+(allowScripts): eseguirli a mano se servono. Con un Chromium preinstallato di
+versione diversa da Playwright, impostare `CHROMIUM_PATH`.
+
 Per dati apparentemente persi dopo refresh, verificare prima risposta del salvataggio, account/sessione, database corrente e lettura successiva. Per chat/inviti controllare lo stato dell'invito, revisioni, blocchi, sospensioni e scadenze; queste regole sono parte del comportamento corrente, non errori da aggirare.
 
 ## Foto del profilo
@@ -505,6 +515,14 @@ UI di esempio in disclosure solo local/preview. Suite DB seriali dopo stop
 del solo supervisor posseduto, fixture UX su3017 e snapshot dei dati prima/dopo.
 Evidenze private .local/income-dossier; nessun cambio SMTP/runtime/storage.
 
+
+Verifica semplice: `incomeVerification` in `shared/income-dossier.ts`
+confronta per ogni persona l’ultima lettura del proprietario sulla revisione
+condivisa con il netto dichiarato. Conferma da almeno il 90%, vale il minore
+tra dichiarato e letto, zero dichiarato senza documento, garante separato.
+Server e UI usano la stessa funzione e le fixture UX la richiamano invece di
+duplicarla. Gli importi accettano `1.500,50`: `euroInputPattern` (attributo
+HTML) e `euroToCents` sono provati insieme nei test di dominio.
 
 La UI redditi viene importata dinamicamente da App solo nelle pagine private
 interessate. Il loader mantiene stato accessibile e recupero con ricarica pagina;

@@ -1503,6 +1503,11 @@ summary:focus-visible {
   font-weight: 600;
   white-space: nowrap;
 }
+/* A long standalone badge wraps instead of widening a 320px page. */
+.panel > .badge {
+  max-width: 100%;
+  white-space: normal;
+}
 .badge.pending {
   background: var(--warning-soft);
   color: var(--warning);

@@ -503,6 +503,7 @@ describe("private income dossiers and chosen-landlord document review", () => {
       share: null,
       can_share: false,
       comparison: null,
+      verification: null,
       reviews: [],
     });
     expect(
@@ -664,6 +665,110 @@ describe("private income dossiers and chosen-landlord document review", () => {
     expect(shown.dossier.totals.declared_total_cents).toBe(340000);
     expect(shown.comparison.percent_of_income).toBe(25);
     expectNoPrivateMetadata(reviewed.body);
+  });
+  it("verifies each tenant from the landlord's own reading and compares the offer with verified income", async () => {
+    const first = await upload(await save()),
+      second = await upload(first.dossier, roster[1].id),
+      id = await send();
+    expect((await visible(id)).verification).toBeNull();
+    expect((await visible(id, tenant)).verification).toEqual({
+      people: [
+        {
+          person_id: roster[0].id,
+          guarantor: false,
+          status: "to_review",
+          declared_cents: 160000,
+          observed_cents: null,
+          verified_cents: null,
+        },
+        {
+          person_id: roster[1].id,
+          guarantor: false,
+          status: "to_review",
+          declared_cents: 180000,
+          observed_cents: null,
+          verified_cents: null,
+        },
+      ],
+      verified_total_cents: 0,
+      verified_count: 0,
+      total_count: 2,
+      complete: false,
+      rent: 850,
+      percent_of_verified_income: null,
+    });
+    const s = await share(id, second.dossier);
+    async function review(document: any, observed_net_cents: number) {
+      expect(
+        (await request("GET", document.url.replace("/api", ""), landlord))
+          .statusCode,
+      ).toBe(200);
+      const r = await request(
+        "POST",
+        `/income/dossier/shares/${s.id}/reviews`,
+        landlord,
+        reviewPayload(s, document, { observed_net_cents }),
+      );
+      expect(r.statusCode, r.body).toBe(201);
+    }
+    await review(first.document, 150000);
+    const partial = (await visible(id)).verification;
+    expect(partial.people.map((p: any) => p.status)).toEqual([
+      "confirmed",
+      "to_review",
+    ]);
+    expect(partial).toMatchObject({
+      verified_total_cents: 150000,
+      verified_count: 1,
+      complete: false,
+      percent_of_verified_income: null,
+    });
+    await review(second.document, 120000);
+    const shown = await visible(id);
+    expect(shown.verification).toEqual({
+      people: [
+        {
+          person_id: roster[0].id,
+          guarantor: false,
+          status: "confirmed",
+          declared_cents: 160000,
+          observed_cents: 150000,
+          verified_cents: 150000,
+        },
+        {
+          person_id: roster[1].id,
+          guarantor: false,
+          status: "lower",
+          declared_cents: 180000,
+          observed_cents: 120000,
+          verified_cents: 120000,
+        },
+      ],
+      verified_total_cents: 270000,
+      verified_count: 2,
+      total_count: 2,
+      complete: true,
+      rent: 850,
+      percent_of_verified_income: 31.5,
+    });
+    expect(shown.comparison.percent_of_income).toBe(25);
+    expect((await visible(id, tenant)).verification).toEqual(
+      shown.verification,
+    );
+    await review(second.document, 190000);
+    expect((await visible(id)).verification).toMatchObject({
+      verified_total_cents: 330000,
+      percent_of_verified_income: 25.8,
+    });
+    await save({
+      tenants: roster.map((p, index) =>
+        index ? { ...p, monthly_net_cents: 170000 } : p,
+      ),
+    });
+    expect((await visible(id)).verification).toBeNull();
+    expect(
+      (await visible(id, tenant)).verification.people.map((p: any) => p.status),
+    ).toEqual(["to_review", "to_review"]);
   });
   it("binds comparison to the accepted offer rather than later rent changes", async () => {
     const d = await save(),
@@ -849,6 +954,7 @@ describe("private income dossiers and chosen-landlord document review", () => {
         share: null,
         can_share: false,
         comparison: null,
+        verification: null,
         reviews: [],
       });
       expect(
@@ -1076,6 +1182,7 @@ describe("private income dossiers and chosen-landlord document review", () => {
         share: null,
         can_share: false,
         comparison: null,
+        verification: null,
         reviews: [],
       });
       expect(

@@ -20,9 +20,34 @@ Il precedente simulatore e le sue API restano distinti.
    Il proprietario può scaricare la prova, indicare netto e periodo letti,
    e confermare di averla confrontata con la dichiarazione.
 
-«Documenti controllati da questo proprietario» è un controllo manuale
+«Confermato dal controllo del proprietario» è un controllo manuale
 registrato con data e metodo, distinto da autenticità, identità, verifica
-indipendente o garanzia di pagamento. Nessun esito automatico sul candidato.
+indipendente o garanzia di pagamento. Nessuna idoneità o decisione
+automatica sul candidato.
+
+## Verifica semplice del reddito
+
+Una sola regola, uguale per tutti e calcolata da `incomeVerification` in
+`shared/income-dossier.ts` (server e UI usano la stessa funzione):
+
+1. Per ogni persona conta l’ultima lettura del proprietario sulla revisione
+   condivisa (netto mensile letto nel documento).
+2. La lettura **conferma** la dichiarazione se è almeno il 90% del netto
+   dichiarato (tolleranza 10% per buste paga variabili); altrimenti lo stato
+   è «il documento mostra meno del dichiarato».
+3. Reddito verificato della persona = **il minore tra dichiarato e letto**;
+   senza importo dichiarato vale il letto. Un documento non alza mai la
+   dichiarazione.
+4. Reddito verificato degli affittuari = somma dei verificati; il garante
+   resta separato. Con tutti gli affittuari verificati e totale positivo si
+   mostra l’affitto in percentuale del reddito verificato (offerta accettata).
+
+Stati per persona: `confirmed`, `lower`, `to_review` (documenti senza
+lettura), `declared_only` (nessun documento), `no_income` (dichiarato zero:
+vale zero, nulla da verificare). Il modulo del proprietario parte vuoto:
+l’importo si scrive leggendo il documento (per documenti annuali la media
+mensile). Il confronto è fra due importi della stessa persona: nessuna soglia
+canone/reddito, nessuna classifica, filtro o blocco di contatti.
 
 ## Contratto dati
 
@@ -48,7 +73,10 @@ Tipi documento: payslip, pension, tax_return, other.
 
 Confronto con **il costo dell’offerta accettata**: percentuale
 `rent / (declared_total_cents / 100) * 100` soltanto se i dati sono completi
-e la somma è positiva. Nessun semaforo, soglia, classifica o filtro.
+e la somma è positiva; la stessa formula sul reddito verificato in
+`verification`. Nessun semaforo, soglia canone/reddito, classifica o filtro.
+Gli importi digitati accettano `1500`, `1500,50`, `1.500` e `1.500,50`
+(punto come separatore delle migliaia solo a gruppi di tre cifre).
 Importi letti nei documenti e importi dichiarati sono due rappresentazioni
 dello stesso reddito: non si sommano. Garanti sempre separati.
 
@@ -63,8 +91,13 @@ dello stesso reddito: non si sommano. Garanti sempre separati.
 - GET `/api/income/dossier/documents/:id`: allegato privato, no-store,
   attachment, nosniff e CSP sandbox. Solo referente o destinatario autorizzato.
 - GET `/api/invitations/:id/income-dossier`: `{status, dossier, share,
-can_share, comparison, reviews}`. Senza consenso, proprietario riceve
-  dossier/share/comparison null e reviews vuote; non vede stati privati.
+can_share, comparison, verification, reviews}`. `verification` è
+  `{people: [{person_id, guarantor, status, declared_cents, observed_cents,
+verified_cents}], verified_total_cents, verified_count, total_count,
+complete, rent, percent_of_verified_income}`; `rent` solo per invito
+  accettato e disponibile. Senza consenso, proprietario riceve
+  dossier/share/comparison/verification null e reviews vuote; non vede stati
+  privati.
 - POST `/api/income/dossier/shares`: `{invitation_id, dossier_id,
 revision, consent: true, documents_consent: true}`; `{share}`.
 - DELETE `/api/income/dossier/shares/:id`: revoca idempotente.

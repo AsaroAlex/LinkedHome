@@ -477,7 +477,7 @@ test("real income dossier keeps each person and guarantor separate, requires con
       ).toHaveValue(String(person.amount));
     }
     await expect(workspace).not.toContainText(
-      "Documento controllato da questo proprietario",
+      "Confermato dal controllo del proprietario",
     );
     await views(tenantPage, workspace, "income-private", testInfo);
 
@@ -593,7 +593,7 @@ test("real income dossier keeps each person and guarantor separate, requires con
       "3.100",
     );
     await expect(ownerIncome).not.toContainText(
-      "Documento controllato da questo proprietario",
+      "Confermato dal controllo del proprietario",
     );
     await views(ownerPage, ownerIncome, "income-shared", testInfo);
     const ownerCards = ownerIncome.locator(".income-dossier-person");
@@ -620,6 +620,13 @@ test("real income dossier keeps each person and guarantor separate, requires con
       reviewPayload,
       409,
     );
+    // The landlord types what each document shows: Italian grouping for Ada,
+    // a lower reading for Luca and the guarantor's declared amount.
+    const readings = [
+      { typed: "1.500", cents: 150000 },
+      { typed: "1300", cents: 130000 },
+      { typed: "2000", cents: 200000 },
+    ];
     for (const [index, person] of people.entries()) {
       const card = ownerCards.nth(index);
       const document = dossier.documents.find(
@@ -632,9 +639,14 @@ test("real income dossier keeps each person and guarantor separate, requires con
         form.getByRole("button", { name: "Conferma controllo", exact: true }),
       ).toBeDisabled();
       await download(ownerPage, card, document);
+      await expect(
+        form.getByLabel("Netto al mese letto nel documento (€)", {
+          exact: true,
+        }),
+      ).toHaveValue("");
       await form
-        .getByLabel("Netto letto nel documento (€)", { exact: true })
-        .fill(String(person.amount));
+        .getByLabel("Netto al mese letto nel documento (€)", { exact: true })
+        .fill(readings[index].typed);
       await form.getByLabel("Dal mese", { exact: true }).fill(period.from);
       await form.getByLabel("Al mese", { exact: true }).fill(period.to);
       await form
@@ -657,26 +669,59 @@ test("real income dossier keeps each person and guarantor separate, requires con
         person_id: document.person_id,
         document_id: document.id,
         revision: originalRevision,
-        observed_net_cents: person.amount * 100,
+        observed_net_cents: readings[index].cents,
         period_from: period.from,
         period_to: period.to,
         method: "landlord_document_review",
       });
       await expect(card).toContainText(
-        "Documento controllato da questo proprietario",
+        index === 1
+          ? "Il documento mostra meno del dichiarato"
+          : "Confermato dal controllo del proprietario",
       );
+      expect(person.amount * 100).toBeGreaterThanOrEqual(readings[index].cents);
     }
     received = await api(ownerPage, incomePath);
     expect(received.reviews).toHaveLength(3);
+    expect(
+      received.verification.people.map(
+        (person: { status: string; guarantor: boolean }) => [
+          person.status,
+          person.guarantor,
+        ],
+      ),
+    ).toEqual([
+      ["confirmed", false],
+      ["lower", false],
+      ["confirmed", true],
+    ]);
+    expect(received.verification).toMatchObject({
+      verified_total_cents: 280000,
+      verified_count: 2,
+      total_count: 2,
+      complete: true,
+      rent: offered.rent,
+      percent_of_verified_income: Math.round((offered.rent / 2800) * 1000) / 10,
+    });
+    const verifiedBox = ownerIncome.locator(".income-dossier-verification");
+    await expect(verifiedBox).toContainText("2.800,00");
+    await expect(verifiedBox).toContainText("del reddito verificato");
+    await expect(verifiedBox).toContainText("Garante, separato: 2.000,00");
     expect(received.dossier.totals.declared_total_cents).toBe(310000);
     expect(received.comparison.declared_total_cents).toBe(310000);
     await ownerPage.reload();
     await openDetails(ownerIncome);
     await expect(
-      ownerIncome.getByText("Documento controllato da questo proprietario", {
+      ownerIncome.getByText("Confermato dal controllo del proprietario", {
         exact: true,
       }),
-    ).toHaveCount(3);
+    ).toHaveCount(2);
+    await expect(
+      ownerIncome.getByText("Il documento mostra meno del dichiarato", {
+        exact: true,
+      }),
+    ).toHaveCount(1);
+    await views(ownerPage, ownerIncome, "income-verified", testInfo);
 
     // A second tenant tab changes the genuine saved dossier while the first
     // tab still holds an old form. Both sharing and review must stop at once.
@@ -749,7 +794,7 @@ test("real income dossier keeps each person and guarantor separate, requires con
     expect(received.dossier.totals.declared_total_cents).toBe(315000);
     expect(received.reviews).toEqual([]);
     await expect(ownerIncome).not.toContainText(
-      "Documento controllato da questo proprietario",
+      "Confermato dal controllo del proprietario",
     );
     await expect(
       ownerIncome

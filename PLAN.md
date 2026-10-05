@@ -733,3 +733,37 @@ con stesso runtime preview/posta disabilitata; prove pubbliche ancora da eseguir
 Dev HMR/watch119881 riavviato: API3001/frontend3000 HTTP200. Snapshot
 post-suite uguale al precedente (5 utenti,2 profili,1 immobile); nessun
 dossier creato nel database applicativo, nessun dato preesistente modificato.
+
+
+## Verifica semplice del reddito — 2026-10-05
+
+Richiesta: logica di verifica del reddito di uno o più affittuari, semplice e
+pragmatica, progetto funzionante e pronto al rilascio. Il dossier manuale
+esistente è conservato; manca solo l’esito del controllo, ora calcolato da
+una funzione pura condivisa (`incomeVerification`) usata da server e UI.
+
+Regola unica: per ogni persona conta l’ultima lettura del proprietario sulla
+revisione condivisa; conferma se è almeno il 90% del netto dichiarato,
+altrimenti «il documento mostra meno del dichiarato». Vale il minore tra
+dichiarato e letto (il letto se non dichiarato); zero dichiarato non richiede
+documenti. Somma dei soli affittuari, garante separato; percentuale
+dell’affitto sul reddito verificato solo se tutti gli affittuari sono
+verificati e il totale è positivo. Nessuna soglia canone/reddito, classifica
+o blocco. GET invito redditi espone `verification` (null senza consenso).
+Il modulo del proprietario parte vuoto; importi anche come `1.500,50`
+(`euroInputPattern` allineato a `euroToCents`, «0.500» rifiutato).
+
+Bug trovato in baseline: a 320 px il badge identità sbordava di 5 px con i
+font del runtime cloud (E2E income fallito); i badge diretti di un pannello
+ora vanno a capo. Copy FAQ/pagine aggiornate alla regola del 90%.
+
+Verifica: typecheck/build PASS; unit/API 937/937 (23 nuovi: dominio, formati,
+flusso API confermato/inferiore/ricontrollo/revoca); E2E principali 22/22,
+experience 54/54, preview 14/14 con nuovo screenshot/Axe/overflow
+320/390/1440 dello stato verificato. Immagine Docker di produzione costruita
+e avviata: smoke completo (PDF worker, PNG→WebP, consenso, download,
+controllo, verifica 34%) PASS. Build index-CQlWX26G.js,
+IncomeDossier-BtQPJvv3.js. Ambiente cloud root: PostgreSQL18 avviato come
+utente postgres fuori dal checkout, Chromium preinstallato via CHROMIUM_PATH.
+Restano i gate non tecnici della release-checklist (informative, DPIA,
+conservazione) per documenti reali.

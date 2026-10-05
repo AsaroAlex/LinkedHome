@@ -4,6 +4,7 @@ import {
   documentKinds,
   documentKindLabels,
   euroToCents,
+  euroInputPattern,
   formatIncomeCents,
   incomeComparison,
   incomeDossierInput,
@@ -12,8 +13,10 @@ import {
   incomeReviewInput,
   incomeSources,
   incomeTotals,
+  incomeVerification,
   sourceLabels,
   type IncomePerson,
+  type IncomeReading,
 } from "../shared/income-dossier";
 
 const person = {
@@ -412,13 +415,32 @@ describe("euro input conversion and labels", () => {
   });
 
   it.each([
+    ["1.500", 150_000],
+    ["1.500,50", 150_050],
+    ["1.005", 100_500],
+    ["2.500,5", 250_050],
+    ["12.345,67", 1_234_567],
+    [" 100.000 ", 10_000_000],
+    ["100.000,00", 10_000_000],
+  ] as const)(
+    "reads Italian thousand grouping %s as whole euros",
+    (euros, cents) => expect(euroToCents(euros)).toBe(cents),
+  );
+
+  it.each([
     "",
     "  ",
     "-1",
-    "1.005",
     "1,005",
+    "1,500.50",
+    "1.5000",
+    "1.50.000",
+    "1.500.5",
+    "1.500,505",
+    "0.500",
+    "01.500",
+    "100.000,01",
     "1e3",
-    "2.500,50",
     "100000.01",
     "NaN",
     NaN,
@@ -428,10 +450,239 @@ describe("euro input conversion and labels", () => {
     (euros) => expect(euroToCents(euros)).toBeNull(),
   );
 
+  it("keeps the HTML input pattern aligned with the accepted text formats", () => {
+    // Browsers compile pattern attributes as ^(?:pattern)$ with the v flag.
+    const pattern = new RegExp(`^(?:${euroInputPattern})$`, "v");
+    for (const text of [
+      "0",
+      "1500",
+      "1500,5",
+      "1500.50",
+      "1.500",
+      "1.500,50",
+      "12.345",
+      "100.000,00",
+      "0.500",
+      "01.500",
+      "1,500.50",
+      "1.5000",
+      "1.500.5",
+      "1.500,505",
+      "-1",
+      "1e3",
+      "",
+    ])
+      expect(pattern.test(text), text).toBe(euroToCents(text) !== null);
+  });
+
+  it("never reads a numeric amount as Italian grouping", () => {
+    expect(euroToCents(1.005)).toBeNull();
+    expect(euroToCents(1.5)).toBe(150);
+  });
+
   it("formats money and valid Italian months without exposing another source", () => {
     expect(formatIncomeCents(200_050)).toBe("2.000,50 €");
     expect(incomeMonthLabel("2026-09")).toBe("settembre 2026");
     expect(incomeMonthLabel("2026-13")).toBe("");
     expect(incomeMonthLabel("not-a-month")).toBe("");
+  });
+});
+
+describe("simple income verification", () => {
+  const ids = [1, 2, 3].map(
+    (n) => `0000000${n}-0000-4000-8000-00000000000${n}`,
+  );
+  const tenant = (
+    n: number,
+    monthly_net_cents: number | null,
+    source: IncomePerson["source"] = "employment",
+  ): IncomePerson => ({
+    ...person,
+    id: ids[n],
+    label: `Affittuario ${n + 1}`,
+    source,
+    monthly_net_cents,
+  });
+  const reading = (
+    personId: string,
+    observed_net_cents: number,
+    reviewed_at = "2026-10-05T12:00:00.000Z",
+    revision = 4,
+  ): IncomeReading => ({
+    person_id: personId,
+    revision,
+    observed_net_cents,
+    reviewed_at,
+  });
+  const check = (
+    tenants: IncomePerson[],
+    readings: IncomeReading[] = [],
+    rent: number | null = 900,
+    options: { guarantor?: IncomePerson; documents?: string[] } = {},
+  ) =>
+    incomeVerification(
+      {
+        revision: 4,
+        tenants,
+        guarantor: options.guarantor ?? null,
+        documents: (options.documents ?? []).map((person_id) => ({
+          person_id,
+        })),
+      },
+      readings,
+      rent,
+    );
+
+  it("keeps declarations, pending documents and zero income distinct before any reading", () => {
+    const result = check(
+      [tenant(0, 200_000), tenant(1, 150_000), tenant(2, 0, "no_income")],
+      [],
+      900,
+      { documents: [ids[1]] },
+    );
+    expect(result.people.map((p) => [p.status, p.verified_cents])).toEqual([
+      ["declared_only", null],
+      ["to_review", null],
+      ["no_income", 0],
+    ]);
+    expect(result).toMatchObject({
+      verified_total_cents: 0,
+      verified_count: 1,
+      total_count: 3,
+      complete: false,
+      rent: 900,
+      percent_of_verified_income: null,
+    });
+  });
+
+  it("confirms a reading of at least 90% and counts the lower amount", () => {
+    const exact = check([tenant(0, 200_000)], [reading(ids[0], 180_000)]);
+    expect(exact.people[0]).toEqual({
+      person_id: ids[0],
+      guarantor: false,
+      status: "confirmed",
+      declared_cents: 200_000,
+      observed_cents: 180_000,
+      verified_cents: 180_000,
+    });
+    const below = check([tenant(0, 200_000)], [reading(ids[0], 179_999)]);
+    expect(below.people[0]).toMatchObject({
+      status: "lower",
+      verified_cents: 179_999,
+    });
+    const higher = check([tenant(0, 200_000)], [reading(ids[0], 260_000)]);
+    expect(higher.people[0]).toMatchObject({
+      status: "confirmed",
+      verified_cents: 200_000,
+    });
+    expect(higher.percent_of_verified_income).toBe(45);
+  });
+
+  it("uses a reading when no amount was declared and never raises a declared zero", () => {
+    const result = check(
+      [tenant(0, null, "not_specified"), tenant(1, 0, "no_income")],
+      [reading(ids[0], 120_000), reading(ids[1], 50_000)],
+      600,
+    );
+    expect(result.people.map((p) => [p.status, p.verified_cents])).toEqual([
+      ["confirmed", 120_000],
+      ["confirmed", 0],
+    ]);
+    expect(result).toMatchObject({
+      verified_total_cents: 120_000,
+      complete: true,
+      percent_of_verified_income: 50,
+    });
+  });
+
+  it("uses each person's latest reading of the current revision only", () => {
+    const result = check(
+      [tenant(0, 200_000)],
+      [
+        reading(ids[0], 100_000, "2026-10-05T12:00:00.000Z"),
+        reading(ids[0], 195_000, "2026-10-05T12:05:00.000Z"),
+        reading(ids[0], 50_000, "2026-10-05T12:01:00.000Z"),
+        reading(ids[0], 10_000, "2026-10-05T13:00:00.000Z", 3),
+      ],
+    );
+    expect(result.people[0]).toMatchObject({
+      status: "confirmed",
+      observed_cents: 195_000,
+      verified_cents: 195_000,
+    });
+    expect(
+      check([tenant(0, 200_000)], [reading(ids[0], 190_000, undefined, 3)])
+        .people[0].status,
+    ).toBe("declared_only");
+  });
+
+  it("keeps the guarantor separate from the tenants' verified income", () => {
+    const guarantor = { ...tenant(2, 500_000, "pension"), label: "Garante" };
+    const result = check(
+      [tenant(0, 200_000), tenant(1, 100_000)],
+      [
+        reading(ids[0], 200_000),
+        reading(ids[1], 100_000),
+        reading(ids[2], 500_000),
+      ],
+      900,
+      { guarantor },
+    );
+    expect(result.people.at(-1)).toMatchObject({
+      person_id: ids[2],
+      guarantor: true,
+      status: "confirmed",
+      verified_cents: 500_000,
+    });
+    expect(result).toMatchObject({
+      verified_total_cents: 300_000,
+      verified_count: 2,
+      total_count: 2,
+      complete: true,
+      percent_of_verified_income: 30,
+    });
+  });
+
+  it("calculates the rent share only for a complete positive verified total and a valid rent", () => {
+    const partial = check(
+      [tenant(0, 200_000), tenant(1, 100_000)],
+      [reading(ids[0], 200_000)],
+    );
+    expect(partial).toMatchObject({
+      verified_total_cents: 200_000,
+      verified_count: 1,
+      complete: false,
+      percent_of_verified_income: null,
+    });
+    expect(
+      check([tenant(0, 0, "no_income")]).percent_of_verified_income,
+    ).toBeNull();
+    for (const rent of [null, NaN, Infinity, -1]) {
+      const result = check(
+        [tenant(0, 300_000)],
+        [reading(ids[0], 300_000)],
+        rent,
+      );
+      expect(result.rent).toBeNull();
+      expect(result.percent_of_verified_income).toBeNull();
+    }
+    expect(
+      check([tenant(0, 300_000)], [reading(ids[0], 300_000)], 1000)
+        .percent_of_verified_income,
+    ).toBe(33.3);
+  });
+
+  it("supports twelve tenants at the maximum amount without losing cents", () => {
+    const tenants = Array.from({ length: 12 }, (_, n) => ({
+      ...tenant(0, 10_000_000),
+      id: `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`,
+    }));
+    const result = check(
+      tenants,
+      tenants.map((p) => reading(p.id, 10_000_000)),
+      12_000,
+    );
+    expect(result.verified_total_cents).toBe(120_000_000);
+    expect(result.percent_of_verified_income).toBe(1);
   });
 });

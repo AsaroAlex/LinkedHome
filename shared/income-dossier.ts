@@ -205,9 +205,151 @@ export function incomeComparison(
   };
 }
 
-/** Convert a nonnegative euro amount with up to two decimals, never via floats. */
+/**
+ * Simple income check: for each person, the landlord's latest reading of a
+ * document confirms the declaration when it is at least 90% of the declared
+ * net. The verified amount is the lower of declared and read, so a document
+ * never raises a declaration. Guarantors stay outside the tenants' total.
+ */
+export const incomeCheckTolerancePercent = 10;
+export const incomeCheckStatuses = [
+  "confirmed",
+  "lower",
+  "to_review",
+  "declared_only",
+  "no_income",
+] as const;
+export type IncomeCheckStatus = (typeof incomeCheckStatuses)[number];
+
+export type IncomeReading = {
+  person_id: string;
+  revision: number;
+  observed_net_cents: number;
+  reviewed_at: string | Date;
+};
+
+export type PersonIncomeCheck = {
+  person_id: string;
+  guarantor: boolean;
+  status: IncomeCheckStatus;
+  declared_cents: number | null;
+  observed_cents: number | null;
+  verified_cents: number | null;
+};
+
+export type IncomeVerification = {
+  people: PersonIncomeCheck[];
+  verified_total_cents: number;
+  verified_count: number;
+  total_count: number;
+  complete: boolean;
+  rent: number | null;
+  percent_of_verified_income: number | null;
+};
+
+function personIncomeCheck(
+  person: IncomePerson,
+  guarantor: boolean,
+  hasDocuments: boolean,
+  observed: number | null,
+): PersonIncomeCheck {
+  const declared = person.monthly_net_cents;
+  const base = {
+    person_id: person.id,
+    guarantor,
+    declared_cents: declared,
+    observed_cents: observed,
+  };
+  if (observed !== null)
+    return {
+      ...base,
+      status:
+        declared !== null &&
+        observed * 100 < declared * (100 - incomeCheckTolerancePercent)
+          ? "lower"
+          : "confirmed",
+      verified_cents:
+        declared === null ? observed : Math.min(observed, declared),
+    };
+  if (declared === 0)
+    return { ...base, status: "no_income", verified_cents: 0 };
+  return {
+    ...base,
+    status: hasDocuments ? "to_review" : "declared_only",
+    verified_cents: null,
+  };
+}
+
+export function incomeVerification(
+  dossier: {
+    revision: number;
+    tenants: readonly IncomePerson[];
+    guarantor: IncomePerson | null;
+    documents: readonly { person_id: string }[];
+  },
+  readings: readonly IncomeReading[],
+  rent: number | null,
+): IncomeVerification {
+  const latest = new Map<string, IncomeReading>();
+  for (const reading of readings) {
+    if (reading.revision !== dossier.revision) continue;
+    const prior = latest.get(reading.person_id);
+    if (
+      !prior ||
+      new Date(reading.reviewed_at).getTime() >=
+        new Date(prior.reviewed_at).getTime()
+    )
+      latest.set(reading.person_id, reading);
+  }
+  const check = (person: IncomePerson, guarantor: boolean) =>
+    personIncomeCheck(
+      person,
+      guarantor,
+      dossier.documents.some((document) => document.person_id === person.id),
+      latest.get(person.id)?.observed_net_cents ?? null,
+    );
+  const tenants = dossier.tenants.map((person) => check(person, false));
+  const verified = tenants.filter((person) => person.verified_cents !== null);
+  const total = verified.reduce(
+    (sum, person) => sum + person.verified_cents!,
+    0,
+  );
+  const complete = tenants.length > 0 && verified.length === tenants.length;
+  const knownRent =
+    rent !== null && Number.isFinite(rent) && rent >= 0 ? rent : null;
+  return {
+    people: [
+      ...tenants,
+      ...(dossier.guarantor ? [check(dossier.guarantor, true)] : []),
+    ],
+    verified_total_cents: total,
+    verified_count: verified.length,
+    total_count: tenants.length,
+    complete,
+    rent: knownRent,
+    percent_of_verified_income:
+      complete && total > 0 && knownRent !== null
+        ? Math.round(((knownRent * 10_000) / total) * 10) / 10
+        : null,
+  };
+}
+
+/** HTML pattern for the same typed formats: 1500, 1500,50 or 1.500,50. */
+export const euroInputPattern =
+  "[0-9]+([.,][0-9]{1,2})?|[1-9][0-9]{0,2}(\\.[0-9]{3})+(,[0-9]{1,2})?";
+
+/**
+ * Convert a nonnegative euro amount with up to two decimals, never via floats.
+ * Typed text may use Italian grouping: «1.500» or «1.500,50».
+ */
 export function euroToCents(value: string | number): number | null {
-  const text = String(value).trim().replace(",", ".");
+  let text = String(value).trim();
+  if (
+    typeof value === "string" &&
+    /^[1-9]\d{0,2}(?:\.\d{3})+(?:,\d{1,2})?$/.test(text)
+  )
+    text = text.replace(/\./g, "");
+  text = text.replace(",", ".");
   if (!/^\d+(?:\.\d{1,2})?$/.test(text)) return null;
   const [whole, decimals = ""] = text.split(".");
   const cents = Number(whole) * 100 + Number(decimals.padEnd(2, "0"));

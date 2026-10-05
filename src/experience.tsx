@@ -121,7 +121,7 @@ export function ProductFAQ() {
           ],
           [
             "Come funziona la verifica del reddito?",
-            "Ogni affittuario indica il netto medio al mese e carica le prove delle entrate. L’eventuale garante è indicato separatamente. Dopo aver accettato un invito, scegli se condividere riepilogo e documenti con quel proprietario. Il proprietario scarica le prove e registra il controllo di importi e periodo. È un controllo manuale: il caricamento da solo non verifica il reddito e non garantisce pagamenti futuri.",
+            "Ogni affittuario indica il netto medio al mese e carica le prove delle entrate. L’eventuale garante è indicato separatamente. Dopo aver accettato un invito, scegli se condividere riepilogo e documenti con quel proprietario. Il proprietario scarica le prove e scrive il netto che legge: il reddito è confermato se il documento mostra almeno il 90% del dichiarato. È un controllo manuale: il caricamento da solo non verifica il reddito e non garantisce pagamenti futuri.",
           ],
           [
             "Posso firmare il contratto o pagare qui?",

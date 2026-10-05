@@ -3,6 +3,10 @@ import AxeBuilder from "@axe-core/playwright";
 import { mkdir } from "node:fs/promises";
 import { createServer } from "node:http";
 import { PDFDocument } from "pdf-lib";
+import {
+  incomeVerification,
+  type IncomeReading,
+} from "../../shared/income-dossier";
 
 const test = base.extend<{
   documentAttachment: { url: string; downloads: string[] };
@@ -429,6 +433,16 @@ async function fixtures(page: Page, initial: Dossier | null, role = "tenant") {
                   100,
               }
             : null,
+        verification:
+          visible && state.dossier
+            ? incomeVerification(
+                state.dossier as Parameters<typeof incomeVerification>[0],
+                state.reviews as IncomeReading[],
+                state.invitationStatus === "accepted"
+                  ? offeredProperty.rent
+                  : null,
+              )
+            : null,
         reviews: state.reviews,
       },
       "/api/income": {
@@ -744,7 +758,7 @@ test("a failed document upload keeps the selected proof and retries without chan
     documents.getByRole("link", { name: "Scarica documento 1", exact: true }),
   ).toBeVisible();
   await expect(documents).not.toContainText(
-    "Documento controllato da questo proprietario",
+    "Confermato dal controllo del proprietario",
   );
   expect(state.dossier!.documents).toHaveLength(1);
   expect(state.dossier!.revision).toBe(4);
@@ -853,9 +867,23 @@ test("the recipient downloads proof before confirming a manual review and the de
     /28[,.]3/,
   );
   await expect(panel).not.toContainText(
-    "Documento controllato da questo proprietario",
+    "Confermato dal controllo del proprietario",
   );
+  const verification = panel.locator(".income-dossier-verification");
+  await expect(verification).toContainText("Nessun reddito ancora verificato");
+  await expect(verification).toContainText("Verificato per 0 su 2 affittuari");
+  await expect(
+    panel.getByText("Documento da controllare", { exact: true }),
+  ).toHaveCount(1);
+  await expect(
+    panel.getByText("Solo dichiarato, senza documenti", { exact: true }),
+  ).toHaveCount(2);
   const review = panel.locator(".income-dossier-review-form").first();
+  await expect(
+    review.getByLabel("Netto al mese letto nel documento (€)", {
+      exact: true,
+    }),
+  ).toHaveValue("");
   const confirm = review.getByRole("button", {
     name: "Conferma controllo",
     exact: true,
@@ -870,7 +898,7 @@ test("the recipient downloads proof before confirming a manual review and the de
   expect(completedDownload.suggestedFilename()).toBe("synthetic-proof.pdf");
   await expect.poll(() => state.downloads).toEqual([ids.document]);
   await review
-    .getByLabel("Netto letto nel documento (€)", { exact: true })
+    .getByLabel("Netto al mese letto nel documento (€)", { exact: true })
     .fill("1800");
   await review.getByLabel("Dal mese", { exact: true }).fill("2026-07");
   await review.getByLabel("Al mese", { exact: true }).fill("2026-09");
@@ -892,8 +920,11 @@ test("the recipient downloads proof before confirming a manual review and the de
     confirm: true,
   });
   await expect(panel).toContainText(
-    "Documento controllato da questo proprietario",
+    "Confermato dal controllo del proprietario",
   );
+  await expect(verification).toContainText("1.800,00");
+  await expect(verification).toContainText("Verificato per 1 su 2 affittuari");
+  await expect(verification).not.toContainText("del reddito verificato");
   await expect(panel.locator(".income-dossier-total-value")).toContainText(
     "3.000,00",
   );

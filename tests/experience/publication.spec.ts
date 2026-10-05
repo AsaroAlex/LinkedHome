@@ -117,7 +117,7 @@ for (const environment of [
       .getByText("Come funziona la verifica del reddito?", { exact: true })
       .click();
     await expect(page.getByRole("main")).toContainText(
-      "Il proprietario scarica le prove e registra il controllo di importi e periodo.",
+      "Il proprietario scarica le prove e scrive il netto che legge: il reddito è confermato se il documento mostra almeno il 90% del dichiarato.",
     );
     await expect(page.getByRole("main")).toContainText(
       "È un controllo manuale: il caricamento da solo non verifica il reddito e non garantisce pagamenti futuri.",

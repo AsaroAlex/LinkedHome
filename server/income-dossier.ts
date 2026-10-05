@@ -16,6 +16,7 @@ import {
   documentKinds,
   incomeTotals,
   incomeComparison,
+  incomeVerification,
   type IncomePerson,
 } from "../shared/income-dossier.js";
 
@@ -560,15 +561,15 @@ export function registerIncomeDossierRoutes(
               )
             ).rows.map(reviewView)
           : [];
+      const rent = available ? Number(i.property_snapshot?.rent) : null;
       return {
         status: available && share ? "available" : "unavailable",
         dossier: view,
         share: available && share ? shareView(share) : null,
         can_share: Boolean(own && available && d && !share),
         comparison:
-          available && view
-            ? incomeComparison(view.totals, Number(i.property_snapshot?.rent))
-            : null,
+          view && rent !== null ? incomeComparison(view.totals, rent) : null,
+        verification: view ? incomeVerification(view, reviews, rent) : null,
         reviews,
       };
     });

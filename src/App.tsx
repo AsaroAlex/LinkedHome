@@ -855,9 +855,11 @@ function Safeguards() {
           L’inquilino prepara il riepilogo nella sezione «Verifiche e reddito»,
           guarda l’anteprima e, dopo aver accettato un invito, sceglie se
           condividere riepilogo e documenti con quel proprietario. Il
-          proprietario scarica le prove e registra gli importi e il periodo che
-          ha controllato. L’inquilino può interrompere la condivisione;
-          modificare dati o documenti richiede una nuova conferma.
+          proprietario scarica le prove e scrive il netto che legge: il reddito
+          di ogni persona è confermato se il documento mostra almeno il 90% del
+          dichiarato e conta il minore dei due importi. L’inquilino può
+          interrompere la condivisione; modificare dati o documenti richiede una
+          nuova conferma.
         </p>
         <p className="small-copy">
           Il controllo è manuale, fatto dal proprietario: non certifica
@@ -3384,8 +3386,9 @@ function VerificationPage({ user }: { user: User }) {
             Se l’inquilino condivide un riepilogo del reddito con te, puoi
             leggere le entrate di ogni affittuario e l’eventuale garante,
             indicato separatamente. Dopo l’accettazione dell’invito e il
-            consenso, scarica i documenti e registra gli importi e il periodo
-            che hai controllato. Il confronto usa il costo dell’offerta
+            consenso, scarica i documenti e scrivi il netto mensile e il periodo
+            che leggi: il reddito è confermato se il documento mostra almeno il
+            90% del dichiarato. Il confronto usa il costo dell’offerta
             accettata.
           </p>
           {["local", "preview"].includes(runtime?.environment || "") && (
