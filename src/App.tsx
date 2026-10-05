@@ -1411,98 +1411,117 @@ function Dashboard({ user }: { user: User }) {
     </div>
   );
 }
-function MoveInFields({ profile }: { profile: MoveInPreferences | null }) {
-  const [mode, setMode] = useState(
-    profile?.move_in_precision || (profile ? "day" : "month"),
+function MoveInFields({
+  profile,
+  onChange,
+}: {
+  profile: MoveInPreferences | null;
+  onChange: () => void;
+}) {
+  const savedMode = profile?.move_in_precision || (profile ? "day" : "month");
+  const [mode, setMode] =
+    useState<NonNullable<MoveInPreferences["move_in_precision"]>>(savedMode);
+  const today = new Date();
+  const thisMonth = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1),
   );
-  const [exactDay, setExactDay] = useState(profile?.move_in || initialDay());
-  const [month, setMonth] = useState(exactDay.slice(0, 7));
+  const nextMonth = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth() + 1, 1),
+  );
+  const initialMonth =
+    profile?.move_in.slice(0, 7) || nextMonth.toISOString().slice(0, 7);
+  const [month, setMonth] = useState(initialMonth);
+  const [rangeStart, setRangeStart] = useState(initialMonth);
   const [lastMonth, setLastMonth] = useState(
-    (profile?.move_in_end || exactDay).slice(0, 7),
+    (profile?.move_in_end || profile?.move_in)?.slice(0, 7) || initialMonth,
+  );
+  const [exactDay, setExactDay] = useState(
+    savedMode === "day" ? profile?.move_in || "" : "",
   );
   const legendId = useId();
-  const start = new Date();
-  start.setUTCDate(1);
-  const choices = new Set([month, lastMonth]);
+  const choices = new Set([month, rangeStart, lastMonth]);
   for (let index = 0; index < 36; index++) {
-    const date = new Date(start);
-    date.setUTCMonth(start.getUTCMonth() + index);
+    const date = new Date(thisMonth);
+    date.setUTCMonth(thisMonth.getUTCMonth() + index);
     choices.add(date.toISOString().slice(0, 7));
   }
   const months = [...choices].sort();
+  const monthLabel = (value: string) =>
+    moveInLabel({ move_in: `${value}-01`, move_in_precision: "month" });
   function options(after?: string) {
     return months
       .filter((value) => !after || value >= after)
       .map((value) => (
         <option key={value} value={value}>
-          {moveInLabel({ move_in: `${value}-01`, move_in_precision: "month" })}
+          {monthLabel(value)}
         </option>
       ));
   }
+  function chooseMonth(value: string) {
+    if (mode === "month" && month === value) return;
+    setMode("month");
+    setMonth(value);
+    onChange();
+  }
   return (
     <fieldset className="move-in-choice" aria-describedby={`${legendId}-hint`}>
-      <legend id={legendId}>Quando vorresti entrare?</legend>
-      <p id={`${legendId}-hint`} className="field-hint">
-        Puoi scegliere solo il mese o un periodo. Il giorno si concorda con il
-        proprietario.
+      <legend id={legendId}>Quando vuoi trasferirti?</legend>
+      <p id={`${legendId}-hint`} className="field-hint move-in-help">
+        {mode === "month"
+          ? "Il giorno lo concorderai con il proprietario."
+          : mode === "range"
+            ? "Scegli i mesi tra cui puoi trasferirti."
+            : "Indica il giorno in cui vorresti entrare."}
       </p>
-      <div className="move-in-modes">
+      <div
+        className="move-in-shortcuts"
+        role="group"
+        aria-label="Scegli rapidamente un mese"
+      >
         {(
           [
-            ["month", "Un mese"],
-            ["range", "Un periodo"],
-            ["day", "Un giorno preciso"],
+            [thisMonth.toISOString().slice(0, 7), "Questo mese"],
+            [nextMonth.toISOString().slice(0, 7), "Il prossimo mese"],
           ] as const
         ).map(([value, label]) => (
-          <label key={value} className={mode === value ? "selected" : ""}>
-            <input
-              type="radio"
-              name="move_in_precision"
-              value={value}
-              checked={mode === value}
-              onChange={() => setMode(value)}
-            />
-            {label}
-          </label>
+          <button
+            key={label}
+            type="button"
+            className="move-in-shortcut"
+            aria-pressed={mode === "month" && month === value}
+            onClick={() => chooseMonth(value)}
+          >
+            <span>{label}</span>
+            <small>{monthLabel(value)}</small>
+          </button>
         ))}
       </div>
-      <div className="form-grid">
+      <div className="form-grid move-in-editor">
         {mode === "day" ? (
-          <Field
-            name="move_in"
-            label="Giorno di ingresso"
-            hint="Usa una data precisa solo se la conosci già."
-          >
+          <Field name="move_in" label="Giorno di ingresso">
             <input
               name="move_in"
               type="date"
               required
               value={exactDay}
-              onChange={(event) => {
-                setExactDay(event.currentTarget.value);
-                if (event.currentTarget.value)
-                  setMonth(event.currentTarget.value.slice(0, 7));
-              }}
+              onChange={(event) => setExactDay(event.currentTarget.value)}
             />
           </Field>
         ) : (
           <Field
             name="move_in"
             label={mode === "range" ? "Dal mese" : "Mese di ingresso"}
-            hint={
-              mode === "month"
-                ? "Va bene entrare in qualsiasi giorno di questo mese."
-                : undefined
-            }
           >
             <select
               name="move_in"
               required
-              value={month}
+              value={mode === "range" ? rangeStart : month}
               onChange={(event) => {
-                setMonth(event.currentTarget.value);
-                if (lastMonth < event.currentTarget.value)
-                  setLastMonth(event.currentTarget.value);
+                const value = event.currentTarget.value;
+                if (mode === "range") {
+                  setRangeStart(value);
+                  if (lastMonth < value) setLastMonth(value);
+                } else setMonth(value);
               }}
             >
               {options()}
@@ -1510,22 +1529,44 @@ function MoveInFields({ profile }: { profile: MoveInPreferences | null }) {
           </Field>
         )}
         {mode === "range" && (
-          <Field
-            name="move_in_end"
-            label="Al mese"
-            hint="Il periodo comprende anche tutto il mese finale."
-          >
+          <Field name="move_in_end" label="Al mese">
             <select
               name="move_in_end"
               required
-              value={lastMonth < month ? month : lastMonth}
+              value={lastMonth < rangeStart ? rangeStart : lastMonth}
               onChange={(event) => setLastMonth(event.currentTarget.value)}
             >
-              {options(month)}
+              {options(rangeStart)}
             </select>
           </Field>
         )}
       </div>
+      <details className="move-in-more">
+        <summary>Periodo o data precisa</summary>
+        <fieldset className="move-in-precision">
+          <legend>Come preferisci indicare l’ingresso?</legend>
+          <div className="move-in-modes">
+            {(
+              [
+                ["month", "Un mese"],
+                ["range", "Un periodo"],
+                ["day", "Un giorno preciso"],
+              ] as const
+            ).map(([value, label]) => (
+              <label key={value} className={mode === value ? "selected" : ""}>
+                <input
+                  type="radio"
+                  name="move_in_precision"
+                  value={value}
+                  checked={mode === value}
+                  onChange={() => setMode(value)}
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      </details>
     </fieldset>
   );
 }
@@ -1738,7 +1779,10 @@ function ProfilePage() {
                 hint="Indica il totale che puoi spendere ogni mese, comprese le spese obbligatorie."
               />
             </div>
-            <MoveInFields profile={p} />
+            <MoveInFields
+              profile={p}
+              onChange={() => setDraft((current) => current ?? {})}
+            />
           </fieldset>
           <fieldset className="form-section" disabled={a.busy}>
             <legend>Contratto e permanenza</legend>

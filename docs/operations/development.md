@@ -381,3 +381,24 @@ una città e `areas: []`. Le allowlist discovery aggiungono solo locations;
 nessuna estensione a dati personali. Evidenze private `.local/locations`.
 Suite con DB solo in sequenza, dev posseduto fermato e poi riavviato,
 con verifica del digest dei dati applicativi preesistenti.
+
+## Scorciatoie del mese di ingresso
+
+`MoveInFields` in `src/App.tsx` espone il mese con pulsanti per quello
+corrente e il prossimo, calcolati sul calendario UTC. La disclosure
+`Periodo o data precisa` contiene soltanto i radio di precisione; l’editor
+required resta fuori, visibile anche con disclosure chiusa. Radio checked
+resta incluso in FormData. Mese singolo, inizio/fine periodo e giorno
+preciso hanno stati indipendenti. Per un profilo nuovo il giorno è vuoto;
+per profili storici senza precisione il fallback resta day.
+
+I pulsanti type=button invocano onChange esplicita solo se cambia una
+scelta, perché non generano il change nativo del form. Aprire i dettagli
+non modifica preferenze. Preservare le chiavi del form durante foto,
+gruppo e pausa; opzioni mese includono valori salvati fuori dall’orizzonte
+proposto. Payload e fine mese restano quelli dell’API esistente.
+Regressioni experience/move-in e preview-browser/move-in; QA privata in
+`.local/move-in-simple`. Nessuna nuova dipendenza, migrazione o runtime.
+Quando main ed experience girano in parallelo, usare `--output` con
+directory indipendenti in `.local/`: il default main pulisce `test-results`
+e può cancellare le trace della sottodirectory experience durante la prova.

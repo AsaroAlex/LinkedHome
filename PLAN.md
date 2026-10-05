@@ -333,5 +333,21 @@ client precedenti conservati; bozze indipendenti da foto/gruppo/pausa.
 Build/typecheck,156 unitari,451 casi backend,35 casi UI,8 flussi preview e22
 browser principali verificati. Dati preesistenti conservati e dev HMR pronto.
 QA visiva responsive verificata; correzione dei titoli città a320px.
-Completare deploy e flusso pubblico reale sulla stessa istanza Railway autorizzata.
+Deploy web/cron SUCCESS sul commit1251361; flusso pubblico reale passato
+con salvataggio/reload, città secondaria e restrizione/ripristino delle zone.
+Screenshot320/390/1440px verificati. Esito conservato localmente dopo il deploy.
 Perimetro e limiti del catalogo in `docs/product/08-location-search.md`.
+
+## Scelta dell’ingresso più immediata — 2026-10-05
+
+Mese come editor principale, scorciatoie «Questo mese» e «Il prossimo mese»,
+periodo/data precisa in disclosure nativa. Campi attivi sempre visibili;
+date salvate preservate. Bozze mese/periodo/giorno indipendenti e callback
+esplicita per rendere dirty il form quando si usa una scorciatoia.
+Prossimo mese calcolato sul calendario; nessuna data precisa inventata per
+nuovi profili. Nessuna modifica a schema/API/criteri degli inviti.
+
+Build/typecheck,6 regressioni specifiche,39 UI,9 preview browser reali e22
+browser principali verificati. Layout mobile/tastiera e screenshot passati;
+dati preesistenti conservati e dev HMR pronto. Completare deploy e flusso
+pubblico sullo stesso sito Railway autorizzato.

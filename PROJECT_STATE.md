@@ -907,3 +907,45 @@ compatta con nome accessibile e target44px. Ultima build ripassata.
 Pubblicazione nella stessa istanza Railway già autorizzata sul commit finale.
 Dettagli in `docs/product/08-location-search.md`; evidenze private in
 `.local/locations`. Nessuna nuova dipendenza o cambio di runtime.
+
+Pubblicato `12513617101b3a38716996140a64e1e725834089`: web
+`0fc95033-e359-4da6-8540-78955ad85e0c` SUCCESS/online con una replica e
+zero crash; cron `ba7233d7-8ddc-4c06-bdb6-568195310090` SUCCESS/cronReady,
+DB online, nessun warning/critical, failure o pending. Migrazioni applicate.
+Health/config HTTPS200 confermano preview e mail disabled; JS
+`index-8usW4P2S.js` e CSS `index-C0OHqv4A.css` identici alla build locale.
+
+Browser pubblico reale: città primaria Milano/Navigli e secondaria
+Bologna/Saragozza salvate e conservate al reload; immobile di Bologna
+incluso, poi escluso scegliendo San Vitale, reincluso scegliendo tutta
+Bologna. Screenshot320/390/1440px e axe senza violazioni, zero overflow
+o errori console/rete nel flusso; mobile320 ispezionato. Scritture solo nel
+nuovo workspace sintetico isolato della verifica, nessuna email reale.
+Dev72642 HMR/watch pronto con health200. Evidenze `.local/locations`.
+Esito operativo conservato localmente per evitare deploy documentale;
+aggiornare `/profile?v=1251361` per vedere il selettore pubblicato.
+
+## Scelta dell’ingresso più immediata — 2026-10-05
+
+Feedback: reingegnerizzare il blocco ingresso per renderlo intuitivo.
+`MoveInFields` mostra due scorciatoie con mese/anno («Questo mese»,
+«Il prossimo mese») e il selettore per gli altri mesi. Periodo e data
+precisa passano a una disclosure inizialmente chiusa; l’editor attivo è
+sempre fuori, anche per date/periodi già salvati. Copy più breve.
+
+Ogni precisione conserva la propria bozza; cambi di budget non convertono
+giorni o periodi. Scorciatoie rendono dirty soltanto una modifica reale,
+apertura della disclosure non rende dirty. Prossimo mese di calendario,
+inclusi dicembre/gennaio; nuovo giorno preciso vuoto finché scelto.
+Valori salvati fuori dai36 mesi proposti restano disponibili. API,
+migrazioni e compatibilità invariate. Build/typecheck e format finali passati;
+review indipendente senza rilievi.6 regressioni UI specifiche passate;
+39 scenari experience verificati (38 nella suite e un caso ripassato
+per una trace cancellata dal runner parallelo, nessuna assertion fallita),
+9 preview browser reali e22 browser principali passati. Cartelle output
+isolate per evitare il conflitto documentato nelle istruzioni di sviluppo.
+Screenshot320/390/1440px ispezionati; axe, tastiera, overflow e console
+senza problemi. Dati applicativi preesistenti invariati:5 utenti,2 profili,
+1 immobile e digest delle preferenze/condizioni identico prima e dopo.
+Dev78870 con HMR/watch pronto, health200. Evidenze `.local/move-in-simple`.
+Pubblicazione nella stessa istanza Railway autorizzata sul commit finale.
