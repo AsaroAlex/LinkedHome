@@ -1103,7 +1103,7 @@ export async function buildApp(
     ).rows[0];
     requireThat(
       currentProperty(p),
-      "Pubblica o riconferma questo immobile per vedere i profili.",
+      "Pubblica questo immobile o conferma che è ancora disponibile per vedere i profili.",
       400,
     );
     p.photos = (await propertyPhotos(db, [p.id])).get(p.id) || [];

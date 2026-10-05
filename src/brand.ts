@@ -7,7 +7,7 @@ export const brand = {
   preparedLocales: ["en-GB"],
 } as const;
 export const statuses: Record<string, string> = {
-  unavailable: "Da riconfermare",
+  unavailable: "Disponibilità da confermare",
   draft: "Bozza privata",
   published: "Pubblicato",
   paused: "In pausa",

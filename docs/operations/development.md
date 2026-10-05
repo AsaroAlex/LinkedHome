@@ -432,3 +432,11 @@ Per modifiche di solo copy alla dashboard, usare build/typecheck e lo
 scenario experience del ruolo interessato sul listener3017 senza DB.
 Dev con HMR/watch può restare acceso; verificare poi il testo sulla
 istanza Railway effettiva, con output browser isolati in .local/.
+
+
+La conferma disponibilità usa la stessa POST properties/:id/status con
+status=published. Per un immobile già pubblicato aggiorna published_at
+senza cambiare revision o cancellare pending; la scadenza14 giorni degli
+inviti è indipendente. UI «Sì, è ancora disponibile» e spiegazione30 giorni.
+Non introdurre promemoria, verifica terza parte o rinnovo degli inviti
+nel copy. Evidenze della verifica mirata in .local/availability-copy.

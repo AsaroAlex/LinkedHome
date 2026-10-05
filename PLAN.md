@@ -408,3 +408,38 @@ e browser pubblico mobile/desktop dopo il normale aggiornamento Railway.
 Build/typecheck e scenario UI dashboard proprietario passati; review del
 testo positiva. Nessuna modifica a dati, API o layout; dev HMR/watch
 resta attivo. Evidenze private .local/dashboard-copy.
+
+Pubblicato ece91311d41ca581b26c3a59dc906d1c29771955: web
+493d21c2-3405-40a1-9010-8b16b13823ee SUCCESS/online; cron
+85953aba-3afd-4162-a8b2-69f8a3d710e5 SUCCESS/cronReady, DB online,
+nessun problema o pending. Asset pubblici identici alla build: JS
+index-DT_YZsaB.js, CSS index-KbvGKVlO.css; health/config HTTPS200.
+Browser pubblico reale passato: nuovo testo esatto, vecchia frase assente,
+CTA immobile invariata; screenshot320/390/1440, axe e overflow passati,
+console/rete senza errori. Solo nuovo workspace sintetico, nessuna email.
+Dev85322 HMR/watch attivo, health200. Esito conservato localmente per
+evitare deploy documentale; /dashboard?v=ece9131.
+
+
+## Conferma della casa ancora disponibile — 2026-10-05
+
+Feedback: «Che significa riconferma disponibilità?». Terminologia resa
+esplicita con domanda «La casa è ancora disponibile?» e pulsante
+«Sì, è ancora disponibile». Scheda immobile spiega la validità di30 giorni
+e la scadenza; scoperta, inviti, guida e messaggio API usano termini coerenti.
+Stato confermato conservato, scadenza indica «Conferma scaduta»; pausa
+spiegata come azione da usare quando si affitta la casa.
+
+Solo copy, nessuna modifica alla regola dei30 giorni o agli stati.
+Confermare un immobile già pubblicato aggiorna published_at, conserva
+revision e inviti pendenti; non proroga la scadenza propria degli inviti
+(14 giorni). Alla scadenza proprietà, scoperta/nuovi inviti/accettazione
+pendenti bloccati; proprietà salvata e chat accepted/closed conservate.
+Nessun reminder automatico, verifica indipendente o cancellazione da cron.
+Verifica mirata di build/typecheck, guida/dashboard e browser pubblico
+con invito pendente prima/dopo conferma, controllo mobile/desktop.
+
+Build/typecheck e due scenari UI (guida e dashboard proprietario) passati.
+Dev HMR/watch85322 rimasto attivo, health200. Modifiche solo ai testi;
+essuna migrazione o nuova dipendenza. Aggiornamento della stessa istanza
+Railway autorizzata. Evidenze private .local/availability-copy.

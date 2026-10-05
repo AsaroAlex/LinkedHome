@@ -20,7 +20,7 @@ const guides = {
   landlord: [
     [
       "Aggiungi il tuo immobile",
-      "Descrivi gli spazi, il costo complessivo e le date. Pubblica l’immobile e riconferma la disponibilità almeno ogni 30 giorni.",
+      "Descrivi gli spazi, il costo complessivo e le date. Pubblica l’immobile e conferma ogni 30 giorni che sia ancora disponibile da affittare.",
     ],
     [
       "Trova profili compatibili",

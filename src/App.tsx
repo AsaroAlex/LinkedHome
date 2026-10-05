@@ -2268,8 +2268,8 @@ function PropertiesPage() {
   return (
     <>
       <PageHeading eyebrow="OFFRO UN IMMOBILE" title="I tuoi immobili">
-        Pubblica dettagli chiari. Riconferma la disponibilità almeno ogni 30
-        giorni.
+        Gestisci le case che vuoi affittare. Ogni 30 giorni conferma che siano
+        ancora disponibili.
       </PageHeading>
       <ErrorBox text={l.error || a.error} />
       {l.error && (
@@ -2335,7 +2335,7 @@ function PropertiesPage() {
                         {p.city} · {p.area}
                       </span>
                       {p.status === "published" && !current ? (
-                        <span className="badge expired">Da riconfermare</span>
+                        <span className="badge expired">Da confermare</span>
                       ) : (
                         <Badge status={p.status} />
                       )}
@@ -2365,12 +2365,12 @@ function PropertiesPage() {
                         <strong>
                           {current
                             ? "Disponibilità confermata"
-                            : "Disponibilità da riconfermare"}
+                            : "Conferma scaduta"}
                         </strong>
                         <p>
                           {current
-                            ? `Riconferma entro il ${dateLabel(new Date(expiresAt).toISOString())} per continuare a scoprire profili e inviare inviti.`
-                            : "La scoperta e i nuovi inviti sono sospesi. Riconferma se l’immobile è ancora disponibile."}
+                            ? `La casa è ancora disponibile? Confermalo entro il ${dateLabel(new Date(expiresAt).toISOString())}. La conferma vale 30 giorni e ti permette di scoprire profili e inviare inviti.`
+                            : "La casa è ancora disponibile? Confermalo per tornare a scoprire profili e inviare inviti. La conferma vale 30 giorni."}
                         </p>
                       </div>
                     ) : (
@@ -2387,9 +2387,9 @@ function PropertiesPage() {
                       </p>
                     )}
                     <p className="field-hint">
-                      Mettere in pausa annulla gli inviti pendenti: non potranno
-                      essere riaperti. Riconfermare senza modifiche li mantiene
-                      validi.
+                      Quando affitti la casa, mettila in pausa: fermerai i nuovi
+                      inviti e annullerai quelli in attesa. Le conversazioni già
+                      aperte restano disponibili.
                     </p>
                     <div className="actions wrap">
                       <button
@@ -2421,10 +2421,10 @@ function PropertiesPage() {
                               });
                               setPublishedProperty(p.id);
                               l.reload();
-                            }, "Disponibilità riconfermata. Gli inviti pendenti restano validi.")
+                            }, "Disponibilità confermata per 30 giorni. Gli inviti in attesa non vengono annullati.")
                           }
                         >
-                          Riconferma disponibilità
+                          Sì, è ancora disponibile
                         </button>
                       )}
                       {current && p.authority_attested && (
@@ -2511,18 +2511,18 @@ function DiscoverPage() {
         <Empty
           title={
             publishedProperties.length
-              ? "La disponibilità va riconfermata."
+              ? "La casa è ancora disponibile?"
               : "Prima, raccontaci il tuo immobile"
           }
         >
           <p>
             {publishedProperties.length
-              ? "Per tornare a scoprire profili, apri i tuoi immobili e scegli Riconferma disponibilità per quelli ancora disponibili. La conferma dura 30 giorni."
-              : "Serve un immobile pubblicato e riconfermato negli ultimi 30 giorni."}
+              ? "Apri I tuoi immobili e scegli «Sì, è ancora disponibile» per le case che puoi ancora affittare. La conferma vale 30 giorni."
+              : "Serve un immobile pubblicato con la disponibilità confermata negli ultimi 30 giorni."}
           </p>
           <Link to="/properties" className="button">
             {publishedProperties.length
-              ? "Riconferma disponibilità"
+              ? "Conferma le case disponibili"
               : "Vai agli immobili"}
           </Link>
         </Empty>
@@ -2809,8 +2809,8 @@ function InvitationsPage({ user }: { user: User }) {
                 )}
               {i.status === "unavailable" && (
                 <p className="disclosure">
-                  Il proprietario deve riconfermare la disponibilità prima che
-                  tu possa accettare.
+                  Il proprietario deve confermare che la casa è ancora
+                  disponibile prima che tu possa accettare.
                 </p>
               )}
               {i.other_name && (
