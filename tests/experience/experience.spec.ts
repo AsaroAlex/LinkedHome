@@ -41,6 +41,7 @@ async function fixtures(page: Page, currentUser: typeof user | null = null) {
       "/api/properties": { properties: [] },
       "/api/invitations": { invitations: [] },
       "/api/verification": { email_verified: false, checks: [] },
+      "/api/income/dossier": { dossier: null, shares: [] },
       "/api/income": {
         provider_available: false,
         demo_available: false,

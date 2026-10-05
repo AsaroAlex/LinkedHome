@@ -486,3 +486,31 @@ volontaria della chat. Evitare promesse assolute di riservatezza per
 ogni informazione: preferenze sono visibili in discovery e alcuni
 dettagli ai contatti accettati. Per sola copy riusare build, scenario
 homepage e prova pubblica mobile; nessuna suite DB necessaria.
+
+
+## Redditi e documenti per l’affitto
+
+La migrazione017 introduce il dossier manuale, separato dal simulatore004:
+[contratto](../product/12-income-dossier.md). Roster finanziario autonomo
+rispetto a foto/occupanti; importi in centesimi, null distinto da zero,
+garante escluso dal totale. I documenti riusano lo storage privato esistente
+con namespace income-documents; cleanup queue e lock advisory sul solo UUID
+coerenti per PDF/WebP. pdf-lib è dipendenza server necessaria alla validazione
+strutturale in Worker limitati; immagini ricodificate da sharp.
+
+Il controllo è del destinatario dopo download autorizzato. Il server
+ricontrolla accesso dopo storage.get e lega download/controllo alla stessa
+condivisione e revisione. API del simulatore e dati precedenti restano intatti;
+UI di esempio in disclosure solo local/preview. Suite DB seriali dopo stop
+del solo supervisor posseduto, fixture UX su3017 e snapshot dei dati prima/dopo.
+Evidenze private .local/income-dossier; nessun cambio SMTP/runtime/storage.
+
+
+La UI redditi viene importata dinamicamente da App solo nelle pagine private
+interessate. Il loader mantiene stato accessibile e recupero con ricarica pagina;
+non includere gli schemi Zod del dossier nel bundle iniziale della homepage.
+Il budget browser misura transferBytes non compressi nel listener locale.
+I download Chromium nativi possono bypassare page.route/BrowserContext.route
+e non emettere page.response: nel browser reale usare evento download,
+file ottenuto e GET browser separato per gli header; nelle fixture UX usare
+un allegato sintetico da listener temporaneo locale con teardown.

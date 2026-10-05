@@ -676,3 +676,60 @@ conservata. Build/typecheck e scenario guida/FAQ/registrazione con Axe e
 overflow a320/390/1440 passati; review indipendente positiva. Solo copy,
 nessun cambio comportamento o CSS. Dev102521 HMR/watch pronto.
 Deploy Railway in corso; evidenze private .local/guide-copy.
+
+
+Pubblicato69c8d415910adde59d296c866d79680fcc115b9f: web
+6f1b4e52-33b4-4bd1-a719-386d656f550d SUCCESS/online; cron
+6ef92f51-8a18-4f9b-b8ae-420cc511176d SUCCESS/cronReady, DB online,
+nessuna issue/pending. Health/config HTTPS200; JSindex-DBc3sGZ3.js e
+CSSindex-CKjz82Qw.css identici alla build locale. Browser pubblico
+readonly1/1 passato a320/390/1440: nuovo terzo passo, coda rimossa
+dalla guida, switch ruoli/CTA e copy precedenti coerenti. FAQ corretta,
+Axe/overflow/console/rete puliti, nessuna scrittura HTTP. Screenshot320
+ispezionato. Dev102521 HMR/watch pronto; evidenze .local/guide-copy.
+Esito locale senza deploy documentale; homepage /?v=69c8d41.
+
+
+## Redditi per uno o più affittuari — 2026-10-05
+
+Dossier manuale separato dal simulatore: scheda e netto medio per ogni
+affittuario, fonte/periodo, null distinto da zero e garante separato.
+Prove private PDF/JPG/PNG/WebP, tre per persona da5MB, consenso esplicito
+per riepilogo/documenti solo dopo invito accepted. Controllo del proprietario
+dopo download autorizzato, con importo/periodo letti e metodo server fisso;
+nessuna verifica automatica, score o garanzia di pagamento. Confronto
+percentuale solo su totale completo positivo e costo dell’offerta accettata.
+
+Modifiche incrementano revisione e revocano accessi precedenti. Protezioni
+per revoca/blocco/sospensione/chiusura/workspace, ricontrollo autorizzazione
+dopo storage.get, idempotenza upload e coda durevole cleanup, export proprio
+e cancellazione account. Migrazione017 additiva; provider indipendente503
+e vecchie API004 invariati. Parser PDF necessario pdf-lib isolato inWorker
+limitati; immagini sharp senza metadati. UI mobile e vecchio simulatore
+isolato nella disclosure di esempio solo local/preview.
+
+Contratto docs/product/12-income-dossier.md; nuove unit/API, fixture UX e
+browser reale in verifica. Review indipendente completata; prove private
+.local/income-dossier. Dev posseduto fermato per suite DB seriali; snapshot
+prima salvato, dati applicativi senza reset. Nessun cambio runtime/SMTP/bucket.
+
+
+Verifica locale finale: build/typecheck PASS; 914 unit/API coperti da
+suite completa più rerun mirato25/25 dopo aggiornamento fixture PDF valide.
+Tutti22 scenari main,54 UX e14 preview coperti, con rerun dei casi
+interessati dalle correzioni fixture e caricamento dinamico. PDF autenticamente
+generati e PNG, consenso/revisione, download/controllo, revoca e blocco
+provati nel browser reale; Axe/overflow a320/390/1440 passati.
+
+Il controllo performance ha rilevato 558.939 byte caricati inizialmente;
+modulo redditi ora dinamico con caricamento accessibile e recupero errore.
+Homepage442.816 byte, LCP568ms desktop/2964ms mobile emulato, CLS0,
+entro i limiti locali; misure non di campo. Build finale index-DMWkXP8I.js,
+IncomeDossier-DCKcLDaP.js, CSSindex-CKjz82Qw/IncomeDossier-Dt3SNdT6.
+Review indipendente privacy/storage/UI positiva. Deploy Railway successivo
+con stesso runtime preview/posta disabilitata; prove pubbliche ancora da eseguire.
+
+
+Dev HMR/watch119881 riavviato: API3001/frontend3000 HTTP200. Snapshot
+post-suite uguale al precedente (5 utenti,2 profili,1 immobile); nessun
+dossier creato nel database applicativo, nessun dato preesistente modificato.

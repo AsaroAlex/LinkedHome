@@ -298,8 +298,8 @@ export function IncomeWorkspace() {
           <span className="eyebrow">DISPONIBILITÀ DEL SERVIZIO</span>
           <h3>Verifica reale non disponibile</h3>
           <p>
-            La verifica del reddito reale non è ancora disponibile. Non puoi
-            caricare documenti finanziari.
+            Questo simulatore genera solo dati di esempio. Per dichiarare le
+            entrate e caricare le prove usa la sezione «Redditi per l’affitto».
           </p>
           <button className="button secondary full" disabled>
             Verifica reale non disponibile

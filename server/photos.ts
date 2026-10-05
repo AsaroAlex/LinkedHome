@@ -100,7 +100,7 @@ export function readPhotoConfiguration(
 }
 const validKey = (key: string) => {
   if (
-    !/^(?:property|profile|profile-member)-photos\/[a-f0-9-]{36}\.webp$/.test(
+    !/^(?:(?:property|profile|profile-member)-photos\/[a-f0-9-]{36}\.webp|income-documents\/[a-f0-9-]{36}\.(?:pdf|webp))$/.test(
       key,
     )
   )
@@ -160,7 +160,10 @@ export function createPhotoStorage(
           Bucket: config.bucket,
           Key: validKey(key),
           Body: body,
-          ContentType: "image/webp",
+          ContentType: key.endsWith(".pdf") ? "application/pdf" : "image/webp",
+          ...(key.startsWith("income-documents/")
+            ? { ContentDisposition: "attachment" }
+            : {}),
           CacheControl: "private, no-store",
         }),
       );
@@ -291,14 +294,14 @@ export async function cleanupPhotoObjects(
     try {
       validKey(object_key);
       const deleted = await tx(db, async (c) => {
-        const photoId = path.basename(object_key, ".webp");
+        const photoId = path.basename(object_key, path.extname(object_key));
         await c.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [
           photoId,
         ]);
         // A successful retry may have reused an object previously queued after rollback.
         const referenced = (
           await c.query(
-            "SELECT 1 FROM property_photos WHERE object_key=$1 UNION ALL SELECT 1 FROM profile_photos WHERE object_key=$1 UNION ALL SELECT 1 FROM profile_member_photos WHERE object_key=$1",
+            "SELECT 1 FROM property_photos WHERE object_key=$1 UNION ALL SELECT 1 FROM profile_photos WHERE object_key=$1 UNION ALL SELECT 1 FROM profile_member_photos WHERE object_key=$1 UNION ALL SELECT 1 FROM income_documents WHERE object_key=$1",
             [object_key],
           )
         ).rowCount;

@@ -17,6 +17,11 @@ A useful demo outcome is an accepted invitation and consensual conversation, plu
 
 ## Optional synthetic income path
 
-Use a tenant/both account. In Verifiche, expand «Prova il percorso con dati sintetici» and generate a completed example. No input collects real amounts/documents. Review the issuer, period, dates, net-income band and caveat. On a pending/accepted invitation expand «Reddito: scegli cosa condividere»; check the recipient and exact preview, tick the initially empty checkbox and share. In the landlord account open «Informazioni sul reddito condivise» for that invitation. Another invitation, even for the same owner, has no access without its own choice.
+Use a tenant/both account. In Verifiche, expand «Riepiloghi di esempio», then «Prova con dati di esempio» and generate a completed example. This legacy simulator takes no amounts/documents; it remains separate from the manual dossier. Review the issuer, period, dates, net-income band and caveat. On a pending/accepted invitation expand «Reddito: scegli cosa condividere»; check the recipient and exact preview, tick the initially empty checkbox and share. In the landlord account open «Informazioni sul reddito condivise» for that invitation. Another invitation, even for the same owner, has no access without its own choice.
 
 Revoke the recipient access or contest/withdraw the example. Refresh the landlord view: the summary is unavailable. Renewing an example revokes old grants and requires new choices. Explore in-progress, insufficient, technical-error and expired examples; contact/visibility still work without them. Real issuance is disabled and returns 503. The demo records a dispute without a staffed provider review. Copies already obtained cannot be recalled.
+
+
+## Manual income document path
+
+Use only generated people, amounts and PDF/images on the current test instance. Open «Redditi per l’affitto», add one entry per tenant, optionally a separate guarantor, choose net monthly amounts and a past period, confirm permission and save. Add private proof files to saved entries. After accepting an invitation, explicitly consent to sharing both the summary and documents with that landlord. In the landlord session, download a proof, record observed net amount and period and confirm the manual comparison. Check that the guarantor never enters the tenant total and that partial amounts suppress the rent percentage. Change a saved amount or document, revoke or block: the recipient loses further file access and prior reviews cannot carry into a newly consented revision.

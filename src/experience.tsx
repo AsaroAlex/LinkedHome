@@ -121,7 +121,7 @@ export function ProductFAQ() {
           ],
           [
             "Come funziona la verifica del reddito?",
-            "L’inquilino prepara un riepilogo del reddito, guarda l’anteprima e sceglie con quale proprietario condividerlo, da un invito o da una conversazione. Il proprietario vede la fascia di entrate al mese, da dove arrivano, il periodo considerato e fino a quando il riepilogo è valido. Può confrontare queste informazioni con l’affitto. La verifica del reddito reale non è ancora disponibile.",
+            "Ogni affittuario indica il netto medio al mese e carica le prove delle entrate. L’eventuale garante è indicato separatamente. Dopo aver accettato un invito, scegli se condividere riepilogo e documenti con quel proprietario. Il proprietario scarica le prove e registra il controllo di importi e periodo. È un controllo manuale: il caricamento da solo non verifica il reddito e non garantisce pagamenti futuri.",
           ],
           [
             "Posso firmare il contratto o pagare qui?",

@@ -1,0 +1,362 @@
+.income-dossier-workspace {
+  margin-top: 32px;
+  min-width: 0;
+}
+.income-dossier-workspace > h2 {
+  font-size: 1.8rem;
+  margin-bottom: 14px;
+}
+.income-dossier-form {
+  min-width: 0;
+}
+.income-dossier-roster,
+.income-document-controls,
+.income-review-fields {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  min-width: 0;
+}
+.income-dossier-roster > legend {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 8px 0 18px;
+  padding: 0;
+}
+.income-dossier-person {
+  min-width: 0;
+  padding: 20px;
+  margin: 0 0 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.income-person-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.income-person-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.income-person-header h3 small {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.income-person-header .text-link {
+  padding: 6px 0;
+  font-size: 0.8rem;
+}
+.income-person-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 18px;
+}
+.income-dossier-person > .field-hint {
+  font-size: 0.82rem;
+  margin: 0 0 12px;
+}
+.income-dossier-person .input-hint {
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+.income-dossier-person input:disabled,
+.income-dossier-person select:disabled {
+  background: var(--surface-muted);
+}
+.income-dossier-documents {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.income-dossier-documents h4,
+.income-dossier-review-form h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+.income-dossier-documents > .field-hint {
+  font-size: 0.78rem;
+}
+.income-dossier-document {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  min-width: 0;
+}
+.income-dossier-document > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  min-width: 0;
+}
+.income-dossier-document strong {
+  font-size: 0.83rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.income-dossier-document .text-link {
+  font-size: 0.78rem;
+  min-height: 44px;
+}
+.income-document-controls {
+  margin-top: 16px;
+}
+.income-document-controls input[type="file"] {
+  max-width: 100%;
+  padding: 8px;
+  font-size: 0.78rem;
+}
+.income-document-selection p {
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+.income-document-selection .button,
+.income-dossier-review-form .button {
+  min-height: 48px;
+  font-size: 0.85rem;
+}
+.income-dossier-feedback {
+  padding: 13px 15px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 14px 0;
+  background: var(--surface-soft);
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+.income-dossier-feedback:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.income-dossier-error {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+.income-guarantor-choice {
+  margin: 22px 0;
+}
+.income-dossier-guarantor {
+  background: var(--surface-muted);
+}
+.income-dossier-totals {
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  margin: 18px 0;
+  min-width: 0;
+}
+.income-dossier-total-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.income-dossier-total-value {
+  display: block;
+  font-size: 1.8rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.income-dossier-total-value small {
+  font-size: 0.8rem;
+  font-weight: 400;
+  white-space: normal;
+}
+.income-dossier-coverage {
+  font-size: 0.82rem;
+  margin: 10px 0 6px;
+}
+.income-dossier-totals > .field-hint {
+  font-size: 0.78rem;
+  margin-bottom: 0;
+}
+.income-dossier-comparison {
+  padding-top: 14px;
+  margin-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.income-dossier-comparison p {
+  font-size: 0.84rem;
+  margin-bottom: 6px;
+}
+.income-dossier-draft-notice {
+  padding: 14px;
+  border-radius: 8px;
+  background: var(--warning-soft);
+  color: var(--warning);
+  font-size: 0.85rem;
+}
+.income-people-permission {
+  margin: 18px 0;
+}
+.income-dossier-workspace .check-label,
+.income-dossier-invitation .check-label {
+  align-items: flex-start;
+  font-size: 0.86rem;
+  min-height: 44px;
+}
+.income-dossier-workspace .check-label input,
+.income-dossier-invitation .check-label input {
+  flex-shrink: 0;
+  margin-top: 4px;
+  width: 18px;
+  height: 18px;
+}
+.income-dossier-save-hint {
+  margin: 16px 0 0;
+  font-size: 0.82rem;
+}
+.income-dossier-shares {
+  margin-top: 24px;
+}
+.income-dossier-shares h3 {
+  font-size: 1.1rem;
+}
+.income-dossier-shares ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.income-dossier-shares li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.income-dossier-shares li > div {
+  min-width: 0;
+  flex: 1;
+}
+.income-dossier-shares li p {
+  margin: 5px 0 0;
+  font-size: 0.82rem;
+}
+.income-dossier-shares > .text-link {
+  margin-top: 16px;
+}
+.income-dossier-invitation {
+  margin: 20px 0;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.income-dossier-invitation > summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 16px;
+  min-height: 48px;
+}
+.income-dossier-invitation-content {
+  min-width: 0;
+  padding: 4px 16px 16px;
+}
+.income-dossier-invitation-content > .text-link {
+  margin-bottom: 12px;
+}
+.income-dossier-person-status {
+  font-size: 0.75rem;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: var(--surface-muted);
+  line-height: 1.4;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.income-person-amount {
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+.income-dossier-review-form {
+  padding: 16px;
+  margin-top: 14px;
+  border-radius: 8px;
+  background: var(--surface-muted);
+  min-width: 0;
+}
+.income-dossier-review-form .check-label {
+  margin-bottom: 18px;
+}
+.income-dossier-review-form > .field-hint {
+  margin: 14px 0 0;
+  font-size: 0.78rem;
+}
+.income-dossier-review-result {
+  font-size: 0.83rem;
+  line-height: 1.5;
+  margin: 14px 0;
+}
+.income-dossier-consent {
+  padding: 16px;
+  background: var(--surface-muted);
+  border-radius: 10px;
+}
+.income-dossier-consent p {
+  font-size: 0.83rem;
+}
+.income-dossier-consent .check-label {
+  margin: 14px 0;
+}
+.income-dossier-consent .button {
+  margin-top: 6px;
+}
+.income-dossier-shared-note {
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+@media (max-width: 700px) {
+  .income-person-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .income-dossier-person {
+    padding: 16px;
+  }
+  .income-dossier-totals {
+    padding: 16px;
+  }
+  .income-dossier-total-value {
+    font-size: 1.5rem;
+  }
+  .income-dossier-review-form {
+    padding: 12px;
+  }
+  .income-dossier-invitation-content {
+    padding: 4px 12px 12px;
+  }
+  .income-dossier-invitation > summary {
+    padding: 14px 12px;
+  }
+  .income-dossier-workspace .actions .button,
+  .income-document-selection .button,
+  .income-dossier-consent .button,
+  .income-dossier-review-form .button {
+    width: 100%;
+  }
+  .income-dossier-shares li {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .income-dossier-consent {
+    padding: 12px;
+  }
+}

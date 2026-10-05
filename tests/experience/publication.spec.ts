@@ -33,6 +33,7 @@ async function fixtures(page: Page, environment: Environment) {
     "/api/properties": { properties: [] },
     "/api/blocks": { blocks: [] },
     "/api/verification": { email_verified: false, checks: [] },
+    "/api/income/dossier": { dossier: null, shares: [] },
     "/api/income": {
       provider_available: false,
       demo_available: environment === "local" || environment === "preview",
@@ -116,7 +117,10 @@ for (const environment of [
       .getByText("Come funziona la verifica del reddito?", { exact: true })
       .click();
     await expect(page.getByRole("main")).toContainText(
-      "La verifica del reddito reale non è ancora disponibile.",
+      "Il proprietario scarica le prove e registra il controllo di importi e periodo.",
+    );
+    await expect(page.getByRole("main")).toContainText(
+      "È un controllo manuale: il caricamento da solo non verifica il reddito e non garantisce pagamenti futuri.",
     );
     await expect(page.locator("body")).not.toContainText(legacyPresentation);
     await expect(page.locator('meta[name="description"]')).not.toHaveAttribute(
@@ -189,61 +193,91 @@ test("test access stays explicit while role access and the private workspace rem
   expect(fixture.unexpected).toEqual([]);
 });
 
-test("production signup sends the chosen role and credentials and requires email confirmation", async ({
-  page,
-}) => {
-  const fixture = await fixtures(page, "production");
-  await page.goto("/register?role=landlord");
-  await expect(
-    page.getByRole("radio", { name: /Offro un immobile/ }),
-  ).toBeChecked();
-  await expect(
-    page.getByRole("heading", { name: "Scegli come provare il sito" }),
-  ).toHaveCount(0);
-  await page.getByLabel("Come vuoi essere chiamato?").fill("Ada");
-  await page.getByLabel("Email", { exact: true }).fill(account.email);
-  await page
-    .getByLabel("Password", { exact: true })
-    .fill("Publication-test-passphrase");
-  await page.getByRole("radio", { name: /Entrambe le cose/ }).check();
-  await page.getByRole("button", { name: "Crea account" }).click();
-  await expect(
-    page.getByRole("heading", { name: "Ciao, Ada.", exact: true }),
-  ).toBeVisible();
-  expect(fixture.submissions).toEqual([
-    {
-      path: "/api/auth/register",
-      body: {
-        display_name: "Ada",
-        email: account.email,
-        password: "Publication-test-passphrase",
-        role: "both",
+for (const environment of ["staging", "production"] as const) {
+  test(`${environment} signup sends the chosen role and credentials and requires email confirmation`, async ({
+    page,
+  }) => {
+    const fixture = await fixtures(page, environment);
+    await page.goto("/register?role=landlord");
+    await expect(
+      page.getByRole("radio", { name: /Offro un immobile/ }),
+    ).toBeChecked();
+    await expect(
+      page.getByRole("heading", { name: "Scegli come provare il sito" }),
+    ).toHaveCount(0);
+    await page.getByLabel("Come vuoi essere chiamato?").fill("Ada");
+    await page.getByLabel("Email", { exact: true }).fill(account.email);
+    await page
+      .getByLabel("Password", { exact: true })
+      .fill("Publication-test-passphrase");
+    await page.getByRole("radio", { name: /Entrambe le cose/ }).check();
+    await page.getByRole("button", { name: "Crea account" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Ciao, Ada.", exact: true }),
+    ).toBeVisible();
+    expect(fixture.submissions).toEqual([
+      {
+        path: "/api/auth/register",
+        body: {
+          display_name: "Ada",
+          email: account.email,
+          password: "Publication-test-passphrase",
+          role: "both",
+        },
       },
-    },
-  ]);
-  await expect(page.locator(".environment")).toHaveCount(0);
-  await expect(page.getByRole("main")).toContainText(
-    "Apri il link di conferma dalla tua casella email.",
-  );
-  await page.getByRole("link", { name: "Verifiche", exact: true }).click();
-  await expect(
-    page.getByRole("heading", { name: "Email da confermare", exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("button", {
-      name: "Verifica reale non disponibile",
+    ]);
+    await expect(page.locator(".environment")).toHaveCount(
+      environment === "staging" ? 1 : 0,
+    );
+    if (environment === "staging") {
+      await expect(page.locator(".environment")).toHaveText(
+        "Ambiente di test · non usare dati o documenti reali",
+      );
+    }
+    await expect(page.getByRole("main")).toContainText(
+      "Apri il link di conferma dalla tua casella email.",
+    );
+    await page.getByRole("link", { name: "Verifiche", exact: true }).click();
+    await expect(
+      page.getByRole("heading", { name: "Email da confermare", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Email e redditi", exact: true }),
+    ).toBeVisible();
+    const workspace = page.getByRole("region", {
+      name: "Redditi per l’affitto",
       exact: true,
-    }),
-  ).toBeDisabled();
-  await expect(page.getByRole("main")).toContainText(
-    "Nessuna verifica d’identità disponibile",
-  );
-  await expect(
-    page.getByText("Prova con dati di esempio", { exact: true }),
-  ).toHaveCount(0);
-  await expect(page.locator("body")).not.toContainText(legacyPresentation);
-  expect(fixture.unexpected).toEqual([]);
-});
+    });
+    await expect(workspace).toBeVisible();
+    await expect(
+      workspace.getByLabel("Nome o etichetta", { exact: true }),
+    ).toHaveValue("Tu");
+    await expect(
+      workspace.getByRole("button", { name: "Salva redditi", exact: true }),
+    ).toBeEnabled();
+    await expect(page.getByRole("main")).toContainText(
+      "Nessuna verifica d’identità disponibile",
+    );
+    await expect(
+      page.getByText("Prova con dati di esempio", { exact: true }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByText("Riepiloghi di esempio", { exact: true }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByRole("region", {
+        name: "Il reddito, solo quando scegli tu.",
+        exact: true,
+      }),
+    ).toHaveCount(0);
+    await expect(
+      environment === "production"
+        ? page.locator("body")
+        : page.getByRole("main"),
+    ).not.toContainText(legacyPresentation);
+    expect(fixture.unexpected).toEqual([]);
+  });
+}
 
 test("financial examples keep their sample label and cannot be presented as a real verification", async ({
   page,
@@ -272,27 +306,36 @@ test("financial examples keep their sample label and cannot be presented as a re
     shares: [],
   };
   await page.goto("/verification");
+  await page.getByText("Riepiloghi di esempio", { exact: true }).click();
+  const workspace = page.getByRole("region", {
+    name: "Il reddito, solo quando scegli tu.",
+    exact: true,
+  });
   await expect(
-    page.getByText("Dati di esempio · nessun reddito reale verificato", {
+    workspace.getByText("Dati di esempio · nessun reddito reale verificato", {
       exact: true,
     }),
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Riepilogo del reddito di esempio" }),
+    workspace.getByRole("heading", {
+      name: "Riepilogo del reddito di esempio",
+    }),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", {
+    workspace.getByRole("button", {
       name: "Verifica reale non disponibile",
       exact: true,
     }),
   ).toBeDisabled();
-  await page.getByText("Prova con dati di esempio", { exact: true }).click();
+  await workspace
+    .getByText("Prova con dati di esempio", { exact: true })
+    .click();
   await expect(
-    page.getByText("Solo esempi generati: non inserire il tuo reddito.", {
+    workspace.getByText("Solo esempi generati: non inserire il tuo reddito.", {
       exact: true,
     }),
   ).toBeVisible();
-  await expect(page.getByRole("main")).toContainText(
+  await expect(workspace).toContainText(
     "Non hai condiviso il riepilogo con nessuno.",
   );
   expect(fixture.submissions).toEqual([]);

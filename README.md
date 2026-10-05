@@ -45,7 +45,7 @@ npm start
 
 Bootstrap creates an ignored `.local/` directory with a random PostgreSQL password, migrations and synthetic accounts. Credentials are in `.local/demo-accounts.json` with mode0600; they are never printed or committed. The database binds loopback on port55432 and the application on port3000. `npm start` serves the compiled app; `npm run dev` uses Vite on3000 and API on loopback3001 through Vite's proxy. Stop with Ctrl+C. Restarting preserves local data. Never remove `.local/postgres` to fix a startup error.
 
-Email messages are local files under `.local/mail/`, not deliveries to real addresses. Read the intended synthetic account's message locally to use its confirmation/reset link. There is no HTTP mailbox endpoint. Real identity/income providers, document uploads, payments and guarantees are unavailable. The optional income flow uses server-generated examples explicitly labelled synthetic, with private preview and invitation-specific sharing.
+Email messages are local files under `.local/mail/`, not deliveries to real addresses. Read the intended synthetic account's message locally to use its confirmation/reset link. There is no HTTP mailbox endpoint. Independent identity/income providers, payments and guarantees are unavailable. The separate [manual income workflow](docs/product/12-income-dossier.md) lets tenants prepare declared income and private supporting documents, then share them with the landlord of an accepted invitation for a recorded document comparison. Use only generated data and documents in the current test environment. The earlier server-generated income examples remain separate and explicitly synthetic.
 
 ## Prepare a hosted beta
 
@@ -53,7 +53,7 @@ The recommended combination is **Render Frankfurt + Brevo SMTP**. The [provider 
 
 [Deployment instructions](docs/operations/deployment.md) cover the staging [Render Blueprint](render.yaml), non-root [Docker image](Dockerfile) and portable [Compose/Caddy configuration](deploy/compose.yaml). No services have been provisioned. Staging/production startup requires HTTPS `APP_ORIGIN`, external `DATABASE_URL` and valid SMTP settings. There is no automatic demo seeding or migration of external databases at web startup. After configuring secrets, run migrations explicitly, then `npm run deploy:check`; it checks database/schema and SMTP authentication without sending email. `npm run deploy:check -- --config-only` validates configuration only.
 
-SMTP uses verified TLS on ports465/587 with bounded connection deadlines. The UI displays mailbox instructions when SMTP is configured and local-file instructions in the default demo. Verify actual inbox delivery, DNS, backups/restore, maintenance and trusted ingress in the target environment before real-user use. Identity/income checks and payment processing remain unavailable.
+SMTP uses verified TLS on ports465/587 with bounded connection deadlines. The UI displays mailbox instructions when SMTP is configured and local-file instructions in the default demo. Verify actual inbox delivery, DNS, backups/restore, maintenance and trusted ingress in the target environment before real-user use. Independent identity/income checks and payment processing remain unavailable; a landlord's manual document comparison is a separate workflow.
 
 ## Validate
 
@@ -84,6 +84,7 @@ The preceding combined-MVP integration passed frozen install, bootstrap, build/t
 - Explained compatibility on city, total monthly cost, dates, duration and occupancy; pseudonymous discovery with stable cursor pagination.
 - Revision-bound invitations, immutable offered property snapshot, mutual conversations and paginated history.
 - Blocking, scoped reporting, moderation/audit, suspension/appeal/restore, own-data export/deletion and minimal demo activity counts.
+- Private income declarations for each tenant, a separate optional guarantor, document uploads and explicit recipient consent after an accepted invitation; the chosen landlord can download evidence and record the amount/period read. This manual comparison does not certify identity, authenticity or future payment.
 - Optional private reusable income examples: explicit consent for the exact preview and recipient, provenance/period/expiry, revocation, dispute, renewal without automatic sharing, and an unavailable real-provider contract.
 - Honest identity verification foundation, with no fake live verification.
 
@@ -97,10 +98,22 @@ Set `DATABASE_URL` through your local environment without committing it. Bootstr
 
 [Execution ledger](PLAN.md) · [Italian handoff](PROJECT_STATE.md) · [Product](docs/product/01-product-thesis.md) · [Economics and proposed paid test](docs/research/12-sustainable-economics.md) · [UX](docs/design/01-ux.md) · [Architecture](docs/adr/0001-modular-monolith.md) · [Demo walkthrough](docs/operations/demo.md) · [Security/operations](docs/operations/security.md) · [Release gates](docs/operations/release-checklist.md) · [Independent reviews](docs/reviews/README.md)
 
-## Optional income attestation extension
+## Optional income workflows
 
-Open **Verifiche → Prova il percorso con dati sintetici** as a tenant/both account. Create a generated example, review it, then open **Inviti e messaggi → Reddito: scegli cosa condividere** on a pending/accepted invitation. The checkbox starts unchecked. Sharing is bound to the exact attestation preview and that invitation; the landlord can read only its consented summary. Revocation, dispute, expiry, replacement, block/suspension and terminal invitation states remove future access. New examples never inherit old sharing choices.
+### Declared income and manual document comparison
 
-No income or verification badge is exposed in discovery; acceptance works without an attestation. The demo supports employment, self-employment and variable income examples and recoverable states. It accepts no income amount, financial file, banking credential or arbitrary provider result from the client. `POST /api/income/checks` returns 503; real issuance remains unavailable. Adding a provider needs a reviewed adapter, source/method semantics and a separate migration because current observations are constrained to synthetic data.
+Open **Verifiche → Redditi per l’affitto** as a tenant/both account. Add one income card for every tenant contributing to the rent, with source, average monthly net amount and the period it represents. An unknown amount is distinct from zero. An optional guarantor has a separate card and never enters the tenant total. Coverage describes the people entered in this dossier, rather than automatically certifying that all property occupants are included.
+
+Save privately and attach up to three supporting documents per person: PDF or JPG/PNG/WebP, up to 5 MB each. PDF files undergo bounded structural parsing, with a 50-page limit and rejection of encryption and identified active document features; images are re-encoded without embedded metadata. This is not an authenticity or malware certification. Documents are download-only attachments through authenticated routes; no original filenames or storage keys enter recipient responses.
+
+After accepting an invitation, inspect the exact dossier and explicitly consent to sharing both its summary and documents with that invitation's landlord. That landlord must download the selected document before recording the amount and period read and confirming the manual comparison. The display distinguishes declared amounts, uploaded documents and a document checked by this landlord. It provides no person score, automatic eligibility decision, identity verification or payment guarantee. A rent/income percentage is shown only for a complete, positive tenant total, using the accepted offer's rent.
+
+Changes to people, amounts or documents advance the dossier revision and interrupt existing shares. Revocation, a closed invitation, blocking or suspension prevent further recipient access; a new share requires new consent and a new review. Downloaded copies already held by the recipient cannot be recalled. Own-data export includes the holder's dossier; account/person/document deletion queues private document objects for storage cleanup. [The current data and API contract](docs/product/12-income-dossier.md) documents this workflow. These source-level capabilities do not establish that real-user release conditions are met.
+
+### Separate synthetic examples
+
+In local/preview environments, open **Riepiloghi di esempio** to access the earlier simulator. Create a generated example, review it, then use its separate sharing controls on a pending/accepted invitation. Its checkbox starts unchecked. Sharing is bound to the exact synthetic summary and that invitation; the landlord can read only its consented summary. Revocation, dispute, expiry, replacement, block/suspension and terminal invitation states remove future access. New examples never inherit old sharing choices.
+
+Neither income workflow exposes income or verification badges in discovery; accepting an invitation works without either. The simulator supports employment, self-employment and variable income examples and recoverable states. Its earlier APIs still accept no client-supplied income amount, financial file, banking credential or arbitrary provider result. `POST /api/income/checks` still returns 503; independent provider issuance remains unavailable. The manual dossier uses separate `/api/income/dossier` routes and additive migration017, leaving the simulator's synthetic-only observations unchanged. Adding an independent provider requires a reviewed adapter, source/method semantics and a separate data contract.
 
 [Research and provider comparison](docs/research/11-income-verification.md) · [Product decision and user experiment](docs/product/04-income-attestation.md) · [UX audit](docs/design/03-ux-audit-income.md) · [Extension validation](docs/operations/income-validation.md).

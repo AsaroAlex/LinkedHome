@@ -66,6 +66,10 @@ import {
 } from "./household.js";
 import { canonicalArea, searchLocations } from "../shared/locations.js";
 import { publicAddress } from "../shared/property-address.js";
+import {
+  registerIncomeDossierRoutes,
+  ownIncomeDossier,
+} from "./income-dossier.js";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -228,6 +232,7 @@ export async function buildApp(
           "/api/properties/:id/photos",
           "/api/profile/photo",
           "/api/profile/members/:id/photo",
+          "/api/income/dossier/people/:personId/documents",
         ].includes(r.routeOptions.url || "");
       if (
         photoUpload
@@ -277,11 +282,13 @@ export async function buildApp(
         r.actor = null;
     }
   });
-  app.setErrorHandler((error, _request, reply) => {
+  app.setErrorHandler((error, request, reply) => {
     if ((error as { code?: string }).code === "FST_REQ_FILE_TOO_LARGE")
-      return reply
-        .code(413)
-        .send({ error: "Ogni foto può pesare al massimo 5 MB." });
+      return reply.code(413).send({
+        error: request.routeOptions.url?.startsWith("/api/income/dossier/")
+          ? "Ogni documento può pesare al massimo 5 MB."
+          : "Ogni foto può pesare al massimo 5 MB.",
+      });
     if (
       ["FST_FILES_LIMIT", "FST_FIELDS_LIMIT", "FST_PARTS_LIMIT"].includes(
         (error as { code?: string }).code || "",
@@ -575,6 +582,11 @@ export async function buildApp(
       },
     );
   registerHouseholdRoutes(app, db, photos, { actor, preview });
+  registerIncomeDossierRoutes(app, db, photos, {
+    actor,
+    preview,
+    synthetic: runtime.environment !== "production",
+  });
   app.get("/api/profile", async (r) => {
     const u = actor(r);
     const [profile, images, household] = await Promise.all([
@@ -2006,6 +2018,7 @@ export async function buildApp(
       incomeShares,
       profilePhoto,
       household,
+      incomeDossier,
     ] = await Promise.all([
       db.query("SELECT * FROM profiles WHERE user_id=$1", [u.id]),
       db.query("SELECT * FROM properties WHERE owner_id=$1", [u.id]),
@@ -2044,6 +2057,13 @@ export async function buildApp(
         u.id,
       ]),
       ownHousehold(db, u.id),
+      ownIncomeDossier(
+        db,
+        u.id,
+        preview
+          ? [r.previewWorkspace!.tenant_id, r.previewWorkspace!.landlord_id]
+          : null,
+      ),
     ]);
     return {
       account: {
@@ -2066,6 +2086,12 @@ export async function buildApp(
       appeals: appeals.rows,
       income: income.rows.map(incomeAttestation),
       income_shares: incomeShares.rows.map(incomeShare),
+      ...(incomeDossier.dossier
+        ? {
+            income_dossier: incomeDossier.dossier,
+            income_dossier_shares: incomeDossier.shares,
+          }
+        : {}),
       verification: checks.rows.map((v) => ({
         ...v,
         status: verificationState(v),
@@ -2093,7 +2119,7 @@ export async function buildApp(
       ).rows[0];
       requireThat(fresh?.password_hash === hash, "Credenziali cambiate.", 409);
       const { rows: profilePhotos } = await c.query(
-        "SELECT id FROM profile_photos WHERE user_id=$1 UNION ALL SELECT ph.id FROM profile_member_photos ph JOIN profile_household_members m ON m.id=ph.member_id WHERE m.user_id=$1",
+        "SELECT id FROM profile_photos WHERE user_id=$1 UNION ALL SELECT ph.id FROM profile_member_photos ph JOIN profile_household_members m ON m.id=ph.member_id WHERE m.user_id=$1 UNION ALL SELECT doc.id FROM income_documents doc JOIN income_dossiers d ON d.id=doc.dossier_id WHERE d.user_id=$1",
         [u.id],
       );
       for (const id of [
@@ -2105,6 +2131,7 @@ export async function buildApp(
       await c.query("DELETE FROM users WHERE id=$1", [u.id]);
       await event(c, "account_deleted");
     });
+    await cleanupPhotoObjects(db, photos).catch(() => {});
     reply.clearCookie(cookieName, {
       path: "/",
       secure,

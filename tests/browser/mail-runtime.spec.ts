@@ -11,6 +11,9 @@ const user = {
 };
 
 test.beforeEach(async ({ page }) => {
+  await page.route("**/api/income/dossier", (route) =>
+    route.fulfill({ json: { dossier: null, shares: [] } }),
+  );
   await page.route("**/api/income", (route) =>
     route.fulfill({
       json: {
@@ -92,7 +95,7 @@ test("SMTP signup and resend use mailbox instructions and one runtime request", 
   await expect(page.locator("body")).not.toContainText("dati sintetici");
   await expect(page.locator("body")).not.toContainText("messaggio locale");
   await expect(
-    page.getByText("Nessun servizio di verifica è collegato."),
+    page.getByText("Il controllo del documento d’identità non è disponibile."),
   ).toBeVisible();
   expect(configRequests).toBe(1);
 });

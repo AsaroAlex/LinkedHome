@@ -816,8 +816,8 @@ function Landing() {
         <div>
           <p>
             Un riepilogo del reddito aiuta il proprietario a confrontare le
-            entrate con l’affitto: la fascia mensile, da dove arrivano e il
-            periodo considerato.
+            entrate con l’affitto. Una scheda per ogni affittuario, le prove
+            delle entrate e un eventuale garante, indicato separatamente.
           </p>
           <p>
             L’inquilino controlla l’anteprima e sceglie con quale proprietario
@@ -846,22 +846,24 @@ function Safeguards() {
         <span className="eyebrow">LE INFORMAZIONI PER SCEGLIERE</span>
         <h2>Entrate e affitto, a confronto.</h2>
         <p>
-          Il riepilogo del reddito mostra la fascia di entrate nette al mese, da
-          dove provengono, il periodo considerato e fino a quando il riepilogo è
-          valido. Aiuta il proprietario a confrontare queste informazioni con il
-          costo dell’affitto.
+          Ogni affittuario indica le entrate nette medie al mese, la fonte e il
+          periodo. Il riepilogo somma i redditi degli affittuari e mostra a
+          parte l’eventuale garante. Le prove possono essere buste paga,
+          documenti della pensione o dichiarazioni fiscali.
         </p>
         <p>
           L’inquilino prepara il riepilogo nella sezione «Verifiche e reddito»,
-          guarda l’anteprima e sceglie se condividerlo da un invito o da una
-          conversazione. Il proprietario può leggerlo nello stesso invito. Ogni
-          condivisione riguarda solo il proprietario scelto. L’inquilino può
-          interromperla quando vuole.
+          guarda l’anteprima e, dopo aver accettato un invito, sceglie se
+          condividere riepilogo e documenti con quel proprietario. Il
+          proprietario scarica le prove e registra gli importi e il periodo che
+          ha controllato. L’inquilino può interrompere la condivisione;
+          modificare dati o documenti richiede una nuova conferma.
         </p>
         <p className="small-copy">
-          La verifica del reddito reale non è ancora disponibile. Il riepilogo
-          mostra le entrate di un periodo; non garantisce che l’affitto venga
-          pagato in futuro.
+          Il controllo è manuale, fatto dal proprietario: non certifica
+          l’autenticità dei documenti e non garantisce pagamenti futuri. I
+          documenti caricati restano da controllare finché il proprietario non
+          registra il confronto.
         </p>
       </article>
       <div className="three-grid">
@@ -919,8 +921,9 @@ function Safeguards() {
         <h2>Il controllo resta tuo</h2>
         <p>
           Pubblica solo le preferenze e gli immobili che vuoi condividere. Non
-          inserire documenti, credenziali bancarie o dati finanziari nei
-          messaggi. Non gestiamo pagamenti o contratti di affitto.
+          inserire documenti o credenziali bancarie nei messaggi. Per le prove
+          delle entrate usa la sezione redditi, con condivisione dedicata. Non
+          gestiamo pagamenti o contratti di affitto.
         </p>
         <Link to="/register" className="button">
           Crea il tuo spazio
@@ -2865,7 +2868,7 @@ function InvitationsPage({ user }: { user: User }) {
                 </p>
               )}
               {["pending", "accepted"].includes(i.status) && (
-                <InvitationIncome
+                <InvitationIncomeEvidence
                   invitationId={i.id}
                   isTenant={i.tenant_id === user.id}
                   propertyTitle={i.property.title}
@@ -3196,7 +3199,7 @@ function Conversation({ id, user }: { id: string; user: User }) {
         </aside>
       </div>
       {info && l.data?.status === "accepted" && (
-        <InvitationIncome
+        <InvitationIncomeEvidence
           invitationId={id}
           isTenant={info.tenant_id === user.id}
           propertyTitle={info.property.title}
@@ -3215,6 +3218,78 @@ function Conversation({ id, user }: { id: string; user: User }) {
     </>
   );
 }
+type IncomeDossierUI = typeof import("./IncomeDossier");
+function IncomeDossierLoader({
+  children,
+}: {
+  children: (module: IncomeDossierUI) => ReactNode;
+}) {
+  const [module, setModule] = useState<IncomeDossierUI | null>(null);
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    let active = true;
+    import("./IncomeDossier")
+      .then((loaded) => {
+        if (active) setModule(loaded);
+      })
+      .catch(() => {
+        if (active) setError(true);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+  if (error)
+    return (
+      <div className="panel">
+        <p role="alert">
+          La sezione redditi non è stata caricata. Ricarica la pagina per
+          riprovare.
+        </p>
+        <button
+          className="button secondary"
+          onClick={() => window.location.reload()}
+        >
+          Ricarica la pagina
+        </button>
+      </div>
+    );
+  return module ? (
+    children(module)
+  ) : (
+    <p role="status">Caricamento della sezione redditi…</p>
+  );
+}
+function IncomeExamples({ children }: { children: ReactNode }) {
+  const runtime = useContext(RuntimeContext);
+  const [open, setOpen] = useState(false);
+  if (!["local", "preview"].includes(runtime?.environment || "")) return null;
+  return (
+    <details
+      className="panel income-demo"
+      onToggle={(e) => setOpen(e.currentTarget.open)}
+    >
+      <summary>Riepiloghi di esempio</summary>
+      {open && children}
+    </details>
+  );
+}
+function InvitationIncomeEvidence(
+  props: Parameters<typeof InvitationIncome>[0],
+) {
+  return (
+    <>
+      <IncomeDossierLoader>
+        {({ InvitationIncomeDossier }) => (
+          <InvitationIncomeDossier {...props} />
+        )}
+      </IncomeDossierLoader>
+      <IncomeExamples>
+        <InvitationIncome {...props} />
+      </IncomeExamples>
+    </>
+  );
+}
 function VerificationPage({ user }: { user: User }) {
   const l = useLoad("/verification"),
     a = useAction(),
@@ -3223,7 +3298,7 @@ function VerificationPage({ user }: { user: User }) {
   if (l.error)
     return (
       <>
-        <PageHeading eyebrow="IL TUO ACCOUNT" title="Email e verifiche" />
+        <PageHeading eyebrow="IL TUO ACCOUNT" title="Email e redditi" />
         <ErrorBox text={l.error} />
         <button className="button secondary" onClick={l.reload}>
           Riprova a caricare
@@ -3232,9 +3307,9 @@ function VerificationPage({ user }: { user: User }) {
     );
   return (
     <>
-      <PageHeading eyebrow="IL TUO ACCOUNT" title="Email e verifiche">
-        Conferma l’email per pubblicare e contattare. Controlla qui quali
-        verifiche sono disponibili e quali informazioni mostrano.
+      <PageHeading eyebrow="IL TUO ACCOUNT" title="Email e redditi">
+        Conferma l’email e prepara le informazioni sulle entrate da condividere
+        con il proprietario scelto.
       </PageHeading>
       <ErrorBox text={l.error || a.error} />
       {a.message && <Notice>{a.message}</Notice>}
@@ -3273,8 +3348,8 @@ function VerificationPage({ user }: { user: User }) {
             in questo ambiente.
           </h2>
           <p>
-            Nessun servizio di verifica è collegato. Non caricare documenti o
-            dati finanziari.
+            Il controllo del documento d’identità non è disponibile. Le prove
+            delle entrate si gestiscono nella sezione redditi.
           </p>
           <span className="badge">Nessuna verifica d’identità disponibile</span>
           <p className="small-copy">
@@ -3283,7 +3358,22 @@ function VerificationPage({ user }: { user: User }) {
           </p>
         </article>
       </div>
-      {user.role !== "landlord" && <IncomeWorkspace />}
+      {user.role !== "landlord" && (
+        <>
+          <IncomeDossierLoader>
+            {({ IncomeDossierWorkspace }) => (
+              <IncomeDossierWorkspace
+                syntheticEnvironment={["local", "preview"].includes(
+                  runtime?.environment || "",
+                )}
+              />
+            )}
+          </IncomeDossierLoader>
+          <IncomeExamples>
+            <IncomeWorkspace />
+          </IncomeExamples>
+        </>
+      )}
       {user.role === "landlord" && (
         <article className="panel income-section">
           <span className="eyebrow">
@@ -3292,9 +3382,11 @@ function VerificationPage({ user }: { user: User }) {
           <h2>Valuta le entrate prima di scegliere.</h2>
           <p>
             Se l’inquilino condivide un riepilogo del reddito con te, puoi
-            leggere la fascia di entrate al mese, da dove arrivano, il periodo
-            considerato e fino a quando è valido. Lo trovi nell’invito per il
-            tuo immobile, anche prima di aprire una conversazione.
+            leggere le entrate di ogni affittuario e l’eventuale garante,
+            indicato separatamente. Dopo l’accettazione dell’invito e il
+            consenso, scarica i documenti e registra gli importi e il periodo
+            che hai controllato. Il confronto usa il costo dell’offerta
+            accettata.
           </p>
           {["local", "preview"].includes(runtime?.environment || "") && (
             <p className="small-copy">

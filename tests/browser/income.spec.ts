@@ -4,6 +4,7 @@ import {
   type Page,
   type APIRequestContext,
   type Browser,
+  type Locator,
 } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { randomUUID } from "node:crypto";
@@ -118,6 +119,10 @@ function card(page: Page, title: string) {
   });
 }
 
+async function openExamples(scope: Page | Locator) {
+  await scope.getByText("Riepiloghi di esempio", { exact: true }).click();
+}
+
 async function accessibility(page: Page) {
   const result = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
@@ -186,26 +191,28 @@ test("sharing requires a deliberate choice for one invitation and revocation rem
   });
   await fixture.tenantPage.goto("/invitations");
   const firstCard = card(fixture.tenantPage, first.property.title);
-  await firstCard
+  await openExamples(firstCard);
+  const firstIncome = firstCard.locator(".income-invitation");
+  await firstIncome
     .getByText("Reddito: scegli cosa condividere", { exact: true })
     .click();
-  const consent = firstCard.getByRole("checkbox", {
+  const consent = firstIncome.getByRole("checkbox", {
     name: "Scelgo di condividere questo esempio con questo proprietario.",
   });
-  const share = firstCard.getByRole("button", {
+  const share = firstIncome.getByRole("button", {
     name: "Condividi con questo proprietario",
   });
   await expect(consent).not.toBeChecked();
   await expect(share).toBeDisabled();
-  await expect(firstCard).toContainText(
+  await expect(firstIncome).toContainText(
     `Proprietario dell’immobile «${first.property.title}»`,
   );
   await expect(
-    firstCard.getByRole("heading", {
+    firstIncome.getByRole("heading", {
       name: "Anteprima per questo proprietario",
     }),
   ).toBeVisible();
-  await expect(firstCard).toContainText(
+  await expect(firstIncome).toContainText(
     "Dati di esempio · nessun reddito reale verificato",
   );
   const preview = await call(
@@ -239,7 +246,7 @@ test("sharing requires a deliberate choice for one invitation and revocation rem
   await expect(share).toBeFocused();
   await fixture.tenantPage.keyboard.press("Enter");
   await expect(
-    firstCard.getByRole("button", { name: "Interrompi la condivisione" }),
+    firstIncome.getByRole("button", { name: "Interrompi la condivisione" }),
   ).toBeVisible();
   const granted = await call(
     page.request,
@@ -276,21 +283,23 @@ test("sharing requires a deliberate choice for one invitation and revocation rem
 
   await page.goto("/invitations");
   const ownerCard = card(page, first.property.title);
-  await ownerCard
+  await openExamples(ownerCard);
+  const ownerIncome = ownerCard.locator(".income-invitation");
+  await ownerIncome
     .getByText("Informazioni sul reddito condivise", { exact: true })
     .click();
   await expect(
-    ownerCard.getByRole("heading", {
+    ownerIncome.getByRole("heading", {
       name: "Riepilogo del reddito di esempio",
     }),
   ).toBeVisible();
-  await expect(ownerCard).toContainText("€2000–2499");
-  await expect(ownerCard).not.toContainText(fixture.tenant.email);
-  await expect(ownerCard.getByRole("checkbox")).toHaveCount(0);
+  await expect(ownerIncome).toContainText("€2000–2499");
+  await expect(ownerIncome).not.toContainText(fixture.tenant.email);
+  await expect(ownerIncome.getByRole("checkbox")).toHaveCount(0);
   await accessibility(page);
   await screenshot(page, "owner-preview-desktop");
 
-  await firstCard
+  await firstIncome
     .getByRole("button", { name: "Interrompi la condivisione" })
     .click();
   await expect(consent).not.toBeChecked();
@@ -304,15 +313,16 @@ test("sharing requires a deliberate choice for one invitation and revocation rem
   expect(revoked.status).toBe("unavailable");
   expect(revoked.attestation).toBeNull();
   await page.reload();
-  await ownerCard
+  await openExamples(ownerCard);
+  await ownerIncome
     .getByText("Informazioni sul reddito condivise", { exact: true })
     .click();
   await expect(
-    ownerCard.getByRole("heading", {
+    ownerIncome.getByRole("heading", {
       name: "Riepilogo del reddito di esempio",
     }),
   ).toHaveCount(0);
-  await expect(ownerCard).toContainText(
+  await expect(ownerIncome).toContainText(
     "Qui vedrai il riepilogo del reddito solo se",
   );
   await fixture.tenantContext.close();
@@ -338,17 +348,17 @@ test("contesting an attestation interrupts a previously consented recipient's ac
     consent: true,
   });
   await fixture.tenantPage.goto("/verification");
-  await fixture.tenantPage
-    .getByRole("button", { name: "Segnala un errore" })
-    .click();
-  await fixture.tenantPage
+  await openExamples(fixture.tenantPage);
+  const workspace = fixture.tenantPage.getByRole("region", {
+    name: "Il reddito, solo quando scegli tu.",
+  });
+  await workspace.getByRole("button", { name: "Segnala un errore" }).click();
+  await workspace
     .getByLabel("Che cosa non è corretto?")
     .fill("Il periodo dell’esempio sintetico richiede una revisione.");
-  await fixture.tenantPage
-    .getByRole("button", { name: "Invia segnalazione" })
-    .click();
+  await workspace.getByRole("button", { name: "Invia segnalazione" }).click();
   await expect(
-    fixture.tenantPage.getByText("Errore segnalato", { exact: true }),
+    workspace.getByText("Errore segnalato", { exact: true }),
   ).toBeVisible();
   const contested = await call(
     fixture.tenantPage.request,
@@ -381,16 +391,18 @@ test("a replaced attestation cannot inherit consent from an older invitation pre
   });
   await fixture.tenantPage.goto("/invitations");
   const invitationCard = card(fixture.tenantPage, invite.property.title);
-  await invitationCard
+  await openExamples(invitationCard);
+  const invitationIncome = invitationCard.locator(".income-invitation");
+  await invitationIncome
     .getByText("Reddito: scegli cosa condividere", { exact: true })
     .click();
-  const consent = invitationCard.getByRole("checkbox", {
+  const consent = invitationIncome.getByRole("checkbox", {
     name: "Scelgo di condividere questo esempio con questo proprietario.",
   });
-  const share = invitationCard.getByRole("button", {
+  const share = invitationIncome.getByRole("button", {
     name: "Condividi con questo proprietario",
   });
-  await expect(invitationCard).toContainText("€2000–2499");
+  await expect(invitationIncome).toContainText("€2000–2499");
   await consent.check();
 
   // A separate tab can replace the holder's income while this preview remains open.
@@ -399,7 +411,7 @@ test("a replaced attestation cannot inherit consent from an older invitation pre
     category: "self_employment",
   });
   expect(replacement.attestation.id).not.toBe(first.attestation.id);
-  await expect(invitationCard).toContainText("€2000–2499");
+  await expect(invitationIncome).toContainText("€2000–2499");
   const [rejected] = await Promise.all([
     fixture.tenantPage.waitForResponse(
       (response) =>
@@ -412,7 +424,7 @@ test("a replaced attestation cannot inherit consent from an older invitation pre
     first.attestation.id,
   );
   expect(rejected.status()).toBe(409);
-  await expect(invitationCard.getByRole("alert")).toBeVisible();
+  await expect(invitationIncome.getByRole("alert")).toBeVisible();
   const income = await call(fixture.tenantPage.request, "/income", {}, "GET");
   expect(income.attestation.id).toBe(replacement.attestation.id);
   expect(income.shares).toEqual([]);
@@ -426,16 +438,19 @@ test("a replaced attestation cannot inherit consent from an older invitation pre
 
   // Refreshing shows the replacement and requires a fresh affirmative choice.
   await fixture.tenantPage.reload();
-  await invitationCard
+  await openExamples(invitationCard);
+  await invitationIncome
     .getByText("Reddito: scegli cosa condividere", { exact: true })
     .click();
-  await expect(invitationCard).toContainText("€2500–2999");
+  await expect(invitationIncome).toContainText("€2500–2999");
   await expect(consent).not.toBeChecked();
   await expect(share).toBeDisabled();
   await consent.check();
   await share.click();
   await expect(
-    invitationCard.getByRole("button", { name: "Interrompi la condivisione" }),
+    invitationIncome.getByRole("button", {
+      name: "Interrompi la condivisione",
+    }),
   ).toBeVisible();
   const granted = await call(
     page.request,
@@ -453,6 +468,7 @@ test("synthetic examples explain completed and recoverable states with an access
   test.setTimeout(60000);
   await account(page);
   await page.goto("/verification");
+  await openExamples(page);
   const workspace = page.getByRole("region", {
     name: "Il reddito, solo quando scegli tu.",
   });
@@ -463,7 +479,7 @@ test("synthetic examples explain completed and recoverable states with an access
   await expect(
     workspace.getByRole("button", { name: "Verifica reale non disponibile" }),
   ).toBeDisabled();
-  await expect(page.locator('input[type="file"]')).toHaveCount(0);
+  await expect(workspace.locator('input[type="file"]')).toHaveCount(0);
   await workspace
     .getByText("Prova con dati di esempio", { exact: true })
     .click();
