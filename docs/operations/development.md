@@ -479,3 +479,10 @@ La frase sopra il titolo homepage usa `.hero-kicker`, separata da
 uppercase/tracking. Per copy/stile della sola homepage verificare
 build e scenario experience «role guide», poi homepage pubblica
 a320/390/1440; non serve fermare dev o avviare suite DB.
+
+
+La nota privacy nella hero distingue contatti non pubblici e apertura
+volontaria della chat. Evitare promesse assolute di riservatezza per
+ogni informazione: preferenze sono visibili in discovery e alcuni
+dettagli ai contatti accettati. Per sola copy riusare build, scenario
+homepage e prova pubblica mobile; nessuna suite DB necessaria.

@@ -629,3 +629,27 @@ conservati. Build/typecheck e scenario homepage/guida/FAQ/registrazione
 con Axe e overflow a1440/390/320 passati. Review CSS/copy indipendente
 positiva. Dev102521 resta attivo con HMR/watch. Deploy stessa istanza
 Railway in corso; evidenze private .local/hero-kicker.
+
+
+Pubblicato b4e4599e974d39924e6856cd942335832e823e60: web
+1258dfa2-aada-4468-9919-c3ce9f383e56 SUCCESS/online; cron
+c5329e79-8815-4ce8-91d6-ae3a4871659b SUCCESS/cronReady, DB online;
+nessuna issue/pending. Health/config HTTPS200, JSindex-DHTSkPct.js e
+CSSindex-CKjz82Qw.css identici alla build locale. Browser pubblico
+readonly1/1 passato: nuova frase leggibile a320/390/1440, vecchia assente,
+link dei due ruoli intatti, Axe/overflow/console/rete puliti; nessuna
+scrittura HTTP. Screenshot320 ispezionato. Dev102521 HMR/watch pronto.
+Evidenze .local/hero-kicker; esito locale senza deploy documentale.
+Homepage /?v=b4e4599.
+
+
+## Privacy nella prima schermata — 2026-10-05
+
+Feedback: sostituire il riferimento al nome con un beneficio di privacy.
+Nota homepage: «I tuoi contatti non sono pubblici. Scegli tu con chi
+aprire una conversazione.». Copy limitato ai contatti, coerente con
+discovery e chat su invito accettato; nessuna promessa di tenere
+nascosto ogni dettaglio dopo un consenso alla condivisione. Markup,
+stile, kicker e CTA conservati. Build/typecheck e scenario homepage
+con Axe/overflow a320/390/1440 passati. Dev102521 resta HMR/watch pronto.
+Aggiornamento Railway in corso, prove private .local/hero-privacy.

@@ -715,9 +715,9 @@ function Landing() {
               <Mark />
             </span>
             <span>
-              Profilo privato fino alla pubblicazione.
+              I tuoi contatti non sono pubblici.
               <br />
-              <strong>Il nome è visibile solo dopo un invito accettato.</strong>
+              <strong>Scegli tu con chi aprire una conversazione.</strong>
             </span>
           </div>
         </div>
