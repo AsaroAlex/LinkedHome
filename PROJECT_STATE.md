@@ -996,3 +996,34 @@ Dati preesistenti invariati (5 utenti,2 profili,1 immobile): digest di tutte
 le righe applicative identico, nuovo campo vuoto sui profili precedenti.
 Dev HMR/watch riavviato, frontend/API health200. Evidenze private in
 .local/housing-needs. Aggiornamento della stessa istanza Railway autorizzata.
+
+Pubblicato293abb0af39eec28f3a82854829cd3351a765d10: web
+27498a22-9573-4520-88ff-8d8770d878de SUCCESS/online con una replica e
+zero crash; cron8480b91b-fd1b-4d51-a6e5-e2bbb02d3a92 SUCCESS/cronReady,
+DB online, nessun warning/critical, failure o pending. Migrazione014
+applicata. Health/config HTTPS200 preview e mail disabled; JS
+index-CE-li7d2.js e CSS index-KbvGKVlO.css identici alla build locale.
+
+Browser pubblico reale passato: sette caratteristiche e sei esigenze
+di accessibilità salvate, conservate al reload ed export; discovery
+senza accessibilità, condivisione dopo accettazione anche nella chat,
+chiusura conserva, cancellazione delle scelte e blocco revocano.
+Screenshot320/390/1440px ispezionati, axe/overflow e console/rete puliti.
+Scritture soltanto nel nuovo workspace sintetico isolato della verifica,
+nessuna email reale. Dev85322 HMR/watch pronto, health200. Evidenze
+.local/housing-needs. Esito operativo conservato localmente per evitare
+deploy documentale; aggiornare /profile?v=293abb0.
+
+
+## Testo iniziale della dashboard proprietario — 2026-10-05
+
+Sostituita la frase poco naturale «Mantieni disponibili i tuoi immobili e
+scegli chi invitare.» con «Pubblica i tuoi immobili e invita chi cerca una
+casa come la tua.» in src/App.tsx. Testo concreto e coerente con il
+percorso di pubblicazione/scoperta/invito. Solo copy; stessa UI e logica.
+Verifica con build/typecheck, scenario dashboard proprietario esistente
+e browser pubblico mobile/desktop dopo il normale aggiornamento Railway.
+
+Build/typecheck e scenario UI dashboard proprietario passati; review del
+testo positiva. Nessuna modifica a dati, API o layout; dev HMR/watch
+resta attivo. Evidenze private .local/dashboard-copy.

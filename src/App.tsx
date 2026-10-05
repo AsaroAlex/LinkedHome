@@ -1301,7 +1301,7 @@ function Dashboard({ user }: { user: User }) {
           </h1>
           <p>
             {landlord
-              ? "Mantieni disponibili i tuoi immobili e scegli chi invitare."
+              ? "Pubblica i tuoi immobili e invita chi cerca una casa come la tua."
               : user.role === "both"
                 ? "Gestisci la tua ricerca, proponi immobili e segui le conversazioni."
                 : "Aggiorna le preferenze e valuta le proposte dei proprietari."}

@@ -426,3 +426,9 @@ preview-browser/housing-needs. Output Playwright indipendenti in
 posseduto fermato prima e riavviato dopo. Snapshot privato confronta tutte
 le righe applicative preesistenti escludendo la colonna aggiuntiva (che
 deve restare vuota); nessun reset del cluster o variazione del runtime.
+
+
+Per modifiche di solo copy alla dashboard, usare build/typecheck e lo
+scenario experience del ruolo interessato sul listener3017 senza DB.
+Dev con HMR/watch può restare acceso; verificare poi il testo sulla
+istanza Railway effettiva, con output browser isolati in .local/.
