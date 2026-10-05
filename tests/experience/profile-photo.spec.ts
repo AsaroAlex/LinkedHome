@@ -183,7 +183,7 @@ test("profile photo uploads explicitly, preserves preference drafts and persists
     photoEditor.getByRole("heading", { name: "Foto del profilo", exact: true }),
   ).toBeVisible();
   await expect(photoEditor).toContainText(
-    "La foto sarà visibile ai proprietari con cui apri una conversazione.",
+    "Nomi e foto saranno visibili solo ai proprietari con cui apri una conversazione.",
   );
   const picker = photoEditor.getByLabel("Scegli una foto", { exact: true });
   await expect(picker).toHaveAttribute(

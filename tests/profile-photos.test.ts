@@ -227,7 +227,11 @@ describe("private profile photos", () => {
   it("stores a normalized photo before preferences exist and reloads safe metadata", async () => {
     await db.query("DELETE FROM profiles WHERE user_id=$1", [tenant.id]);
     const empty = await request("GET", "/profile", tenant);
-    expect(empty.json()).toEqual({ profile: null, photo: null });
+    expect(empty.json()).toEqual({
+      profile: null,
+      photo: null,
+      household: { mode: "group", members: [] },
+    });
     const jpeg = await sharp({
       create: { width: 2100, height: 1200, channels: 3, background: "#447788" },
     })
@@ -251,6 +255,7 @@ describe("private profile photos", () => {
     expect((await request("GET", "/profile", tenant)).json()).toEqual({
       profile: null,
       photo,
+      household: { mode: "group", members: [] },
     });
     const image = await request("GET", `/profile-photos/${photo.id}`, tenant);
     expect(image.statusCode).toBe(200);

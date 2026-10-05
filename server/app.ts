@@ -59,6 +59,11 @@ import {
   cleanupPhotoObjects,
   type PhotoStorage,
 } from "./photos.js";
+import {
+  ownHousehold,
+  registerHouseholdRoutes,
+  sharedTenantHouseholds,
+} from "./household.js";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -214,9 +219,11 @@ export async function buildApp(
         throw new Problem(403, "Origine della richiesta non consentita.");
       const photoUpload =
         r.method === "POST" &&
-        ["/api/properties/:id/photos", "/api/profile/photo"].includes(
-          r.routeOptions.url || "",
-        );
+        [
+          "/api/properties/:id/photos",
+          "/api/profile/photo",
+          "/api/profile/members/:id/photo",
+        ].includes(r.routeOptions.url || "");
       if (
         photoUpload
           ? !r.headers["content-type"]?.startsWith("multipart/form-data;")
@@ -562,15 +569,18 @@ export async function buildApp(
         return { ok: true };
       },
     );
+  registerHouseholdRoutes(app, db, photos, { actor, preview });
   app.get("/api/profile", async (r) => {
     const u = actor(r);
-    const [profile, images] = await Promise.all([
+    const [profile, images, household] = await Promise.all([
       db.query("SELECT * FROM profiles WHERE user_id=$1", [u.id]),
       profilePhotos(db, u.id, [u.id]),
+      ownHousehold(db, u.id),
     ]);
     return {
       profile: profile.rows[0] || null,
       photo: images.get(u.id) || null,
+      household,
     };
   });
   app.post(
@@ -618,7 +628,7 @@ export async function buildApp(
             );
           const used = (
             await c.query(
-              "SELECT user_id FROM profile_photo_upload_requests WHERE id=$1",
+              "SELECT user_id,member_id FROM profile_photo_upload_requests WHERE id=$1",
               [photoId],
             )
           ).rows[0];
@@ -630,7 +640,7 @@ export async function buildApp(
               )
             ).rows[0];
             requireThat(
-              used.user_id === u.id && existing,
+              used.user_id === u.id && !used.member_id && existing,
               "Richiesta foto già utilizzata. Seleziona nuovamente la foto.",
               409,
             );
@@ -1240,6 +1250,16 @@ export async function buildApp(
         details,
       ]),
     );
+    const tenantHouseholds = await sharedTenantHouseholds(
+      db,
+      u.id,
+      rows
+        .filter((i) => ["accepted", "closed"].includes(i.status))
+        .map((i) => i.id),
+      preview
+        ? [r.previewWorkspace!.tenant_id, r.previewWorkspace!.landlord_id]
+        : undefined,
+    );
     return rows.map((i) => {
       i.property.photos = images.get(i.property_id) || [];
       if (
@@ -1257,6 +1277,7 @@ export async function buildApp(
       return {
         ...i,
         tenant_details: tenantDetails.get(i.id) || null,
+        tenant_household: tenantHouseholds.get(i.id) || null,
         other_photo: ["accepted", "closed"].includes(i.status)
           ? profileImages.get(
               i.tenant_id === u.id ? i.landlord_id : i.tenant_id,
@@ -1920,6 +1941,7 @@ export async function buildApp(
       income,
       incomeShares,
       profilePhoto,
+      household,
     ] = await Promise.all([
       db.query("SELECT * FROM profiles WHERE user_id=$1", [u.id]),
       db.query("SELECT * FROM properties WHERE owner_id=$1", [u.id]),
@@ -1957,6 +1979,7 @@ export async function buildApp(
       db.query("SELECT id,width,height FROM profile_photos WHERE user_id=$1", [
         u.id,
       ]),
+      ownHousehold(db, u.id),
     ]);
     return {
       account: {
@@ -1970,6 +1993,7 @@ export async function buildApp(
       profile_photo: profilePhoto.rows[0]
         ? profilePhotoView(profilePhoto.rows[0])
         : null,
+      household,
       properties: properties.rows,
       invitations: invitations.rows,
       messages: messages.rows,
@@ -2004,12 +2028,15 @@ export async function buildApp(
         await c.query("SELECT password_hash FROM users WHERE id=$1", [u.id])
       ).rows[0];
       requireThat(fresh?.password_hash === hash, "Credenziali cambiate.", 409);
-      const profilePhoto = (
-        await c.query("SELECT id FROM profile_photos WHERE user_id=$1", [u.id])
-      ).rows[0];
-      if (profilePhoto)
+      const { rows: profilePhotos } = await c.query(
+        "SELECT id FROM profile_photos WHERE user_id=$1 UNION ALL SELECT ph.id FROM profile_member_photos ph JOIN profile_household_members m ON m.id=ph.member_id WHERE m.user_id=$1",
+        [u.id],
+      );
+      for (const id of [
+        ...new Set(profilePhotos.map((photo) => photo.id)),
+      ].sort())
         await c.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [
-          profilePhoto.id,
+          id,
         ]);
       await c.query("DELETE FROM users WHERE id=$1", [u.id]);
       await event(c, "account_deleted");

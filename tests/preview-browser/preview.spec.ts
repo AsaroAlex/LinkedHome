@@ -157,7 +157,7 @@ test("synthetic preview preserves both roles through invitation and conversation
   expect(savedPhoto.url).toMatch(/^\/api\/profile-photos\//);
   expect((await browserApi(page, "/profile")).profile).toEqual(profile);
   await page.reload();
-  const ownPhoto = photoEditor.getByAltText("La tua foto del profilo");
+  const ownPhoto = photoEditor.getByAltText("Foto del gruppo");
   await expect(ownPhoto).toHaveAttribute("src", savedPhoto.url);
   await expect
     .poll(() =>

@@ -685,3 +685,52 @@ a1440/390/320px con colori calcolati uguali al primario, zero overflow,
 violazioni axe o errori console/rete. Screenshot controllati; review
 indipendente positiva. Evidenze private in `.local/blue-accent`.
 Pubblicazione nella stessa preview Railway autorizzata sul commit finale.
+
+Accenti blu pubblicati sul commit `1ac986d763bc9c5a62545101fee01b216da52bb4`:
+web `b339ae40-e6ee-4ebe-a319-605bf20dcdbc` SUCCESS/online e cron
+`880c137a-00ea-4d69-9d1f-7f9373483338` SUCCESS/cronReady; DB online,
+nessun problema o pending. Health/config preview200, asset identici alla
+build locale e controlli browser pubblici1440/390/320px passati, zero
+errori/overflow/violazioni axe. Evidenze in `.local/blue-accent`.
+
+## Foto di gruppo o per persona — 2026-10-05
+
+Feedback foto per più affittuari; l’utente chiede di lasciare la scelta a
+chi cerca casa. Il profilo offre una sola foto propria/di gruppo oppure
+foto individuali con fino a11 persone aggiuntive. Nomi richiesti solo per
+creare una scheda, immagini facoltative. Foto principale mantenuta con
+spiegazione al cambio, schede conservate ma nascoste ai contatti scegliendo
+una sola foto. Upload/salvataggi/nome in bozza bloccano il cambio opzione;
+annullamento disponibile. Le preferenze non vengono rimontate o salvate
+implicitamente. Il numero totale resta esplicito, con promemoria quando
+le schede superano le persone indicate.
+
+Migrazione012 aggiuntiva, namespace privato persistente, token/tombstone
+per retry senza duplicati o ripristini, cleanup su rimozione/sostituzione e
+cascade account. `tenant_household` negli inviti/chat soltanto dopo
+accettazione/chiusura, parti attive, senza blocchi e stesso workspace
+preview. Nomi/foto aggiuntivi assenti dalla discovery. In modalità group
+il contatto vede membri vuoti e gli URL foto rispondono404; il titolare
+può recuperare le schede conservate. Nessun nuovo account o verifica di
+identità, nessuna modifica a revisioni/inviti.
+
+Build/typecheck,399 backend e26 experience passati. Review indipendente
+ha rilevato due casi corretti: nomi in bozza durante cambio modalità e
+foto dei coinquilini di un account both esposte al suo inquilino locatario.
+Guard UI estesa e accesso media limitato al proprietario del profilo di
+ricerca;20 test API mirati e3 UI ripassati con regressioni aggiunte.
+Sette flussi preview reali passati. Due fixture precedenti allineate ai
+nuovi copy/alt; eliminato un ruolo status superfluo dal suggerimento di
+cambio modalità, che duplicava temporaneamente la conferma foto.
+Screenshot mobile e controlli axe/layout/console/rete passati. Immagine
+Docker con CA cloud costruita, import API/helper e migrazione012 presenti
+verificati senza rete né DB. Tentativo Docker senza CA interrotto e
+corretto secondo istruzioni runtime; nessun cambio al Dockerfile pubblicato.
+Evidenze private `.local/household-photos`. Verifica browser principale,
+conservazione dati e deploy nella stessa preview Railway autorizzata.
+
+Passati anche22 scenari browser principali; formattazione e diff verificati.
+Supervisor dev60272 riavviato con API watch, Vite/HMR e migrazione012;
+health locale200. Conservati5 utenti,2 profili e1 immobile, hash di dati,
+revisioni e preferenze identico prima/dopo. Nessun dato dell’app cancellato.
+Pubblicazione e prova browser reale sulla preview sul commit finale.

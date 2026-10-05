@@ -99,7 +99,11 @@ export function readPhotoConfiguration(
   };
 }
 const validKey = (key: string) => {
-  if (!/^(?:property|profile)-photos\/[a-f0-9-]{36}\.webp$/.test(key))
+  if (
+    !/^(?:property|profile|profile-member)-photos\/[a-f0-9-]{36}\.webp$/.test(
+      key,
+    )
+  )
     throw new Error("Invalid photo object key.");
   return key;
 };
@@ -107,6 +111,8 @@ export const photoObjectKey = (id: string = randomUUID()) =>
   `property-photos/${id}.webp`;
 export const profilePhotoObjectKey = (id: string = randomUUID()) =>
   `profile-photos/${id}.webp`;
+export const memberPhotoObjectKey = (id: string = randomUUID()) =>
+  `profile-member-photos/${id}.webp`;
 export function createPhotoStorage(
   config = readPhotoConfiguration(),
 ): PhotoStorage {
@@ -292,7 +298,7 @@ export async function cleanupPhotoObjects(
         // A successful retry may have reused an object previously queued after rollback.
         const referenced = (
           await c.query(
-            "SELECT 1 FROM property_photos WHERE object_key=$1 UNION ALL SELECT 1 FROM profile_photos WHERE object_key=$1",
+            "SELECT 1 FROM property_photos WHERE object_key=$1 UNION ALL SELECT 1 FROM profile_photos WHERE object_key=$1 UNION ALL SELECT 1 FROM profile_member_photos WHERE object_key=$1",
             [object_key],
           )
         ).rowCount;

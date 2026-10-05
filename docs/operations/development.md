@@ -294,3 +294,27 @@ in particolare testo e bordo degli avvisi di bozza usano `--warning`.
 Per cambi soltanto cromatici verificare build/typecheck, colori calcolati,
 contrasto, screenshot desktop/mobile, console e rete senza modificare dati
 o riavviare il database. QA privata dell’iterazione in `.local/blue-accent`.
+
+## Foto di più persone
+
+`server/household.ts` gestisce modalità e schede, `src/ProfileHousehold.tsx`
+la scelta e gli editor. `GET /api/profile` include `household`; PUT
+`/api/profile/household` salva la modalità, POST `/api/profile/members`
+crea una scheda con UUID client stabile al retry. PUT/DELETE della scheda
+usano `/api/profile/members/:id`; POST multipart/DELETE della sua foto
+usano lo stesso percorso con `/photo`. L’URL privato è
+`/api/profile-member-photos/:photoId`. Foto principale e API precedenti
+restano disponibili. Nessun cambio a preferenze/revisioni/inviti.
+
+La modalità group restituisce le schede conservate soltanto al titolare;
+negli inviti `tenant_household` condivide un array vuoto. La modalità
+individual condivide membri solo negli inviti accettati/chiusi e con
+parti attive, non bloccate e del medesimo workspace. L’accesso media
+nonowner richiede che il titolare sia l’inquilino e il viewer il proprietario.
+Non aggiungere questi dati alla discovery. La migrazione012 aggiunge
+settings, membri, tombstone e foto con trigger nella coda di cleanup.
+
+Regressioni: `tests/household-photos.test.ts`, experience/household-photos
+e preview-browser/household-photos. Evidenze private `.local/household-photos`.
+Per le suite con DB fermare soltanto il dev posseduto e poi riavviarlo,
+verificando che i dati dell’app siano invariati.

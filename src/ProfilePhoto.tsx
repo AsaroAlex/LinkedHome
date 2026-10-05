@@ -12,9 +12,11 @@ export type ProfilePhoto = {
 export function ProfileAvatar({
   photo,
   name,
+  alt,
 }: {
   photo?: ProfilePhoto | null;
   name?: string;
+  alt?: string;
 }) {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [photo?.url]);
@@ -23,7 +25,7 @@ export function ProfileAvatar({
       {photo && !failed ? (
         <img
           src={photo.url}
-          alt={name ? `Foto di ${name}` : "La tua foto del profilo"}
+          alt={alt || (name ? `Foto di ${name}` : "La tua foto del profilo")}
           width={photo.width}
           height={photo.height}
           onError={() => setFailed(true)}
@@ -52,9 +54,23 @@ export function ProfileAvatar({
 export function ProfilePhotoEditor({
   initialPhoto,
   onSaved,
+  endpoint = "/profile/photo",
+  title = "Foto del profilo",
+  description = "La foto sarà visibile ai proprietari con cui apri una conversazione. Puoi cambiarla o rimuoverla quando vuoi.",
+  embedded = false,
+  headingLevel = 2,
+  onEditingChange,
+  disabled = false,
 }: {
   initialPhoto?: ProfilePhoto | null;
   onSaved: () => void;
+  endpoint?: string;
+  title?: string;
+  description?: string;
+  embedded?: boolean;
+  headingLevel?: 2 | 3 | 4;
+  onEditingChange?: (editing: boolean) => void;
+  disabled?: boolean;
 }) {
   const inputId = useId();
   const [photo, setPhoto] = useState(initialPhoto ?? null);
@@ -67,6 +83,14 @@ export function ProfilePhotoEditor({
   const working = useRef(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const editingListener = useRef(onEditingChange);
+  editingListener.current = onEditingChange;
+  useEffect(() => {
+    editingListener.current?.(Boolean(selected || busy));
+  }, [selected, busy]);
+  useEffect(() => () => editingListener.current?.(false), []);
+  const Heading = headingLevel === 4 ? "h4" : headingLevel === 3 ? "h3" : "h2";
+  const unavailable = busy || disabled;
   useEffect(() => setPhoto(initialPhoto ?? null), [initialPhoto?.id]);
   useEffect(() => {
     const url = selected?.url;
@@ -76,7 +100,7 @@ export function ProfilePhotoEditor({
   }, [selected?.url]);
 
   function choose(file?: File) {
-    if (!file || working.current) return;
+    if (!file || working.current || disabled) return;
     setError("");
     setNotice("");
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
@@ -99,7 +123,7 @@ export function ProfilePhotoEditor({
   }
 
   async function save() {
-    if (!selected || working.current) return;
+    if (!selected || working.current || disabled) return;
     working.current = true;
     setBusy(true);
     setError("");
@@ -108,7 +132,7 @@ export function ProfilePhotoEditor({
     body.append("photo", selected.file);
     try {
       const result = await api<{ photo: ProfilePhoto }>(
-        "/profile/photo",
+        endpoint,
         "POST",
         body,
         { "Idempotency-Key": selected.id },
@@ -126,13 +150,13 @@ export function ProfilePhotoEditor({
   }
 
   async function remove() {
-    if (!photo || working.current) return;
+    if (!photo || working.current || disabled) return;
     working.current = true;
     setBusy(true);
     setError("");
     setNotice("");
     try {
-      await api("/profile/photo", "DELETE");
+      await api(endpoint, "DELETE");
       setPhoto(null);
       setSelected(null);
       setNotice("Foto rimossa.");
@@ -147,11 +171,12 @@ export function ProfilePhotoEditor({
 
   return (
     <section
-      className="panel profile-photo-panel"
+      className={`${embedded ? "profile-photo-embedded" : "panel"} profile-photo-panel`}
       aria-labelledby={`${inputId}-title`}
     >
       <div className="profile-photo-preview">
         <ProfileAvatar
+          alt={title}
           photo={
             selected
               ? { id: selected.id, url: selected.url, width: 128, height: 128 }
@@ -168,16 +193,15 @@ export function ProfilePhotoEditor({
       </div>
       <div className="profile-photo-controls">
         <div className="panel-title">
-          <h2 id={`${inputId}-title`}>Foto del profilo</h2>
+          <Heading id={`${inputId}-title`}>{title}</Heading>
           <span className="profile-photo-optional">Facoltativa</span>
         </div>
         <p className="small-copy" id={`${inputId}-help`}>
-          La foto sarà visibile ai proprietari con cui apri una conversazione.
-          Puoi cambiarla o rimuoverla quando vuoi.
+          {description}
         </p>
         <div className="actions wrap">
           <label
-            className={`button secondary profile-photo-picker${busy ? " disabled" : ""}`}
+            className={`button secondary profile-photo-picker${unavailable ? " disabled" : ""}`}
             htmlFor={inputId}
           >
             {photo || selected ? "Cambia foto" : "Scegli una foto"}
@@ -185,7 +209,7 @@ export function ProfilePhotoEditor({
               id={inputId}
               type="file"
               accept="image/jpeg,image/png,image/webp"
-              disabled={busy}
+              disabled={unavailable}
               aria-describedby={`${inputId}-help ${inputId}-formats`}
               onChange={(event) => {
                 choose(event.currentTarget.files?.[0]);
@@ -198,7 +222,7 @@ export function ProfilePhotoEditor({
               <button
                 type="button"
                 className="button"
-                disabled={busy}
+                disabled={unavailable}
                 onClick={save}
               >
                 {busy ? "Caricamento…" : "Salva foto"}
@@ -206,7 +230,7 @@ export function ProfilePhotoEditor({
               <button
                 type="button"
                 className="text-link"
-                disabled={busy}
+                disabled={unavailable}
                 onClick={() => {
                   setSelected(null);
                   setError("");
@@ -220,7 +244,7 @@ export function ProfilePhotoEditor({
             <button
               type="button"
               className="text-link"
-              disabled={busy}
+              disabled={unavailable}
               onClick={remove}
             >
               {busy ? "Rimozione…" : "Rimuovi foto"}

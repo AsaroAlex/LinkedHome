@@ -273,3 +273,22 @@ Il marrone residuo del titolo homepage e degli accenti del marchio viene
 sostituito dal blu primario. Avvisi di bozza con il proprio token warning.
 Build/typecheck e controlli browser homepage desktop/mobile passati;
 pubblicazione nella stessa preview Railway autorizzata.
+
+## Foto di gruppo o per persona — 2026-10-05
+
+Feedback sulle foto per più affittuari; l’utente vuole lasciare la scelta
+a chi cerca casa. Un solo profilo con una foto propria/di gruppo oppure
+foto individuali, fino a11 altre persone con nome e foto facoltativa.
+Scelte e immagini persistono; il cambio modalità conserva le schede e
+ne controlla la condivisione. Metadata e immagini dei membri solo al
+titolare e ai proprietari di inviti accettati/chiusi, in modalità individuale,
+con controlli su blocchi, sospensioni e preview. Bozze conservate e nessun
+aggiornamento implicito al numero di persone o alle revisioni. Migrazione012
+aggiuntiva e storage esistente. Dettagli in `docs/product/07-household-photos.md`.
+Verificare API, retry/cleanup, browser reale, mobile e deploy nella preview.
+
+Build/typecheck,399 backend e20 API mirati con regressione privacy,26 UI
+experience e3 casi mirati,7 flussi preview e22 browser principali passati.
+Review indipendente, packaging Docker, screenshot/accessibilità mobile e
+conservazione dati verificati; dev con HMR/watch pronto. Pubblicazione
+nella stessa preview Railway autorizzata.

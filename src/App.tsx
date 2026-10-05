@@ -39,7 +39,8 @@ import {
 } from "../shared/contracts";
 import type { User } from "../server/auth";
 import { IncomeWorkspace, InvitationIncome } from "./Income";
-import { ProfileAvatar, ProfilePhotoEditor } from "./ProfilePhoto";
+import { ProfileAvatar } from "./ProfilePhoto";
+import { ProfileHouseholdEditor, HouseholdSummary } from "./ProfileHousehold";
 import { ProfileDetailsFields, ProfileDetailsSummary } from "./ProfileDetails";
 import {
   PhotoEditor,
@@ -861,7 +862,8 @@ function Safeguards() {
           <h2>Quando accetti</h2>
           <p>
             Entrambe le parti vedono il nome scelto, che può essere uno
-            pseudonimo, la foto del profilo se aggiunta, e possono scriversi. La
+            pseudonimo, e possono scriversi. Il proprietario vede anche le foto
+            e i nomi del gruppo nell’opzione scelta, se aggiunti. La
             presentazione e i dettagli sugli animali diventano visibili ai
             contatti accettati. Email e documenti non vengono condivisi
             automaticamente.
@@ -1679,7 +1681,12 @@ function ProfilePage() {
       </PageHeading>
       <ErrorBox text={a.error} />
       {a.message && <Notice>{a.message}</Notice>}
-      <ProfilePhotoEditor initialPhoto={l.data.photo} onSaved={l.reload} />
+      <ProfileHouseholdEditor
+        household={l.data.household}
+        photo={l.data.photo}
+        occupants={Number(draft?.occupants ?? p?.occupants ?? 1)}
+        onSaved={l.reload}
+      />
       <div className="form-layout">
         <form
           className="panel"
@@ -1771,8 +1778,8 @@ function ProfilePage() {
           </p>
           <p>
             <strong>
-              Nome, foto, presentazione, email e verifiche restano esclusi dalla
-              scoperta.
+              Nomi e foto del gruppo, presentazione, email e verifiche restano
+              esclusi dalla scoperta.
             </strong>
           </p>
           {p && (
@@ -2489,8 +2496,8 @@ function DiscoverPage() {
           )}
           <p className="disclosure">
             Quando un invito viene accettato, entrambi vedrete il nome scelto e
-            la foto del profilo se aggiunta, e potrete scrivervi. Email e
-            documenti restano privati.
+            le foto e i nomi delle persone nella modalità scelta, se aggiunti, e
+            potrete scrivervi. Email e documenti restano privati.
           </p>
           {l.error ? null : !l.data ? (
             <Loading />
@@ -2755,6 +2762,9 @@ function InvitationsPage({ user }: { user: User }) {
                 i.tenant_details && (
                   <ProfileDetailsSummary details={i.tenant_details} personal />
                 )}
+              {["accepted", "closed"].includes(i.status) && (
+                <HouseholdSummary household={i.tenant_household} />
+              )}
               {i.compatibility && (
                 <details>
                   <summary>Confronto con le preferenze attuali</summary>
@@ -2764,8 +2774,8 @@ function InvitationsPage({ user }: { user: User }) {
               {i.status === "pending" && (
                 <p className="disclosure">
                   {i.tenant_id === user.id
-                    ? "Accettando, condividi il nome scelto e apri la chat. Il proprietario vedrà anche la foto, la presentazione e i dettagli sugli animali, se li hai aggiunti."
-                    : "Se l’inquilino accetta, vedrete il nome scelto e aprirete la chat. Potrai leggere la presentazione e i dettagli sugli animali e vedere la foto, se li ha aggiunti."}{" "}
+                    ? "Accettando, condividi il nome scelto e apri la chat. Il proprietario vedrà anche le foto e i nomi delle persone nella modalità scelta, la presentazione e i dettagli sugli animali, se li hai aggiunti."
+                    : "Se l’inquilino accetta, vedrete il nome scelto e aprirete la chat. Potrai vedere le foto e i nomi delle persone nella modalità scelta, la presentazione e i dettagli sugli animali, se li ha aggiunti."}{" "}
                   Nessuna email o documento viene condiviso. Scade il{" "}
                   {dateLabel(i.expires_at)}.
                 </p>
@@ -3034,6 +3044,7 @@ function Conversation({ id, user }: { id: string; user: User }) {
           {a.message && <Notice>{a.message}</Notice>}
         </section>
         <aside className="panel chat-aside">
+          <HouseholdSummary household={info?.tenant_household} />
           {info?.tenant_details &&
             ["accepted", "closed"].includes(info.status) && (
               <ProfileDetailsSummary details={info.tenant_details} personal />

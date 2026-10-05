@@ -14,6 +14,7 @@ export default defineConfig({
         "contracts.spec.ts",
         "profile-photo.spec.ts",
         "profile-details.spec.ts",
+        "household-photos.spec.ts",
       ],
     },
     {
