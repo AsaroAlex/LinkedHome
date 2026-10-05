@@ -1217,3 +1217,34 @@ Due flussi browser reali mirati passati: caricamento, normalizzazione WebP,
 persistenza dopo reload e rimozione da mobile; risposta upload persa e
 retry senza duplicati. Dev con HMR/watch riavviato su3000/3001, health e
 frontend200. Build finale JSindex-DYOonVqG.js; aggiornamento Railway in corso.
+
+
+Pubblicato2a0dfdb351568d0c20192048ac284fbb36450f34: web
+114833f7-61b2-436d-b298-718b64625016 SUCCESS/online; cron
+b6894236-4982-4902-b412-02cab08e5d8b SUCCESS/cronReady, DB online.
+Nessun problema o lavoro pending. Health/config HTTPS200; JS
+index-DYOonVqG.js e CSSindex-v8xpJVzZ.css identici alla build locale.
+
+Browser pubblico reale1/1 passato: apertura nuovo e modifica da scheda
+in basso a320/390/1440 mostra l’inizio del modulo e il titolo della
+sezione foto prima di qualsiasi scroll manuale; focus titolo corretto.
+Due foto sintetiche caricate201, normalizzate WebP200, salvate e
+ricaricate, poi rimosse con persistenza al reload. Dotazioni conservate;
+Axe320 nuovo/modifica, overflow, console e rete puliti. Screenshot
+mobile ispezionati. Scritture solo in nuovo workspace sintetico isolato,
+nessuna email reale. Dev102521 con HMR/watch pronto, health200.
+Evidenze .local/photos-first. Esito conservato localmente per evitare
+deploy documentale; /properties?v=2a0dfdb.
+
+
+## Frase sopra il titolo della homepage — 2026-10-05
+
+Feedback: «LA TUA RICERCA, GLI INVITI DEI PROPRIETARI» poco leggibile e
+poco incisiva. Sostituita con «Cerchi casa? Fatti trovare.», in stile
+specifico hero-kicker:15.2px, peso600, blu, maiuscole naturali e nessuna
+spaziatura artificiale o linea decorativa. Rimosso il vecchio override
+mobile che riduceva il testo a9.44px. Titolo e percorsi dei due ruoli
+conservati. Build/typecheck e scenario homepage/guida/FAQ/registrazione
+con Axe e overflow a1440/390/320 passati. Review CSS/copy indipendente
+positiva. Dev102521 resta attivo con HMR/watch. Deploy stessa istanza
+Railway in corso; evidenze private .local/hero-kicker.

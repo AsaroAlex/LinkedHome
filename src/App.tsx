@@ -692,10 +692,7 @@ function Landing() {
     <>
       <section className="hero container">
         <div className="hero-copy">
-          <span className="eyebrow">
-            <span className="tiny-line" /> LA TUA RICERCA, GLI INVITI DEI
-            PROPRIETARI
-          </span>
+          <span className="hero-kicker">Cerchi casa? Fatti trovare.</span>
           <h1 tabIndex={-1}>
             La prossima casa
             <br />

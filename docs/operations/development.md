@@ -472,3 +472,10 @@ di sola posizione UI bastano build/typecheck e flussi foto pertinenti
 (upload, reload, rimozione e retry), più prova mobile sul sito aggiornato.
 Non aggiungere test che rispecchiano soltanto l’ordine del markup.
 Evidenze private in `.local/photos-first`.
+
+
+La frase sopra il titolo homepage usa `.hero-kicker`, separata da
+`.eyebrow`: testo normale15.2px leggibile anche su mobile, senza
+uppercase/tracking. Per copy/stile della sola homepage verificare
+build e scenario experience «role guide», poi homepage pubblica
+a320/390/1440; non serve fermare dev o avviare suite DB.
