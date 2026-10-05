@@ -14,7 +14,7 @@ const guides = {
     ],
     [
       "Parla con il proprietario",
-      "Accetta l’invito per aprire la chat. Fai domande e concorda una visita: accettare un invito non significa affittare la casa.",
+      "Accetta l’invito per aprire la chat. Fai domande e concorda una visita.",
     ],
   ],
   landlord: [

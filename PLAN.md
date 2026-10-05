@@ -653,3 +653,26 @@ nascosto ogni dettaglio dopo un consenso alla condivisione. Markup,
 stile, kicker e CTA conservati. Build/typecheck e scenario homepage
 con Axe/overflow a320/390/1440 passati. Dev102521 resta HMR/watch pronto.
 Aggiornamento Railway in corso, prove private .local/hero-privacy.
+
+
+Pubblicato e0ba8fcae55a2736db0ea4a71b186613725b1894: web
+0ba41ec8-2e2c-4cb6-97f2-5fe63aef4615 SUCCESS/online; cron
+e7aba199-8499-46d7-8a52-453bd4bcefd9 SUCCESS/cronReady, DB online;
+nessuna issue/pending. Health/config HTTPS200, JSindex-Bid-oSZ7.js e
+CSSindex-CKjz82Qw.css identici alla build locale. Browser pubblico
+readonly1/1 passato a320/390/1440: nuova nota privacy e kicker precedente
+leggibili, vecchio testo assente, CTA intatte, Axe/overflow/console/rete
+puliti; nessuna scrittura HTTP. Screenshot320 ispezionato. Dev102521
+HMR/watch pronto. Evidenze .local/hero-privacy; esito locale senza
+deploy documentale. Homepage /?v=e0ba8fc.
+
+
+## Guida: dalla chat alla visita — 2026-10-05
+
+Tolto il finale «accettare un invito non significa affittare la casa»
+dal terzo passo inquilino. Testo: «Accetta l’invito per aprire la chat.
+Fai domande e concorda una visita.». FAQ sul significato dell’invito
+conservata. Build/typecheck e scenario guida/FAQ/registrazione con Axe e
+overflow a320/390/1440 passati; review indipendente positiva. Solo copy,
+nessun cambio comportamento o CSS. Dev102521 HMR/watch pronto.
+Deploy Railway in corso; evidenze private .local/guide-copy.
